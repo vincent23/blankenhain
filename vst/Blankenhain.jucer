@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<JUCERPROJECT id="bABIZj" name="Blankenhain" projectType="audioplug" version="1.0.0"
+              bundleIdentifier="org.rtificial.blankenhain" includeBinaryInAppConfig="1"
+              buildVST="1" buildVST3="0" buildAU="0" buildRTAS="0" buildAAX="0"
+              pluginName="Blankenhain Dummy" pluginDesc="This a dummy description. See README for the right way to set this."
+              pluginManufacturer="rtificial" pluginManufacturerCode="RTFC"
+              pluginCode="BLKH" pluginChannelConfigs="{1, 1}, {2, 2}" pluginIsSynth="0"
+              pluginWantsMidiIn="1" pluginProducesMidiOut="1" pluginSilenceInIsSilenceOut="0"
+              pluginEditorRequiresKeys="0" pluginAUExportPrefix="" pluginRTASCategory=""
+              aaxIdentifier="" pluginAAXCategory="" jucerVersion="3.2.0" companyName="rtificial"
+              companyWebsite="http://rtificial.org" companyEmail="mail@rtificial.org">
+  <MAINGROUP id="JxkcXj" name="Blankenhain">
+    <GROUP id="{CEB9C7EF-9627-E2F3-83AA-B82B15D50FA4}" name="Source">
+      <GROUP id="{19EF4637-6B84-4B6A-69FF-029D7E3D590C}" name="plugins">
+        <GROUP id="{E21AB1C1-6D93-1656-87E6-1B9511767974}" name="example">
+          <FILE id="vApoJH" name="ExampleAudioProcessor.cpp" compile="1" resource="0"
+                file="Source/plugins/example/ExampleAudioProcessor.cpp"/>
+          <FILE id="xJmKvJ" name="ExampleAudioProcessor.h" compile="0" resource="0"
+                file="Source/plugins/example/ExampleAudioProcessor.h"/>
+          <FILE id="cgsVa6" name="ExampleAudioProcessorEditor.cpp" compile="1"
+                resource="0" file="Source/plugins/example/ExampleAudioProcessorEditor.cpp"/>
+          <FILE id="iq3ohk" name="ExampleAudioProcessorEditor.h" compile="0"
+                resource="0" file="Source/plugins/example/ExampleAudioProcessorEditor.h"/>
+        </GROUP>
+      </GROUP>
+      <FILE id="XIbJK1" name="CreateFilter.cpp" compile="1" resource="0"
+            file="Source/CreateFilter.cpp"/>
+    </GROUP>
+  </MAINGROUP>
+  <EXPORTFORMATS>
+    <LINUX_MAKE targetFolder="Builds/ExamplePlugin/LinuxMakefile" vstFolder=""
+                extraDefs="PLUGIN_EXAMPLE&#10;JucePlugin_Name=\&quot;Blankenhain\\ Example\&quot;&#10;JucePlugin_Desc=\&quot;Example\\ plugin\\ as\\ a\\ template\\ for\\ new\\ ones.\&quot;&#10;JucePlugin_PluginCode='BhEX'"
+                extraCompilerFlags="-I../../../Source">
+      <CONFIGURATIONS>
+        <CONFIGURATION name="Debug" libraryPath="/usr/X11R6/lib/" isDebug="1" optimisation="1"
+                       targetName="Blankenhain"/>
+        <CONFIGURATION name="Release" libraryPath="/usr/X11R6/lib/" isDebug="0" optimisation="3"
+                       targetName="Blankenhain"/>
+      </CONFIGURATIONS>
+      <MODULEPATHS>
+        <MODULEPATH id="juce_core" path="juce_modules"/>
+        <MODULEPATH id="juce_events" path="juce_modules"/>
+        <MODULEPATH id="juce_graphics" path="juce_modules"/>
+        <MODULEPATH id="juce_data_structures" path="juce_modules"/>
+        <MODULEPATH id="juce_gui_basics" path="juce_modules"/>
+        <MODULEPATH id="juce_gui_extra" path="juce_modules"/>
+        <MODULEPATH id="juce_audio_basics" path="juce_modules"/>
+        <MODULEPATH id="juce_audio_devices" path="juce_modules"/>
+        <MODULEPATH id="juce_audio_formats" path="juce_modules"/>
+        <MODULEPATH id="juce_audio_plugin_client" path="juce_modules"/>
+        <MODULEPATH id="juce_audio_processors" path="juce_modules"/>
+      </MODULEPATHS>
+    </LINUX_MAKE>
+    <VS2015 targetFolder="Builds/ExamplePlugin/VisualStudio2015" vstFolder=""
+            extraDefs="PLUGIN_EXAMPLE&#10;JucePlugin_Name=&quot;Blankenhain\ Example&quot;&#10;JucePlugin_Desc=&quot;Example\ plugin\ as\ a\ template\ for\ new\ ones.&quot;&#10;JucePlugin_PluginCode='BhEX'"
+            extraCompilerFlags="/I..\..\..\Source">
+      <CONFIGURATIONS>
+        <CONFIGURATION name="Debug" winWarningLevel="4" generateManifest="1" winArchitecture="32-bit"
+                       isDebug="1" optimisation="1" targetName="Blankenhain"/>
+        <CONFIGURATION name="Release" winWarningLevel="4" generateManifest="1" winArchitecture="32-bit"
+                       isDebug="0" optimisation="3" targetName="Blankenhain"/>
+      </CONFIGURATIONS>
+      <MODULEPATHS>
+        <MODULEPATH id="juce_gui_extra" path="juce_modules"/>
+        <MODULEPATH id="juce_gui_basics" path="juce_modules"/>
+        <MODULEPATH id="juce_graphics" path="juce_modules"/>
+        <MODULEPATH id="juce_events" path="juce_modules"/>
+        <MODULEPATH id="juce_data_structures" path="juce_modules"/>
+        <MODULEPATH id="juce_core" path="juce_modules"/>
+        <MODULEPATH id="juce_audio_processors" path="juce_modules"/>
+        <MODULEPATH id="juce_audio_plugin_client" path="juce_modules"/>
+        <MODULEPATH id="juce_audio_formats" path="juce_modules"/>
+        <MODULEPATH id="juce_audio_devices" path="juce_modules"/>
+        <MODULEPATH id="juce_audio_basics" path="juce_modules"/>
+      </MODULEPATHS>
+    </VS2015>
+  </EXPORTFORMATS>
+  <MODULES>
+    <MODULE id="juce_audio_basics" showAllCode="1" useLocalCopy="0"/>
+    <MODULE id="juce_audio_devices" showAllCode="1" useLocalCopy="0"/>
+    <MODULE id="juce_audio_formats" showAllCode="1" useLocalCopy="0"/>
+    <MODULE id="juce_audio_plugin_client" showAllCode="1" useLocalCopy="0"/>
+    <MODULE id="juce_audio_processors" showAllCode="1" useLocalCopy="0"/>
+    <MODULE id="juce_core" showAllCode="1" useLocalCopy="0"/>
+    <MODULE id="juce_data_structures" showAllCode="1" useLocalCopy="0"/>
+    <MODULE id="juce_events" showAllCode="1" useLocalCopy="0"/>
+    <MODULE id="juce_graphics" showAllCode="1" useLocalCopy="0"/>
+    <MODULE id="juce_gui_basics" showAllCode="1" useLocalCopy="0"/>
+    <MODULE id="juce_gui_extra" showAllCode="1" useLocalCopy="0"/>
+  </MODULES>
+  <JUCEOPTIONS JUCE_QUICKTIME="disabled" JUCE_USE_FLAC="disabled" JUCE_USE_OGGVORBIS="disabled"
+               JUCE_USE_MP3AUDIOFORMAT="disabled" JUCE_USE_LAME_AUDIO_FORMAT="disabled"
+               JUCE_USE_WINDOWS_MEDIA_FORMAT="disabled" JUCE_PLUGINHOST_VST="disabled"
+               JUCE_PLUGINHOST_VST3="disabled" JUCE_PLUGINHOST_AU="disabled"
+               JUCE_USE_CURL="disabled" JUCE_USE_COREIMAGE_LOADER="disabled"
+               JUCE_WEB_BROWSER="disabled" JUCE_ENABLE_LIVE_CONSTANT_EDITOR="disabled"/>
+</JUCERPROJECT>
