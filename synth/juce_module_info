@@ -1,0 +1,11 @@
+{
+	"id": "synth",
+	"name": "blankenhain synth core",
+	"version": "1.0.0",
+	"description": "Code that is shared by the VST plugins and the player",
+	"include": "synth.h",
+	"compile": [
+		{ "file": "synth.cpp" }
+	],
+	"browse": [ "src/*" ]
+}

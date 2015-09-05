@@ -1,0 +1,6 @@
+#ifndef BLANKENHAIN_SYNTH_H_INCLUDED
+#define BLANKENHAIN_SYNTH_H_INCLUDED
+
+#include "src/Sample.h"
+
+#endif // BLANKENHAIN_SYNTH_H_INCLUDED

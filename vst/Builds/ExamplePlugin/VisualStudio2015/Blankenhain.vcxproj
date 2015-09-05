@@ -55,7 +55,7 @@
     <ClCompile>
       <Optimization>Disabled</Optimization>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
-      <AdditionalIncludeDirectories>..\..\..\JuceLibraryCode;..\..\..\juce_modules;c:\SDKs\VST3 SDK;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\..\JuceLibraryCode;..\..\..\juce_modules;c:\SDKs\VST3 SDK;..\..\..\..\..\blankenhain;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;WIN32;_WINDOWS;DEBUG;_DEBUG;PLUGIN_EXAMPLE;JucePlugin_Name=&quot;Blankenhain Example&quot;;JucePlugin_Desc=&quot;Example plugin as a template for new ones.&quot;;JucePlugin_PluginCode='BhEX';JUCER_VS2015_23F70954=1;JUCE_APP_VERSION=1.0.0;JUCE_APP_VERSION_HEX=0x10000;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
@@ -98,7 +98,7 @@
     </Midl>
     <ClCompile>
       <Optimization>Full</Optimization>
-      <AdditionalIncludeDirectories>..\..\..\JuceLibraryCode;..\..\..\juce_modules;c:\SDKs\VST3 SDK;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\..\JuceLibraryCode;..\..\..\juce_modules;c:\SDKs\VST3 SDK;..\..\..\..\..\blankenhain;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;WIN32;_WINDOWS;NDEBUG;PLUGIN_EXAMPLE;JucePlugin_Name=&quot;Blankenhain Example&quot;;JucePlugin_Desc=&quot;Example plugin as a template for new ones.&quot;;JucePlugin_PluginCode='BhEX';JUCER_VS2015_23F70954=1;JUCE_APP_VERSION=1.0.0;JUCE_APP_VERSION_HEX=0x10000;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
@@ -1206,6 +1206,7 @@
     </ClCompile>
     <ClCompile Include="..\..\..\juce_modules\juce_audio_plugin_client\VST\juce_VST_Wrapper.cpp"/>
     <ClCompile Include="..\..\..\juce_modules\juce_audio_plugin_client\VST3\juce_VST3_Wrapper.cpp"/>
+    <ClCompile Include="..\..\..\..\synth\synth.cpp"/>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\Source\plugins\example\ExampleAudioProcessor.h"/>
@@ -1633,6 +1634,8 @@
     <ClInclude Include="..\..\..\juce_modules\juce_gui_extra\misc\juce_WebBrowserComponent.h"/>
     <ClInclude Include="..\..\..\juce_modules\juce_gui_extra\native\juce_mac_CarbonViewWrapperComponent.h"/>
     <ClInclude Include="..\..\..\juce_modules\juce_gui_extra\juce_gui_extra.h"/>
+    <ClInclude Include="..\..\..\..\synth\src\Sample.h"/>
+    <ClInclude Include="..\..\..\..\synth\synth.h"/>
     <ClInclude Include="..\..\..\JuceLibraryCode\AppConfig.h"/>
     <ClInclude Include="..\..\..\JuceLibraryCode\JuceHeader.h"/>
   </ItemGroup>
@@ -1648,6 +1651,7 @@
     <None Include="..\..\..\juce_modules\juce_graphics\juce_module_info"/>
     <None Include="..\..\..\juce_modules\juce_gui_basics\juce_module_info"/>
     <None Include="..\..\..\juce_modules\juce_gui_extra\juce_module_info"/>
+    <None Include="..\..\..\..\synth\juce_module_info"/>
     <None Include="..\..\..\juce_modules\juce_audio_plugin_client\RTAS\juce_RTAS_WinResources.rsr"/>
   </ItemGroup>
   <ItemGroup>

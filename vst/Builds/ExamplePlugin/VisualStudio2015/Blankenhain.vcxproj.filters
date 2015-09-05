@@ -287,6 +287,12 @@
     <Filter Include="Juce Modules\juce_gui_extra\native">
       <UniqueIdentifier>{C413328B-5D81-89EE-F4F3-75752E700DE4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Juce Modules\synth">
+      <UniqueIdentifier>{921931DF-A442-B950-3581-52A59FE04AE8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Juce Modules\synth\src">
+      <UniqueIdentifier>{F1336F60-BE14-1454-6BC1-17B2A4304E01}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Juce Library Code">
       <UniqueIdentifier>{8B4D1BAA-6DB4-CAEC-A0FA-271F354D5C61}</UniqueIdentifier>
     </Filter>
@@ -1481,6 +1487,9 @@
       <Filter>Juce Library Code</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\juce_modules\juce_audio_plugin_client\VST3\juce_VST3_Wrapper.cpp">
+      <Filter>Juce Library Code</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\synth\synth.cpp">
       <Filter>Juce Library Code</Filter>
     </ClCompile>
   </ItemGroup>
@@ -2760,6 +2769,12 @@
     <ClInclude Include="..\..\..\juce_modules\juce_gui_extra\juce_gui_extra.h">
       <Filter>Juce Modules\juce_gui_extra</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\..\synth\src\Sample.h">
+      <Filter>Juce Modules\synth\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\synth\synth.h">
+      <Filter>Juce Modules\synth</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\..\JuceLibraryCode\AppConfig.h">
       <Filter>Juce Library Code</Filter>
     </ClInclude>
@@ -2800,6 +2815,9 @@
     </None>
     <None Include="..\..\..\juce_modules\juce_gui_extra\juce_module_info">
       <Filter>Juce Modules\juce_gui_extra</Filter>
+    </None>
+    <None Include="..\..\..\..\synth\juce_module_info">
+      <Filter>Juce Modules\synth</Filter>
     </None>
     <None Include="..\..\..\juce_modules\juce_audio_plugin_client\RTAS\juce_RTAS_WinResources.rsr">
       <Filter>Juce Library Code</Filter>

@@ -50,6 +50,7 @@
         <MODULEPATH id="juce_audio_formats" path="juce_modules"/>
         <MODULEPATH id="juce_audio_plugin_client" path="juce_modules"/>
         <MODULEPATH id="juce_audio_processors" path="juce_modules"/>
+        <MODULEPATH id="synth" path="../../blankenhain"/>
       </MODULEPATHS>
     </LINUX_MAKE>
     <VS2015 targetFolder="Builds/ExamplePlugin/VisualStudio2015" vstFolder=""
@@ -73,6 +74,7 @@
         <MODULEPATH id="juce_audio_formats" path="juce_modules"/>
         <MODULEPATH id="juce_audio_devices" path="juce_modules"/>
         <MODULEPATH id="juce_audio_basics" path="juce_modules"/>
+        <MODULEPATH id="synth" path="../../blankenhain"/>
       </MODULEPATHS>
     </VS2015>
   </EXPORTFORMATS>
@@ -88,6 +90,7 @@
     <MODULE id="juce_graphics" showAllCode="1" useLocalCopy="0"/>
     <MODULE id="juce_gui_basics" showAllCode="1" useLocalCopy="0"/>
     <MODULE id="juce_gui_extra" showAllCode="1" useLocalCopy="0"/>
+    <MODULE id="synth" showAllCode="1" useLocalCopy="0"/>
   </MODULES>
   <JUCEOPTIONS JUCE_QUICKTIME="disabled" JUCE_USE_FLAC="disabled" JUCE_USE_OGGVORBIS="disabled"
                JUCE_USE_MP3AUDIOFORMAT="disabled" JUCE_USE_LAME_AUDIO_FORMAT="disabled"

@@ -18,7 +18,7 @@ ifeq ($(CONFIG),Debug)
     TARGET_ARCH := -march=native
   endif
 
-  CPPFLAGS := $(DEPFLAGS) -D "LINUX=1" -D "DEBUG=1" -D "_DEBUG=1" -D "PLUGIN_EXAMPLE" -D JucePlugin_Name=\"Blankenhain\ Example\" -D JucePlugin_Desc=\"Example\ plugin\ as\ a\ template\ for\ new\ ones.\" -D "JucePlugin_PluginCode='BhEX'" -D "JUCER_LINUX_MAKE_5EAECC2=1" -D "JUCE_APP_VERSION=1.0.0" -D "JUCE_APP_VERSION_HEX=0x10000" -I /usr/include -I /usr/include/freetype2 -I ~/SDKs/VST3\ SDK -I ../../../JuceLibraryCode -I ../../../juce_modules
+  CPPFLAGS := $(DEPFLAGS) -D "LINUX=1" -D "DEBUG=1" -D "_DEBUG=1" -D "PLUGIN_EXAMPLE" -D JucePlugin_Name=\"Blankenhain\ Example\" -D JucePlugin_Desc=\"Example\ plugin\ as\ a\ template\ for\ new\ ones.\" -D "JucePlugin_PluginCode='BhEX'" -D "JUCER_LINUX_MAKE_5EAECC2=1" -D "JUCE_APP_VERSION=1.0.0" -D "JUCE_APP_VERSION_HEX=0x10000" -I /usr/include -I /usr/include/freetype2 -I ~/SDKs/VST3\ SDK -I ../../../JuceLibraryCode -I ../../../juce_modules -I ../../../../../blankenhain
   CFLAGS += $(CPPFLAGS) $(TARGET_ARCH) -g -ggdb -fPIC -O0 -I../../../Source
   CXXFLAGS += $(CFLAGS) -std=c++11
   LDFLAGS += $(TARGET_ARCH) -L$(BINDIR) -L$(LIBDIR) -Wl,--no-undefined -shared -L/usr/X11R6/lib/ -lX11 -lXext -lXinerama -lasound -ldl -lfreetype -lpthread -lrt 
@@ -38,7 +38,7 @@ ifeq ($(CONFIG),Release)
     TARGET_ARCH := -march=native
   endif
 
-  CPPFLAGS := $(DEPFLAGS) -D "LINUX=1" -D "NDEBUG=1" -D "PLUGIN_EXAMPLE" -D JucePlugin_Name=\"Blankenhain\ Example\" -D JucePlugin_Desc=\"Example\ plugin\ as\ a\ template\ for\ new\ ones.\" -D "JucePlugin_PluginCode='BhEX'" -D "JUCER_LINUX_MAKE_5EAECC2=1" -D "JUCE_APP_VERSION=1.0.0" -D "JUCE_APP_VERSION_HEX=0x10000" -I /usr/include -I /usr/include/freetype2 -I ~/SDKs/VST3\ SDK -I ../../../JuceLibraryCode -I ../../../juce_modules
+  CPPFLAGS := $(DEPFLAGS) -D "LINUX=1" -D "NDEBUG=1" -D "PLUGIN_EXAMPLE" -D JucePlugin_Name=\"Blankenhain\ Example\" -D JucePlugin_Desc=\"Example\ plugin\ as\ a\ template\ for\ new\ ones.\" -D "JucePlugin_PluginCode='BhEX'" -D "JUCER_LINUX_MAKE_5EAECC2=1" -D "JUCE_APP_VERSION=1.0.0" -D "JUCE_APP_VERSION_HEX=0x10000" -I /usr/include -I /usr/include/freetype2 -I ~/SDKs/VST3\ SDK -I ../../../JuceLibraryCode -I ../../../juce_modules -I ../../../../../blankenhain
   CFLAGS += $(CPPFLAGS) $(TARGET_ARCH) -fPIC -O3 -I../../../Source
   CXXFLAGS += $(CFLAGS) -std=c++11
   LDFLAGS += $(TARGET_ARCH) -L$(BINDIR) -L$(LIBDIR) -Wl,--no-undefined -shared -fvisibility=hidden -L/usr/X11R6/lib/ -lX11 -lXext -lXinerama -lasound -ldl -lfreetype -lpthread -lrt 
@@ -65,6 +65,7 @@ OBJECTS := \
   $(OBJDIR)/juce_PluginUtilities_e98121a5.o \
   $(OBJDIR)/juce_VST_Wrapper_86d571ae.o \
   $(OBJDIR)/juce_VST3_Wrapper_30d9f76c.o \
+  $(OBJDIR)/synth_bf08319e.o \
 
 .PHONY: clean
 
@@ -161,6 +162,11 @@ $(OBJDIR)/juce_VST_Wrapper_86d571ae.o: ../../../juce_modules/juce_audio_plugin_c
 $(OBJDIR)/juce_VST3_Wrapper_30d9f76c.o: ../../../juce_modules/juce_audio_plugin_client/VST3/juce_VST3_Wrapper.cpp
 	-@mkdir -p $(OBJDIR)
 	@echo "Compiling juce_VST3_Wrapper.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+
+$(OBJDIR)/synth_bf08319e.o: ../../../../synth/synth.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling synth.cpp"
 	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 
 -include $(OBJECTS:%.o=%.d)
