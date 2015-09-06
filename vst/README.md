@@ -43,3 +43,22 @@ It should create the plugin as a `.so` file in the `Release` or `Debug` subdirec
 
 Creating New Plugins
 --------------------
+
+Plugins are managed as separate build targets, as this is the easiest way for sharing code and not having to maintain many JUCE projects.
+Create a new directory for your plugin in `Source/plugins` and add an `AudioProcessorEditor` and an `AudioProcessor` subclass (just look at the ExamplePlugin in `Source/plugins/example`).
+
+Now, open up the Introjucer and create two new targets, on as 'Linux Makefile' and the other as 'Visual Studio 2015'.
+Just copy the options from the ExamplePlugin (be sure not to miss the preprocessor definitions and compiler flags).
+Don't change the Release or Debug targets, just the common flags!
+
+You have to adjust the options for your plugin in the preprocessor definitions, so change the name and the description as you like.
+The escaping rules are a bit weird and different in the Visual Studio and the Makefile target, so just look at the example.
+We'll use the `PLUGIN_EXAMPLE` for choosing which plugin to build, so you have to rename this to anything you like for your plugin as an identifier.
+Another important setting is the plugin code, which has to be unique for every plugin.
+Blankenhain uses `Bh` as a prefix.
+Please [register your chosen plugin id](http://service.steinberg.de/databases/plugin.nsf/plugIn?openForm) and set `JucePlugin_PluginCode` to this value.
+There are additional settings like channel configurations and some more VST options you might need to change.
+You can look up those in the `JuceLibraryCode/AppConfig.h` file (but don't change them there!).
+
+The last thing to do is add your plugin to the list in `Source/CreateFilter.cpp`.
+Just include the header for your `AudioProcessor` subclass and add a new `ifdef` rule for your plugin, based on the define flag you chose before.
