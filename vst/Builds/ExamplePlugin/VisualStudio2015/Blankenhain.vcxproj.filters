@@ -2769,6 +2769,9 @@
     <ClInclude Include="..\..\..\juce_modules\juce_gui_extra\juce_gui_extra.h">
       <Filter>Juce Modules\juce_gui_extra</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\..\synth\src\FPUState.h">
+      <Filter>Juce Modules\synth\src</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\..\..\synth\src\Sample.h">
       <Filter>Juce Modules\synth\src</Filter>
     </ClInclude>
