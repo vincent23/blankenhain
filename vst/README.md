@@ -15,6 +15,8 @@ This is done by creating a link called `juce_modules` in this directory to the `
 
 #### Windows
 
+With cmd.exe, as root.
+
 	mklink /D juce_modules path\to\JUCE\modules
 
 #### Linux
