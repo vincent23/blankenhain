@@ -3,3 +3,5 @@ juce_modules
 
 # ignore build output directories
 Builds/**/build
+Builds/**/Debug
+Builds/**/Release

@@ -51,6 +51,8 @@ endif
 OBJECTS := \
   $(OBJDIR)/ExampleAudioProcessor_ee4a53e2.o \
   $(OBJDIR)/ExampleAudioProcessorEditor_2e557d2f.o \
+  $(OBJDIR)/FilterAudioProcessor_1254b8cc.o \
+  $(OBJDIR)/FilterAudioProcessorEditor_ec770a99.o \
   $(OBJDIR)/CreateFilter_f99fea0e.o \
   $(OBJDIR)/juce_audio_basics_2a5f169b.o \
   $(OBJDIR)/juce_audio_devices_949f3099.o \
@@ -92,6 +94,16 @@ $(OBJDIR)/ExampleAudioProcessor_ee4a53e2.o: ../../../Source/plugins/example/Exam
 $(OBJDIR)/ExampleAudioProcessorEditor_2e557d2f.o: ../../../Source/plugins/example/ExampleAudioProcessorEditor.cpp
 	-@mkdir -p $(OBJDIR)
 	@echo "Compiling ExampleAudioProcessorEditor.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+
+$(OBJDIR)/FilterAudioProcessor_1254b8cc.o: ../../../Source/plugins/filter/FilterAudioProcessor.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling FilterAudioProcessor.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+
+$(OBJDIR)/FilterAudioProcessorEditor_ec770a99.o: ../../../Source/plugins/filter/FilterAudioProcessorEditor.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling FilterAudioProcessorEditor.cpp"
 	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 
 $(OBJDIR)/CreateFilter_f99fea0e.o: ../../../Source/CreateFilter.cpp

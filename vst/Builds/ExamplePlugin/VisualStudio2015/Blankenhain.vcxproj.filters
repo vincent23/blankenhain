@@ -14,6 +14,9 @@
     <Filter Include="Blankenhain\Source\plugins\example">
       <UniqueIdentifier>{3E9D2847-9E4E-4230-C370-DD7770C1B523}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Blankenhain\Source\plugins\filter">
+      <UniqueIdentifier>{86D26C52-9046-7335-28C9-363B8C620B76}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Juce Modules">
       <UniqueIdentifier>{422C46B7-0467-2DB0-BF3C-16DFCAFD69AC}</UniqueIdentifier>
     </Filter>
@@ -76,9 +79,6 @@
     </Filter>
     <Filter Include="Juce Modules\juce_audio_plugin_client\VST">
       <UniqueIdentifier>{AF5F4789-D607-BFD8-D853-09473C27449C}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Juce Modules\juce_audio_plugin_client\VST3">
-      <UniqueIdentifier>{22689F25-8C5C-52CF-09E4-4308D1521B9B}</UniqueIdentifier>
     </Filter>
     <Filter Include="Juce Modules\juce_audio_plugin_client\AAX">
       <UniqueIdentifier>{F0C10808-8C36-BCD0-D25F-523774B0ADA2}</UniqueIdentifier>
@@ -304,6 +304,12 @@
     <ClCompile Include="..\..\..\Source\plugins\example\ExampleAudioProcessorEditor.cpp">
       <Filter>Blankenhain\Source\plugins\example</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\Source\plugins\filter\FilterAudioProcessor.cpp">
+      <Filter>Blankenhain\Source\plugins\filter</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Source\plugins\filter\FilterAudioProcessorEditor.cpp">
+      <Filter>Blankenhain\Source\plugins\filter</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\..\Source\CreateFilter.cpp">
       <Filter>Blankenhain\Source</Filter>
     </ClCompile>
@@ -501,9 +507,6 @@
     </ClCompile>
     <ClCompile Include="..\..\..\juce_modules\juce_audio_plugin_client\VST\juce_VST_Wrapper.mm">
       <Filter>Juce Modules\juce_audio_plugin_client\VST</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\juce_modules\juce_audio_plugin_client\VST3\juce_VST3_Wrapper.mm">
-      <Filter>Juce Modules\juce_audio_plugin_client\VST3</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\juce_modules\juce_audio_plugin_client\AAX\juce_AAX_Wrapper.mm">
       <Filter>Juce Modules\juce_audio_plugin_client\AAX</Filter>
@@ -1499,6 +1502,12 @@
     </ClInclude>
     <ClInclude Include="..\..\..\Source\plugins\example\ExampleAudioProcessorEditor.h">
       <Filter>Blankenhain\Source\plugins\example</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Source\plugins\filter\FilterAudioProcessor.h">
+      <Filter>Blankenhain\Source\plugins\filter</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Source\plugins\filter\FilterAudioProcessorEditor.h">
+      <Filter>Blankenhain\Source\plugins\filter</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\juce_modules\juce_audio_basics\buffers\juce_AudioDataConverters.h">
       <Filter>Juce Modules\juce_audio_basics\buffers</Filter>

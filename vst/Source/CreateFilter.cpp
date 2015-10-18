@@ -1,6 +1,7 @@
 #include <juce>
 
 #include "plugins/example/ExampleAudioProcessor.h"
+#include "plugins/filter/FilterAudioProcessor.h"
 
 // this creates the correct plugin based on preprocessor flags
 AudioProcessor* JUCE_CALLTYPE createPluginFilter()
@@ -8,6 +9,8 @@ AudioProcessor* JUCE_CALLTYPE createPluginFilter()
 
 #ifdef PLUGIN_EXAMPLE
     return new ExampleAudioProcessor();
+#elif PLUGIN_FILTER
+	return new FilterAudioProcessor();
 #else
 	static_assert(false, "The build config of your plugin is broken. "
 		"Please see README for instructions on how to add new plugins.");

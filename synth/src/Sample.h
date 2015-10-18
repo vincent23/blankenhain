@@ -1,6 +1,8 @@
 #ifndef SAMPLE_H_INCLUDED
 #define SAMPLE_H_INCLUDED
 
+#include <emmintrin.h>
+
 /**
  * A stereo sample.
  */

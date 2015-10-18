@@ -55,7 +55,7 @@
     <ClCompile>
       <Optimization>Disabled</Optimization>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
-      <AdditionalIncludeDirectories>..\..\..\JuceLibraryCode;..\..\..\juce_modules;c:\SDKs\VST3 SDK;..\..\..\..\..\blankenhain;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\..\JuceLibraryCode;..\..\..\juce_modules;C:\SDKs\VST3 SDK;..\..\..\..\..\blankenhain;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;WIN32;_WINDOWS;DEBUG;_DEBUG;PLUGIN_EXAMPLE;JucePlugin_Name=&quot;Blankenhain Example&quot;;JucePlugin_Desc=&quot;Example plugin as a template for new ones.&quot;;JucePlugin_PluginCode='BhEX';JUCER_VS2015_23F70954=1;JUCE_APP_VERSION=1.0.0;JUCE_APP_VERSION_HEX=0x10000;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
@@ -98,7 +98,7 @@
     </Midl>
     <ClCompile>
       <Optimization>Full</Optimization>
-      <AdditionalIncludeDirectories>..\..\..\JuceLibraryCode;..\..\..\juce_modules;c:\SDKs\VST3 SDK;..\..\..\..\..\blankenhain;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\..\JuceLibraryCode;..\..\..\juce_modules;C:\SDKs\VST3 SDK;..\..\..\..\..\blankenhain;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;WIN32;_WINDOWS;NDEBUG;PLUGIN_EXAMPLE;JucePlugin_Name=&quot;Blankenhain Example&quot;;JucePlugin_Desc=&quot;Example plugin as a template for new ones.&quot;;JucePlugin_PluginCode='BhEX';JUCER_VS2015_23F70954=1;JUCE_APP_VERSION=1.0.0;JUCE_APP_VERSION_HEX=0x10000;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
@@ -135,6 +135,8 @@
   <ItemGroup>
     <ClCompile Include="..\..\..\Source\plugins\example\ExampleAudioProcessor.cpp"/>
     <ClCompile Include="..\..\..\Source\plugins\example\ExampleAudioProcessorEditor.cpp"/>
+    <ClCompile Include="..\..\..\Source\plugins\filter\FilterAudioProcessor.cpp"/>
+    <ClCompile Include="..\..\..\Source\plugins\filter\FilterAudioProcessorEditor.cpp"/>
     <ClCompile Include="..\..\..\Source\CreateFilter.cpp"/>
     <ClCompile Include="..\..\..\juce_modules\juce_audio_basics\buffers\juce_AudioDataConverters.cpp">
       <ExcludedFromBuild>true</ExcludedFromBuild>
@@ -1211,6 +1213,8 @@
   <ItemGroup>
     <ClInclude Include="..\..\..\Source\plugins\example\ExampleAudioProcessor.h"/>
     <ClInclude Include="..\..\..\Source\plugins\example\ExampleAudioProcessorEditor.h"/>
+    <ClInclude Include="..\..\..\Source\plugins\filter\FilterAudioProcessor.h"/>
+    <ClInclude Include="..\..\..\Source\plugins\filter\FilterAudioProcessorEditor.h"/>
     <ClInclude Include="..\..\..\juce_modules\juce_audio_basics\buffers\juce_AudioDataConverters.h"/>
     <ClInclude Include="..\..\..\juce_modules\juce_audio_basics\buffers\juce_AudioSampleBuffer.h"/>
     <ClInclude Include="..\..\..\juce_modules\juce_audio_basics\buffers\juce_FloatVectorOperations.h"/>
