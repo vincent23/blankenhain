@@ -36,6 +36,10 @@
       </GROUP>
       <FILE id="XIbJK1" name="CreateFilter.cpp" compile="1" resource="0"
             file="Source/CreateFilter.cpp"/>
+      <FILE id="muIzok" name="FloatParameter.cpp" compile="1" resource="0"
+            file="Source/FloatParameter.cpp"/>
+      <FILE id="SAQ9t7" name="FloatParameter.h" compile="0" resource="0"
+            file="Source/FloatParameter.h"/>
     </GROUP>
   </MAINGROUP>
   <EXPORTFORMATS>

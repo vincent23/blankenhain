@@ -54,6 +54,7 @@ OBJECTS := \
   $(OBJDIR)/FilterAudioProcessor_1254b8cc.o \
   $(OBJDIR)/FilterAudioProcessorEditor_ec770a99.o \
   $(OBJDIR)/CreateFilter_f99fea0e.o \
+  $(OBJDIR)/FloatParameter_1174567.o \
   $(OBJDIR)/juce_audio_basics_2a5f169b.o \
   $(OBJDIR)/juce_audio_devices_949f3099.o \
   $(OBJDIR)/juce_audio_formats_c3207a39.o \
@@ -109,6 +110,11 @@ $(OBJDIR)/FilterAudioProcessorEditor_ec770a99.o: ../../../Source/plugins/filter/
 $(OBJDIR)/CreateFilter_f99fea0e.o: ../../../Source/CreateFilter.cpp
 	-@mkdir -p $(OBJDIR)
 	@echo "Compiling CreateFilter.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+
+$(OBJDIR)/FloatParameter_1174567.o: ../../../Source/FloatParameter.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling FloatParameter.cpp"
 	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 
 $(OBJDIR)/juce_audio_basics_2a5f169b.o: ../../../juce_modules/juce_audio_basics/juce_audio_basics.cpp

@@ -138,6 +138,7 @@
     <ClCompile Include="..\..\..\Source\plugins\filter\FilterAudioProcessor.cpp"/>
     <ClCompile Include="..\..\..\Source\plugins\filter\FilterAudioProcessorEditor.cpp"/>
     <ClCompile Include="..\..\..\Source\CreateFilter.cpp"/>
+    <ClCompile Include="..\..\..\Source\FloatParameter.cpp"/>
     <ClCompile Include="..\..\..\juce_modules\juce_audio_basics\buffers\juce_AudioDataConverters.cpp">
       <ExcludedFromBuild>true</ExcludedFromBuild>
     </ClCompile>
@@ -1215,6 +1216,7 @@
     <ClInclude Include="..\..\..\Source\plugins\example\ExampleAudioProcessorEditor.h"/>
     <ClInclude Include="..\..\..\Source\plugins\filter\FilterAudioProcessor.h"/>
     <ClInclude Include="..\..\..\Source\plugins\filter\FilterAudioProcessorEditor.h"/>
+    <ClInclude Include="..\..\..\Source\FloatParameter.h"/>
     <ClInclude Include="..\..\..\juce_modules\juce_audio_basics\buffers\juce_AudioDataConverters.h"/>
     <ClInclude Include="..\..\..\juce_modules\juce_audio_basics\buffers\juce_AudioSampleBuffer.h"/>
     <ClInclude Include="..\..\..\juce_modules\juce_audio_basics\buffers\juce_FloatVectorOperations.h"/>

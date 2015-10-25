@@ -313,6 +313,9 @@
     <ClCompile Include="..\..\..\Source\CreateFilter.cpp">
       <Filter>Blankenhain\Source</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\Source\FloatParameter.cpp">
+      <Filter>Blankenhain\Source</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\..\juce_modules\juce_audio_basics\buffers\juce_AudioDataConverters.cpp">
       <Filter>Juce Modules\juce_audio_basics\buffers</Filter>
     </ClCompile>
@@ -1508,6 +1511,9 @@
     </ClInclude>
     <ClInclude Include="..\..\..\Source\plugins\filter\FilterAudioProcessorEditor.h">
       <Filter>Blankenhain\Source\plugins\filter</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Source\FloatParameter.h">
+      <Filter>Blankenhain\Source</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\juce_modules\juce_audio_basics\buffers\juce_AudioDataConverters.h">
       <Filter>Juce Modules\juce_audio_basics\buffers</Filter>
