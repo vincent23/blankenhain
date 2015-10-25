@@ -5,88 +5,6 @@ ExampleAudioProcessor::ExampleAudioProcessor()
 {
 }
 
-ExampleAudioProcessor::~ExampleAudioProcessor()
-{
-}
-
-const String ExampleAudioProcessor::getName() const
-{
-    return JucePlugin_Name;
-}
-
-const String ExampleAudioProcessor::getInputChannelName(int channelIndex) const
-{
-    return String(channelIndex + 1);
-}
-
-const String ExampleAudioProcessor::getOutputChannelName(int channelIndex) const
-{
-    return String(channelIndex + 1);
-}
-
-bool ExampleAudioProcessor::isInputChannelStereoPair(int index) const
-{
-    return true;
-}
-
-bool ExampleAudioProcessor::isOutputChannelStereoPair(int index) const
-{
-    return true;
-}
-
-bool ExampleAudioProcessor::acceptsMidi() const
-{
-#if JucePlugin_WantsMidiInput
-	return true;
-#else
-    return false;
-#endif
-}
-
-bool ExampleAudioProcessor::producesMidi() const
-{
-#if JucePlugin_ProducesMidiOutput
-	return true;
-#else
-	return false;
-#endif
-}
-
-bool ExampleAudioProcessor::silenceInProducesSilenceOut() const
-{
-	return false;
-}
-
-double ExampleAudioProcessor::getTailLengthSeconds() const
-{
-	return 0.0;
-}
-
-int ExampleAudioProcessor::getNumPrograms()
-{
-	// NB: some hosts don't cope very well if you tell them there are 0 programs,
-	// so this should be at least 1, even if you're not really implementing programs.
-	return 1;
-}
-
-int ExampleAudioProcessor::getCurrentProgram()
-{
-    return 0;
-}
-
-void ExampleAudioProcessor::setCurrentProgram (int index)
-{
-}
-
-const String ExampleAudioProcessor::getProgramName (int index)
-{
-    return String();
-}
-
-void ExampleAudioProcessor::changeProgramName (int index, const String& newName)
-{
-}
-
 void ExampleAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
     // Use this method as the place to do any pre-playback
@@ -120,25 +38,16 @@ void ExampleAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer&
 	}
 }
 
-bool ExampleAudioProcessor::hasEditor() const
-{
-	return true; // (change this to false if you choose to not supply an editor)
-}
-
 AudioProcessorEditor* ExampleAudioProcessor::createEditor()
 {
 	return new ExampleAudioProcessorEditor(*this);
 }
 
-void ExampleAudioProcessor::getStateInformation (MemoryBlock& destData)
+var ExampleAudioProcessor::getState()
 {
-	// You should use this method to store your parameters in the memory block.
-	// You could do that either as raw data, or use the XML or ValueTree classes
-	// as intermediaries to make it easy to save and load complex data.
+	return var();
 }
 
-void ExampleAudioProcessor::setStateInformation (const void* data, int sizeInBytes)
+void ExampleAudioProcessor::setState(const var & state)
 {
-	// You should use this method to restore your parameters from this memory block,
-	// whose contents will have been created by the getStateInformation() call.
 }

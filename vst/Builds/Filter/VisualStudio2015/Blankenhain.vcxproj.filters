@@ -310,6 +310,9 @@
     <ClCompile Include="..\..\..\Source\plugins\filter\FilterAudioProcessorEditor.cpp">
       <Filter>Blankenhain\Source\plugins\filter</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\Source\BlankenhainAudioProcessor.cpp">
+      <Filter>Blankenhain\Source</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\..\Source\CreateFilter.cpp">
       <Filter>Blankenhain\Source</Filter>
     </ClCompile>
@@ -1511,6 +1514,9 @@
     </ClInclude>
     <ClInclude Include="..\..\..\Source\plugins\filter\FilterAudioProcessorEditor.h">
       <Filter>Blankenhain\Source\plugins\filter</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Source\BlankenhainAudioProcessor.h">
+      <Filter>Blankenhain\Source</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\Source\FloatParameter.h">
       <Filter>Blankenhain\Source</Filter>

@@ -34,6 +34,10 @@
                 file="Source/plugins/filter/FilterAudioProcessorEditor.h"/>
         </GROUP>
       </GROUP>
+      <FILE id="bg5w3k" name="BlankenhainAudioProcessor.cpp" compile="1"
+            resource="0" file="Source/BlankenhainAudioProcessor.cpp"/>
+      <FILE id="DUl9CG" name="BlankenhainAudioProcessor.h" compile="0" resource="0"
+            file="Source/BlankenhainAudioProcessor.h"/>
       <FILE id="XIbJK1" name="CreateFilter.cpp" compile="1" resource="0"
             file="Source/CreateFilter.cpp"/>
       <FILE id="muIzok" name="FloatParameter.cpp" compile="1" resource="0"

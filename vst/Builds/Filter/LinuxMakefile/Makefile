@@ -53,6 +53,7 @@ OBJECTS := \
   $(OBJDIR)/ExampleAudioProcessorEditor_2e557d2f.o \
   $(OBJDIR)/FilterAudioProcessor_1254b8cc.o \
   $(OBJDIR)/FilterAudioProcessorEditor_ec770a99.o \
+  $(OBJDIR)/BlankenhainAudioProcessor_79973627.o \
   $(OBJDIR)/CreateFilter_f99fea0e.o \
   $(OBJDIR)/FloatParameter_1174567.o \
   $(OBJDIR)/juce_audio_basics_2a5f169b.o \
@@ -105,6 +106,11 @@ $(OBJDIR)/FilterAudioProcessor_1254b8cc.o: ../../../Source/plugins/filter/Filter
 $(OBJDIR)/FilterAudioProcessorEditor_ec770a99.o: ../../../Source/plugins/filter/FilterAudioProcessorEditor.cpp
 	-@mkdir -p $(OBJDIR)
 	@echo "Compiling FilterAudioProcessorEditor.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+
+$(OBJDIR)/BlankenhainAudioProcessor_79973627.o: ../../../Source/BlankenhainAudioProcessor.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling BlankenhainAudioProcessor.cpp"
 	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 
 $(OBJDIR)/CreateFilter_f99fea0e.o: ../../../Source/CreateFilter.cpp

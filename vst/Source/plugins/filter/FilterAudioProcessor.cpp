@@ -5,88 +5,6 @@ FilterAudioProcessor::FilterAudioProcessor()
 {
 }
 
-FilterAudioProcessor::~FilterAudioProcessor()
-{
-}
-
-const String FilterAudioProcessor::getName() const
-{
-    return JucePlugin_Name;
-}
-
-const String FilterAudioProcessor::getInputChannelName(int channelIndex) const
-{
-    return String(channelIndex + 1);
-}
-
-const String FilterAudioProcessor::getOutputChannelName(int channelIndex) const
-{
-    return String(channelIndex + 1);
-}
-
-bool FilterAudioProcessor::isInputChannelStereoPair(int index) const
-{
-    return true;
-}
-
-bool FilterAudioProcessor::isOutputChannelStereoPair(int index) const
-{
-    return true;
-}
-
-bool FilterAudioProcessor::acceptsMidi() const
-{
-#if JucePlugin_WantsMidiInput
-	return true;
-#else
-    return false;
-#endif
-}
-
-bool FilterAudioProcessor::producesMidi() const
-{
-#if JucePlugin_ProducesMidiOutput
-	return true;
-#else
-	return false;
-#endif
-}
-
-bool FilterAudioProcessor::silenceInProducesSilenceOut() const
-{
-	return false;
-}
-
-double FilterAudioProcessor::getTailLengthSeconds() const
-{
-	return 0.0;
-}
-
-int FilterAudioProcessor::getNumPrograms()
-{
-	// NB: some hosts don't cope very well if you tell them there are 0 programs,
-	// so this should be at least 1, even if you're not really implementing programs.
-	return 1;
-}
-
-int FilterAudioProcessor::getCurrentProgram()
-{
-    return 0;
-}
-
-void FilterAudioProcessor::setCurrentProgram (int index)
-{
-}
-
-const String FilterAudioProcessor::getProgramName (int index)
-{
-    return String();
-}
-
-void FilterAudioProcessor::changeProgramName (int index, const String& newName)
-{
-}
-
 void FilterAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
     // Use this method as the place to do any pre-playback
@@ -120,25 +38,16 @@ void FilterAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer& 
 	}
 }
 
-bool FilterAudioProcessor::hasEditor() const
-{
-	return true; // (change this to false if you choose to not supply an editor)
-}
-
 AudioProcessorEditor* FilterAudioProcessor::createEditor()
 {
 	return new FilterAudioProcessorEditor(*this);
 }
 
-void FilterAudioProcessor::getStateInformation (MemoryBlock& destData)
+var FilterAudioProcessor::getState()
 {
-	// You should use this method to store your parameters in the memory block.
-	// You could do that either as raw data, or use the XML or ValueTree classes
-	// as intermediaries to make it easy to save and load complex data.
+	return var();
 }
 
-void FilterAudioProcessor::setStateInformation (const void* data, int sizeInBytes)
+void FilterAudioProcessor::setState(const var & state)
 {
-	// You should use this method to restore your parameters from this memory block,
-	// whose contents will have been created by the getStateInformation() call.
 }
