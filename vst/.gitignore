@@ -5,3 +5,6 @@ juce_modules
 Builds/**/build
 Builds/**/Debug
 Builds/**/Release
+Builds/**/.vs
+*.sdf
+*.opensdf
