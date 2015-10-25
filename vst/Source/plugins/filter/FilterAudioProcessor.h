@@ -43,4 +43,4 @@ private:
 };
 
 
-#endif  // PLUGINPROCESSOR_H_INCLUDED
+#endif // FILTER_AUDIO_PROCESSOR_H_INCLUDED

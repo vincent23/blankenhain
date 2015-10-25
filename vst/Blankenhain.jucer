@@ -28,9 +28,9 @@
                 file="Source/plugins/filter/FilterAudioProcessor.cpp"/>
           <FILE id="N7NFUm" name="FilterAudioProcessor.h" compile="0" resource="0"
                 file="Source/plugins/filter/FilterAudioProcessor.h"/>
-          <FILE id="dMCDXM" name="FilterAudioProcessorEditor.cpp" compile="1"
+          <FILE id="A25LPN" name="FilterAudioProcessorEditor.cpp" compile="1"
                 resource="0" file="Source/plugins/filter/FilterAudioProcessorEditor.cpp"/>
-          <FILE id="MppsF3" name="FilterAudioProcessorEditor.h" compile="0" resource="0"
+          <FILE id="Y1i09x" name="FilterAudioProcessorEditor.h" compile="0" resource="0"
                 file="Source/plugins/filter/FilterAudioProcessorEditor.h"/>
         </GROUP>
       </GROUP>
