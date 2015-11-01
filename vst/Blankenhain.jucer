@@ -96,7 +96,7 @@
       </MODULEPATHS>
     </VS2015>
     <LINUX_MAKE targetFolder="Builds/Filter/LinuxMakefile" extraDefs="PLUGIN_FILTER&#10;JucePlugin_Name=\&quot;Blankenhain\\ Filter\&quot;&#10;JucePlugin_Desc=\&quot;Filter\\ plugin.\&quot;&#10;JucePlugin_PluginCode='BhFI'"
-                extraCompilerFlags="-I../../../Source">
+                extraCompilerFlags="-I../../../Source" vstFolder="">
       <CONFIGURATIONS>
         <CONFIGURATION name="Debug" libraryPath="/usr/X11R6/lib/" isDebug="1" optimisation="1"
                        targetName="Blankenhain"/>

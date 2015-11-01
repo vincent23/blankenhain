@@ -35,7 +35,10 @@
     Describe your class and how it works here!
                                                                     //[/Comments]
 */
-class FilterAudioProcessorEditor  : public AudioProcessorEditor
+class FilterAudioProcessorEditor  : public AudioProcessorEditor,
+                                    public Timer,
+                                    public ComboBoxListener,
+                                    public SliderListener
 {
 public:
     //==============================================================================
@@ -44,10 +47,13 @@ public:
 
     //==============================================================================
     //[UserMethods]     -- You can add your own custom methods in this section.
+	void timerCallback() override;
     //[/UserMethods]
 
     void paint (Graphics& g);
     void resized();
+    void comboBoxChanged (ComboBox* comboBoxThatHasChanged);
+    void sliderValueChanged (Slider* sliderThatWasMoved);
 
 
 
@@ -57,6 +63,12 @@ private:
     //[/UserVariables]
 
     //==============================================================================
+    ScopedPointer<Label> label;
+    ScopedPointer<ComboBox> filterTypeSelector;
+    ScopedPointer<Slider> frequencySlider;
+    ScopedPointer<Slider> resonanceSlider;
+    ScopedPointer<Label> label2;
+    ScopedPointer<Label> label3;
 
 
     //==============================================================================
