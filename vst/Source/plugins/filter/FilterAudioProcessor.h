@@ -29,8 +29,8 @@ protected:
 	void setState(const var& state) override;
 
 private:
-	FloatParameter resonance;
-	FloatParameter frequency;
+	FloatParameter* resonance;
+	FloatParameter* frequency;
 	enum FilterType {
 		High = 0,
 		Low,
@@ -38,6 +38,9 @@ private:
 		Notch,
 	} filterType;
 
+	static const size_t bufferSize = 4096;
+	alignas(16) Sample internalBuffer[bufferSize];
+	Filter filter;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(FilterAudioProcessor)
 };

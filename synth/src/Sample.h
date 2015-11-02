@@ -12,8 +12,9 @@ struct alignas(16) Sample {
 	 */
 	__m128d v;
 
+	Sample() {}
 	explicit Sample(const double x) : v(_mm_set1_pd(x)) {}
-	Sample(const __m128d& in) : v(in) {}
+	Sample(__m128d in) : v(in) {}
 	Sample(const Sample& x) : v(x.v) {}
 	Sample(double x1, double x2) : v(_mm_set_pd(x1, x2)) {}
 

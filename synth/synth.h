@@ -3,5 +3,6 @@
 
 #include "src/Sample.h"
 #include "src/FPUState.h"
+#include "src/Filter.h"
 
 #endif // BLANKENHAIN_SYNTH_H_INCLUDED

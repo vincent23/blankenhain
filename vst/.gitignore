@@ -8,3 +8,4 @@ Builds/**/Release
 Builds/**/.vs
 *.sdf
 *.opensdf
+*.user

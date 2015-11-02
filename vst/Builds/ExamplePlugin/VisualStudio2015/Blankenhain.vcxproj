@@ -1181,6 +1181,9 @@
     <ClCompile Include="..\..\..\juce_modules\juce_gui_extra\native\juce_win32_WebBrowserComponent.cpp">
       <ExcludedFromBuild>true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="..\..\..\..\synth\src\Filter.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="..\..\..\juce_modules\juce_audio_plugin_client\AAX\juce_AAX_Wrapper.cpp"/>
     <ClCompile Include="..\..\..\juce_modules\juce_audio_basics\juce_audio_basics.cpp"/>
     <ClCompile Include="..\..\..\juce_modules\juce_audio_devices\juce_audio_devices.cpp"/>
@@ -1642,6 +1645,7 @@
     <ClInclude Include="..\..\..\juce_modules\juce_gui_extra\misc\juce_WebBrowserComponent.h"/>
     <ClInclude Include="..\..\..\juce_modules\juce_gui_extra\native\juce_mac_CarbonViewWrapperComponent.h"/>
     <ClInclude Include="..\..\..\juce_modules\juce_gui_extra\juce_gui_extra.h"/>
+    <ClInclude Include="..\..\..\..\synth\src\Filter.h"/>
     <ClInclude Include="..\..\..\..\synth\src\FPUState.h"/>
     <ClInclude Include="..\..\..\..\synth\src\Sample.h"/>
     <ClInclude Include="..\..\..\..\synth\synth.h"/>
