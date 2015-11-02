@@ -1468,6 +1468,9 @@
     <ClCompile Include="..\..\..\juce_modules\juce_gui_extra\native\juce_win32_WebBrowserComponent.cpp">
       <Filter>Juce Modules\juce_gui_extra\native</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\..\synth\src\AdsrEnvelope.cpp">
+      <Filter>Juce Modules\synth\src</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\..\..\synth\src\Filter.cpp">
       <Filter>Juce Modules\synth\src</Filter>
     </ClCompile>
@@ -2840,6 +2843,9 @@
     </ClInclude>
     <ClInclude Include="..\..\..\juce_modules\juce_gui_extra\juce_gui_extra.h">
       <Filter>Juce Modules\juce_gui_extra</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\synth\src\AdsrEnvelope.h">
+      <Filter>Juce Modules\synth\src</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\..\synth\src\Filter.h">
       <Filter>Juce Modules\synth\src</Filter>
