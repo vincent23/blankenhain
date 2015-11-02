@@ -12,6 +12,22 @@
               companyWebsite="http://rtificial.org" companyEmail="mail@rtificial.org">
   <MAINGROUP id="JxkcXj" name="Blankenhain">
     <GROUP id="{CEB9C7EF-9627-E2F3-83AA-B82B15D50FA4}" name="Source">
+      <GROUP id="{C3EB4C8E-A5B0-7418-72B9-06572CF58418}" name="components">
+        <FILE id="LGRjT4" name="WaveVerschwurbelungComponent.cpp" compile="1"
+              resource="0" file="Source/components/WaveVerschwurbelungComponent.cpp"/>
+        <FILE id="RXJAZb" name="WaveVerschwurbelungComponent.h" compile="0"
+              resource="0" file="Source/components/WaveVerschwurbelungComponent.h"/>
+        <FILE id="ukithJ" name="WaveGenerationComponent.cpp" compile="1" resource="0"
+              file="Source/components/WaveGenerationComponent.cpp"/>
+        <FILE id="iK9l2P" name="WaveGenerationComponent.h" compile="0" resource="0"
+              file="Source/components/WaveGenerationComponent.h"/>
+        <FILE id="xxWX0T" name="AdsrComponent.cpp" compile="1" resource="0"
+              file="Source/components/AdsrComponent.cpp"/>
+        <FILE id="IOu2bL" name="AdsrComponent.h" compile="0" resource="0" file="Source/components/AdsrComponent.h"/>
+        <FILE id="HAxGje" name="LfoComponent.h" compile="0" resource="0" file="Source/components/LfoComponent.h"/>
+        <FILE id="H27eUq" name="LfoComponent.cpp" compile="1" resource="0"
+              file="Source/components/LfoComponent.cpp"/>
+      </GROUP>
       <GROUP id="{19EF4637-6B84-4B6A-69FF-029D7E3D590C}" name="plugins">
         <GROUP id="{E21AB1C1-6D93-1656-87E6-1B9511767974}" name="example">
           <FILE id="vApoJH" name="ExampleAudioProcessor.cpp" compile="1" resource="0"

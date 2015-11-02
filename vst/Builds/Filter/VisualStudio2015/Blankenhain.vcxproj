@@ -133,6 +133,10 @@
     </Bscmake>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\Source\components\WaveVerschwurbelungComponent.cpp"/>
+    <ClCompile Include="..\..\..\Source\components\WaveGenerationComponent.cpp"/>
+    <ClCompile Include="..\..\..\Source\components\AdsrComponent.cpp"/>
+    <ClCompile Include="..\..\..\Source\components\LfoComponent.cpp"/>
     <ClCompile Include="..\..\..\Source\plugins\example\ExampleAudioProcessor.cpp"/>
     <ClCompile Include="..\..\..\Source\plugins\example\ExampleAudioProcessorEditor.cpp"/>
     <ClCompile Include="..\..\..\Source\plugins\filter\FilterAudioProcessor.cpp"/>
@@ -1218,6 +1222,10 @@
     <ClCompile Include="..\..\..\..\synth\synth.cpp"/>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\Source\components\WaveVerschwurbelungComponent.h"/>
+    <ClInclude Include="..\..\..\Source\components\WaveGenerationComponent.h"/>
+    <ClInclude Include="..\..\..\Source\components\AdsrComponent.h"/>
+    <ClInclude Include="..\..\..\Source\components\LfoComponent.h"/>
     <ClInclude Include="..\..\..\Source\plugins\example\ExampleAudioProcessor.h"/>
     <ClInclude Include="..\..\..\Source\plugins\example\ExampleAudioProcessorEditor.h"/>
     <ClInclude Include="..\..\..\Source\plugins\filter\FilterAudioProcessor.h"/>

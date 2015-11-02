@@ -8,6 +8,9 @@
     <Filter Include="Blankenhain\Source">
       <UniqueIdentifier>{445BCE62-8E5D-DFDC-1431-F88A0A65D44D}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Blankenhain\Source\components">
+      <UniqueIdentifier>{BB3E0B9F-3F3B-A09D-F947-F6295FDC975B}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Blankenhain\Source\plugins">
       <UniqueIdentifier>{B56517A3-59A9-4A60-CDBF-28A25493C568}</UniqueIdentifier>
     </Filter>
@@ -301,6 +304,18 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\Source\components\WaveVerschwurbelungComponent.cpp">
+      <Filter>Blankenhain\Source\components</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Source\components\WaveGenerationComponent.cpp">
+      <Filter>Blankenhain\Source\components</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Source\components\AdsrComponent.cpp">
+      <Filter>Blankenhain\Source\components</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Source\components\LfoComponent.cpp">
+      <Filter>Blankenhain\Source\components</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\..\Source\plugins\example\ExampleAudioProcessor.cpp">
       <Filter>Blankenhain\Source\plugins\example</Filter>
     </ClCompile>
@@ -1515,6 +1530,18 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\Source\components\WaveVerschwurbelungComponent.h">
+      <Filter>Blankenhain\Source\components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Source\components\WaveGenerationComponent.h">
+      <Filter>Blankenhain\Source\components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Source\components\AdsrComponent.h">
+      <Filter>Blankenhain\Source\components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Source\components\LfoComponent.h">
+      <Filter>Blankenhain\Source\components</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\..\Source\plugins\example\ExampleAudioProcessor.h">
       <Filter>Blankenhain\Source\plugins\example</Filter>
     </ClInclude>

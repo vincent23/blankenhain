@@ -49,6 +49,10 @@ ifeq ($(CONFIG),Release)
 endif
 
 OBJECTS := \
+  $(OBJDIR)/WaveVerschwurbelungComponent_cf2fc23b.o \
+  $(OBJDIR)/WaveGenerationComponent_9dda340d.o \
+  $(OBJDIR)/AdsrComponent_813055dc.o \
+  $(OBJDIR)/LfoComponent_8e5e1c31.o \
   $(OBJDIR)/ExampleAudioProcessor_ee4a53e2.o \
   $(OBJDIR)/ExampleAudioProcessorEditor_2e557d2f.o \
   $(OBJDIR)/FilterAudioProcessor_1254b8cc.o \
@@ -89,6 +93,26 @@ clean:
 strip:
 	@echo Stripping Blankenhain
 	-@strip --strip-unneeded $(OUTDIR)/$(TARGET)
+
+$(OBJDIR)/WaveVerschwurbelungComponent_cf2fc23b.o: ../../../Source/components/WaveVerschwurbelungComponent.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling WaveVerschwurbelungComponent.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+
+$(OBJDIR)/WaveGenerationComponent_9dda340d.o: ../../../Source/components/WaveGenerationComponent.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling WaveGenerationComponent.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+
+$(OBJDIR)/AdsrComponent_813055dc.o: ../../../Source/components/AdsrComponent.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling AdsrComponent.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+
+$(OBJDIR)/LfoComponent_8e5e1c31.o: ../../../Source/components/LfoComponent.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling LfoComponent.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 
 $(OBJDIR)/ExampleAudioProcessor_ee4a53e2.o: ../../../Source/plugins/example/ExampleAudioProcessor.cpp
 	-@mkdir -p $(OBJDIR)

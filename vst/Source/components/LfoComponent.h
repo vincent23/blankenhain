@@ -17,16 +17,11 @@
   ==============================================================================
 */
 
-#ifndef __JUCE_HEADER_2A044DFF0E49B68E__
-#define __JUCE_HEADER_2A044DFF0E49B68E__
+#ifndef __JUCE_HEADER_20DA300194591C58__
+#define __JUCE_HEADER_20DA300194591C58__
 
 //[Headers]     -- You can add your own extra header files here --
 #include "JuceHeader.h"
-#include "WittersrodaAudioProcessor.h"
-#include "components/AdsrComponent.h"
-#include "components/LfoComponent.h"
-#include "components/WaveGenerationComponent.h"
-#include "components/WaveVerschwurbelungComponent.h"
 //[/Headers]
 
 
@@ -39,44 +34,48 @@
     Describe your class and how it works here!
                                                                     //[/Comments]
 */
-class WittersrodaAudioProcessorEditor  : public AudioProcessorEditor,
-                                         public Timer
+class LfoComponent  : public Component,
+                      public ComboBoxListener,
+                      public SliderListener,
+                      public ButtonListener
 {
 public:
     //==============================================================================
-    WittersrodaAudioProcessorEditor (WittersrodaAudioProcessor& p);
-    ~WittersrodaAudioProcessorEditor();
+    LfoComponent ();
+    ~LfoComponent();
 
     //==============================================================================
     //[UserMethods]     -- You can add your own custom methods in this section.
-	void timerCallback() override;
     //[/UserMethods]
 
     void paint (Graphics& g);
     void resized();
+    void comboBoxChanged (ComboBox* comboBoxThatHasChanged);
+    void sliderValueChanged (Slider* sliderThatWasMoved);
+    void buttonClicked (Button* buttonThatWasClicked);
 
 
 
 private:
     //[UserVariables]   -- You can add your own custom variables in this section.
-    WittersrodaAudioProcessor& processor;
     //[/UserVariables]
 
     //==============================================================================
-    ScopedPointer<AdsrComponent> component;
-    ScopedPointer<LfoComponent> component2;
-    ScopedPointer<LfoComponent> component3;
-    ScopedPointer<AdsrComponent> component4;
-    ScopedPointer<WaveGenerationComponent> component5;
-    ScopedPointer<WaveGenerationComponent> component6;
-    ScopedPointer<WaveVerschwurbelungComponent> component7;
+    ScopedPointer<ComboBox> comboBox;
+    ScopedPointer<Slider> slider;
+    ScopedPointer<Label> label;
+    ScopedPointer<ToggleButton> toggleButton;
+    ScopedPointer<ToggleButton> toggleButton2;
+    ScopedPointer<Label> label2;
+    ScopedPointer<Component> component;
+    ScopedPointer<Slider> slider2;
 
 
     //==============================================================================
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (WittersrodaAudioProcessorEditor)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (LfoComponent)
 };
 
 //[EndFile] You can add extra defines here...
 //[/EndFile]
 
-#endif   // __JUCE_HEADER_2A044DFF0E49B68E__
+#endif   // __JUCE_HEADER_20DA300194591C58__
