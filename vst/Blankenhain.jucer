@@ -33,6 +33,16 @@
               file="Source/components/LfoComponent.cpp"/>
       </GROUP>
       <GROUP id="{19EF4637-6B84-4B6A-69FF-029D7E3D590C}" name="plugins">
+        <GROUP id="{4138F0C9-86B0-0803-C829-30055CB4762F}" name="volume">
+          <FILE id="XuRSyQ" name="VolumeAudioProcessor.cpp" compile="1" resource="0"
+                file="Source/plugins/volume/VolumeAudioProcessor.cpp"/>
+          <FILE id="QbLKJV" name="VolumeAudioProcessor.h" compile="0" resource="0"
+                file="Source/plugins/volume/VolumeAudioProcessor.h"/>
+          <FILE id="kIs4qd" name="VolumeAudioProcessorEditor.cpp" compile="1"
+                resource="0" file="Source/plugins/volume/VolumeAudioProcessorEditor.cpp"/>
+          <FILE id="psX2hu" name="VolumeAudioProcessorEditor.h" compile="0" resource="0"
+                file="Source/plugins/volume/VolumeAudioProcessorEditor.h"/>
+        </GROUP>
         <GROUP id="{E21AB1C1-6D93-1656-87E6-1B9511767974}" name="example">
           <FILE id="vApoJH" name="ExampleAudioProcessor.cpp" compile="1" resource="0"
                 file="Source/plugins/example/ExampleAudioProcessor.cpp"/>
@@ -68,6 +78,9 @@
             resource="0" file="Source/BlankenhainAudioProcessor.cpp"/>
       <FILE id="DUl9CG" name="BlankenhainAudioProcessor.h" compile="0" resource="0"
             file="Source/BlankenhainAudioProcessor.h"/>
+      <FILE id="xPcAH0" name="BoolParameter.cpp" compile="1" resource="0"
+            file="Source/BoolParameter.cpp"/>
+      <FILE id="ebWRQC" name="BoolParameter.h" compile="0" resource="0" file="Source/BoolParameter.h"/>
       <FILE id="XIbJK1" name="CreateFilter.cpp" compile="1" resource="0"
             file="Source/CreateFilter.cpp"/>
       <FILE id="muIzok" name="FloatParameter.cpp" compile="1" resource="0"
@@ -173,6 +186,30 @@
     </VS2015>
     <VS2015 targetFolder="Builds/Wittersroda/VisualStudio2015" vstFolder=""
             extraDefs="PLUGIN_WITTERSRODA&#10;JucePlugin_Name=&quot;Blankenhain\ Wittersroda&quot;&#10;JucePlugin_Desc=&quot;Wittersroda\ Synth.&quot;&#10;JucePlugin_PluginCode='BhWI'"
+            extraCompilerFlags="/I..\..\..\Source">
+      <CONFIGURATIONS>
+        <CONFIGURATION name="Debug" winWarningLevel="4" generateManifest="1" winArchitecture="32-bit"
+                       isDebug="1" optimisation="1" targetName="Blankenhain"/>
+        <CONFIGURATION name="Release" winWarningLevel="4" generateManifest="1" winArchitecture="32-bit"
+                       isDebug="0" optimisation="3" targetName="Blankenhain"/>
+      </CONFIGURATIONS>
+      <MODULEPATHS>
+        <MODULEPATH id="synth" path="../../blankenhain"/>
+        <MODULEPATH id="juce_gui_extra" path="juce_modules"/>
+        <MODULEPATH id="juce_gui_basics" path="juce_modules"/>
+        <MODULEPATH id="juce_graphics" path="juce_modules"/>
+        <MODULEPATH id="juce_events" path="juce_modules"/>
+        <MODULEPATH id="juce_data_structures" path="juce_modules"/>
+        <MODULEPATH id="juce_core" path="juce_modules"/>
+        <MODULEPATH id="juce_audio_processors" path="juce_modules"/>
+        <MODULEPATH id="juce_audio_plugin_client" path="juce_modules"/>
+        <MODULEPATH id="juce_audio_formats" path="juce_modules"/>
+        <MODULEPATH id="juce_audio_devices" path="juce_modules"/>
+        <MODULEPATH id="juce_audio_basics" path="juce_modules"/>
+      </MODULEPATHS>
+    </VS2015>
+    <VS2015 targetFolder="Builds/Volume/VisualStudio2015" vstFolder="" vst3Folder=""
+            extraDefs="PLUGIN_VOLUME&#10;JucePlugin_Name=&quot;Blankenhain\ Volume&quot;&#10;JucePlugin_Desc=&quot;Volume\ Plugin.&quot;&#10;JucePlugin_PluginCode='BhVo'"
             extraCompilerFlags="/I..\..\..\Source">
       <CONFIGURATIONS>
         <CONFIGURATION name="Debug" winWarningLevel="4" generateManifest="1" winArchitecture="32-bit"

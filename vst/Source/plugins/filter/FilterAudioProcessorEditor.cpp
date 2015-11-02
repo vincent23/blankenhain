@@ -203,7 +203,11 @@ BEGIN_JUCER_METADATA
                  fixedSize="0" initialWidth="800" initialHeight="300">
   <BACKGROUND backgroundColour="ffe0b5e0"/>
   <LABEL name="new label" id="6f0b03fe092fc1cc" memberName="label" virtualName=""
+<<<<<<< HEAD
          explicitFocusOrder="0" pos="60% 0% 40% 100%" edTextCol="ff000000"
+=======
+         explicitFocusOrder="0" pos="59.976% 0% 40.024% 100%" edTextCol="ff000000"
+>>>>>>> Add Volume Plugin and BoolParameter files.
          edBkgCol="0" labelText="LFO" editableSingleClick="0" editableDoubleClick="0"
          focusDiscardsChanges="0" fontname="Default font" fontsize="100"
          bold="0" italic="0" justification="36"/>

@@ -56,7 +56,7 @@
       <Optimization>Disabled</Optimization>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <AdditionalIncludeDirectories>..\..\..\JuceLibraryCode;..\..\..\juce_modules;C:\SDKs\VST3 SDK;..\..\..\..\..\blankenhain;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;WIN32;_WINDOWS;DEBUG;_DEBUG;PLUGIN_FILTER;JucePlugin_Name=&quot;Blankenhain Filter&quot;;JucePlugin_Desc=&quot;Filter Plugin.&quot;;JucePlugin_PluginCode='BhFI';JUCER_VS2015_AED518A5=1;JUCE_APP_VERSION=1.0.0;JUCE_APP_VERSION_HEX=0x10000;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;WIN32;_WINDOWS;DEBUG;_DEBUG;PLUGIN_VOLUME;JucePlugin_Name=&quot;Blankenhain Volume&quot;;JucePlugin_Desc=&quot;Volume Plugin.&quot;;JucePlugin_PluginCode='BhVo';JUCER_VS2015_D29D7543=1;JUCE_APP_VERSION=1.0.0;JUCE_APP_VERSION_HEX=0x10000;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <PrecompiledHeader/>
@@ -99,7 +99,7 @@
     <ClCompile>
       <Optimization>Full</Optimization>
       <AdditionalIncludeDirectories>..\..\..\JuceLibraryCode;..\..\..\juce_modules;C:\SDKs\VST3 SDK;..\..\..\..\..\blankenhain;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;WIN32;_WINDOWS;NDEBUG;PLUGIN_FILTER;JucePlugin_Name=&quot;Blankenhain Filter&quot;;JucePlugin_Desc=&quot;Filter Plugin.&quot;;JucePlugin_PluginCode='BhFI';JUCER_VS2015_AED518A5=1;JUCE_APP_VERSION=1.0.0;JUCE_APP_VERSION_HEX=0x10000;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;WIN32;_WINDOWS;NDEBUG;PLUGIN_VOLUME;JucePlugin_Name=&quot;Blankenhain Volume&quot;;JucePlugin_Desc=&quot;Volume Plugin.&quot;;JucePlugin_PluginCode='BhVo';JUCER_VS2015_D29D7543=1;JUCE_APP_VERSION=1.0.0;JUCE_APP_VERSION_HEX=0x10000;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <PrecompiledHeader/>

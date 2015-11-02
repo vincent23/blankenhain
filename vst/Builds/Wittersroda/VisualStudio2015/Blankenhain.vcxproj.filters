@@ -14,6 +14,9 @@
     <Filter Include="Blankenhain\Source\plugins">
       <UniqueIdentifier>{B56517A3-59A9-4A60-CDBF-28A25493C568}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Blankenhain\Source\plugins\volume">
+      <UniqueIdentifier>{6E9E94BE-A65E-9F6A-7E34-9F5B17581B2A}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Blankenhain\Source\plugins\example">
       <UniqueIdentifier>{3E9D2847-9E4E-4230-C370-DD7770C1B523}</UniqueIdentifier>
     </Filter>
@@ -319,6 +322,12 @@
     <ClCompile Include="..\..\..\Source\components\LfoComponent.cpp">
       <Filter>Blankenhain\Source\components</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\Source\plugins\volume\VolumeAudioProcessor.cpp">
+      <Filter>Blankenhain\Source\plugins\volume</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Source\plugins\volume\VolumeAudioProcessorEditor.cpp">
+      <Filter>Blankenhain\Source\plugins\volume</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\..\Source\plugins\example\ExampleAudioProcessor.cpp">
       <Filter>Blankenhain\Source\plugins\example</Filter>
     </ClCompile>
@@ -338,6 +347,9 @@
       <Filter>Blankenhain\Source\plugins\wittersroda</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Source\BlankenhainAudioProcessor.cpp">
+      <Filter>Blankenhain\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Source\BoolParameter.cpp">
       <Filter>Blankenhain\Source</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Source\CreateFilter.cpp">
@@ -1551,6 +1563,12 @@
     <ClInclude Include="..\..\..\Source\components\LfoComponent.h">
       <Filter>Blankenhain\Source\components</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\Source\plugins\volume\VolumeAudioProcessor.h">
+      <Filter>Blankenhain\Source\plugins\volume</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Source\plugins\volume\VolumeAudioProcessorEditor.h">
+      <Filter>Blankenhain\Source\plugins\volume</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\..\Source\plugins\example\ExampleAudioProcessor.h">
       <Filter>Blankenhain\Source\plugins\example</Filter>
     </ClInclude>
@@ -1570,6 +1588,9 @@
       <Filter>Blankenhain\Source\plugins\wittersroda</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\Source\BlankenhainAudioProcessor.h">
+      <Filter>Blankenhain\Source</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Source\BoolParameter.h">
       <Filter>Blankenhain\Source</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\Source\FloatParameter.h">

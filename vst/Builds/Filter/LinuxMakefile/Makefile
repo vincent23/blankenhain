@@ -54,6 +54,8 @@ OBJECTS := \
   $(OBJDIR)/WaveGenerationComponent_9dda340d.o \
   $(OBJDIR)/AdsrComponent_813055dc.o \
   $(OBJDIR)/LfoComponent_8e5e1c31.o \
+  $(OBJDIR)/VolumeAudioProcessor_5d80ce8c.o \
+  $(OBJDIR)/VolumeAudioProcessorEditor_b62bd059.o \
   $(OBJDIR)/ExampleAudioProcessor_ee4a53e2.o \
   $(OBJDIR)/ExampleAudioProcessorEditor_2e557d2f.o \
   $(OBJDIR)/FilterAudioProcessor_1254b8cc.o \
@@ -61,6 +63,7 @@ OBJECTS := \
   $(OBJDIR)/WittersrodaAudioProcessor_3fce612a.o \
   $(OBJDIR)/WittersrodaAudioProcessorEditor_de9c7477.o \
   $(OBJDIR)/BlankenhainAudioProcessor_79973627.o \
+  $(OBJDIR)/BoolParameter_4cee9def.o \
   $(OBJDIR)/CreateFilter_f99fea0e.o \
   $(OBJDIR)/FloatParameter_1174567.o \
   $(OBJDIR)/juce_audio_basics_2a5f169b.o \
@@ -120,6 +123,16 @@ $(OBJDIR)/LfoComponent_8e5e1c31.o: ../../../Source/components/LfoComponent.cpp
 	@echo "Compiling LfoComponent.cpp"
 	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 
+$(OBJDIR)/VolumeAudioProcessor_5d80ce8c.o: ../../../Source/plugins/volume/VolumeAudioProcessor.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling VolumeAudioProcessor.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+
+$(OBJDIR)/VolumeAudioProcessorEditor_b62bd059.o: ../../../Source/plugins/volume/VolumeAudioProcessorEditor.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling VolumeAudioProcessorEditor.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+
 $(OBJDIR)/ExampleAudioProcessor_ee4a53e2.o: ../../../Source/plugins/example/ExampleAudioProcessor.cpp
 	-@mkdir -p $(OBJDIR)
 	@echo "Compiling ExampleAudioProcessor.cpp"
@@ -153,6 +166,11 @@ $(OBJDIR)/WittersrodaAudioProcessorEditor_de9c7477.o: ../../../Source/plugins/wi
 $(OBJDIR)/BlankenhainAudioProcessor_79973627.o: ../../../Source/BlankenhainAudioProcessor.cpp
 	-@mkdir -p $(OBJDIR)
 	@echo "Compiling BlankenhainAudioProcessor.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+
+$(OBJDIR)/BoolParameter_4cee9def.o: ../../../Source/BoolParameter.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling BoolParameter.cpp"
 	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 
 $(OBJDIR)/CreateFilter_f99fea0e.o: ../../../Source/CreateFilter.cpp
