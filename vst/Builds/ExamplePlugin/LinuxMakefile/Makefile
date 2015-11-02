@@ -49,6 +49,7 @@ ifeq ($(CONFIG),Release)
 endif
 
 OBJECTS := \
+  $(OBJDIR)/ModulationMatrixComponent_70333921.o \
   $(OBJDIR)/WaveVerschwurbelungComponent_cf2fc23b.o \
   $(OBJDIR)/WaveGenerationComponent_9dda340d.o \
   $(OBJDIR)/AdsrComponent_813055dc.o \
@@ -93,6 +94,11 @@ clean:
 strip:
 	@echo Stripping Blankenhain
 	-@strip --strip-unneeded $(OUTDIR)/$(TARGET)
+
+$(OBJDIR)/ModulationMatrixComponent_70333921.o: ../../../Source/components/ModulationMatrixComponent.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling ModulationMatrixComponent.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 
 $(OBJDIR)/WaveVerschwurbelungComponent_cf2fc23b.o: ../../../Source/components/WaveVerschwurbelungComponent.cpp
 	-@mkdir -p $(OBJDIR)

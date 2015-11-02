@@ -13,6 +13,10 @@
   <MAINGROUP id="JxkcXj" name="Blankenhain">
     <GROUP id="{CEB9C7EF-9627-E2F3-83AA-B82B15D50FA4}" name="Source">
       <GROUP id="{C3EB4C8E-A5B0-7418-72B9-06572CF58418}" name="components">
+        <FILE id="qMStqQ" name="ModulationMatrixComponent.cpp" compile="1"
+              resource="0" file="Source/components/ModulationMatrixComponent.cpp"/>
+        <FILE id="fOA15A" name="ModulationMatrixComponent.h" compile="0" resource="0"
+              file="Source/components/ModulationMatrixComponent.h"/>
         <FILE id="LGRjT4" name="WaveVerschwurbelungComponent.cpp" compile="1"
               resource="0" file="Source/components/WaveVerschwurbelungComponent.cpp"/>
         <FILE id="RXJAZb" name="WaveVerschwurbelungComponent.h" compile="0"

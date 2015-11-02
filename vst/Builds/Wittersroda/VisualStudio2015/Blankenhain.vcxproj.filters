@@ -304,6 +304,9 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\Source\components\ModulationMatrixComponent.cpp">
+      <Filter>Blankenhain\Source\components</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\..\Source\components\WaveVerschwurbelungComponent.cpp">
       <Filter>Blankenhain\Source\components</Filter>
     </ClCompile>
@@ -1530,6 +1533,9 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\Source\components\ModulationMatrixComponent.h">
+      <Filter>Blankenhain\Source\components</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\..\Source\components\WaveVerschwurbelungComponent.h">
       <Filter>Blankenhain\Source\components</Filter>
     </ClInclude>

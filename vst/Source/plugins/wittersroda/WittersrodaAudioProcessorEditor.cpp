@@ -54,11 +54,14 @@ WittersrodaAudioProcessorEditor::WittersrodaAudioProcessorEditor (WittersrodaAud
     addAndMakeVisible (component7 = new WaveVerschwurbelungComponent());
     component7->setName ("new component");
 
+    addAndMakeVisible (component8 = new ModulationMatrixComponent());
+    component8->setName ("new component");
+
 
     //[UserPreSize]
     //[/UserPreSize]
 
-    setSize (800, 600);
+    setSize (900, 600);
 
 
     //[Constructor] You can add your own custom stuff here..
@@ -77,6 +80,7 @@ WittersrodaAudioProcessorEditor::~WittersrodaAudioProcessorEditor()
     component5 = nullptr;
     component6 = nullptr;
     component7 = nullptr;
+    component8 = nullptr;
 
 
     //[Destructor]. You can add your own custom destruction code here..
@@ -100,13 +104,14 @@ void WittersrodaAudioProcessorEditor::resized()
     //[UserPreResize] Add your own custom resize code here..
     //[/UserPreResize]
 
-    component->setBounds (proportionOfWidth (0.3558f), proportionOfHeight (0.5426f), proportionOfWidth (0.3024f), proportionOfHeight (0.2016f));
-    component2->setBounds (proportionOfWidth (0.0323f), proportionOfHeight (0.5607f), proportionOfWidth (0.3024f), proportionOfHeight (0.4083f));
-    component3->setBounds (proportionOfWidth (0.6723f), proportionOfHeight (0.5607f), proportionOfWidth (0.3024f), proportionOfHeight (0.3979f));
-    component4->setBounds (proportionOfWidth (0.3488f), proportionOfHeight (0.7468f), proportionOfWidth (0.3094f), proportionOfHeight (0.2248f));
-    component5->setBounds (proportionOfWidth (0.0113f), proportionOfHeight (0.0207f), proportionOfWidth (0.3263f), proportionOfHeight (0.4755f));
-    component6->setBounds (proportionOfWidth (0.6639f), proportionOfHeight (0.0207f), proportionOfWidth (0.3263f), proportionOfHeight (0.4961f));
-    component7->setBounds (proportionOfWidth (0.3488f), proportionOfHeight (0.0207f), proportionOfWidth (0.3094f), proportionOfHeight (0.4961f));
+    component->setBounds (proportionOfWidth (0.2535f), proportionOfHeight (0.4574f), proportionOfWidth (0.3027f), proportionOfHeight (0.2503f));
+    component2->setBounds (proportionOfWidth (0.0058f), proportionOfHeight (0.5092f), proportionOfWidth (0.2410f), proportionOfHeight (0.4660f));
+    component3->setBounds (proportionOfWidth (0.5605f), proportionOfHeight (0.5264f), proportionOfWidth (0.2936f), proportionOfHeight (0.4509f));
+    component4->setBounds (proportionOfWidth (0.2535f), proportionOfHeight (0.7163f), proportionOfWidth (0.3002f), proportionOfHeight (0.2600f));
+    component5->setBounds (proportionOfWidth (0.0058f), proportionOfHeight (0.0162f), proportionOfWidth (0.2344f), proportionOfHeight (0.4757f));
+    component6->setBounds (proportionOfWidth (0.5671f), proportionOfHeight (0.0173f), proportionOfWidth (0.2877f), proportionOfHeight (0.4962f));
+    component7->setBounds (proportionOfWidth (0.2469f), proportionOfHeight (0.0173f), proportionOfWidth (0.3103f), proportionOfHeight (0.4229f));
+    component8->setBounds (proportionOfWidth (0.8607f), proportionOfHeight (0.0173f), proportionOfWidth (0.1251f), proportionOfHeight (0.9579f));
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -133,29 +138,32 @@ BEGIN_JUCER_METADATA
                  componentName="" parentClasses="public AudioProcessorEditor, public Timer"
                  constructorParams="WittersrodaAudioProcessor&amp; p" variableInitialisers="AudioProcessorEditor(&amp;p), processor(p)"
                  snapPixels="8" snapActive="1" snapShown="1" overlayOpacity="0.330"
-                 fixedSize="0" initialWidth="800" initialHeight="600">
+                 fixedSize="0" initialWidth="900" initialHeight="600">
   <BACKGROUND backgroundColour="ffdeea12"/>
   <GENERICCOMPONENT name="new component" id="c6a4da1e3dd7ac75" memberName="component"
-                    virtualName="" explicitFocusOrder="0" pos="35.584% 54.264% 30.239% 20.155%"
+                    virtualName="" explicitFocusOrder="0" pos="25.354% 45.739% 30.275% 25.027%"
                     class="AdsrComponent" params=""/>
   <GENERICCOMPONENT name="new component" id="c5e7617bd68c1089" memberName="component2"
-                    virtualName="" explicitFocusOrder="0" pos="3.235% 56.072% 30.239% 40.827%"
+                    virtualName="" explicitFocusOrder="0" pos="0.584% 50.917% 24.103% 46.602%"
                     class="LfoComponent" params=""/>
   <GENERICCOMPONENT name="new component" id="e7ca55d0064c6237" memberName="component3"
-                    virtualName="" explicitFocusOrder="0" pos="67.229% 56.072% 30.239% 39.793%"
+                    virtualName="" explicitFocusOrder="0" pos="56.047% 52.643% 29.358% 45.092%"
                     class="LfoComponent" params=""/>
   <GENERICCOMPONENT name="new component" id="f3a0b4f4a89f4dfd" memberName="component4"
-                    virtualName="" explicitFocusOrder="0" pos="34.88% 74.677% 30.942% 22.481%"
+                    virtualName="" explicitFocusOrder="0" pos="25.354% 71.629% 30.025% 25.998%"
                     class="AdsrComponent" params=""/>
   <GENERICCOMPONENT name="new component" id="5b1df9b36aab1ca0" memberName="component5"
-                    virtualName="" explicitFocusOrder="0" pos="1.125% 2.067% 32.63% 47.545%"
+                    virtualName="" explicitFocusOrder="0" pos="0.584% 1.618% 23.436% 47.573%"
                     class="WaveGenerationComponent" params=""/>
   <GENERICCOMPONENT name="new component" id="a9466d85c50515d2" memberName="component6"
-                    virtualName="" explicitFocusOrder="0" pos="66.385% 2.067% 32.63% 49.612%"
+                    virtualName="" explicitFocusOrder="0" pos="56.714% 1.726% 28.774% 49.622%"
                     class="WaveGenerationComponent" params=""/>
   <GENERICCOMPONENT name="new component" id="aefffa76c5d6e74c" memberName="component7"
-                    virtualName="" explicitFocusOrder="0" pos="34.88% 2.067% 30.942% 49.612%"
+                    virtualName="" explicitFocusOrder="0" pos="24.687% 1.726% 31.026% 42.287%"
                     class="WaveVerschwurbelungComponent" params=""/>
+  <GENERICCOMPONENT name="new component" id="7083b3137b49446a" memberName="component8"
+                    virtualName="" explicitFocusOrder="0" pos="86.072% 1.726% 12.51% 95.793%"
+                    class="ModulationMatrixComponent" params=""/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA
