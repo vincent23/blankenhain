@@ -4,6 +4,7 @@
 #include "plugins/filter/FilterAudioProcessor.h"
 #include "plugins/wittersroda/WittersrodaAudioProcessor.h"
 #include "plugins/volume/VolumeAudioProcessor.h"
+#include "plugins/pan/PanAudioProcessor.h"
 
 // this creates the correct plugin based on preprocessor flags
 AudioProcessor* JUCE_CALLTYPE createPluginFilter()
@@ -17,6 +18,8 @@ AudioProcessor* JUCE_CALLTYPE createPluginFilter()
 	return new WittersrodaAudioProcessor();
 #elif PLUGIN_VOLUME
 	return new VolumeAudioProcessor();
+#elif PLUGIN_PAN
+	return new PanAudioProcessor();
 #else
 	static_assert(false, "The build config of your plugin is broken. "
 		"Please see README for instructions on how to add new plugins.");

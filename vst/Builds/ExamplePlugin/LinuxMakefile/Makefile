@@ -54,6 +54,8 @@ OBJECTS := \
   $(OBJDIR)/WaveGenerationComponent_9dda340d.o \
   $(OBJDIR)/AdsrComponent_813055dc.o \
   $(OBJDIR)/LfoComponent_8e5e1c31.o \
+  $(OBJDIR)/PanAudioProcessor_ab4c94c8.o \
+  $(OBJDIR)/PanAudioProcessorEditor_b780f995.o \
   $(OBJDIR)/VolumeAudioProcessor_5d80ce8c.o \
   $(OBJDIR)/VolumeAudioProcessorEditor_b62bd059.o \
   $(OBJDIR)/ExampleAudioProcessor_ee4a53e2.o \
@@ -121,6 +123,16 @@ $(OBJDIR)/AdsrComponent_813055dc.o: ../../../Source/components/AdsrComponent.cpp
 $(OBJDIR)/LfoComponent_8e5e1c31.o: ../../../Source/components/LfoComponent.cpp
 	-@mkdir -p $(OBJDIR)
 	@echo "Compiling LfoComponent.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+
+$(OBJDIR)/PanAudioProcessor_ab4c94c8.o: ../../../Source/plugins/pan/PanAudioProcessor.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling PanAudioProcessor.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+
+$(OBJDIR)/PanAudioProcessorEditor_b780f995.o: ../../../Source/plugins/pan/PanAudioProcessorEditor.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling PanAudioProcessorEditor.cpp"
 	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 
 $(OBJDIR)/VolumeAudioProcessor_5d80ce8c.o: ../../../Source/plugins/volume/VolumeAudioProcessor.cpp

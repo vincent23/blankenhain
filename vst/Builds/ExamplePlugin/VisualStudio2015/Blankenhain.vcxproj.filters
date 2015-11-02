@@ -14,6 +14,9 @@
     <Filter Include="Blankenhain\Source\plugins">
       <UniqueIdentifier>{B56517A3-59A9-4A60-CDBF-28A25493C568}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Blankenhain\Source\plugins\pan">
+      <UniqueIdentifier>{5E0F5B3D-55D9-45E2-05F2-61C5AE042853}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Blankenhain\Source\plugins\volume">
       <UniqueIdentifier>{6E9E94BE-A65E-9F6A-7E34-9F5B17581B2A}</UniqueIdentifier>
     </Filter>
@@ -321,6 +324,12 @@
     </ClCompile>
     <ClCompile Include="..\..\..\Source\components\LfoComponent.cpp">
       <Filter>Blankenhain\Source\components</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Source\plugins\pan\PanAudioProcessor.cpp">
+      <Filter>Blankenhain\Source\plugins\pan</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Source\plugins\pan\PanAudioProcessorEditor.cpp">
+      <Filter>Blankenhain\Source\plugins\pan</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Source\plugins\volume\VolumeAudioProcessor.cpp">
       <Filter>Blankenhain\Source\plugins\volume</Filter>
@@ -1562,6 +1571,12 @@
     </ClInclude>
     <ClInclude Include="..\..\..\Source\components\LfoComponent.h">
       <Filter>Blankenhain\Source\components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Source\plugins\pan\PanAudioProcessor.h">
+      <Filter>Blankenhain\Source\plugins\pan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Source\plugins\pan\PanAudioProcessorEditor.h">
+      <Filter>Blankenhain\Source\plugins\pan</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\Source\plugins\volume\VolumeAudioProcessor.h">
       <Filter>Blankenhain\Source\plugins\volume</Filter>

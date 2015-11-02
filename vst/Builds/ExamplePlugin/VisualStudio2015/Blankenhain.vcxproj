@@ -138,6 +138,8 @@
     <ClCompile Include="..\..\..\Source\components\WaveGenerationComponent.cpp"/>
     <ClCompile Include="..\..\..\Source\components\AdsrComponent.cpp"/>
     <ClCompile Include="..\..\..\Source\components\LfoComponent.cpp"/>
+    <ClCompile Include="..\..\..\Source\plugins\pan\PanAudioProcessor.cpp"/>
+    <ClCompile Include="..\..\..\Source\plugins\pan\PanAudioProcessorEditor.cpp"/>
     <ClCompile Include="..\..\..\Source\plugins\volume\VolumeAudioProcessor.cpp"/>
     <ClCompile Include="..\..\..\Source\plugins\volume\VolumeAudioProcessorEditor.cpp"/>
     <ClCompile Include="..\..\..\Source\plugins\example\ExampleAudioProcessor.cpp"/>
@@ -1234,6 +1236,8 @@
     <ClInclude Include="..\..\..\Source\components\WaveGenerationComponent.h"/>
     <ClInclude Include="..\..\..\Source\components\AdsrComponent.h"/>
     <ClInclude Include="..\..\..\Source\components\LfoComponent.h"/>
+    <ClInclude Include="..\..\..\Source\plugins\pan\PanAudioProcessor.h"/>
+    <ClInclude Include="..\..\..\Source\plugins\pan\PanAudioProcessorEditor.h"/>
     <ClInclude Include="..\..\..\Source\plugins\volume\VolumeAudioProcessor.h"/>
     <ClInclude Include="..\..\..\Source\plugins\volume\VolumeAudioProcessorEditor.h"/>
     <ClInclude Include="..\..\..\Source\plugins\example\ExampleAudioProcessor.h"/>

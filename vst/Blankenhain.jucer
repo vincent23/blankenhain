@@ -33,6 +33,16 @@
               file="Source/components/LfoComponent.cpp"/>
       </GROUP>
       <GROUP id="{19EF4637-6B84-4B6A-69FF-029D7E3D590C}" name="plugins">
+        <GROUP id="{60BD488A-238A-73A3-EF0B-D1D89042C6E8}" name="pan">
+          <FILE id="S9Pduq" name="PanAudioProcessor.cpp" compile="1" resource="0"
+                file="Source/plugins/pan/PanAudioProcessor.cpp"/>
+          <FILE id="Q1LI98" name="PanAudioProcessor.h" compile="0" resource="0"
+                file="Source/plugins/pan/PanAudioProcessor.h"/>
+          <FILE id="VNxcBL" name="PanAudioProcessorEditor.cpp" compile="1" resource="0"
+                file="Source/plugins/pan/PanAudioProcessorEditor.cpp"/>
+          <FILE id="fNHT7b" name="PanAudioProcessorEditor.h" compile="0" resource="0"
+                file="Source/plugins/pan/PanAudioProcessorEditor.h"/>
+        </GROUP>
         <GROUP id="{4138F0C9-86B0-0803-C829-30055CB4762F}" name="volume">
           <FILE id="XuRSyQ" name="VolumeAudioProcessor.cpp" compile="1" resource="0"
                 file="Source/plugins/volume/VolumeAudioProcessor.cpp"/>
@@ -211,6 +221,29 @@
     <VS2015 targetFolder="Builds/Volume/VisualStudio2015" vstFolder="" vst3Folder=""
             extraDefs="PLUGIN_VOLUME&#10;JucePlugin_Name=&quot;Blankenhain\ Volume&quot;&#10;JucePlugin_Desc=&quot;Volume\ Plugin.&quot;&#10;JucePlugin_PluginCode='BhVo'"
             extraCompilerFlags="/I..\..\..\Source">
+      <CONFIGURATIONS>
+        <CONFIGURATION name="Debug" winWarningLevel="4" generateManifest="1" winArchitecture="32-bit"
+                       isDebug="1" optimisation="1" targetName="Blankenhain"/>
+        <CONFIGURATION name="Release" winWarningLevel="4" generateManifest="1" winArchitecture="32-bit"
+                       isDebug="0" optimisation="3" targetName="Blankenhain"/>
+      </CONFIGURATIONS>
+      <MODULEPATHS>
+        <MODULEPATH id="synth" path="../../blankenhain"/>
+        <MODULEPATH id="juce_gui_extra" path="juce_modules"/>
+        <MODULEPATH id="juce_gui_basics" path="juce_modules"/>
+        <MODULEPATH id="juce_graphics" path="juce_modules"/>
+        <MODULEPATH id="juce_events" path="juce_modules"/>
+        <MODULEPATH id="juce_data_structures" path="juce_modules"/>
+        <MODULEPATH id="juce_core" path="juce_modules"/>
+        <MODULEPATH id="juce_audio_processors" path="juce_modules"/>
+        <MODULEPATH id="juce_audio_plugin_client" path="juce_modules"/>
+        <MODULEPATH id="juce_audio_formats" path="juce_modules"/>
+        <MODULEPATH id="juce_audio_devices" path="juce_modules"/>
+        <MODULEPATH id="juce_audio_basics" path="juce_modules"/>
+      </MODULEPATHS>
+    </VS2015>
+    <VS2015 targetFolder="Builds/Pan/VisualStudio2015" vstFolder="" extraCompilerFlags="/I..\..\..\Source"
+            extraDefs="PLUGIN_PAN&#10;JucePlugin_Name=&quot;Blankenhain\ Pan&quot;&#10;JucePlugin_Desc=&quot;Pan\ Plugin.&quot;&#10;JucePlugin_PluginCode='BhPa'">
       <CONFIGURATIONS>
         <CONFIGURATION name="Debug" winWarningLevel="4" generateManifest="1" winArchitecture="32-bit"
                        isDebug="1" optimisation="1" targetName="Blankenhain"/>
