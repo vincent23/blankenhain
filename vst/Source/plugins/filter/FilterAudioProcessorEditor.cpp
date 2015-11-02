@@ -127,7 +127,7 @@ void FilterAudioProcessorEditor::resized()
     //[UserPreResize] Add your own custom resize code here..
     //[/UserPreResize]
 
-    label->setBounds (proportionOfWidth (0.6002f), proportionOfHeight (0.0000f), proportionOfWidth (0.3998f), proportionOfHeight (1.0000f));
+    label->setBounds (proportionOfWidth (0.6000f), proportionOfHeight (0.0000f), proportionOfWidth (0.4000f), proportionOfHeight (1.0000f));
     filterTypeSelector->setBounds (120, 56, 336, 24);
     frequencySlider->setBounds (64, 144, 160, 128);
     resonanceSlider->setBounds (344, 152, 160, 128);
@@ -203,7 +203,7 @@ BEGIN_JUCER_METADATA
                  fixedSize="0" initialWidth="800" initialHeight="300">
   <BACKGROUND backgroundColour="ffe0b5e0"/>
   <LABEL name="new label" id="6f0b03fe092fc1cc" memberName="label" virtualName=""
-         explicitFocusOrder="0" pos="60.022% 0% 39.978% 100%" edTextCol="ff000000"
+         explicitFocusOrder="0" pos="60% 0% 40% 100%" edTextCol="ff000000"
          edBkgCol="0" labelText="LFO" editableSingleClick="0" editableDoubleClick="0"
          focusDiscardsChanges="0" fontname="Default font" fontsize="100"
          bold="0" italic="0" justification="36"/>

@@ -53,6 +53,8 @@ OBJECTS := \
   $(OBJDIR)/ExampleAudioProcessorEditor_2e557d2f.o \
   $(OBJDIR)/FilterAudioProcessor_1254b8cc.o \
   $(OBJDIR)/FilterAudioProcessorEditor_ec770a99.o \
+  $(OBJDIR)/WittersrodaAudioProcessor_3fce612a.o \
+  $(OBJDIR)/WittersrodaAudioProcessorEditor_de9c7477.o \
   $(OBJDIR)/BlankenhainAudioProcessor_79973627.o \
   $(OBJDIR)/CreateFilter_f99fea0e.o \
   $(OBJDIR)/FloatParameter_1174567.o \
@@ -106,6 +108,16 @@ $(OBJDIR)/FilterAudioProcessor_1254b8cc.o: ../../../Source/plugins/filter/Filter
 $(OBJDIR)/FilterAudioProcessorEditor_ec770a99.o: ../../../Source/plugins/filter/FilterAudioProcessorEditor.cpp
 	-@mkdir -p $(OBJDIR)
 	@echo "Compiling FilterAudioProcessorEditor.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+
+$(OBJDIR)/WittersrodaAudioProcessor_3fce612a.o: ../../../Source/plugins/wittersroda/WittersrodaAudioProcessor.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling WittersrodaAudioProcessor.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+
+$(OBJDIR)/WittersrodaAudioProcessorEditor_de9c7477.o: ../../../Source/plugins/wittersroda/WittersrodaAudioProcessorEditor.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling WittersrodaAudioProcessorEditor.cpp"
 	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 
 $(OBJDIR)/BlankenhainAudioProcessor_79973627.o: ../../../Source/BlankenhainAudioProcessor.cpp

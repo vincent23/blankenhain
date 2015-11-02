@@ -137,6 +137,8 @@
     <ClCompile Include="..\..\..\Source\plugins\example\ExampleAudioProcessorEditor.cpp"/>
     <ClCompile Include="..\..\..\Source\plugins\filter\FilterAudioProcessor.cpp"/>
     <ClCompile Include="..\..\..\Source\plugins\filter\FilterAudioProcessorEditor.cpp"/>
+    <ClCompile Include="..\..\..\Source\plugins\wittersroda\WittersrodaAudioProcessor.cpp"/>
+    <ClCompile Include="..\..\..\Source\plugins\wittersroda\WittersrodaAudioProcessorEditor.cpp"/>
     <ClCompile Include="..\..\..\Source\BlankenhainAudioProcessor.cpp"/>
     <ClCompile Include="..\..\..\Source\CreateFilter.cpp"/>
     <ClCompile Include="..\..\..\Source\FloatParameter.cpp"/>
@@ -1220,6 +1222,8 @@
     <ClInclude Include="..\..\..\Source\plugins\example\ExampleAudioProcessorEditor.h"/>
     <ClInclude Include="..\..\..\Source\plugins\filter\FilterAudioProcessor.h"/>
     <ClInclude Include="..\..\..\Source\plugins\filter\FilterAudioProcessorEditor.h"/>
+    <ClInclude Include="..\..\..\Source\plugins\wittersroda\WittersrodaAudioProcessor.h"/>
+    <ClInclude Include="..\..\..\Source\plugins\wittersroda\WittersrodaAudioProcessorEditor.h"/>
     <ClInclude Include="..\..\..\Source\BlankenhainAudioProcessor.h"/>
     <ClInclude Include="..\..\..\Source\FloatParameter.h"/>
     <ClInclude Include="..\..\..\juce_modules\juce_audio_basics\buffers\juce_AudioDataConverters.h"/>

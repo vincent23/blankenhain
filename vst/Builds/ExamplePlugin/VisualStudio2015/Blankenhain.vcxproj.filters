@@ -17,6 +17,9 @@
     <Filter Include="Blankenhain\Source\plugins\filter">
       <UniqueIdentifier>{86D26C52-9046-7335-28C9-363B8C620B76}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Blankenhain\Source\plugins\wittersroda">
+      <UniqueIdentifier>{823520B5-F3D9-A3BA-6A0D-519E10F95045}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Juce Modules">
       <UniqueIdentifier>{422C46B7-0467-2DB0-BF3C-16DFCAFD69AC}</UniqueIdentifier>
     </Filter>
@@ -309,6 +312,12 @@
     </ClCompile>
     <ClCompile Include="..\..\..\Source\plugins\filter\FilterAudioProcessorEditor.cpp">
       <Filter>Blankenhain\Source\plugins\filter</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Source\plugins\wittersroda\WittersrodaAudioProcessor.cpp">
+      <Filter>Blankenhain\Source\plugins\wittersroda</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Source\plugins\wittersroda\WittersrodaAudioProcessorEditor.cpp">
+      <Filter>Blankenhain\Source\plugins\wittersroda</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Source\BlankenhainAudioProcessor.cpp">
       <Filter>Blankenhain\Source</Filter>
@@ -1517,6 +1526,12 @@
     </ClInclude>
     <ClInclude Include="..\..\..\Source\plugins\filter\FilterAudioProcessorEditor.h">
       <Filter>Blankenhain\Source\plugins\filter</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Source\plugins\wittersroda\WittersrodaAudioProcessor.h">
+      <Filter>Blankenhain\Source\plugins\wittersroda</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Source\plugins\wittersroda\WittersrodaAudioProcessorEditor.h">
+      <Filter>Blankenhain\Source\plugins\wittersroda</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\Source\BlankenhainAudioProcessor.h">
       <Filter>Blankenhain\Source</Filter>
