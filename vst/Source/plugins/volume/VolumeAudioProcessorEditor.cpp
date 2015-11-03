@@ -174,6 +174,7 @@ void VolumeAudioProcessorEditor::buttonClicked (Button* buttonThatWasClicked)
 		else
 		{
 			volumeRSlider->setEnabled(true);
+			volumeRSlider->setValue(volumeLSlider->getValue());
 		}
         //[/UserButtonCode_stereoCouplingButton]
     }

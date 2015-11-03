@@ -4,11 +4,8 @@
 #include "plugins/filter/FilterAudioProcessor.h"
 #include "plugins/wittersroda/WittersrodaAudioProcessor.h"
 #include "plugins/volume/VolumeAudioProcessor.h"
-<<<<<<< HEAD
 #include "plugins/pan/PanAudioProcessor.h"
-=======
 #include "plugins/bitcrush/BitcrushAudioProcessor.h"
->>>>>>> Add bitcrush
 
 // this creates the correct plugin based on preprocessor flags
 AudioProcessor* JUCE_CALLTYPE createPluginFilter()

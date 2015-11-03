@@ -65,7 +65,7 @@ void VolumeAudioProcessor::processBlock(AudioSampleBuffer& buffer, MidiBuffer& m
 		currentVolumeR = pow(10.f, (volumeR->getValue() * 132.f - 120.f) / 10.f);
 		currentVolumeL = pow(10.f, (volumeL->getValue() * 132.f - 120.f) / 10.f);
 		oldVolumeL = pow(10.f, (volumeL->getOldValue() * 132.f - 120.f) / 10.f);
-		oldVolumeL = pow(10.f, (volumeR->getOldValue() * 132.f - 120.f) / 10.f);
+		oldVolumeR = pow(10.f, (volumeR->getOldValue() * 132.f - 120.f) / 10.f);
 		for (size_t bufferIteration = 0; bufferIteration < buffer.getNumSamples(); bufferIteration++)
 		{
 			bufferValue = buffer.getSample(/*channel*/ 0, bufferIteration);
