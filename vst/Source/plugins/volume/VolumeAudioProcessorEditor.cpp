@@ -83,6 +83,7 @@ VolumeAudioProcessorEditor::VolumeAudioProcessorEditor (VolumeAudioProcessor& p)
 
     //[Constructor] You can add your own custom stuff here..
 	startTimer(100);
+	volumeRSlider->setEnabled(false);
     //[/Constructor]
 }
 
@@ -143,6 +144,12 @@ void VolumeAudioProcessorEditor::sliderValueChanged (Slider* sliderThatWasMoved)
     {
         //[UserSliderCode_volumeLSlider] -- add your slider handling code here..
 		processor.setVolumeL(sliderThatWasMoved->getValue());
+		if (processor.getStereoCoupling())
+		{
+			volumeRSlider->setValue(sliderThatWasMoved->getValue());
+			processor.setVolumeR(sliderThatWasMoved->getValue());
+		}
+
         //[/UserSliderCode_volumeLSlider]
     }
 
@@ -159,6 +166,15 @@ void VolumeAudioProcessorEditor::buttonClicked (Button* buttonThatWasClicked)
     {
         //[UserButtonCode_stereoCouplingButton] -- add your button handler code here..
 		processor.switchStereoCoupling();
+		if (processor.getStereoCoupling())
+		{
+			volumeRSlider->setEnabled(false);
+			volumeRSlider->setValue(volumeLSlider->getValue());
+		}
+		else
+		{
+			volumeRSlider->setEnabled(true);
+		}
         //[/UserButtonCode_stereoCouplingButton]
     }
 
