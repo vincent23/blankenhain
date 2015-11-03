@@ -9,6 +9,8 @@ public:
 	FloatParameter(const String& name, float defaultValue);
 
 	float getValue() const override;
+	float getOldValue() const;
+	void setOldValue(float oldValue_);
 	void setValue(float newValue) override;
 	float getDefaultValue() const override;
 	String getName(int maximumStringLength) const override;
@@ -18,6 +20,7 @@ public:
 private:
 	const float defaultValue;
 	float value;
+	float oldValue;
 	const String name;
 };
 

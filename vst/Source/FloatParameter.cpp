@@ -1,8 +1,16 @@
 #include "FloatParameter.h"
 
 FloatParameter::FloatParameter(const String& name_, float defaultValue_)
-	: defaultValue(defaultValue_), value(defaultValue_), name(name_)
+	: defaultValue(defaultValue_), value(defaultValue_), oldValue(defaultValue_), name(name_)
 {
+}
+
+float FloatParameter::getOldValue() const {
+	return oldValue;
+}
+
+void FloatParameter::setOldValue(float oldValue_) {
+	oldValue = oldValue_;
 }
 
 float FloatParameter::getValue() const {
