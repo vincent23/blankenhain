@@ -56,6 +56,8 @@ OBJECTS := \
   $(OBJDIR)/LfoComponent_8e5e1c31.o \
   $(OBJDIR)/PanAudioProcessor_ab4c94c8.o \
   $(OBJDIR)/PanAudioProcessorEditor_b780f995.o \
+  $(OBJDIR)/BitcrushAudioProcessor_1c2f69cc.o \
+  $(OBJDIR)/BitcrushAudioProcessorEditor_d9c8fb99.o \
   $(OBJDIR)/VolumeAudioProcessor_5d80ce8c.o \
   $(OBJDIR)/VolumeAudioProcessorEditor_b62bd059.o \
   $(OBJDIR)/ExampleAudioProcessor_ee4a53e2.o \
@@ -133,6 +135,16 @@ $(OBJDIR)/PanAudioProcessor_ab4c94c8.o: ../../../Source/plugins/pan/PanAudioProc
 $(OBJDIR)/PanAudioProcessorEditor_b780f995.o: ../../../Source/plugins/pan/PanAudioProcessorEditor.cpp
 	-@mkdir -p $(OBJDIR)
 	@echo "Compiling PanAudioProcessorEditor.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+
+$(OBJDIR)/BitcrushAudioProcessor_1c2f69cc.o: ../../../Source/plugins/bitcrush/BitcrushAudioProcessor.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling BitcrushAudioProcessor.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+
+$(OBJDIR)/BitcrushAudioProcessorEditor_d9c8fb99.o: ../../../Source/plugins/bitcrush/BitcrushAudioProcessorEditor.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling BitcrushAudioProcessorEditor.cpp"
 	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 
 $(OBJDIR)/VolumeAudioProcessor_5d80ce8c.o: ../../../Source/plugins/volume/VolumeAudioProcessor.cpp

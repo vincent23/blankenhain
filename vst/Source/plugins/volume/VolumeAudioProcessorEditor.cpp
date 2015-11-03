@@ -119,11 +119,11 @@ void VolumeAudioProcessorEditor::resized()
     //[UserPreResize] Add your own custom resize code here..
     //[/UserPreResize]
 
-    volumeRSlider->setBounds (proportionOfWidth (0.5000f), proportionOfHeight (0.0000f), proportionOfWidth (0.5000f), proportionOfHeight (0.7496f));
-    volumeLSlider->setBounds (proportionOfWidth (0.0000f), proportionOfHeight (0.0000f), proportionOfWidth (0.5000f), proportionOfHeight (0.7496f));
-    stereoCouplingButton->setBounds (proportionOfWidth (0.0000f), proportionOfHeight (0.8495f), proportionOfWidth (1.0000f), proportionOfHeight (0.1506f));
-    label->setBounds (proportionOfWidth (0.0000f), proportionOfHeight (0.7496f), proportionOfWidth (0.5000f), proportionOfHeight (0.0998f));
-    label2->setBounds (proportionOfWidth (0.5000f), proportionOfHeight (0.7496f), proportionOfWidth (0.5000f), proportionOfHeight (0.0998f));
+    volumeRSlider->setBounds (proportionOfWidth (0.5000f), proportionOfHeight (0.0000f), proportionOfWidth (0.5000f), proportionOfHeight (0.7500f));
+    volumeLSlider->setBounds (proportionOfWidth (0.0000f), proportionOfHeight (0.0000f), proportionOfWidth (0.5000f), proportionOfHeight (0.7500f));
+    stereoCouplingButton->setBounds (proportionOfWidth (0.0000f), proportionOfHeight (0.8500f), proportionOfWidth (1.0000f), proportionOfHeight (0.1500f));
+    label->setBounds (proportionOfWidth (0.0000f), proportionOfHeight (0.7500f), proportionOfWidth (0.5000f), proportionOfHeight (0.1000f));
+    label2->setBounds (proportionOfWidth (0.5000f), proportionOfHeight (0.7500f), proportionOfWidth (0.5000f), proportionOfHeight (0.1000f));
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }

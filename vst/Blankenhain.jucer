@@ -43,6 +43,16 @@
           <FILE id="fNHT7b" name="PanAudioProcessorEditor.h" compile="0" resource="0"
                 file="Source/plugins/pan/PanAudioProcessorEditor.h"/>
         </GROUP>
+        <GROUP id="{E0E72F6E-D0B3-5F73-56CB-98A77B644419}" name="bitcrush">
+          <FILE id="PGjzme" name="BitcrushAudioProcessor.cpp" compile="1" resource="0"
+                file="Source/plugins/bitcrush/BitcrushAudioProcessor.cpp"/>
+          <FILE id="IQSNJd" name="BitcrushAudioProcessor.h" compile="0" resource="0"
+                file="Source/plugins/bitcrush/BitcrushAudioProcessor.h"/>
+          <FILE id="ihAxb0" name="BitcrushAudioProcessorEditor.cpp" compile="1"
+                resource="0" file="Source/plugins/bitcrush/BitcrushAudioProcessorEditor.cpp"/>
+          <FILE id="CkmpdB" name="BitcrushAudioProcessorEditor.h" compile="0"
+                resource="0" file="Source/plugins/bitcrush/BitcrushAudioProcessorEditor.h"/>
+        </GROUP>
         <GROUP id="{4138F0C9-86B0-0803-C829-30055CB4762F}" name="volume">
           <FILE id="XuRSyQ" name="VolumeAudioProcessor.cpp" compile="1" resource="0"
                 file="Source/plugins/volume/VolumeAudioProcessor.cpp"/>
@@ -244,6 +254,30 @@
     </VS2015>
     <VS2015 targetFolder="Builds/Pan/VisualStudio2015" vstFolder="" extraCompilerFlags="/I..\..\..\Source"
             extraDefs="PLUGIN_PAN&#10;JucePlugin_Name=&quot;Blankenhain\ Pan&quot;&#10;JucePlugin_Desc=&quot;Pan\ Plugin.&quot;&#10;JucePlugin_PluginCode='BhPa'">
+      <CONFIGURATIONS>
+        <CONFIGURATION name="Debug" winWarningLevel="4" generateManifest="1" winArchitecture="32-bit"
+                       isDebug="1" optimisation="1" targetName="Blankenhain"/>
+        <CONFIGURATION name="Release" winWarningLevel="4" generateManifest="1" winArchitecture="32-bit"
+                       isDebug="0" optimisation="3" targetName="Blankenhain"/>
+      </CONFIGURATIONS>
+      <MODULEPATHS>
+        <MODULEPATH id="synth" path="../../blankenhain"/>
+        <MODULEPATH id="juce_gui_extra" path="juce_modules"/>
+        <MODULEPATH id="juce_gui_basics" path="juce_modules"/>
+        <MODULEPATH id="juce_graphics" path="juce_modules"/>
+        <MODULEPATH id="juce_events" path="juce_modules"/>
+        <MODULEPATH id="juce_data_structures" path="juce_modules"/>
+        <MODULEPATH id="juce_core" path="juce_modules"/>
+        <MODULEPATH id="juce_audio_processors" path="juce_modules"/>
+        <MODULEPATH id="juce_audio_plugin_client" path="juce_modules"/>
+        <MODULEPATH id="juce_audio_formats" path="juce_modules"/>
+        <MODULEPATH id="juce_audio_devices" path="juce_modules"/>
+        <MODULEPATH id="juce_audio_basics" path="juce_modules"/>
+      </MODULEPATHS>
+    </VS2015>
+    <VS2015 targetFolder="Builds/Bitcrush/VisualStudio2015" vstFolder=""
+            extraDefs="PLUGIN_BITCRUSH&#10;JucePlugin_Name=&quot;Blankenhain\ Bitcrush&quot;&#10;JucePlugin_Desc=&quot;Bitcrush.&quot;&#10;JucePlugin_PluginCode='BhBC'"
+            extraCompilerFlags="/I..\..\..\Source">
       <CONFIGURATIONS>
         <CONFIGURATION name="Debug" winWarningLevel="4" generateManifest="1" winArchitecture="32-bit"
                        isDebug="1" optimisation="1" targetName="Blankenhain"/>

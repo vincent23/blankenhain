@@ -17,6 +17,9 @@
     <Filter Include="Blankenhain\Source\plugins\pan">
       <UniqueIdentifier>{5E0F5B3D-55D9-45E2-05F2-61C5AE042853}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Blankenhain\Source\plugins\bitcrush">
+      <UniqueIdentifier>{AD139CA8-73A6-3839-4892-69F4AA382771}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Blankenhain\Source\plugins\volume">
       <UniqueIdentifier>{6E9E94BE-A65E-9F6A-7E34-9F5B17581B2A}</UniqueIdentifier>
     </Filter>
@@ -330,6 +333,12 @@
     </ClCompile>
     <ClCompile Include="..\..\..\Source\plugins\pan\PanAudioProcessorEditor.cpp">
       <Filter>Blankenhain\Source\plugins\pan</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Source\plugins\bitcrush\BitcrushAudioProcessor.cpp">
+      <Filter>Blankenhain\Source\plugins\bitcrush</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Source\plugins\bitcrush\BitcrushAudioProcessorEditor.cpp">
+      <Filter>Blankenhain\Source\plugins\bitcrush</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Source\plugins\volume\VolumeAudioProcessor.cpp">
       <Filter>Blankenhain\Source\plugins\volume</Filter>
@@ -1577,6 +1586,12 @@
     </ClInclude>
     <ClInclude Include="..\..\..\Source\plugins\pan\PanAudioProcessorEditor.h">
       <Filter>Blankenhain\Source\plugins\pan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Source\plugins\bitcrush\BitcrushAudioProcessor.h">
+      <Filter>Blankenhain\Source\plugins\bitcrush</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Source\plugins\bitcrush\BitcrushAudioProcessorEditor.h">
+      <Filter>Blankenhain\Source\plugins\bitcrush</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\Source\plugins\volume\VolumeAudioProcessor.h">
       <Filter>Blankenhain\Source\plugins\volume</Filter>

@@ -141,28 +141,28 @@ BEGIN_JUCER_METADATA
                  fixedSize="0" initialWidth="900" initialHeight="600">
   <BACKGROUND backgroundColour="ffdeea12"/>
   <GENERICCOMPONENT name="new component" id="c6a4da1e3dd7ac75" memberName="component"
-                    virtualName="" explicitFocusOrder="0" pos="25.354% 45.739% 30.275% 25.027%"
+                    virtualName="" explicitFocusOrder="0" pos="25.328% 45.693% 30.277% 24.964%"
                     class="AdsrComponent" params=""/>
   <GENERICCOMPONENT name="new component" id="c5e7617bd68c1089" memberName="component2"
-                    virtualName="" explicitFocusOrder="0" pos="0.584% 50.917% 24.103% 46.602%"
+                    virtualName="" explicitFocusOrder="0" pos="0.582% 50.949% 24.163% 46.569%"
                     class="LfoComponent" params=""/>
   <GENERICCOMPONENT name="new component" id="e7ca55d0064c6237" memberName="component3"
-                    virtualName="" explicitFocusOrder="0" pos="56.047% 52.643% 29.358% 45.092%"
+                    virtualName="" explicitFocusOrder="0" pos="56.041% 52.701% 29.403% 45.109%"
                     class="LfoComponent" params=""/>
   <GENERICCOMPONENT name="new component" id="f3a0b4f4a89f4dfd" memberName="component4"
-                    virtualName="" explicitFocusOrder="0" pos="25.354% 71.629% 30.025% 25.998%"
+                    virtualName="" explicitFocusOrder="0" pos="25.328% 71.679% 29.985% 25.985%"
                     class="AdsrComponent" params=""/>
   <GENERICCOMPONENT name="new component" id="5b1df9b36aab1ca0" memberName="component5"
-                    virtualName="" explicitFocusOrder="0" pos="0.584% 1.618% 23.436% 47.573%"
+                    virtualName="" explicitFocusOrder="0" pos="0.582% 1.606% 23.435% 47.591%"
                     class="WaveGenerationComponent" params=""/>
   <GENERICCOMPONENT name="new component" id="a9466d85c50515d2" memberName="component6"
-                    virtualName="" explicitFocusOrder="0" pos="56.714% 1.726% 28.774% 49.622%"
+                    virtualName="" explicitFocusOrder="0" pos="56.769% 1.752% 28.821% 49.635%"
                     class="WaveGenerationComponent" params=""/>
   <GENERICCOMPONENT name="new component" id="aefffa76c5d6e74c" memberName="component7"
-                    virtualName="" explicitFocusOrder="0" pos="24.687% 1.726% 31.026% 42.287%"
+                    virtualName="" explicitFocusOrder="0" pos="24.745% 1.752% 31.004% 42.336%"
                     class="WaveVerschwurbelungComponent" params=""/>
   <GENERICCOMPONENT name="new component" id="7083b3137b49446a" memberName="component8"
-                    virtualName="" explicitFocusOrder="0" pos="86.072% 1.726% 12.51% 95.793%"
+                    virtualName="" explicitFocusOrder="0" pos="86.026% 1.752% 12.518% 95.766%"
                     class="ModulationMatrixComponent" params=""/>
 </JUCER_COMPONENT>
 

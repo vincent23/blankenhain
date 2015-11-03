@@ -4,7 +4,11 @@
 #include "plugins/filter/FilterAudioProcessor.h"
 #include "plugins/wittersroda/WittersrodaAudioProcessor.h"
 #include "plugins/volume/VolumeAudioProcessor.h"
+<<<<<<< HEAD
 #include "plugins/pan/PanAudioProcessor.h"
+=======
+#include "plugins/bitcrush/BitcrushAudioProcessor.h"
+>>>>>>> Add bitcrush
 
 // this creates the correct plugin based on preprocessor flags
 AudioProcessor* JUCE_CALLTYPE createPluginFilter()
@@ -20,6 +24,8 @@ AudioProcessor* JUCE_CALLTYPE createPluginFilter()
 	return new VolumeAudioProcessor();
 #elif PLUGIN_PAN
 	return new PanAudioProcessor();
+#elif PLUGIN_BITCRUSH
+	return new BitcrushAudioProcessor();
 #else
 	static_assert(false, "The build config of your plugin is broken. "
 		"Please see README for instructions on how to add new plugins.");
