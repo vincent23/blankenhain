@@ -45,30 +45,36 @@ void VolumeAudioProcessor::processBlock(AudioSampleBuffer& buffer, MidiBuffer& m
 		buffer.clear(i, 0, buffer.getNumSamples());
 	}
 
-	float currentVolumeL, currentVolumeR, bufferValue;
+	float currentVolumeL, currentVolumeR, bufferValue, oldVolumeL, oldVolumeR;
 
 	if (stereoCoupling->getBoolValue()) 
 	{
 		currentVolumeL = pow(10.f, (volumeL->getValue() * 132.f - 120.f) / 10.f);
+		oldVolumeL = pow(10.f, (volumeL->getOldValue() * 132.f - 120.f) / 10.f);
 		for (size_t bufferIteration = 0; bufferIteration < buffer.getNumSamples(); bufferIteration++)
 		{
 			bufferValue = buffer.getSample(/*channel*/ 0, bufferIteration);
-			buffer.setSample(/*channel*/ 0, bufferIteration, bufferValue * currentVolumeL);
+			buffer.setSample(/*channel*/ 0, bufferIteration, bufferValue * (oldVolumeL + ( (bufferIteration + 1) * (currentVolumeL - oldVolumeL) / buffer.getNumSamples() ) ));
 			bufferValue = buffer.getSample(/*channel*/ 1, bufferIteration);
-			buffer.setSample(/*channel*/ 1, bufferIteration, bufferValue * currentVolumeL);
+			buffer.setSample(/*channel*/ 1, bufferIteration, bufferValue * (oldVolumeL + ( (bufferIteration + 1) * (currentVolumeL - oldVolumeL) / buffer.getNumSamples() ) ));
 		}
+		volumeL->setOldValue(volumeL->getValue());
 	}
 	else
 	{
 		currentVolumeR = pow(10.f, (volumeR->getValue() * 132.f - 120.f) / 10.f);
 		currentVolumeL = pow(10.f, (volumeL->getValue() * 132.f - 120.f) / 10.f);
+		oldVolumeL = pow(10.f, (volumeL->getOldValue() * 132.f - 120.f) / 10.f);
+		oldVolumeL = pow(10.f, (volumeR->getOldValue() * 132.f - 120.f) / 10.f);
 		for (size_t bufferIteration = 0; bufferIteration < buffer.getNumSamples(); bufferIteration++)
 		{
 			bufferValue = buffer.getSample(/*channel*/ 0, bufferIteration);
-			buffer.setSample(/*channel*/ 0, bufferIteration, bufferValue * currentVolumeL);
+			buffer.setSample(/*channel*/ 0, bufferIteration, bufferValue * (oldVolumeL + ((bufferIteration + 1) * (currentVolumeL - oldVolumeL) / buffer.getNumSamples())));
 			bufferValue = buffer.getSample(/*channel*/ 1, bufferIteration);
-			buffer.setSample(/*channel*/ 1, bufferIteration, bufferValue * currentVolumeR);
+			buffer.setSample(/*channel*/ 1, bufferIteration, bufferValue * (oldVolumeR + ((bufferIteration + 1) * (currentVolumeR - oldVolumeR) / buffer.getNumSamples())));
 		}
+		volumeL->setOldValue(volumeL->getValue());
+		volumeR->setOldValue(volumeR->getValue());
 	}
 }
 
@@ -81,6 +87,10 @@ void VolumeAudioProcessor::setVolumeL(float newVolumeL) {
 	volumeL->setValueNotifyingHost((newVolumeL + 120.f) / 132.f);
 }
 
+/**
+ * This set function will change the SLIDER value to a NORMALIZED
+ * value so you do not have to worry :)
+ */
 void VolumeAudioProcessor::setVolumeR(float newVolumeR) {
 	volumeR->setValueNotifyingHost((newVolumeR + 120.f) / 132.f);
 }
@@ -109,10 +119,18 @@ void VolumeAudioProcessor::setState(const var & state)
 	stereoCoupling->setBoolValue(state.getProperty("stereoCoupling", stereoCoupling->getDefaultValue()));
 }
 
+/**
+ * This get function will change the NORMALIZED value to a SLIDER
+ * value so you do not have to worry :)
+ */
 float VolumeAudioProcessor::getVolumeL() {
 	return (*volumeL).getValue() * 132.f - 120.f;
 }
 
+/**
+ * This get function will change the NORMALIZED value to a SLIDER
+ * value so you do not have to worry :)
+ */
 float VolumeAudioProcessor::getVolumeR() {
 	return volumeR->getValue() * 132.f - 120.f;
 }
