@@ -46,17 +46,34 @@ void VolumeAudioProcessor::processBlock(AudioSampleBuffer& buffer, MidiBuffer& m
 	}
 
 	float currentVolumeL, currentVolumeR, bufferValue, oldVolumeL, oldVolumeR;
+	unsigned int maxInterpolation;
 
 	if (stereoCoupling->getBoolValue()) 
 	{
 		currentVolumeL = pow(10.f, (volumeL->getValue() * 132.f - 120.f) / 10.f);
 		oldVolumeL = pow(10.f, (volumeL->getOldValue() * 132.f - 120.f) / 10.f);
-		for (size_t bufferIteration = 0; bufferIteration < buffer.getNumSamples(); bufferIteration++)
+		maxInterpolation = int(buffer.getNumSamples() / volumeL->getScalingValue());
+		for (size_t interpolationIteration = 0; interpolationIteration < maxInterpolation; interpolationIteration++)
+		{
+			bufferValue = buffer.getSample(/*channel*/ 0, interpolationIteration);
+
+			buffer.setSample(/*channel*/ 0, interpolationIteration, bufferValue * \
+			(oldVolumeL + ((interpolationIteration + 1) * (currentVolumeL - oldVolumeL) \
+			/ maxInterpolation)));
+
+			bufferValue = buffer.getSample(/*channel*/ 1, interpolationIteration);
+
+			buffer.setSample(/*channel*/ 1, interpolationIteration, bufferValue * \
+			(oldVolumeL + ((interpolationIteration + 1) * (currentVolumeL - oldVolumeL) \
+			/ maxInterpolation)));
+
+		}
+		for (size_t bufferIteration = maxInterpolation; bufferIteration < buffer.getNumSamples(); bufferIteration++)
 		{
 			bufferValue = buffer.getSample(/*channel*/ 0, bufferIteration);
-			buffer.setSample(/*channel*/ 0, bufferIteration, bufferValue * (oldVolumeL + ( (bufferIteration + 1) * (currentVolumeL - oldVolumeL) / buffer.getNumSamples() ) ));
+			buffer.setSample(/*channel*/ 0, bufferIteration, bufferValue * currentVolumeL);
 			bufferValue = buffer.getSample(/*channel*/ 1, bufferIteration);
-			buffer.setSample(/*channel*/ 1, bufferIteration, bufferValue * (oldVolumeL + ( (bufferIteration + 1) * (currentVolumeL - oldVolumeL) / buffer.getNumSamples() ) ));
+			buffer.setSample(/*channel*/ 0, bufferIteration, bufferValue * currentVolumeL);
 		}
 		volumeL->setOldValue(volumeL->getValue());
 	}
@@ -66,12 +83,28 @@ void VolumeAudioProcessor::processBlock(AudioSampleBuffer& buffer, MidiBuffer& m
 		currentVolumeL = pow(10.f, (volumeL->getValue() * 132.f - 120.f) / 10.f);
 		oldVolumeL = pow(10.f, (volumeL->getOldValue() * 132.f - 120.f) / 10.f);
 		oldVolumeR = pow(10.f, (volumeR->getOldValue() * 132.f - 120.f) / 10.f);
-		for (size_t bufferIteration = 0; bufferIteration < buffer.getNumSamples(); bufferIteration++)
+		maxInterpolation = int(buffer.getNumSamples() / volumeL->getScalingValue());
+		for (size_t interpolationIteration = 0; interpolationIteration < maxInterpolation; interpolationIteration++)
+		{
+			bufferValue = buffer.getSample(/*channel*/ 0, interpolationIteration);
+
+			buffer.setSample(/*channel*/ 0, interpolationIteration, bufferValue * \
+			(oldVolumeL + ((interpolationIteration + 1) * (currentVolumeL - oldVolumeL) \
+			/ maxInterpolation)));
+
+			bufferValue = buffer.getSample(/*channel*/ 1, interpolationIteration);
+
+			buffer.setSample(/*channel*/ 1, interpolationIteration, bufferValue * \
+			(oldVolumeR + ((interpolationIteration + 1) * (currentVolumeR - oldVolumeR) \
+			/ maxInterpolation )));
+
+		}
+		for (size_t bufferIteration = maxInterpolation; bufferIteration < buffer.getNumSamples(); bufferIteration++)
 		{
 			bufferValue = buffer.getSample(/*channel*/ 0, bufferIteration);
-			buffer.setSample(/*channel*/ 0, bufferIteration, bufferValue * (oldVolumeL + ((bufferIteration + 1) * (currentVolumeL - oldVolumeL) / buffer.getNumSamples())));
+			buffer.setSample(/*channel*/ 0, bufferIteration, bufferValue * currentVolumeL);
 			bufferValue = buffer.getSample(/*channel*/ 1, bufferIteration);
-			buffer.setSample(/*channel*/ 1, bufferIteration, bufferValue * (oldVolumeR + ((bufferIteration + 1) * (currentVolumeR - oldVolumeR) / buffer.getNumSamples())));
+			buffer.setSample(/*channel*/ 0, bufferIteration, bufferValue * currentVolumeR);
 		}
 		volumeL->setOldValue(volumeL->getValue());
 		volumeR->setOldValue(volumeR->getValue());
