@@ -54,6 +54,8 @@ OBJECTS := \
   $(OBJDIR)/WaveGenerationComponent_9dda340d.o \
   $(OBJDIR)/AdsrComponent_813055dc.o \
   $(OBJDIR)/LfoComponent_8e5e1c31.o \
+  $(OBJDIR)/EqualizerAudioProcessorEditor_ccd8dd3f.o \
+  $(OBJDIR)/RhythmicGateAudioProcessorEditor_c8e57c22.o \
   $(OBJDIR)/PanAudioProcessor_ab4c94c8.o \
   $(OBJDIR)/PanAudioProcessorEditor_b780f995.o \
   $(OBJDIR)/BitcrushAudioProcessor_1c2f69cc.o \
@@ -125,6 +127,16 @@ $(OBJDIR)/AdsrComponent_813055dc.o: ../../../Source/components/AdsrComponent.cpp
 $(OBJDIR)/LfoComponent_8e5e1c31.o: ../../../Source/components/LfoComponent.cpp
 	-@mkdir -p $(OBJDIR)
 	@echo "Compiling LfoComponent.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+
+$(OBJDIR)/EqualizerAudioProcessorEditor_ccd8dd3f.o: ../../../Source/plugins/equalizer/EqualizerAudioProcessorEditor.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling EqualizerAudioProcessorEditor.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+
+$(OBJDIR)/RhythmicGateAudioProcessorEditor_c8e57c22.o: ../../../Source/plugins/rhythmic_gate/RhythmicGateAudioProcessorEditor.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling RhythmicGateAudioProcessorEditor.cpp"
 	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 
 $(OBJDIR)/PanAudioProcessor_ab4c94c8.o: ../../../Source/plugins/pan/PanAudioProcessor.cpp

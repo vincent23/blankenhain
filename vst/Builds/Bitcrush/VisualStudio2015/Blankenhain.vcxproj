@@ -138,6 +138,8 @@
     <ClCompile Include="..\..\..\Source\components\WaveGenerationComponent.cpp"/>
     <ClCompile Include="..\..\..\Source\components\AdsrComponent.cpp"/>
     <ClCompile Include="..\..\..\Source\components\LfoComponent.cpp"/>
+    <ClCompile Include="..\..\..\Source\plugins\equalizer\EqualizerAudioProcessorEditor.cpp"/>
+    <ClCompile Include="..\..\..\Source\plugins\rhythmic_gate\RhythmicGateAudioProcessorEditor.cpp"/>
     <ClCompile Include="..\..\..\Source\plugins\pan\PanAudioProcessor.cpp"/>
     <ClCompile Include="..\..\..\Source\plugins\pan\PanAudioProcessorEditor.cpp"/>
     <ClCompile Include="..\..\..\Source\plugins\bitcrush\BitcrushAudioProcessor.cpp"/>
@@ -1238,6 +1240,8 @@
     <ClInclude Include="..\..\..\Source\components\WaveGenerationComponent.h"/>
     <ClInclude Include="..\..\..\Source\components\AdsrComponent.h"/>
     <ClInclude Include="..\..\..\Source\components\LfoComponent.h"/>
+    <ClInclude Include="..\..\..\Source\plugins\equalizer\EqualizerAudioProcessorEditor.h"/>
+    <ClInclude Include="..\..\..\Source\plugins\rhythmic_gate\RhythmicGateAudioProcessorEditor.h"/>
     <ClInclude Include="..\..\..\Source\plugins\pan\PanAudioProcessor.h"/>
     <ClInclude Include="..\..\..\Source\plugins\pan\PanAudioProcessorEditor.h"/>
     <ClInclude Include="..\..\..\Source\plugins\bitcrush\BitcrushAudioProcessor.h"/>

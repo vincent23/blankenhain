@@ -33,6 +33,18 @@
               file="Source/components/LfoComponent.cpp"/>
       </GROUP>
       <GROUP id="{19EF4637-6B84-4B6A-69FF-029D7E3D590C}" name="plugins">
+        <GROUP id="{763B29F5-27FB-77D9-3B5F-D2404A4E7148}" name="equalizer">
+          <FILE id="FntB1b" name="EqualizerAudioProcessorEditor.cpp" compile="1"
+                resource="0" file="Source/plugins/equalizer/EqualizerAudioProcessorEditor.cpp"/>
+          <FILE id="ogKmqm" name="EqualizerAudioProcessorEditor.h" compile="0"
+                resource="0" file="Source/plugins/equalizer/EqualizerAudioProcessorEditor.h"/>
+        </GROUP>
+        <GROUP id="{6EA90266-4B47-01CE-D8F4-797E9A1DE91F}" name="rhythmic_gate">
+          <FILE id="rhS3Ng" name="RhythmicGateAudioProcessorEditor.cpp" compile="1"
+                resource="0" file="Source/plugins/rhythmic_gate/RhythmicGateAudioProcessorEditor.cpp"/>
+          <FILE id="xEr2q3" name="RhythmicGateAudioProcessorEditor.h" compile="0"
+                resource="0" file="Source/plugins/rhythmic_gate/RhythmicGateAudioProcessorEditor.h"/>
+        </GROUP>
         <GROUP id="{60BD488A-238A-73A3-EF0B-D1D89042C6E8}" name="pan">
           <FILE id="S9Pduq" name="PanAudioProcessor.cpp" compile="1" resource="0"
                 file="Source/plugins/pan/PanAudioProcessor.cpp"/>

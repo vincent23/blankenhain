@@ -14,6 +14,12 @@
     <Filter Include="Blankenhain\Source\plugins">
       <UniqueIdentifier>{B56517A3-59A9-4A60-CDBF-28A25493C568}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Blankenhain\Source\plugins\equalizer">
+      <UniqueIdentifier>{FF1C70E5-1F53-EB8C-6AD6-1CF7860AD3B6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Blankenhain\Source\plugins\rhythmic_gate">
+      <UniqueIdentifier>{182B6E08-11C0-5633-FA00-D2A9CD8714CC}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Blankenhain\Source\plugins\pan">
       <UniqueIdentifier>{5E0F5B3D-55D9-45E2-05F2-61C5AE042853}</UniqueIdentifier>
     </Filter>
@@ -327,6 +333,12 @@
     </ClCompile>
     <ClCompile Include="..\..\..\Source\components\LfoComponent.cpp">
       <Filter>Blankenhain\Source\components</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Source\plugins\equalizer\EqualizerAudioProcessorEditor.cpp">
+      <Filter>Blankenhain\Source\plugins\equalizer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Source\plugins\rhythmic_gate\RhythmicGateAudioProcessorEditor.cpp">
+      <Filter>Blankenhain\Source\plugins\rhythmic_gate</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Source\plugins\pan\PanAudioProcessor.cpp">
       <Filter>Blankenhain\Source\plugins\pan</Filter>
@@ -1580,6 +1592,12 @@
     </ClInclude>
     <ClInclude Include="..\..\..\Source\components\LfoComponent.h">
       <Filter>Blankenhain\Source\components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Source\plugins\equalizer\EqualizerAudioProcessorEditor.h">
+      <Filter>Blankenhain\Source\plugins\equalizer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Source\plugins\rhythmic_gate\RhythmicGateAudioProcessorEditor.h">
+      <Filter>Blankenhain\Source\plugins\rhythmic_gate</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\Source\plugins\pan\PanAudioProcessor.h">
       <Filter>Blankenhain\Source\plugins\pan</Filter>
