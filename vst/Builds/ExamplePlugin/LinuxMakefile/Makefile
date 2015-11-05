@@ -64,14 +64,13 @@ OBJECTS := \
   $(OBJDIR)/VolumeAudioProcessorEditor_b62bd059.o \
   $(OBJDIR)/ExampleAudioProcessor_ee4a53e2.o \
   $(OBJDIR)/ExampleAudioProcessorEditor_2e557d2f.o \
-  $(OBJDIR)/FilterAudioProcessor_1254b8cc.o \
-  $(OBJDIR)/FilterAudioProcessorEditor_ec770a99.o \
   $(OBJDIR)/WittersrodaAudioProcessor_3fce612a.o \
   $(OBJDIR)/WittersrodaAudioProcessorEditor_de9c7477.o \
   $(OBJDIR)/BlankenhainAudioProcessor_79973627.o \
   $(OBJDIR)/BoolParameter_4cee9def.o \
   $(OBJDIR)/CreateFilter_f99fea0e.o \
   $(OBJDIR)/FloatParameter_1174567.o \
+  $(OBJDIR)/SkewingParameter_94dbfd6b.o \
   $(OBJDIR)/juce_audio_basics_2a5f169b.o \
   $(OBJDIR)/juce_audio_devices_949f3099.o \
   $(OBJDIR)/juce_audio_formats_c3207a39.o \
@@ -179,16 +178,6 @@ $(OBJDIR)/ExampleAudioProcessorEditor_2e557d2f.o: ../../../Source/plugins/exampl
 	@echo "Compiling ExampleAudioProcessorEditor.cpp"
 	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 
-$(OBJDIR)/FilterAudioProcessor_1254b8cc.o: ../../../Source/plugins/filter/FilterAudioProcessor.cpp
-	-@mkdir -p $(OBJDIR)
-	@echo "Compiling FilterAudioProcessor.cpp"
-	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
-
-$(OBJDIR)/FilterAudioProcessorEditor_ec770a99.o: ../../../Source/plugins/filter/FilterAudioProcessorEditor.cpp
-	-@mkdir -p $(OBJDIR)
-	@echo "Compiling FilterAudioProcessorEditor.cpp"
-	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
-
 $(OBJDIR)/WittersrodaAudioProcessor_3fce612a.o: ../../../Source/plugins/wittersroda/WittersrodaAudioProcessor.cpp
 	-@mkdir -p $(OBJDIR)
 	@echo "Compiling WittersrodaAudioProcessor.cpp"
@@ -217,6 +206,11 @@ $(OBJDIR)/CreateFilter_f99fea0e.o: ../../../Source/CreateFilter.cpp
 $(OBJDIR)/FloatParameter_1174567.o: ../../../Source/FloatParameter.cpp
 	-@mkdir -p $(OBJDIR)
 	@echo "Compiling FloatParameter.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+
+$(OBJDIR)/SkewingParameter_94dbfd6b.o: ../../../Source/SkewingParameter.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling SkewingParameter.cpp"
 	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 
 $(OBJDIR)/juce_audio_basics_2a5f169b.o: ../../../juce_modules/juce_audio_basics/juce_audio_basics.cpp

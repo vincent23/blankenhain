@@ -85,16 +85,6 @@
           <FILE id="iq3ohk" name="ExampleAudioProcessorEditor.h" compile="0"
                 resource="0" file="Source/plugins/example/ExampleAudioProcessorEditor.h"/>
         </GROUP>
-        <GROUP id="{3C13C35C-4A34-FCB7-C86A-2B63292A1727}" name="filter">
-          <FILE id="k96W0G" name="FilterAudioProcessor.cpp" compile="1" resource="0"
-                file="Source/plugins/filter/FilterAudioProcessor.cpp"/>
-          <FILE id="N7NFUm" name="FilterAudioProcessor.h" compile="0" resource="0"
-                file="Source/plugins/filter/FilterAudioProcessor.h"/>
-          <FILE id="A25LPN" name="FilterAudioProcessorEditor.cpp" compile="1"
-                resource="0" file="Source/plugins/filter/FilterAudioProcessorEditor.cpp"/>
-          <FILE id="Y1i09x" name="FilterAudioProcessorEditor.h" compile="0" resource="0"
-                file="Source/plugins/filter/FilterAudioProcessorEditor.h"/>
-        </GROUP>
         <GROUP id="{17EF1EFF-4C08-1A7F-B06B-68828B08A7C5}" name="wittersroda">
           <FILE id="mdb4j2" name="WittersrodaAudioProcessor.cpp" compile="1"
                 resource="0" file="Source/plugins/wittersroda/WittersrodaAudioProcessor.cpp"/>
@@ -119,6 +109,10 @@
             file="Source/FloatParameter.cpp"/>
       <FILE id="SAQ9t7" name="FloatParameter.h" compile="0" resource="0"
             file="Source/FloatParameter.h"/>
+      <FILE id="LbP7xY" name="SkewingParameter.cpp" compile="1" resource="0"
+            file="Source/SkewingParameter.cpp"/>
+      <FILE id="g8wioN" name="SkewingParameter.h" compile="0" resource="0"
+            file="Source/SkewingParameter.h"/>
     </GROUP>
   </MAINGROUP>
   <EXPORTFORMATS>

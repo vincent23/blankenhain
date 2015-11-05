@@ -148,14 +148,13 @@
     <ClCompile Include="..\..\..\Source\plugins\volume\VolumeAudioProcessorEditor.cpp"/>
     <ClCompile Include="..\..\..\Source\plugins\example\ExampleAudioProcessor.cpp"/>
     <ClCompile Include="..\..\..\Source\plugins\example\ExampleAudioProcessorEditor.cpp"/>
-    <ClCompile Include="..\..\..\Source\plugins\filter\FilterAudioProcessor.cpp"/>
-    <ClCompile Include="..\..\..\Source\plugins\filter\FilterAudioProcessorEditor.cpp"/>
     <ClCompile Include="..\..\..\Source\plugins\wittersroda\WittersrodaAudioProcessor.cpp"/>
     <ClCompile Include="..\..\..\Source\plugins\wittersroda\WittersrodaAudioProcessorEditor.cpp"/>
     <ClCompile Include="..\..\..\Source\BlankenhainAudioProcessor.cpp"/>
     <ClCompile Include="..\..\..\Source\BoolParameter.cpp"/>
     <ClCompile Include="..\..\..\Source\CreateFilter.cpp"/>
     <ClCompile Include="..\..\..\Source\FloatParameter.cpp"/>
+    <ClCompile Include="..\..\..\Source\SkewingParameter.cpp"/>
     <ClCompile Include="..\..\..\juce_modules\juce_audio_basics\buffers\juce_AudioDataConverters.cpp">
       <ExcludedFromBuild>true</ExcludedFromBuild>
     </ClCompile>
@@ -1250,13 +1249,12 @@
     <ClInclude Include="..\..\..\Source\plugins\volume\VolumeAudioProcessorEditor.h"/>
     <ClInclude Include="..\..\..\Source\plugins\example\ExampleAudioProcessor.h"/>
     <ClInclude Include="..\..\..\Source\plugins\example\ExampleAudioProcessorEditor.h"/>
-    <ClInclude Include="..\..\..\Source\plugins\filter\FilterAudioProcessor.h"/>
-    <ClInclude Include="..\..\..\Source\plugins\filter\FilterAudioProcessorEditor.h"/>
     <ClInclude Include="..\..\..\Source\plugins\wittersroda\WittersrodaAudioProcessor.h"/>
     <ClInclude Include="..\..\..\Source\plugins\wittersroda\WittersrodaAudioProcessorEditor.h"/>
     <ClInclude Include="..\..\..\Source\BlankenhainAudioProcessor.h"/>
     <ClInclude Include="..\..\..\Source\BoolParameter.h"/>
     <ClInclude Include="..\..\..\Source\FloatParameter.h"/>
+    <ClInclude Include="..\..\..\Source\SkewingParameter.h"/>
     <ClInclude Include="..\..\..\juce_modules\juce_audio_basics\buffers\juce_AudioDataConverters.h"/>
     <ClInclude Include="..\..\..\juce_modules\juce_audio_basics\buffers\juce_AudioSampleBuffer.h"/>
     <ClInclude Include="..\..\..\juce_modules\juce_audio_basics\buffers\juce_FloatVectorOperations.h"/>
