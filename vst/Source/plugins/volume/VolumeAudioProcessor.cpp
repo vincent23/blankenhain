@@ -13,10 +13,8 @@
 
 VolumeAudioProcessor::VolumeAudioProcessor()
 {
-	volumeL = new FloatParameter("volumeL", 120.f / 132.f, 0.5f, SkewingParameter() , [](float in) {return (in * 132.f - 120.f); }, \
-								 [](float in) {return ((in + 120.f) / 132.f); });
-	volumeR = new FloatParameter("volumeR", 120.f / 132.f, 0.5f, SkewingParameter(), [](float in) {return (in * 132.f - 120.f); }, \
-								 [](float in) {return ((in + 120.f) / 132.f); });
+	volumeL = new FloatParameter("volumeL", 120.f / 132.f, 0.5f, NormalisableRange<float>(-120.f, 12.f, 0.f, 5.f));
+	volumeR = new FloatParameter("volumeR", 120.f / 132.f, 0.5f, NormalisableRange<float>(-120.f, 12.f, 0.f, 5.f));
 	stereoCoupling = new BoolParameter("stereoCoupling", true);
 	addParameter(volumeL);
 	addParameter(volumeR);
