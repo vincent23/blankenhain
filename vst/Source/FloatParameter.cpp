@@ -31,6 +31,10 @@ void FloatParameter::setOldValue(float oldValue_) {
 	oldValue = range.convertTo0to1(oldValue_);
 }
 
+void FloatParameter::setOldValue(void) {
+	oldValue = value;
+}
+
 float FloatParameter::getValue() const {
 	return range.convertFrom0to1(value);
 }
@@ -63,4 +67,14 @@ float FloatParameter::getValueForText(const String &text) const {
 float FloatParameter::getNormalizedValue() const
 {
 	return value;
+}
+
+float FloatParameter::getNormalizedOldValue() const
+{
+	return oldValue;
+}
+
+float FloatParameter::getNormalizedDefaultValue() const
+{
+	return defaultValue;
 }

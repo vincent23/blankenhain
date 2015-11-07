@@ -3,7 +3,6 @@
 
 #include <juce>
 #include <functional>
-#include "SkewingParameter.h"
 
 // Internally all floats should be normalized, since 
 // this is necessary for communication with DAW-Host.
@@ -25,15 +24,22 @@ public:
 		= NormalisableRange<float>());
 
 	float getValue() const override;
+	void setValue(float unnormalizedNewValue_) override;
+
 	float getOldValue() const;
-	void setOldValue(float oldValue_);
-	void setValue(float newValue) override;
+	void setOldValue(float unnormalizedOldValue_);
+	void setOldValue(void);
+
 	float getDefaultValue() const override;
 	float getBufferScalingValue() const;
+
 	String getName(int maximumStringLength) const override;
 	String getLabel() const override;
 	float getValueForText(const String &text) const override;
+
 	float getNormalizedValue() const;
+	float getNormalizedOldValue() const;
+	float getNormalizedDefaultValue() const;
 
 private:
 	const float defaultValue;
