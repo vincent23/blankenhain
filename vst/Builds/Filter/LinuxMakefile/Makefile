@@ -54,6 +54,8 @@ OBJECTS := \
   $(OBJDIR)/WaveGenerationComponent_9dda340d.o \
   $(OBJDIR)/AdsrComponent_813055dc.o \
   $(OBJDIR)/LfoComponent_8e5e1c31.o \
+  $(OBJDIR)/FilterAudioProcessor_1254b8cc.o \
+  $(OBJDIR)/FilterAudioProcessorEditor_ec770a99.o \
   $(OBJDIR)/EqualizerAudioProcessorEditor_ccd8dd3f.o \
   $(OBJDIR)/RhythmicGateAudioProcessorEditor_c8e57c22.o \
   $(OBJDIR)/PanAudioProcessor_ab4c94c8.o \
@@ -70,7 +72,6 @@ OBJECTS := \
   $(OBJDIR)/BoolParameter_4cee9def.o \
   $(OBJDIR)/CreateFilter_f99fea0e.o \
   $(OBJDIR)/FloatParameter_1174567.o \
-  $(OBJDIR)/SkewingParameter_94dbfd6b.o \
   $(OBJDIR)/juce_audio_basics_2a5f169b.o \
   $(OBJDIR)/juce_audio_devices_949f3099.o \
   $(OBJDIR)/juce_audio_formats_c3207a39.o \
@@ -126,6 +127,16 @@ $(OBJDIR)/AdsrComponent_813055dc.o: ../../../Source/components/AdsrComponent.cpp
 $(OBJDIR)/LfoComponent_8e5e1c31.o: ../../../Source/components/LfoComponent.cpp
 	-@mkdir -p $(OBJDIR)
 	@echo "Compiling LfoComponent.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+
+$(OBJDIR)/FilterAudioProcessor_1254b8cc.o: ../../../Source/plugins/filter/FilterAudioProcessor.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling FilterAudioProcessor.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+
+$(OBJDIR)/FilterAudioProcessorEditor_ec770a99.o: ../../../Source/plugins/filter/FilterAudioProcessorEditor.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling FilterAudioProcessorEditor.cpp"
 	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 
 $(OBJDIR)/EqualizerAudioProcessorEditor_ccd8dd3f.o: ../../../Source/plugins/equalizer/EqualizerAudioProcessorEditor.cpp
@@ -206,11 +217,6 @@ $(OBJDIR)/CreateFilter_f99fea0e.o: ../../../Source/CreateFilter.cpp
 $(OBJDIR)/FloatParameter_1174567.o: ../../../Source/FloatParameter.cpp
 	-@mkdir -p $(OBJDIR)
 	@echo "Compiling FloatParameter.cpp"
-	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
-
-$(OBJDIR)/SkewingParameter_94dbfd6b.o: ../../../Source/SkewingParameter.cpp
-	-@mkdir -p $(OBJDIR)
-	@echo "Compiling SkewingParameter.cpp"
 	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 
 $(OBJDIR)/juce_audio_basics_2a5f169b.o: ../../../juce_modules/juce_audio_basics/juce_audio_basics.cpp

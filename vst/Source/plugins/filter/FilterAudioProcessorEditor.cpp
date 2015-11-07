@@ -44,7 +44,7 @@ FilterAudioProcessorEditor::FilterAudioProcessorEditor (FilterAudioProcessor& p)
     addAndMakeVisible (filterTypeSelector = new ComboBox ("new combo box"));
     filterTypeSelector->setEditableText (false);
     filterTypeSelector->setJustificationType (Justification::centredLeft);
-    filterTypeSelector->setTextWhenNothingSelected (String::empty);
+    filterTypeSelector->setTextWhenNothingSelected (TRANS("filter type"));
     filterTypeSelector->setTextWhenNoChoicesAvailable (TRANS("(no choices)"));
     filterTypeSelector->addItem (TRANS("High"), 1);
     filterTypeSelector->addItem (TRANS("Low"), 2);
@@ -60,7 +60,7 @@ FilterAudioProcessorEditor::FilterAudioProcessorEditor (FilterAudioProcessor& p)
     frequencySlider->setSkewFactor (0.3);
 
     addAndMakeVisible (resonanceSlider = new Slider ("new slider"));
-    resonanceSlider->setRange (0, 1, 0.01);
+    resonanceSlider->setRange (0.1, 5, 0.01);
     resonanceSlider->setSliderStyle (Slider::RotaryVerticalDrag);
     resonanceSlider->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
     resonanceSlider->addListener (this);
@@ -68,7 +68,7 @@ FilterAudioProcessorEditor::FilterAudioProcessorEditor (FilterAudioProcessor& p)
     addAndMakeVisible (label2 = new Label ("new label",
                                            TRANS("Resonance (Q)")));
     label2->setFont (Font (15.00f, Font::plain));
-    label2->setJustificationType (Justification::centredLeft);
+    label2->setJustificationType (Justification::centred);
     label2->setEditable (false, false, false);
     label2->setColour (TextEditor::textColourId, Colours::black);
     label2->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
@@ -76,7 +76,7 @@ FilterAudioProcessorEditor::FilterAudioProcessorEditor (FilterAudioProcessor& p)
     addAndMakeVisible (label3 = new Label ("new label",
                                            TRANS("Frequency")));
     label3->setFont (Font (15.00f, Font::plain));
-    label3->setJustificationType (Justification::centredLeft);
+    label3->setJustificationType (Justification::centred);
     label3->setEditable (false, false, false);
     label3->setColour (TextEditor::textColourId, Colours::black);
     label3->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
@@ -85,7 +85,7 @@ FilterAudioProcessorEditor::FilterAudioProcessorEditor (FilterAudioProcessor& p)
     //[UserPreSize]
     //[/UserPreSize]
 
-    setSize (800, 300);
+    setSize (500, 300);
 
 
     //[Constructor] You can add your own custom stuff here..
@@ -116,7 +116,7 @@ void FilterAudioProcessorEditor::paint (Graphics& g)
     //[UserPrePaint] Add your own custom painting code here..
     //[/UserPrePaint]
 
-    g.fillAll (Colour (0xffe0b5e0));
+    g.fillAll (Colours::white);
 
     //[UserPaint] Add your own custom painting code here..
     //[/UserPaint]
@@ -127,12 +127,12 @@ void FilterAudioProcessorEditor::resized()
     //[UserPreResize] Add your own custom resize code here..
     //[/UserPreResize]
 
-    label->setBounds (proportionOfWidth (0.5997f), proportionOfHeight (0.0000f), proportionOfWidth (0.4003f), proportionOfHeight (1.0000f));
-    filterTypeSelector->setBounds (120, 56, 336, 24);
-    frequencySlider->setBounds (64, 144, 160, 128);
-    resonanceSlider->setBounds (344, 152, 160, 128);
-    label2->setBounds (376, 120, 112, 24);
-    label3->setBounds (72, 112, 150, 24);
+    label->setBounds (proportionOfWidth (0.6995f), proportionOfHeight (0.0000f), proportionOfWidth (0.3005f), proportionOfHeight (1.0000f));
+    filterTypeSelector->setBounds (proportionOfWidth (0.0095f), proportionOfHeight (0.0095f), proportionOfWidth (0.6995f), proportionOfHeight (0.0792f));
+    frequencySlider->setBounds (proportionOfWidth (0.0095f), proportionOfHeight (0.0998f), proportionOfWidth (0.3397f), proportionOfHeight (0.8003f));
+    resonanceSlider->setBounds (proportionOfWidth (0.3599f), proportionOfHeight (0.0998f), proportionOfWidth (0.3397f), proportionOfHeight (0.8003f));
+    label2->setBounds (proportionOfWidth (0.3599f), proportionOfHeight (0.9002f), proportionOfWidth (0.3504f), proportionOfHeight (0.0998f));
+    label3->setBounds (proportionOfWidth (0.0095f), proportionOfHeight (0.9002f), proportionOfWidth (0.3504f), proportionOfHeight (0.0998f));
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -200,36 +200,36 @@ BEGIN_JUCER_METADATA
                  componentName="" parentClasses="public AudioProcessorEditor, public Timer"
                  constructorParams="FilterAudioProcessor&amp; p" variableInitialisers="AudioProcessorEditor(&amp;p), processor(p)"
                  snapPixels="8" snapActive="1" snapShown="1" overlayOpacity="0.330"
-                 fixedSize="0" initialWidth="800" initialHeight="300">
-  <BACKGROUND backgroundColour="ffe0b5e0"/>
+                 fixedSize="0" initialWidth="500" initialHeight="300">
+  <BACKGROUND backgroundColour="ffffffff"/>
   <LABEL name="new label" id="6f0b03fe092fc1cc" memberName="label" virtualName=""
-         explicitFocusOrder="0" pos="59.971% 0% 40.029% 100%" edTextCol="ff000000"
+         explicitFocusOrder="0" pos="69.952% 0% 30.048% 100%" edTextCol="ff000000"
          edBkgCol="0" labelText="LFO" editableSingleClick="0" editableDoubleClick="0"
          focusDiscardsChanges="0" fontname="Default font" fontsize="100"
          bold="0" italic="0" justification="36"/>
   <COMBOBOX name="new combo box" id="1dcc59c629cf3d96" memberName="filterTypeSelector"
-            virtualName="" explicitFocusOrder="0" pos="120 56 336 24" editable="0"
-            layout="33" items="High&#10;Low&#10;Band&#10;Notch" textWhenNonSelected=""
-            textWhenNoItems="(no choices)"/>
+            virtualName="" explicitFocusOrder="0" pos="0.95% 0.951% 69.952% 7.924%"
+            editable="0" layout="33" items="High&#10;Low&#10;Band&#10;Notch"
+            textWhenNonSelected="filter type" textWhenNoItems="(no choices)"/>
   <SLIDER name="new slider" id="8ccfb48a68fba8e0" memberName="frequencySlider"
-          virtualName="" explicitFocusOrder="0" pos="64 144 160 128" min="40"
-          max="22000" int="1" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
+          virtualName="" explicitFocusOrder="0" pos="0.95% 9.984% 33.967% 80.032%"
+          min="40" max="22000" int="1" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="0.2999999999999999889"/>
   <SLIDER name="new slider" id="e475b1e27e22f86a" memberName="resonanceSlider"
-          virtualName="" explicitFocusOrder="0" pos="344 152 160 128" min="0"
-          max="1" int="0.010000000000000000208" style="RotaryVerticalDrag"
-          textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="80"
-          textBoxHeight="20" skewFactor="1"/>
+          virtualName="" explicitFocusOrder="0" pos="35.986% 9.984% 33.967% 80.032%"
+          min="0.10000000000000000555" max="5" int="0.010000000000000000208"
+          style="RotaryVerticalDrag" textBoxPos="TextBoxBelow" textBoxEditable="1"
+          textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <LABEL name="new label" id="7e1f26a2d2304b85" memberName="label2" virtualName=""
-         explicitFocusOrder="0" pos="376 120 112 24" edTextCol="ff000000"
+         explicitFocusOrder="0" pos="35.986% 90.016% 35.036% 9.984%" edTextCol="ff000000"
          edBkgCol="0" labelText="Resonance (Q)" editableSingleClick="0"
          editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
-         fontsize="15" bold="0" italic="0" justification="33"/>
+         fontsize="15" bold="0" italic="0" justification="36"/>
   <LABEL name="new label" id="2d2e1e1a6e121059" memberName="label3" virtualName=""
-         explicitFocusOrder="0" pos="72 112 150 24" edTextCol="ff000000"
+         explicitFocusOrder="0" pos="0.95% 90.016% 35.036% 9.984%" edTextCol="ff000000"
          edBkgCol="0" labelText="Frequency" editableSingleClick="0" editableDoubleClick="0"
          focusDiscardsChanges="0" fontname="Default font" fontsize="15"
-         bold="0" italic="0" justification="33"/>
+         bold="0" italic="0" justification="36"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA

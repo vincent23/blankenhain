@@ -17,8 +17,8 @@ public:
 
     AudioProcessorEditor* createEditor() override;
 
-	void setResonance(float resonance);
-	void setFrequency(float frequency);
+	void setResonance(FloatParameter resonance);
+	void setFrequency(FloatParameter frequency);
 	void setFilterType(int index);
 	float getResonance();
 	float getFrequency();

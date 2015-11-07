@@ -33,6 +33,16 @@
               file="Source/components/LfoComponent.cpp"/>
       </GROUP>
       <GROUP id="{19EF4637-6B84-4B6A-69FF-029D7E3D590C}" name="plugins">
+        <GROUP id="{470BF1A1-A05C-14FC-0378-181E6C55BAD8}" name="filter">
+          <FILE id="pJOcBW" name="FilterAudioProcessor.cpp" compile="1" resource="0"
+                file="Source/plugins/filter/FilterAudioProcessor.cpp"/>
+          <FILE id="jSmfNT" name="FilterAudioProcessor.h" compile="0" resource="0"
+                file="Source/plugins/filter/FilterAudioProcessor.h"/>
+          <FILE id="OH851H" name="FilterAudioProcessorEditor.cpp" compile="1"
+                resource="0" file="Source/plugins/filter/FilterAudioProcessorEditor.cpp"/>
+          <FILE id="giSC0w" name="FilterAudioProcessorEditor.h" compile="0" resource="0"
+                file="Source/plugins/filter/FilterAudioProcessorEditor.h"/>
+        </GROUP>
         <GROUP id="{763B29F5-27FB-77D9-3B5F-D2404A4E7148}" name="equalizer">
           <FILE id="FntB1b" name="EqualizerAudioProcessorEditor.cpp" compile="1"
                 resource="0" file="Source/plugins/equalizer/EqualizerAudioProcessorEditor.cpp"/>

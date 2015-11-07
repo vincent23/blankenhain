@@ -4,8 +4,8 @@
 FilterAudioProcessor::FilterAudioProcessor() :
 	filterType(FilterType::Low)
 {
-	resonance = new FloatParameter("Resonance", 0.5),
-	frequency = new FloatParameter("Frequency", (500.f - 40.f) / (22000.f - 40.f)),
+	resonance = new FloatParameter(0.5, "Resonance", 0.5f, juce::NormalisableRange<float>(0.f, 5.f));
+	frequency = new FloatParameter((500.f), "Frequency", 0.5f, juce::NormalisableRange<float>(40.f, 22000.f,0.f,0.3f));
 
 	addParameter(resonance);
 	addParameter(frequency);
@@ -100,13 +100,12 @@ AudioProcessorEditor* FilterAudioProcessor::createEditor()
 	return new FilterAudioProcessorEditor(*this);
 }
 
-void FilterAudioProcessor::setResonance(float newResonance) {
-	resonance->setValueNotifyingHost(newResonance);
+void FilterAudioProcessor::setResonance(FloatParameter newResonance) {
+	resonance->setValueNotifyingHost(newResonance.getNormalizedValue());
 }
 
-void FilterAudioProcessor::setFrequency(float newFrequency) {
-	float frequencyNormalized = (newFrequency - 40.f) / (22000.f - 40.f);
-	frequency->setValueNotifyingHost(frequencyNormalized);
+void FilterAudioProcessor::setFrequency(FloatParameter newFrequency) {
+	frequency->setValueNotifyingHost(newFrequency.getNormalizedValue());
 }
 
 void FilterAudioProcessor::setFilterType(int index) {
@@ -147,7 +146,7 @@ float FilterAudioProcessor::getResonance() {
 }
 
 float FilterAudioProcessor::getFrequency() {
-	return frequency->getValue() * (22000.f - 40.f) + 40.f;
+	return frequency->getValue();
 }
 
 int FilterAudioProcessor::getFilterType() {
