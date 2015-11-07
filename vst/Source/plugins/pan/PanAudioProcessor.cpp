@@ -13,7 +13,7 @@
 
 PanAudioProcessor::PanAudioProcessor()
 {
-	panning = new FloatParameter("panning", (0.f + 50.f) / 100.f);
+	panning = new FloatParameter(0.0f,"panning",0.5f,juce::NormalisableRange<float>(-50.f, 50.f,0.f));
 	addParameter(panning);
 }
 
@@ -31,21 +31,34 @@ void PanAudioProcessor::releaseResources()
 
 void PanAudioProcessor::processBlock(AudioSampleBuffer& buffer, MidiBuffer& midiMessages)
 {
-	// In case we have more outputs than inputs, this code clears any output
-	// channels that didn't contain input data, (because these aren't
-	// guaranteed to be empty - they may contain garbage).
-	// I've added this to avoid people getting screaming feedback
-	// when they first compile the plugin, but obviously you don't need to
-	// this code if your algorithm already fills all the output channels.
 	for (int i = getNumInputChannels(); i < getNumOutputChannels(); ++i) {
 		buffer.clear(i, 0, buffer.getNumSamples());
 	}
 
-	float currentPanning, bufferValue;
-	currentPanning = panning->getValue();
+	//currentPanning: Set by Editor before this buffer iteration
+	//oldPanning: Was Set in Editor after last buffer Iteration
+	// Interpolation from oldPanning to currentPanning
+	//momentaryPanning: Helper Variable, keeps results of current Interpolation iteration during Interpolation
+	float currentPanning, oldPanning, bufferValue, momentaryPanning;
+
+	unsigned int maxInterpolation;
+	currentPanning = panning->getNormalizedValue();
+	oldPanning = panning->getNormalizedOldValue();
+	maxInterpolation = int(buffer.getNumSamples() * panning->getBufferScalingValue());
+
 	if (getNumInputChannels() == 1) 
 	{
-		for (size_t bufferIteration = 0; bufferIteration < buffer.getNumSamples(); bufferIteration++)
+		for (size_t interpolationIteration = 0; interpolationIteration < maxInterpolation; interpolationIteration++)
+		{
+			bufferValue = buffer.getSample(/*channel*/ 0, interpolationIteration);
+			momentaryPanning = (oldPanning + ((interpolationIteration + 1) * (currentPanning - oldPanning) / maxInterpolation));
+			buffer.setSample(/*channel*/ 0, interpolationIteration, bufferValue * \
+							 (1.f - 2 * (std::max(0.5f, momentaryPanning) - 0.5f)));
+
+			buffer.setSample(/*channel*/ 1, interpolationIteration, bufferValue * \
+							 2 * (std::min(0.5f, momentaryPanning)));
+		}
+		for (size_t bufferIteration = maxInterpolation; bufferIteration < buffer.getNumSamples(); bufferIteration++)
 		{
 			bufferValue = buffer.getSample(/*channel*/ 0, bufferIteration);
 			buffer.setSample(/*channel*/ 0, bufferIteration, bufferValue * (1.f - 2 * (std::max(0.5f, currentPanning) - 0.5f)));
@@ -54,7 +67,18 @@ void PanAudioProcessor::processBlock(AudioSampleBuffer& buffer, MidiBuffer& midi
 	}
 	else
 	{
-		for (size_t bufferIteration = 0; bufferIteration < buffer.getNumSamples(); bufferIteration++)
+		for (size_t interpolationIteration = 0; interpolationIteration < maxInterpolation; interpolationIteration++)
+		{
+			momentaryPanning = (oldPanning + ((interpolationIteration + 1) * (currentPanning - oldPanning) / maxInterpolation));
+
+			bufferValue = buffer.getSample(/*channel*/ 0, interpolationIteration);
+			buffer.setSample(/*channel*/ 0, interpolationIteration, bufferValue * \
+				(1.f - 2 * (std::max(0.5f, momentaryPanning) - 0.5f)));
+			bufferValue = buffer.getSample(/*channel*/ 1, interpolationIteration);
+			buffer.setSample(/*channel*/ 1, interpolationIteration, bufferValue * \
+				2 * (std::min(0.5f, momentaryPanning)));
+		}
+		for (size_t bufferIteration = maxInterpolation; bufferIteration < buffer.getNumSamples(); bufferIteration++)
 		{
 			bufferValue = buffer.getSample(/*channel*/ 0, bufferIteration);
 			buffer.setSample(/*channel*/ 0, bufferIteration, bufferValue * (1.f - 2 * (std::max(0.5f, currentPanning) - 0.5f)));
@@ -62,15 +86,16 @@ void PanAudioProcessor::processBlock(AudioSampleBuffer& buffer, MidiBuffer& midi
 			buffer.setSample(/*channel*/ 1, bufferIteration, bufferValue * 2 * (std::min(0.5f, currentPanning) ) );
 		}
 	}
+	panning->setOldValue();
 }
 
 AudioProcessorEditor* PanAudioProcessor::createEditor()
 {
 	return new PanAudioProcessorEditor(*this);
 }
-/* THIS WILL DO CONVERSION TO NORMALIZED FLOAT LOLL SO SLEEek*/
-void PanAudioProcessor::setPanning(float newPanning) {
-	panning->setValueNotifyingHost((newPanning + 50.f) / 100.f);
+
+void PanAudioProcessor::setPanning(FloatParameter newPanning) {
+	panning->setValueNotifyingHost(newPanning.getNormalizedValue());
 }
 
 
@@ -87,5 +112,5 @@ void PanAudioProcessor::setState(const var & state)
 }
 
 float PanAudioProcessor::getPanning() {
-	return (*panning).getValue() * 100.f - 50.f;
+	return panning->getValue();
 }

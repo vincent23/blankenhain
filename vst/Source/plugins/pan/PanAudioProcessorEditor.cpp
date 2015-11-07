@@ -119,7 +119,7 @@ void PanAudioProcessorEditor::sliderValueChanged (Slider* sliderThatWasMoved)
 //[MiscUserCode] You can add your own definitions of your custom methods or any other code here...
 void PanAudioProcessorEditor::timerCallback()
 {
-		panningSlider->setValue(processor.getPanning(), juce::dontSendNotification);
+	panningSlider->setValue(processor.getPanning(), juce::dontSendNotification);
 }
 //[/MiscUserCode]
 
