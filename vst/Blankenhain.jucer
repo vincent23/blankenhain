@@ -109,10 +109,6 @@
             file="Source/FloatParameter.cpp"/>
       <FILE id="SAQ9t7" name="FloatParameter.h" compile="0" resource="0"
             file="Source/FloatParameter.h"/>
-      <FILE id="LbP7xY" name="SkewingParameter.cpp" compile="1" resource="0"
-            file="Source/SkewingParameter.cpp"/>
-      <FILE id="g8wioN" name="SkewingParameter.h" compile="0" resource="0"
-            file="Source/SkewingParameter.h"/>
     </GROUP>
   </MAINGROUP>
   <EXPORTFORMATS>
@@ -212,7 +208,7 @@
     </VS2015>
     <VS2015 targetFolder="Builds/Wittersroda/VisualStudio2015" vstFolder=""
             extraDefs="PLUGIN_WITTERSRODA&#10;JucePlugin_Name=&quot;Blankenhain\ Wittersroda&quot;&#10;JucePlugin_Desc=&quot;Wittersroda\ Synth.&quot;&#10;JucePlugin_PluginCode='BhWI'"
-            extraCompilerFlags="/I..\..\..\Source">
+            extraCompilerFlags="/I..\..\..\Source" vst3Folder="">
       <CONFIGURATIONS>
         <CONFIGURATION name="Debug" winWarningLevel="4" generateManifest="1" winArchitecture="32-bit"
                        isDebug="1" optimisation="1" targetName="Blankenhain"/>
@@ -259,7 +255,8 @@
       </MODULEPATHS>
     </VS2015>
     <VS2015 targetFolder="Builds/Pan/VisualStudio2015" vstFolder="" extraCompilerFlags="/I..\..\..\Source"
-            extraDefs="PLUGIN_PAN&#10;JucePlugin_Name=&quot;Blankenhain\ Pan&quot;&#10;JucePlugin_Desc=&quot;Pan\ Plugin.&quot;&#10;JucePlugin_PluginCode='BhPa'">
+            extraDefs="PLUGIN_PAN&#10;JucePlugin_Name=&quot;Blankenhain\ Pan&quot;&#10;JucePlugin_Desc=&quot;Pan\ Plugin.&quot;&#10;JucePlugin_PluginCode='BhPa'"
+            vst3Folder="">
       <CONFIGURATIONS>
         <CONFIGURATION name="Debug" winWarningLevel="4" generateManifest="1" winArchitecture="32-bit"
                        isDebug="1" optimisation="1" targetName="Blankenhain"/>
@@ -283,7 +280,7 @@
     </VS2015>
     <VS2015 targetFolder="Builds/Bitcrush/VisualStudio2015" vstFolder=""
             extraDefs="PLUGIN_BITCRUSH&#10;JucePlugin_Name=&quot;Blankenhain\ Bitcrush&quot;&#10;JucePlugin_Desc=&quot;Bitcrush.&quot;&#10;JucePlugin_PluginCode='BhBC'"
-            extraCompilerFlags="/I..\..\..\Source">
+            extraCompilerFlags="/I..\..\..\Source" vst3Folder="">
       <CONFIGURATIONS>
         <CONFIGURATION name="Debug" winWarningLevel="4" generateManifest="1" winArchitecture="32-bit"
                        isDebug="1" optimisation="1" targetName="Blankenhain"/>
