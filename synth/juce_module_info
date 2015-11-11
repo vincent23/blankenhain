@@ -7,5 +7,6 @@
 	"compile": [
 		{ "file": "synth.cpp" }
 	],
-	"browse": [ "src/*" ]
+	"browse": [ "src/*",
+	            "./synth.cpp" ]
 }

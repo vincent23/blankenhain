@@ -2,21 +2,26 @@
 #define SAMPLE_H_INCLUDED
 
 #include <emmintrin.h>
+#include "AlignedType.h"
 
 /**
  * A stereo sample.
  */
-struct alignas(16) Sample {
+struct alignas(16) Sample : public AlignedType
+{
 	/**
 	 * Left and right volume two doubles packed in a SSE register.
 	 */
-	__m128d v;
-
 	Sample() {}
-	explicit Sample(const double x) : v(_mm_set1_pd(x)) {}
-	Sample(__m128d in) : v(in) {}
-	Sample(const Sample& x) : v(x.v) {}
-	Sample(double x1, double x2) : v(_mm_set_pd(x1, x2)) {}
+	explicit Sample(const double singleSample) {v = _mm_set1_pd(singleSample);}
+	Sample(__m128d in) { v = in; }
+	Sample(const Sample& x) { v = x.v; }
+	Sample(double sampleLeft, double sampleRight) {	v = _mm_set_pd(sampleLeft, sampleRight);}
+	alignas(16) __m128d v;
+	inline __m128d& get(void)
+	{
+		return v;
+	}
 
 	Sample& operator=(const Sample& other)
 	{
@@ -52,7 +57,8 @@ struct alignas(16) Sample {
 	 * @param ptr The location of the sample values.
 	 * @return The values as a Sample.
 	 */
-	static Sample load_aligned(const double* ptr)
+	//static
+	Sample load_aligned(const double* ptr)
 	{
 		return Sample(_mm_load_pd(ptr));
 	}

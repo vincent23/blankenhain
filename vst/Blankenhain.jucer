@@ -179,7 +179,6 @@
                        targetName="Blankenhain"/>
       </CONFIGURATIONS>
       <MODULEPATHS>
-        <MODULEPATH id="synth" path="../../blankenhain"/>
         <MODULEPATH id="juce_gui_extra" path="juce_modules"/>
         <MODULEPATH id="juce_gui_basics" path="juce_modules"/>
         <MODULEPATH id="juce_graphics" path="juce_modules"/>
@@ -191,6 +190,7 @@
         <MODULEPATH id="juce_audio_formats" path="juce_modules"/>
         <MODULEPATH id="juce_audio_devices" path="juce_modules"/>
         <MODULEPATH id="juce_audio_basics" path="juce_modules"/>
+        <MODULEPATH id="synth" path="../../blankenhain"/>
       </MODULEPATHS>
     </LINUX_MAKE>
     <VS2015 targetFolder="Builds/Filter/VisualStudio2015" extraDefs="PLUGIN_FILTER&#10;JucePlugin_Name=&quot;Blankenhain\ Filter&quot;&#10;JucePlugin_Desc=&quot;Filter\ Plugin.&quot;&#10;JucePlugin_PluginCode='BhFI'"
@@ -202,7 +202,6 @@
                        isDebug="0" optimisation="3" targetName="Blankenhain"/>
       </CONFIGURATIONS>
       <MODULEPATHS>
-        <MODULEPATH id="synth" path="../../blankenhain"/>
         <MODULEPATH id="juce_gui_extra" path="juce_modules"/>
         <MODULEPATH id="juce_gui_basics" path="juce_modules"/>
         <MODULEPATH id="juce_graphics" path="juce_modules"/>
@@ -214,6 +213,7 @@
         <MODULEPATH id="juce_audio_formats" path="juce_modules"/>
         <MODULEPATH id="juce_audio_devices" path="juce_modules"/>
         <MODULEPATH id="juce_audio_basics" path="juce_modules"/>
+        <MODULEPATH id="synth" path="../../blankenhain"/>
       </MODULEPATHS>
     </VS2015>
     <VS2015 targetFolder="Builds/Wittersroda/VisualStudio2015" vstFolder=""
@@ -226,7 +226,6 @@
                        isDebug="0" optimisation="3" targetName="Blankenhain"/>
       </CONFIGURATIONS>
       <MODULEPATHS>
-        <MODULEPATH id="synth" path="../../blankenhain"/>
         <MODULEPATH id="juce_gui_extra" path="juce_modules"/>
         <MODULEPATH id="juce_gui_basics" path="juce_modules"/>
         <MODULEPATH id="juce_graphics" path="juce_modules"/>
@@ -238,6 +237,7 @@
         <MODULEPATH id="juce_audio_formats" path="juce_modules"/>
         <MODULEPATH id="juce_audio_devices" path="juce_modules"/>
         <MODULEPATH id="juce_audio_basics" path="juce_modules"/>
+        <MODULEPATH id="synth" path="../../blankenhain"/>
       </MODULEPATHS>
     </VS2015>
     <VS2015 targetFolder="Builds/Volume/VisualStudio2015" vstFolder="" vst3Folder=""
@@ -250,7 +250,6 @@
                        isDebug="0" optimisation="3" targetName="Blankenhain"/>
       </CONFIGURATIONS>
       <MODULEPATHS>
-        <MODULEPATH id="synth" path="../../blankenhain"/>
         <MODULEPATH id="juce_gui_extra" path="juce_modules"/>
         <MODULEPATH id="juce_gui_basics" path="juce_modules"/>
         <MODULEPATH id="juce_graphics" path="juce_modules"/>
@@ -262,6 +261,7 @@
         <MODULEPATH id="juce_audio_formats" path="juce_modules"/>
         <MODULEPATH id="juce_audio_devices" path="juce_modules"/>
         <MODULEPATH id="juce_audio_basics" path="juce_modules"/>
+        <MODULEPATH id="synth" path="../../blankenhain"/>
       </MODULEPATHS>
     </VS2015>
     <VS2015 targetFolder="Builds/Pan/VisualStudio2015" vstFolder="" extraCompilerFlags="/I..\..\..\Source"
@@ -274,7 +274,6 @@
                        isDebug="0" optimisation="3" targetName="Blankenhain"/>
       </CONFIGURATIONS>
       <MODULEPATHS>
-        <MODULEPATH id="synth" path="../../blankenhain"/>
         <MODULEPATH id="juce_gui_extra" path="juce_modules"/>
         <MODULEPATH id="juce_gui_basics" path="juce_modules"/>
         <MODULEPATH id="juce_graphics" path="juce_modules"/>
@@ -286,6 +285,7 @@
         <MODULEPATH id="juce_audio_formats" path="juce_modules"/>
         <MODULEPATH id="juce_audio_devices" path="juce_modules"/>
         <MODULEPATH id="juce_audio_basics" path="juce_modules"/>
+        <MODULEPATH id="synth" path="../../blankenhain"/>
       </MODULEPATHS>
     </VS2015>
     <VS2015 targetFolder="Builds/Bitcrush/VisualStudio2015" vstFolder=""
@@ -298,7 +298,6 @@
                        isDebug="0" optimisation="3" targetName="Blankenhain"/>
       </CONFIGURATIONS>
       <MODULEPATHS>
-        <MODULEPATH id="synth" path="../../blankenhain"/>
         <MODULEPATH id="juce_gui_extra" path="juce_modules"/>
         <MODULEPATH id="juce_gui_basics" path="juce_modules"/>
         <MODULEPATH id="juce_graphics" path="juce_modules"/>
@@ -310,6 +309,7 @@
         <MODULEPATH id="juce_audio_formats" path="juce_modules"/>
         <MODULEPATH id="juce_audio_devices" path="juce_modules"/>
         <MODULEPATH id="juce_audio_basics" path="juce_modules"/>
+        <MODULEPATH id="synth" path="../../blankenhain"/>
       </MODULEPATHS>
     </VS2015>
   </EXPORTFORMATS>

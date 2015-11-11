@@ -314,6 +314,9 @@
     <Filter Include="Juce Modules\synth\src">
       <UniqueIdentifier>{F1336F60-BE14-1454-6BC1-17B2A4304E01}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Juce Modules\synth\.">
+      <UniqueIdentifier>{0FD4DC94-4F55-8413-D6B7-A52F185D7284}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Juce Library Code">
       <UniqueIdentifier>{8B4D1BAA-6DB4-CAEC-A0FA-271F354D5C61}</UniqueIdentifier>
     </Filter>
@@ -1513,8 +1516,14 @@
     <ClCompile Include="..\..\..\..\synth\src\AdsrEnvelope.cpp">
       <Filter>Juce Modules\synth\src</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\..\synth\src\AlignedType.cpp">
+      <Filter>Juce Modules\synth\src</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\..\..\synth\src\Filter.cpp">
       <Filter>Juce Modules\synth\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\synth\.\synth.cpp">
+      <Filter>Juce Modules\synth\.</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\juce_modules\juce_audio_plugin_client\AAX\juce_AAX_Wrapper.cpp">
       <Filter>Juce Library Code</Filter>
@@ -2914,6 +2923,9 @@
       <Filter>Juce Modules\juce_gui_extra</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\..\synth\src\AdsrEnvelope.h">
+      <Filter>Juce Modules\synth\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\synth\src\AlignedType.h">
       <Filter>Juce Modules\synth\src</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\..\synth\src\Filter.h">

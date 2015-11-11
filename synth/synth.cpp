@@ -2,3 +2,4 @@
 // other *.cpp file has to be included
 
 #include "src/Filter.cpp"
+#include "src/AlignedType.cpp"
