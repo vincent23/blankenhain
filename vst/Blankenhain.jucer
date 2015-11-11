@@ -148,12 +148,12 @@
     </LINUX_MAKE>
     <VS2015 targetFolder="Builds/ExamplePlugin/VisualStudio2015" vstFolder=""
             extraDefs="PLUGIN_EXAMPLE&#10;JucePlugin_Name=&quot;Blankenhain\ Example&quot;&#10;JucePlugin_Desc=&quot;Example\ plugin\ as\ a\ template\ for\ new\ ones.&quot;&#10;JucePlugin_PluginCode='BhEX'"
-            extraCompilerFlags="/I..\..\..\Source" vst3Folder="">
+            extraCompilerFlags="/I..\..\..\Source" vst3Folder="" extraLinkerFlags="">
       <CONFIGURATIONS>
         <CONFIGURATION name="Debug" winWarningLevel="4" generateManifest="1" winArchitecture="32-bit"
-                       isDebug="1" optimisation="1" targetName="Blankenhain"/>
+                       isDebug="1" optimisation="1" targetName="bh_example"/>
         <CONFIGURATION name="Release" winWarningLevel="4" generateManifest="1" winArchitecture="32-bit"
-                       isDebug="0" optimisation="3" targetName="Blankenhain"/>
+                       isDebug="0" optimisation="3" targetName="bh_example"/>
       </CONFIGURATIONS>
       <MODULEPATHS>
         <MODULEPATH id="juce_gui_extra" path="juce_modules"/>
@@ -194,12 +194,13 @@
       </MODULEPATHS>
     </LINUX_MAKE>
     <VS2015 targetFolder="Builds/Filter/VisualStudio2015" extraDefs="PLUGIN_FILTER&#10;JucePlugin_Name=&quot;Blankenhain\ Filter&quot;&#10;JucePlugin_Desc=&quot;Filter\ Plugin.&quot;&#10;JucePlugin_PluginCode='BhFI'"
-            extraCompilerFlags="/I..\..\..\Source" vstFolder="" vst3Folder="">
+            extraCompilerFlags="/I..\..\..\Source" vstFolder="" vst3Folder=""
+            extraLinkerFlags="">
       <CONFIGURATIONS>
         <CONFIGURATION name="Debug" winWarningLevel="4" generateManifest="1" winArchitecture="32-bit"
-                       isDebug="1" optimisation="1" targetName="Blankenhain"/>
+                       isDebug="1" optimisation="1" targetName="bh_filter"/>
         <CONFIGURATION name="Release" winWarningLevel="4" generateManifest="1" winArchitecture="32-bit"
-                       isDebug="0" optimisation="3" targetName="Blankenhain"/>
+                       isDebug="0" optimisation="3" targetName="bh_filter"/>
       </CONFIGURATIONS>
       <MODULEPATHS>
         <MODULEPATH id="juce_gui_extra" path="juce_modules"/>
@@ -218,12 +219,12 @@
     </VS2015>
     <VS2015 targetFolder="Builds/Wittersroda/VisualStudio2015" vstFolder=""
             extraDefs="PLUGIN_WITTERSRODA&#10;JucePlugin_Name=&quot;Blankenhain\ Wittersroda&quot;&#10;JucePlugin_Desc=&quot;Wittersroda\ Synth.&quot;&#10;JucePlugin_PluginCode='BhWI'"
-            extraCompilerFlags="/I..\..\..\Source" vst3Folder="">
+            extraCompilerFlags="/I..\..\..\Source" vst3Folder="" extraLinkerFlags="/OUT:wittersroda_bh">
       <CONFIGURATIONS>
         <CONFIGURATION name="Debug" winWarningLevel="4" generateManifest="1" winArchitecture="32-bit"
-                       isDebug="1" optimisation="1" targetName="Blankenhain"/>
+                       isDebug="1" optimisation="1" targetName="bh_wittersroda"/>
         <CONFIGURATION name="Release" winWarningLevel="4" generateManifest="1" winArchitecture="32-bit"
-                       isDebug="0" optimisation="3" targetName="Blankenhain"/>
+                       isDebug="0" optimisation="3" targetName="bh_wittersroda"/>
       </CONFIGURATIONS>
       <MODULEPATHS>
         <MODULEPATH id="juce_gui_extra" path="juce_modules"/>
@@ -242,12 +243,12 @@
     </VS2015>
     <VS2015 targetFolder="Builds/Volume/VisualStudio2015" vstFolder="" vst3Folder=""
             extraDefs="PLUGIN_VOLUME&#10;JucePlugin_Name=&quot;Blankenhain\ Volume&quot;&#10;JucePlugin_Desc=&quot;Volume\ Plugin.&quot;&#10;JucePlugin_PluginCode='BhVo'"
-            extraCompilerFlags="/I..\..\..\Source">
+            extraCompilerFlags="/I..\..\..\Source" extraLinkerFlags="/OUT:volume_bh">
       <CONFIGURATIONS>
         <CONFIGURATION name="Debug" winWarningLevel="4" generateManifest="1" winArchitecture="32-bit"
-                       isDebug="1" optimisation="1" targetName="Blankenhain"/>
+                       isDebug="1" optimisation="1" targetName="bh_volume"/>
         <CONFIGURATION name="Release" winWarningLevel="4" generateManifest="1" winArchitecture="32-bit"
-                       isDebug="0" optimisation="3" targetName="Blankenhain"/>
+                       isDebug="0" optimisation="3" targetName="bh_volume"/>
       </CONFIGURATIONS>
       <MODULEPATHS>
         <MODULEPATH id="juce_gui_extra" path="juce_modules"/>
@@ -266,12 +267,12 @@
     </VS2015>
     <VS2015 targetFolder="Builds/Pan/VisualStudio2015" vstFolder="" extraCompilerFlags="/I..\..\..\Source"
             extraDefs="PLUGIN_PAN&#10;JucePlugin_Name=&quot;Blankenhain\ Pan&quot;&#10;JucePlugin_Desc=&quot;Pan\ Plugin.&quot;&#10;JucePlugin_PluginCode='BhPa'"
-            vst3Folder="">
+            vst3Folder="" extraLinkerFlags="/OUT:pan_bh">
       <CONFIGURATIONS>
         <CONFIGURATION name="Debug" winWarningLevel="4" generateManifest="1" winArchitecture="32-bit"
-                       isDebug="1" optimisation="1" targetName="Blankenhain"/>
+                       isDebug="1" optimisation="1" targetName="bh_pan"/>
         <CONFIGURATION name="Release" winWarningLevel="4" generateManifest="1" winArchitecture="32-bit"
-                       isDebug="0" optimisation="3" targetName="Blankenhain"/>
+                       isDebug="0" optimisation="3" targetName="bh_pan"/>
       </CONFIGURATIONS>
       <MODULEPATHS>
         <MODULEPATH id="juce_gui_extra" path="juce_modules"/>
@@ -290,12 +291,12 @@
     </VS2015>
     <VS2015 targetFolder="Builds/Bitcrush/VisualStudio2015" vstFolder=""
             extraDefs="PLUGIN_BITCRUSH&#10;JucePlugin_Name=&quot;Blankenhain\ Bitcrush&quot;&#10;JucePlugin_Desc=&quot;Bitcrush.&quot;&#10;JucePlugin_PluginCode='BhBC'"
-            extraCompilerFlags="/I..\..\..\Source" vst3Folder="">
+            extraCompilerFlags="/I..\..\..\Source" vst3Folder="" extraLinkerFlags="/OUT:bitcrush_bh">
       <CONFIGURATIONS>
         <CONFIGURATION name="Debug" winWarningLevel="4" generateManifest="1" winArchitecture="32-bit"
-                       isDebug="1" optimisation="1" targetName="Blankenhain"/>
+                       isDebug="1" optimisation="1" targetName="bh_bitcrush"/>
         <CONFIGURATION name="Release" winWarningLevel="4" generateManifest="1" winArchitecture="32-bit"
-                       isDebug="0" optimisation="3" targetName="Blankenhain"/>
+                       isDebug="0" optimisation="3" targetName="bh_bitcrush"/>
       </CONFIGURATIONS>
       <MODULEPATHS>
         <MODULEPATH id="juce_gui_extra" path="juce_modules"/>
