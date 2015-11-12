@@ -198,9 +198,9 @@
             extraLinkerFlags="">
       <CONFIGURATIONS>
         <CONFIGURATION name="Debug" winWarningLevel="4" generateManifest="1" winArchitecture="32-bit"
-                       isDebug="1" optimisation="1" targetName="bh_filter"/>
+                       isDebug="1" optimisation="1" targetName="bh_filter" binaryPath="..\builtPlugins"/>
         <CONFIGURATION name="Release" winWarningLevel="4" generateManifest="1" winArchitecture="32-bit"
-                       isDebug="0" optimisation="3" targetName="bh_filter"/>
+                       isDebug="0" optimisation="3" targetName="bh_filter" binaryPath="..\..\..\builtPlugins"/>
       </CONFIGURATIONS>
       <MODULEPATHS>
         <MODULEPATH id="juce_gui_extra" path="juce_modules"/>
@@ -219,7 +219,7 @@
     </VS2015>
     <VS2015 targetFolder="Builds/Wittersroda/VisualStudio2015" vstFolder=""
             extraDefs="PLUGIN_WITTERSRODA&#10;JucePlugin_Name=&quot;Blankenhain\ Wittersroda&quot;&#10;JucePlugin_Desc=&quot;Wittersroda\ Synth.&quot;&#10;JucePlugin_PluginCode='BhWI'"
-            extraCompilerFlags="/I..\..\..\Source" vst3Folder="" extraLinkerFlags="/OUT:wittersroda_bh">
+            extraCompilerFlags="/I..\..\..\Source" vst3Folder="" extraLinkerFlags="">
       <CONFIGURATIONS>
         <CONFIGURATION name="Debug" winWarningLevel="4" generateManifest="1" winArchitecture="32-bit"
                        isDebug="1" optimisation="1" targetName="bh_wittersroda"/>
@@ -243,12 +243,12 @@
     </VS2015>
     <VS2015 targetFolder="Builds/Volume/VisualStudio2015" vstFolder="" vst3Folder=""
             extraDefs="PLUGIN_VOLUME&#10;JucePlugin_Name=&quot;Blankenhain\ Volume&quot;&#10;JucePlugin_Desc=&quot;Volume\ Plugin.&quot;&#10;JucePlugin_PluginCode='BhVo'"
-            extraCompilerFlags="/I..\..\..\Source" extraLinkerFlags="/OUT:volume_bh">
+            extraCompilerFlags="/I..\..\..\Source" extraLinkerFlags="">
       <CONFIGURATIONS>
         <CONFIGURATION name="Debug" winWarningLevel="4" generateManifest="1" winArchitecture="32-bit"
-                       isDebug="1" optimisation="1" targetName="bh_volume"/>
+                       isDebug="1" optimisation="1" targetName="bh_volume" binaryPath="..\builtPlugins"/>
         <CONFIGURATION name="Release" winWarningLevel="4" generateManifest="1" winArchitecture="32-bit"
-                       isDebug="0" optimisation="3" targetName="bh_volume"/>
+                       isDebug="0" optimisation="3" targetName="bh_volume" binaryPath="..\builtPlugins"/>
       </CONFIGURATIONS>
       <MODULEPATHS>
         <MODULEPATH id="juce_gui_extra" path="juce_modules"/>
@@ -267,12 +267,12 @@
     </VS2015>
     <VS2015 targetFolder="Builds/Pan/VisualStudio2015" vstFolder="" extraCompilerFlags="/I..\..\..\Source"
             extraDefs="PLUGIN_PAN&#10;JucePlugin_Name=&quot;Blankenhain\ Pan&quot;&#10;JucePlugin_Desc=&quot;Pan\ Plugin.&quot;&#10;JucePlugin_PluginCode='BhPa'"
-            vst3Folder="" extraLinkerFlags="/OUT:pan_bh">
+            vst3Folder="" extraLinkerFlags="">
       <CONFIGURATIONS>
         <CONFIGURATION name="Debug" winWarningLevel="4" generateManifest="1" winArchitecture="32-bit"
-                       isDebug="1" optimisation="1" targetName="bh_pan"/>
+                       isDebug="1" optimisation="1" targetName="bh_pan" binaryPath="..\builtPlugins"/>
         <CONFIGURATION name="Release" winWarningLevel="4" generateManifest="1" winArchitecture="32-bit"
-                       isDebug="0" optimisation="3" targetName="bh_pan"/>
+                       isDebug="0" optimisation="3" targetName="bh_pan" binaryPath="..\builtPlugins"/>
       </CONFIGURATIONS>
       <MODULEPATHS>
         <MODULEPATH id="juce_gui_extra" path="juce_modules"/>
@@ -291,7 +291,7 @@
     </VS2015>
     <VS2015 targetFolder="Builds/Bitcrush/VisualStudio2015" vstFolder=""
             extraDefs="PLUGIN_BITCRUSH&#10;JucePlugin_Name=&quot;Blankenhain\ Bitcrush&quot;&#10;JucePlugin_Desc=&quot;Bitcrush.&quot;&#10;JucePlugin_PluginCode='BhBC'"
-            extraCompilerFlags="/I..\..\..\Source" vst3Folder="" extraLinkerFlags="/OUT:bitcrush_bh">
+            extraCompilerFlags="/I..\..\..\Source" vst3Folder="" extraLinkerFlags="">
       <CONFIGURATIONS>
         <CONFIGURATION name="Debug" winWarningLevel="4" generateManifest="1" winArchitecture="32-bit"
                        isDebug="1" optimisation="1" targetName="bh_bitcrush"/>
