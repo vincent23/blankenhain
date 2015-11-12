@@ -3,7 +3,7 @@
 
 #include <juce>
 
-class BlankenhainAudioProcessor : public AudioProcessor//, public AlignedType
+class BlankenhainAudioProcessor : public AudioProcessor
 {
 public:
 	BlankenhainAudioProcessor();

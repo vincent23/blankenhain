@@ -46,16 +46,16 @@ void FilterAudioProcessor::processBlock(AudioSampleBuffer& buffer, MidiBuffer& m
 		}
 		switch (filterType) {
 		case High:
-			filter.processHigh(internalBuffer, bufferSize, getFrequency(), getResonance());
+			filter->processHigh(internalBuffer, bufferSize, getFrequency(), getResonance());
 			break;
 		case Low:
-			filter.processLow(internalBuffer, bufferSize, getFrequency(), getResonance());
+			filter->processLow(internalBuffer, bufferSize, getFrequency(), getResonance());
 			break;
 		case Band:
-			filter.processBand(internalBuffer, bufferSize, getFrequency(), getResonance());
+			filter->processBand(internalBuffer, bufferSize, getFrequency(), getResonance());
 			break;
 		case Notch:
-			filter.processNotch(internalBuffer, bufferSize, getFrequency(), getResonance());
+			filter->processNotch(internalBuffer, bufferSize, getFrequency(), getResonance());
 			break;
 		}
 		for (size_t i = 0; i < bufferSize; i++) {
@@ -74,16 +74,16 @@ void FilterAudioProcessor::processBlock(AudioSampleBuffer& buffer, MidiBuffer& m
 	}
 	switch (filterType) {
 	case High:
-		filter.processHigh(internalBuffer, remainingSamples, getFrequency(), getResonance());
+		filter->processHigh(internalBuffer, remainingSamples, getFrequency(), getResonance());
 		break;
 	case Low:
-		filter.processLow(internalBuffer, remainingSamples, getFrequency(), getResonance());
+		filter->processLow(internalBuffer, remainingSamples, getFrequency(), getResonance());
 		break;
 	case Band:
-		filter.processBand(internalBuffer, remainingSamples, getFrequency(), getResonance());
+		filter->processBand(internalBuffer, remainingSamples, getFrequency(), getResonance());
 		break;
 	case Notch:
-		filter.processNotch(internalBuffer, remainingSamples, getFrequency(), getResonance());
+		filter->processNotch(internalBuffer, remainingSamples, getFrequency(), getResonance());
 		break;
 	}
 	for (size_t i = 0; i < remainingSamples; i++) {

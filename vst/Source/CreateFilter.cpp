@@ -14,12 +14,7 @@ AudioProcessor* JUCE_CALLTYPE createPluginFilter()
 #ifdef PLUGIN_EXAMPLE
     return new ExampleAudioProcessor();
 #elif PLUGIN_FILTER
-	//Here we need to allocate and use !!"placement new"!! to construct
-	//since we need aligned space, obtained using _aligned_malloc
-	//return new FilterAudioProcessor(); <- this will allocate unaligned!!
-	void *raw_memory = _aligned_malloc(sizeof(FilterAudioProcessor), 16);
-	FilterAudioProcessor *pointerToBeReturned = new(raw_memory) FilterAudioProcessor;
-	return pointerToBeReturned;
+	return new FilterAudioProcessor() ;
 #elif PLUGIN_WITTERSRODA
 	return new WittersrodaAudioProcessor();
 #elif PLUGIN_VOLUME

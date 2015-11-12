@@ -40,7 +40,7 @@ private:
 
 	static const unsigned int bufferSize = 4096;
 	Sample* internalBuffer = new Sample[bufferSize];
-	alignas(16) Filter filter;
+	Filter* filter = new Filter;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(FilterAudioProcessor)
 };

@@ -3,7 +3,7 @@
 
 #include "Sample.h"
 
-struct Filter {
+struct Filter : public AlignedType {
 	Filter();
 
 	void processHigh(Sample* data, size_t numberOfSamples, double frequency, double resonance);
