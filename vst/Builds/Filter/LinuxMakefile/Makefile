@@ -12,7 +12,7 @@ ifeq ($(CONFIG),Debug)
   BINDIR := build
   LIBDIR := build
   OBJDIR := build/intermediate/Debug
-  OUTDIR := build
+  OUTDIR := ../../../../builtPlugins
 
   ifeq ($(TARGET_ARCH),)
     TARGET_ARCH := -march=native
@@ -23,7 +23,7 @@ ifeq ($(CONFIG),Debug)
   CXXFLAGS += $(CFLAGS) -std=c++11
   LDFLAGS += $(TARGET_ARCH) -L$(BINDIR) -L$(LIBDIR) -Wl,--no-undefined -shared -L/usr/X11R6/lib/ -lX11 -lXext -lXinerama -lasound -ldl -lfreetype -lpthread -lrt 
 
-  TARGET := Blankenhain.so
+  TARGET := bh_example.so
   BLDCMD = $(CXX) -o $(OUTDIR)/$(TARGET) $(OBJECTS) $(LDFLAGS) $(RESOURCES) $(TARGET_ARCH)
   CLEANCMD = rm -rf $(OUTDIR)/$(TARGET) $(OBJDIR)
 endif
@@ -32,7 +32,7 @@ ifeq ($(CONFIG),Release)
   BINDIR := build
   LIBDIR := build
   OBJDIR := build/intermediate/Release
-  OUTDIR := build
+  OUTDIR := ../../../../builtPlugins
 
   ifeq ($(TARGET_ARCH),)
     TARGET_ARCH := -march=native
@@ -43,12 +43,13 @@ ifeq ($(CONFIG),Release)
   CXXFLAGS += $(CFLAGS) -std=c++11
   LDFLAGS += $(TARGET_ARCH) -L$(BINDIR) -L$(LIBDIR) -Wl,--no-undefined -shared -fvisibility=hidden -L/usr/X11R6/lib/ -lX11 -lXext -lXinerama -lasound -ldl -lfreetype -lpthread -lrt 
 
-  TARGET := Blankenhain.so
+  TARGET := bh_example.so
   BLDCMD = $(CXX) -o $(OUTDIR)/$(TARGET) $(OBJECTS) $(LDFLAGS) $(RESOURCES) $(TARGET_ARCH)
   CLEANCMD = rm -rf $(OUTDIR)/$(TARGET) $(OBJDIR)
 endif
 
 OBJECTS := \
+  $(OBJDIR)/MeterComponent_9495de5d.o \
   $(OBJDIR)/ModulationMatrixComponent_70333921.o \
   $(OBJDIR)/WaveVerschwurbelungComponent_cf2fc23b.o \
   $(OBJDIR)/WaveGenerationComponent_9dda340d.o \
@@ -103,6 +104,11 @@ clean:
 strip:
 	@echo Stripping Blankenhain
 	-@strip --strip-unneeded $(OUTDIR)/$(TARGET)
+
+$(OBJDIR)/MeterComponent_9495de5d.o: ../../../Source/components/MeterComponent.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling MeterComponent.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 
 $(OBJDIR)/ModulationMatrixComponent_70333921.o: ../../../Source/components/ModulationMatrixComponent.cpp
 	-@mkdir -p $(OBJDIR)

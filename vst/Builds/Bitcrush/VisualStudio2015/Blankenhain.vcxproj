@@ -38,8 +38,10 @@
   </PropertyGroup>
   <PropertyGroup>
     <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.\..\..\..\..\builtPlugins\</OutDir>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">bh_bitcrush</TargetName>
     <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</GenerateManifest>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.\..\..\..\..\builtPlugins\</OutDir>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">bh_bitcrush</TargetName>
     <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</GenerateManifest>
     <PlatformToolset>v140</PlatformToolset>
@@ -133,6 +135,7 @@
     </Bscmake>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\Source\components\MeterComponent.cpp"/>
     <ClCompile Include="..\..\..\Source\components\ModulationMatrixComponent.cpp"/>
     <ClCompile Include="..\..\..\Source\components\WaveVerschwurbelungComponent.cpp"/>
     <ClCompile Include="..\..\..\Source\components\WaveGenerationComponent.cpp"/>
@@ -1244,6 +1247,7 @@
     <ClCompile Include="..\..\..\..\synth\synth.cpp"/>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\Source\components\MeterComponent.h"/>
     <ClInclude Include="..\..\..\Source\components\ModulationMatrixComponent.h"/>
     <ClInclude Include="..\..\..\Source\components\WaveVerschwurbelungComponent.h"/>
     <ClInclude Include="..\..\..\Source\components\WaveGenerationComponent.h"/>

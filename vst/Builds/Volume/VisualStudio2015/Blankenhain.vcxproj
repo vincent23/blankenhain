@@ -135,6 +135,7 @@
     </Bscmake>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\Source\components\MeterComponent.cpp"/>
     <ClCompile Include="..\..\..\Source\components\ModulationMatrixComponent.cpp"/>
     <ClCompile Include="..\..\..\Source\components\WaveVerschwurbelungComponent.cpp"/>
     <ClCompile Include="..\..\..\Source\components\WaveGenerationComponent.cpp"/>
@@ -1246,6 +1247,7 @@
     <ClCompile Include="..\..\..\..\synth\synth.cpp"/>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\Source\components\MeterComponent.h"/>
     <ClInclude Include="..\..\..\Source\components\ModulationMatrixComponent.h"/>
     <ClInclude Include="..\..\..\Source\components\WaveVerschwurbelungComponent.h"/>
     <ClInclude Include="..\..\..\Source\components\WaveGenerationComponent.h"/>

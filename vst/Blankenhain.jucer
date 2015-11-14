@@ -8,7 +8,7 @@
               pluginCode="BLKH" pluginChannelConfigs="{1, 1}, {2, 2}" pluginIsSynth="0"
               pluginWantsMidiIn="1" pluginProducesMidiOut="1" pluginSilenceInIsSilenceOut="0"
               pluginEditorRequiresKeys="0" pluginAUExportPrefix="" pluginRTASCategory=""
-              aaxIdentifier="" pluginAAXCategory="" jucerVersion="3.2.0" companyName="rtificial"
+              aaxIdentifier="" pluginAAXCategory="" jucerVersion="4.0.1" companyName="rtificial"
               companyWebsite="http://rtificial.org" companyEmail="mail@rtificial.org">
   <MAINGROUP id="JxkcXj" name="Blankenhain">
     <GROUP id="{CEB9C7EF-9627-E2F3-83AA-B82B15D50FA4}" name="Source">
