@@ -13,6 +13,10 @@
   <MAINGROUP id="JxkcXj" name="Blankenhain">
     <GROUP id="{CEB9C7EF-9627-E2F3-83AA-B82B15D50FA4}" name="Source">
       <GROUP id="{C3EB4C8E-A5B0-7418-72B9-06572CF58418}" name="components">
+        <FILE id="SftrH3" name="MeterComponent.cpp" compile="1" resource="0"
+              file="Source/components/MeterComponent.cpp"/>
+        <FILE id="O6Edp4" name="MeterComponent.h" compile="0" resource="0"
+              file="Source/components/MeterComponent.h"/>
         <FILE id="qMStqQ" name="ModulationMatrixComponent.cpp" compile="1"
               resource="0" file="Source/components/ModulationMatrixComponent.cpp"/>
         <FILE id="fOA15A" name="ModulationMatrixComponent.h" compile="0" resource="0"
@@ -127,9 +131,9 @@
                 extraCompilerFlags="-I../../../Source">
       <CONFIGURATIONS>
         <CONFIGURATION name="Debug" libraryPath="/usr/X11R6/lib/" isDebug="1" optimisation="1"
-                       targetName="Blankenhain"/>
+                       targetName="bh_example" binaryPath="..\builtPlugins"/>
         <CONFIGURATION name="Release" libraryPath="/usr/X11R6/lib/" isDebug="0" optimisation="3"
-                       targetName="Blankenhain"/>
+                       targetName="bh_example" binaryPath="..\builtPlugins"/>
       </CONFIGURATIONS>
       <MODULEPATHS>
         <MODULEPATH id="juce_core" path="juce_modules"/>
@@ -151,9 +155,9 @@
             extraCompilerFlags="/I..\..\..\Source" vst3Folder="" extraLinkerFlags="">
       <CONFIGURATIONS>
         <CONFIGURATION name="Debug" winWarningLevel="4" generateManifest="1" winArchitecture="32-bit"
-                       isDebug="1" optimisation="1" targetName="bh_example"/>
+                       isDebug="1" optimisation="1" targetName="bh_example" binaryPath="..\builtPlugins"/>
         <CONFIGURATION name="Release" winWarningLevel="4" generateManifest="1" winArchitecture="32-bit"
-                       isDebug="0" optimisation="3" targetName="bh_example"/>
+                       isDebug="0" optimisation="3" targetName="bh_example" binaryPath="..\builtPlugins"/>
       </CONFIGURATIONS>
       <MODULEPATHS>
         <MODULEPATH id="juce_gui_extra" path="juce_modules"/>
@@ -174,9 +178,9 @@
                 extraCompilerFlags="-I../../../Source" vstFolder="">
       <CONFIGURATIONS>
         <CONFIGURATION name="Debug" libraryPath="/usr/X11R6/lib/" isDebug="1" optimisation="1"
-                       targetName="Blankenhain"/>
+                       targetName="bh_example" binaryPath="..\builtPlugins"/>
         <CONFIGURATION name="Release" libraryPath="/usr/X11R6/lib/" isDebug="0" optimisation="3"
-                       targetName="Blankenhain"/>
+                       targetName="bh_example" binaryPath="..\builtPlugins"/>
       </CONFIGURATIONS>
       <MODULEPATHS>
         <MODULEPATH id="juce_gui_extra" path="juce_modules"/>
@@ -200,7 +204,7 @@
         <CONFIGURATION name="Debug" winWarningLevel="4" generateManifest="1" winArchitecture="32-bit"
                        isDebug="1" optimisation="1" targetName="bh_filter" binaryPath="..\builtPlugins"/>
         <CONFIGURATION name="Release" winWarningLevel="4" generateManifest="1" winArchitecture="32-bit"
-                       isDebug="0" optimisation="3" targetName="bh_filter" binaryPath="..\..\..\builtPlugins"/>
+                       isDebug="0" optimisation="3" targetName="bh_filter" binaryPath="..\builtPlugins"/>
       </CONFIGURATIONS>
       <MODULEPATHS>
         <MODULEPATH id="juce_gui_extra" path="juce_modules"/>
@@ -222,9 +226,9 @@
             extraCompilerFlags="/I..\..\..\Source" vst3Folder="" extraLinkerFlags="">
       <CONFIGURATIONS>
         <CONFIGURATION name="Debug" winWarningLevel="4" generateManifest="1" winArchitecture="32-bit"
-                       isDebug="1" optimisation="1" targetName="bh_wittersroda"/>
+                       isDebug="1" optimisation="1" targetName="bh_wittersroda" binaryPath="..\builtPlugins"/>
         <CONFIGURATION name="Release" winWarningLevel="4" generateManifest="1" winArchitecture="32-bit"
-                       isDebug="0" optimisation="3" targetName="bh_wittersroda"/>
+                       isDebug="0" optimisation="3" targetName="bh_wittersroda" binaryPath="..\builtPlugins"/>
       </CONFIGURATIONS>
       <MODULEPATHS>
         <MODULEPATH id="juce_gui_extra" path="juce_modules"/>
@@ -294,9 +298,9 @@
             extraCompilerFlags="/I..\..\..\Source" vst3Folder="" extraLinkerFlags="">
       <CONFIGURATIONS>
         <CONFIGURATION name="Debug" winWarningLevel="4" generateManifest="1" winArchitecture="32-bit"
-                       isDebug="1" optimisation="1" targetName="bh_bitcrush"/>
+                       isDebug="1" optimisation="1" targetName="bh_bitcrush" binaryPath="..\builtPlugins"/>
         <CONFIGURATION name="Release" winWarningLevel="4" generateManifest="1" winArchitecture="32-bit"
-                       isDebug="0" optimisation="3" targetName="bh_bitcrush"/>
+                       isDebug="0" optimisation="3" targetName="bh_bitcrush" binaryPath="..\builtPlugins"/>
       </CONFIGURATIONS>
       <MODULEPATHS>
         <MODULEPATH id="juce_gui_extra" path="juce_modules"/>
