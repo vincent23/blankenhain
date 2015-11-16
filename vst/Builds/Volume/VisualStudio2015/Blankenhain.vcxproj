@@ -135,6 +135,7 @@
     </Bscmake>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\Source\components\MeterComponent2.cpp"/>
     <ClCompile Include="..\..\..\Source\components\MeterComponent.cpp"/>
     <ClCompile Include="..\..\..\Source\components\ModulationMatrixComponent.cpp"/>
     <ClCompile Include="..\..\..\Source\components\WaveVerschwurbelungComponent.cpp"/>
@@ -1247,6 +1248,7 @@
     <ClCompile Include="..\..\..\..\synth\synth.cpp"/>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\Source\components\MeterComponent2.h"/>
     <ClInclude Include="..\..\..\Source\components\MeterComponent.h"/>
     <ClInclude Include="..\..\..\Source\components\ModulationMatrixComponent.h"/>
     <ClInclude Include="..\..\..\Source\components\WaveVerschwurbelungComponent.h"/>
@@ -1259,8 +1261,8 @@
     <ClInclude Include="..\..\..\Source\plugins\rhythmic_gate\RhythmicGateAudioProcessorEditor.h"/>
     <ClInclude Include="..\..\..\Source\plugins\pan\PanAudioProcessor.h"/>
     <ClInclude Include="..\..\..\Source\plugins\pan\PanAudioProcessorEditor.h"/>
-    <ClInclude Include="..\..\..\Source\plugins\bitcrush\BitcrushAudioProcessor.h"/>
     <ClInclude Include="..\..\..\Source\plugins\bitcrush\BitcrushAudioProcessorEditor.h"/>
+    <ClInclude Include="..\..\..\Source\plugins\bitcrush\BitcrushAudioProcessor.h"/>
     <ClInclude Include="..\..\..\Source\plugins\volume\VolumeAudioProcessor.h"/>
     <ClInclude Include="..\..\..\Source\plugins\volume\VolumeAudioProcessorEditor.h"/>
     <ClInclude Include="..\..\..\Source\plugins\example\ExampleAudioProcessor.h"/>

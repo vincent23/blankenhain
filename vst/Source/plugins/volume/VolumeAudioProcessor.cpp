@@ -33,6 +33,11 @@ void VolumeAudioProcessor::releaseResources()
 	// spare memory, etc.
 }
 
+std::vector<float> VolumeAudioProcessor::getMeterValues(void)
+{
+	return this->meterValues;
+}
+
 void VolumeAudioProcessor::processBlock(AudioSampleBuffer& buffer, MidiBuffer& midiMessages)
 {
 	// In case we have more outputs than inputs, this code clears any output
@@ -66,6 +71,21 @@ void VolumeAudioProcessor::processBlock(AudioSampleBuffer& buffer, MidiBuffer& m
 			buffer.setSample(/*channel*/ 1, interpolationIteration, bufferValue * \
 			(oldVolumeL + ((interpolationIteration + 1) * (currentVolumeL - oldVolumeL) \
 			/ maxInterpolation)));
+
+
+			/* METERING CODE */
+
+			//LeftCur
+			if (buffer.getSample(0, interpolationIteration) > meterValues[0])
+			{
+				meterValues[2] = buffer.getSample(1, interpolationIteration);
+			}
+			if (buffer.getSample(1, interpolationIteration) > meterValues[0])
+			{
+				meterValues[3] = buffer.getSample(1, interpolationIteration);
+			}
+
+			/* END METERING CODE*/
 		}
 		for (size_t bufferIteration = maxInterpolation; bufferIteration < buffer.getNumSamples(); bufferIteration++)
 		{

@@ -17,8 +17,8 @@
   ==============================================================================
 */
 
-#ifndef __JUCE_HEADER_92651A0EB5FD24DE__
-#define __JUCE_HEADER_92651A0EB5FD24DE__
+#ifndef __JUCE_HEADER_4ED885EA3FE39A51__
+#define __JUCE_HEADER_4ED885EA3FE39A51__
 
 //[Headers]     -- You can add your own extra header files here --
 #include "JuceHeader.h"
@@ -34,21 +34,20 @@
     Describe your class and how it works here!
                                                                     //[/Comments]
 */
-class AdsrComponent  : public Component,
-                       public SliderListener
+class ledPeakMeterComponent  : public Component
 {
 public:
     //==============================================================================
-    AdsrComponent ();
-    ~AdsrComponent();
+    ledPeakMeterComponent ();
+    ~ledPeakMeterComponent();
 
     //==============================================================================
     //[UserMethods]     -- You can add your own custom methods in this section.
+	void update(float*);
     //[/UserMethods]
 
     void paint (Graphics& g);
     void resized();
-    void sliderValueChanged (Slider* sliderThatWasMoved);
 
 
 
@@ -57,21 +56,13 @@ private:
     //[/UserVariables]
 
     //==============================================================================
-    ScopedPointer<Slider> slider2;
-    ScopedPointer<Slider> slider3;
-    ScopedPointer<Slider> slider4;
-    ScopedPointer<Slider> slider;
-    ScopedPointer<Label> label;
-    ScopedPointer<Label> label2;
-    ScopedPointer<Label> label3;
-    ScopedPointer<Label> label5;
 
 
     //==============================================================================
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (AdsrComponent)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ledPeakMeterComponent)
 };
 
 //[EndFile] You can add extra defines here...
 //[/EndFile]
 
-#endif   // __JUCE_HEADER_92651A0EB5FD24DE__
+#endif   // __JUCE_HEADER_4ED885EA3FE39A51__

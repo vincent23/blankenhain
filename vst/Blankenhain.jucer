@@ -13,6 +13,10 @@
   <MAINGROUP id="JxkcXj" name="Blankenhain">
     <GROUP id="{CEB9C7EF-9627-E2F3-83AA-B82B15D50FA4}" name="Source">
       <GROUP id="{C3EB4C8E-A5B0-7418-72B9-06572CF58418}" name="components">
+        <FILE id="MbQMwn" name="MeterComponent2.cpp" compile="1" resource="0"
+              file="Source/components/MeterComponent2.cpp"/>
+        <FILE id="gHiEDM" name="MeterComponent2.h" compile="0" resource="0"
+              file="Source/components/MeterComponent2.h"/>
         <FILE id="SftrH3" name="MeterComponent.cpp" compile="1" resource="0"
               file="Source/components/MeterComponent.cpp"/>
         <FILE id="O6Edp4" name="MeterComponent.h" compile="0" resource="0"
@@ -70,14 +74,14 @@
                 file="Source/plugins/pan/PanAudioProcessorEditor.h"/>
         </GROUP>
         <GROUP id="{E0E72F6E-D0B3-5F73-56CB-98A77B644419}" name="bitcrush">
+          <FILE id="CkmpdB" name="BitcrushAudioProcessorEditor.h" compile="0"
+                resource="0" file="Source/plugins/bitcrush/BitcrushAudioProcessorEditor.h"/>
           <FILE id="PGjzme" name="BitcrushAudioProcessor.cpp" compile="1" resource="0"
                 file="Source/plugins/bitcrush/BitcrushAudioProcessor.cpp"/>
           <FILE id="IQSNJd" name="BitcrushAudioProcessor.h" compile="0" resource="0"
                 file="Source/plugins/bitcrush/BitcrushAudioProcessor.h"/>
           <FILE id="ihAxb0" name="BitcrushAudioProcessorEditor.cpp" compile="1"
                 resource="0" file="Source/plugins/bitcrush/BitcrushAudioProcessorEditor.cpp"/>
-          <FILE id="CkmpdB" name="BitcrushAudioProcessorEditor.h" compile="0"
-                resource="0" file="Source/plugins/bitcrush/BitcrushAudioProcessorEditor.h"/>
         </GROUP>
         <GROUP id="{4138F0C9-86B0-0803-C829-30055CB4762F}" name="volume">
           <FILE id="XuRSyQ" name="VolumeAudioProcessor.cpp" compile="1" resource="0"

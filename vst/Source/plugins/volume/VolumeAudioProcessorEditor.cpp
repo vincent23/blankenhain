@@ -7,7 +7,7 @@
   the "//[xyz]" and "//[/xyz]" sections will be retained when the file is loaded
   and re-saved.
 
-  Created with Introjucer version: 3.2.0
+  Created with Introjucer version: 4.0.1
 
   ------------------------------------------------------------------------------
 
@@ -60,7 +60,7 @@ VolumeAudioProcessorEditor::VolumeAudioProcessorEditor (VolumeAudioProcessor& p)
 
     addAndMakeVisible (label = new Label ("new label",
                                           TRANS("Left Channel")));
-    label->setFont (Font (16.60f, Font::plain));
+    label->setFont (Font ("Arial", 15.00f, Font::plain));
     label->setJustificationType (Justification::centred);
     label->setEditable (false, false, false);
     label->setColour (TextEditor::textColourId, Colours::black);
@@ -68,17 +68,18 @@ VolumeAudioProcessorEditor::VolumeAudioProcessorEditor (VolumeAudioProcessor& p)
 
     addAndMakeVisible (label2 = new Label ("new label",
                                            TRANS("Right Channel")));
-    label2->setFont (Font (14.30f, Font::plain));
+    label2->setFont (Font ("Arial", 15.00f, Font::plain));
     label2->setJustificationType (Justification::centred);
     label2->setEditable (false, false, false);
     label2->setColour (TextEditor::textColourId, Colours::black);
     label2->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
 
+    addAndMakeVisible (meterChild = new MeterComponent());
 
     //[UserPreSize]
     //[/UserPreSize]
 
-    setSize (200, 200);
+    setSize (500, 200);
 
 
     //[Constructor] You can add your own custom stuff here..
@@ -97,6 +98,7 @@ VolumeAudioProcessorEditor::~VolumeAudioProcessorEditor()
     stereoCouplingButton = nullptr;
     label = nullptr;
     label2 = nullptr;
+    meterChild = nullptr;
 
 
     //[Destructor]. You can add your own custom destruction code here..
@@ -120,11 +122,12 @@ void VolumeAudioProcessorEditor::resized()
     //[UserPreResize] Add your own custom resize code here..
     //[/UserPreResize]
 
-    volumeRSlider->setBounds (proportionOfWidth (0.5000f), proportionOfHeight (0.0000f), proportionOfWidth (0.5000f), proportionOfHeight (0.7500f));
-    volumeLSlider->setBounds (proportionOfWidth (0.0000f), proportionOfHeight (0.0000f), proportionOfWidth (0.5000f), proportionOfHeight (0.7500f));
-    stereoCouplingButton->setBounds (proportionOfWidth (0.0000f), proportionOfHeight (0.8500f), proportionOfWidth (1.0000f), proportionOfHeight (0.1500f));
-    label->setBounds (proportionOfWidth (0.0000f), proportionOfHeight (0.7500f), proportionOfWidth (0.5000f), proportionOfHeight (0.1000f));
-    label2->setBounds (proportionOfWidth (0.5000f), proportionOfHeight (0.7500f), proportionOfWidth (0.5000f), proportionOfHeight (0.1000f));
+    volumeRSlider->setBounds (100, 0, 100, 150);
+    volumeLSlider->setBounds (0, 0, 100, 150);
+    stereoCouplingButton->setBounds (0, 170, 200, 30);
+    label->setBounds (0, 150, 100, 20);
+    label2->setBounds (100, 150, 100, 20);
+    meterChild->setBounds (200, 0, 300, 200);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -191,6 +194,7 @@ void VolumeAudioProcessorEditor::timerCallback()
 	volumeRSlider->setValue(processor.getVolumeR(), juce::dontSendNotification);
 	volumeLSlider->setValue(processor.getVolumeL(), juce::dontSendNotification);
 	stereoCouplingButton->setToggleState(processor.getStereoCoupling(), juce::dontSendNotification);
+	meterChild->setValue(processor.getMeterValues());
 }
 //[/MiscUserCode]
 
@@ -208,32 +212,35 @@ BEGIN_JUCER_METADATA
                  componentName="" parentClasses="public AudioProcessorEditor, public Timer"
                  constructorParams="VolumeAudioProcessor&amp; p" variableInitialisers="AudioProcessorEditor(&amp;p), processor(p)"
                  snapPixels="8" snapActive="1" snapShown="1" overlayOpacity="0.330"
-                 fixedSize="1" initialWidth="200" initialHeight="200">
+                 fixedSize="1" initialWidth="500" initialHeight="200">
   <BACKGROUND backgroundColour="ffffffff"/>
   <SLIDER name="volumeRSlider" id="cdb02c40117b4d0c" memberName="volumeRSlider"
-          virtualName="" explicitFocusOrder="0" pos="50% 0% 50% 75%" tooltip="controls right channel volume"
+          virtualName="" explicitFocusOrder="0" pos="100 0 100 150" tooltip="controls right channel volume"
           bkgcol="75ffffff" min="-120" max="12" int="0.10000000000000000555"
           style="LinearVertical" textBoxPos="TextBoxBelow" textBoxEditable="1"
           textBoxWidth="80" textBoxHeight="20" skewFactor="5"/>
   <SLIDER name="volumeLSlider" id="821d9281dc888e9a" memberName="volumeLSlider"
-          virtualName="" explicitFocusOrder="0" pos="0% 0% 50% 75%" tooltip="Controls left channel volume"
+          virtualName="" explicitFocusOrder="0" pos="0 0 100 150" tooltip="Controls left channel volume"
           bkgcol="75ffffff" min="-120" max="12" int="0.10000000000000000555"
           style="LinearVertical" textBoxPos="TextBoxBelow" textBoxEditable="1"
           textBoxWidth="80" textBoxHeight="20" skewFactor="5"/>
   <TOGGLEBUTTON name="stereoCouplingButton" id="40b98681bdbd4219" memberName="stereoCouplingButton"
-                virtualName="" explicitFocusOrder="0" pos="0% 85% 100% 15%" txtcol="ff000000"
+                virtualName="" explicitFocusOrder="0" pos="0 170 200 30" txtcol="ff000000"
                 buttonText="Stereo Coupling" connectedEdges="11" needsCallback="1"
                 radioGroupId="0" state="1"/>
   <LABEL name="new label" id="2b4e89a9f299c472" memberName="label" virtualName=""
-         explicitFocusOrder="0" pos="0% 75% 50% 10%" edTextCol="ff000000"
+         explicitFocusOrder="0" pos="0 150 100 20" edTextCol="ff000000"
          edBkgCol="0" labelText="Left Channel" editableSingleClick="0"
-         editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
-         fontsize="16.600000000000001421" bold="0" italic="0" justification="36"/>
+         editableDoubleClick="0" focusDiscardsChanges="0" fontname="Arial"
+         fontsize="15" bold="0" italic="0" justification="36"/>
   <LABEL name="new label" id="3f08f432e7c102bb" memberName="label2" virtualName=""
-         explicitFocusOrder="0" pos="50% 75% 50% 10%" edTextCol="ff000000"
+         explicitFocusOrder="0" pos="100 150 100 20" edTextCol="ff000000"
          edBkgCol="0" labelText="Right Channel" editableSingleClick="0"
-         editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
-         fontsize="14.300000000000000711" bold="0" italic="0" justification="36"/>
+         editableDoubleClick="0" focusDiscardsChanges="0" fontname="Arial"
+         fontsize="15" bold="0" italic="0" justification="36"/>
+  <JUCERCOMP name="meterChild" id="bafad9d58caaf2d5" memberName="meterChild"
+             virtualName="" explicitFocusOrder="0" pos="200 0 300 200" sourceFile="../../components/MeterComponent2.cpp"
+             constructorParams=""/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA

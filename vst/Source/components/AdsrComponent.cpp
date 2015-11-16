@@ -7,7 +7,7 @@
   the "//[xyz]" and "//[/xyz]" sections will be retained when the file is loaded
   and re-saved.
 
-  Created with Introjucer version: 3.2.0
+  Created with Introjucer version: 4.0.1
 
   ------------------------------------------------------------------------------
 
@@ -198,38 +198,38 @@ BEGIN_JUCER_METADATA
                  fixedSize="0" initialWidth="600" initialHeight="400">
   <BACKGROUND backgroundColour="ff20dd0e"/>
   <SLIDER name="new slider" id="a65526098cb4d5b7" memberName="slider2"
-          virtualName="" explicitFocusOrder="0" pos="25.679% 10.392% 22.469% 84.624%"
+          virtualName="" explicitFocusOrder="0" pos="25.645% 10.392% 22.493% 84.624%"
           min="0" max="10" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="new slider" id="bb632168057b1e6a" memberName="slider3"
-          virtualName="" explicitFocusOrder="0" pos="50.123% 10.392% 24.774% 88.123%"
+          virtualName="" explicitFocusOrder="0" pos="50.143% 10.392% 24.785% 88.123%"
           min="0" max="10" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="new slider" id="b529f2bafbad14f9" memberName="slider4"
-          virtualName="" explicitFocusOrder="0" pos="75.802% 10.392% 22.469% 88.123%"
+          virtualName="" explicitFocusOrder="0" pos="75.788% 10.392% 22.493% 88.123%"
           min="0" max="10" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="new slider" id="772fde9d873eab07" memberName="slider" virtualName=""
-          explicitFocusOrder="0" pos="1.152% 10.392% 22.14% 86.426%" min="0"
+          explicitFocusOrder="0" pos="1.146% 10.392% 22.135% 86.426%" min="0"
           max="10" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <LABEL name="new label" id="7bffdd63e2615a2e" memberName="label" virtualName=""
-         explicitFocusOrder="0" pos="1.975% 3.499% 22.387% 5.196%" edTextCol="ff000000"
+         explicitFocusOrder="0" pos="2.006% 3.499% 22.421% 5.196%" edTextCol="ff000000"
          edBkgCol="0" labelText="Attack" editableSingleClick="0" editableDoubleClick="0"
          focusDiscardsChanges="0" fontname="Default font" fontsize="15"
          bold="0" italic="0" justification="33"/>
   <LABEL name="new label" id="5e632887fd574616" memberName="label2" virtualName=""
-         explicitFocusOrder="0" pos="50.041% 3.499% 25.679% 5.196%" edTextCol="ff000000"
+         explicitFocusOrder="0" pos="50.072% 3.499% 25.645% 5.196%" edTextCol="ff000000"
          edBkgCol="0" labelText="Sustain" editableSingleClick="0" editableDoubleClick="0"
          focusDiscardsChanges="0" fontname="Default font" fontsize="15"
          bold="0" italic="0" justification="33"/>
   <LABEL name="new label" id="9e38240d6048d975" memberName="label3" virtualName=""
-         explicitFocusOrder="0" pos="25.021% 3.499% 24.362% 5.196%" edTextCol="ff000000"
+         explicitFocusOrder="0" pos="25% 3.499% 24.355% 5.196%" edTextCol="ff000000"
          edBkgCol="0" labelText="Decay" editableSingleClick="0" editableDoubleClick="0"
          focusDiscardsChanges="0" fontname="Default font" fontsize="15"
          bold="0" italic="0" justification="33"/>
   <LABEL name="new label" id="d13de9dbc34a078a" memberName="label5" virtualName=""
-         explicitFocusOrder="0" pos="78.354% 3.499% 19.671% 5.196%" edTextCol="ff000000"
+         explicitFocusOrder="0" pos="78.367% 3.499% 19.699% 5.196%" edTextCol="ff000000"
          edBkgCol="0" labelText="Release" editableSingleClick="0" editableDoubleClick="0"
          focusDiscardsChanges="0" fontname="Default font" fontsize="15"
          bold="0" italic="0" justification="33"/>

@@ -2,6 +2,7 @@
 #define BLANKENHAIN_AUDIO_PROCESSOR_H_INCLUDED
 
 #include <juce>
+#include <vector>
 
 class BlankenhainAudioProcessor : public AudioProcessor
 {
@@ -30,6 +31,8 @@ public:
 
 	void getStateInformation(MemoryBlock& destData) override;
 	void setStateInformation(const void* data, int sizeInBytes) override;
+
+	virtual std::vector<float> getMeterValues(void) = 0;
 
 protected:
 	virtual var getState() = 0;
