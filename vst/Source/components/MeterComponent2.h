@@ -24,6 +24,7 @@
 #include "JuceHeader.h"
 //[/Headers]
 
+#include "MeterComponent3.h"
 
 
 //==============================================================================
@@ -43,7 +44,9 @@ public:
 
     //==============================================================================
     //[UserMethods]     -- You can add your own custom methods in this section.
-	void setValue(float*);
+	void setValue(std::vector<float> in);
+	void mouseDown(const MouseEvent& mouseIn) override;
+	//void setRValue(float in);
     //[/UserMethods]
 
     void paint (Graphics& g);
@@ -53,6 +56,7 @@ public:
 
 private:
     //[UserVariables]   -- You can add your own custom variables in this section.
+	std::vector<float> values;
     //[/UserVariables]
 
     //==============================================================================
@@ -65,6 +69,7 @@ private:
     ScopedPointer<Label> curText;
     ScopedPointer<Label> peakText;
     ScopedPointer<Label> rmsText;
+    ScopedPointer<ledPeakMeterComponent> ledPeakMeterChild;
 
 
     //==============================================================================

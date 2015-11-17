@@ -18,6 +18,7 @@
 */
 
 //[Headers] You can add your own extra header files here...
+#include "MeterComponent3.h"
 //[/Headers]
 
 #include "MeterComponent2.h"
@@ -119,6 +120,7 @@ MeterComponent::MeterComponent ()
     rmsText->setColour (TextEditor::textColourId, Colours::black);
     rmsText->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
 
+    addAndMakeVisible (ledPeakMeterChild = new ledPeakMeterComponent());
 
     //[UserPreSize]
     //[/UserPreSize]
@@ -127,6 +129,10 @@ MeterComponent::MeterComponent ()
 
 
     //[Constructor] You can add your own custom stuff here..
+	peakText->setInterceptsMouseClicks(false, false);
+	peakRight->setInterceptsMouseClicks(false, false);
+	peakLeft->setInterceptsMouseClicks(false, false);
+	values.resize(6, 0.f);
     //[/Constructor]
 }
 
@@ -144,6 +150,7 @@ MeterComponent::~MeterComponent()
     curText = nullptr;
     peakText = nullptr;
     rmsText = nullptr;
+    ledPeakMeterChild = nullptr;
 
 
     //[Destructor]. You can add your own custom destruction code here..
@@ -170,87 +177,21 @@ void MeterComponent::paint (Graphics& g)
     g.setColour (Colours::white);
     g.drawRect (8, 10, 40, 182, 5);
 
-    g.setGradientFill (ColourGradient (Colours::red,
-                                       0.0f, 0.0f,
-                                       Colours::green,
-                                       0.0f, 100.0f,
-                                       false));
-    g.fillRect (13, 15, 30, 174);
-
-    g.setColour (Colour (0xffa52a9f));
-    g.fillRect (60, 180, 20, 8);
-
-    g.setColour (Colour (0xffa52a9f));
-    g.fillRect (60, 164, 20, 8);
-
-    g.setColour (Colour (0xffa52a9f));
-    g.fillRect (60, 148, 20, 8);
-
-    g.setColour (Colour (0xffa52a9f));
-    g.fillRect (60, 132, 20, 8);
-
-    g.setColour (Colour (0xffa52a9f));
-    g.fillRect (60, 116, 20, 8);
-
-    g.setColour (Colour (0xffff2a9f));
-    g.fillRect (60, 100, 20, 8);
-
-    g.setColour (Colour (0xffff2a9f));
-    g.fillRect (60, 84, 20, 8);
-
-    g.setColour (Colour (0xffff2a9f));
-    g.fillRect (60, 68, 20, 8);
-
-    g.setColour (Colour (0xffff9c9f));
-    g.fillRect (60, 52, 20, 8);
-
-    g.setColour (Colour (0xffff9c9f));
-    g.fillRect (60, 36, 20, 8);
-
-    g.setColour (Colour (0xffa52a9f));
-    g.fillRect (92, 180, 20, 8);
-
-    g.setColour (Colour (0xffa52a9f));
-    g.fillRect (92, 164, 20, 8);
-
-    g.setColour (Colour (0xffa52a9f));
-    g.fillRect (92, 148, 20, 8);
-
-    g.setColour (Colour (0xffa52a9f));
-    g.fillRect (92, 132, 20, 8);
-
-    g.setColour (Colour (0xffa52a9f));
-    g.fillRect (92, 116, 20, 8);
-
-    g.setColour (Colour (0xffff2a9f));
-    g.fillRect (92, 100, 20, 8);
-
-    g.setColour (Colour (0xffff2a9f));
-    g.fillRect (92, 84, 20, 8);
-
-    g.setColour (Colour (0xffff2a9f));
-    g.fillRect (92, 68, 20, 8);
-
-    g.setColour (Colour (0xffff9c9f));
-    g.fillRect (92, 52, 20, 8);
-
-    g.setColour (Colour (0xffff9c9f));
-    g.fillRect (92, 36, 20, 8);
-
-    g.setColour (Colour (0xffffcd9f));
-    g.fillRect (92, 20, 20, 8);
-
-    g.setColour (Colour (0xffffcd9f));
-    g.fillRect (60, 20, 20, 8);
-
-    g.setGradientFill (ColourGradient (Colours::red,
-                                       0.0f, 0.0f,
-                                       Colours::green,
-                                       0.0f, 100.0f,
-                                       false));
-    g.fillRect (125, 15, 30, 174);
-
     //[UserPaint] Add your own custom painting code here..
+	g.setGradientFill(ColourGradient(Colours::red,
+		0.0f, 0.0f,
+		Colours::green,
+		0.0f, 100.0f,
+		false));
+
+	g.fillRect(13, 15, 30, 174);
+
+	g.setGradientFill(ColourGradient(Colours::red,
+		0.0f, 0.0f,
+		Colours::green,
+		0.0f, 100.0f,
+		false));
+	g.fillRect(125, 15, 30, 174);
     //[/UserPaint]
 }
 
@@ -268,6 +209,7 @@ void MeterComponent::resized()
     curText->setBounds (208, 16, 40, 32);
     peakText->setBounds (208, 64, 40, 32);
     rmsText->setBounds (208, 112, 40, 32);
+    ledPeakMeterChild->setBounds (56, 12, 56, 180);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -276,14 +218,100 @@ void MeterComponent::resized()
 
 //[MiscUserCode] You can add your own definitions of your custom methods or any other code here...
 
-void MeterComponent::setValue(float* meterValues)
+void MeterComponent::setValue(std::vector<float> meterValues)
 {
-	this->curLeft->setText((juce::String) meterValues[0] + " dB", juce::dontSendNotification);
-	this->curRight->setText((juce::String) meterValues[1] + " dB", juce::dontSendNotification);
-	this->peakLeft->setText((juce::String) meterValues[2] + " dB", juce::dontSendNotification);
-	this->peakRight->setText((juce::String) meterValues[3] + " dB", juce::dontSendNotification);
-	this->RMSLeft->setText((juce::String) meterValues[4] + " dB", juce::dontSendNotification);
-	this->RMSRight->setText((juce::String) meterValues[5] + " dB", juce::dontSendNotification);
+	values[0] = meterValues[0];
+	values[1] = meterValues[1];
+	if (values[2] < meterValues[0]) 
+	{
+		values[2] = meterValues[0];
+	}
+	if (values[3] < meterValues[1])
+	{
+		values[3] = meterValues[1];
+	}
+	values[4] = meterValues[0];
+	values[5] = meterValues[1];
+
+	this->curLeft->setText((juce::String(values[0], 2)).substring(0, 4) + " dB", juce::dontSendNotification);
+	this->curRight->setText( (juce::String(values[1],2)).substring(0,4) + " dB", juce::dontSendNotification);
+	this->peakLeft->setText((juce::String(values[2], 2)).substring(0, 4) + " dB", juce::dontSendNotification);
+	this->peakRight->setText((juce::String(values[3], 2)).substring(0, 4) + " dB", juce::dontSendNotification);
+	this->RMSLeft->setText((juce::String(values[4], 2)).substring(0, 4) + " dB", juce::dontSendNotification);
+	this->RMSRight->setText((juce::String(values[5], 2)).substring(0, 4) + " dB", juce::dontSendNotification);
+	ledPeakMeterChild->setLValue(values[0]);
+	this->repaint();
+
+	if (values[0] > 1.f)
+	{
+		curLeft->setColour(Label::backgroundColourId, Colours::red);
+	}
+	else
+	{
+		curLeft->setColour(Label::backgroundColourId, Colour(0xff7e7e7e));
+	}
+	if (values[1] > 1.f)
+	{
+		curRight->setColour(Label::backgroundColourId, Colours::red);
+	}
+	else
+	{
+		curRight->setColour(Label::backgroundColourId, Colour(0xff7e7e7e));
+	}
+	if (values[2] > 1.f)
+	{
+		peakLeft->setColour(Label::backgroundColourId, Colours::red);
+	}
+	if (values[3] > 1.f)
+	{
+		peakRight->setColour(Label::backgroundColourId, Colours::red);
+	}
+	if (values[4] > 1.f)
+	{
+		RMSLeft->setColour(Label::backgroundColourId, Colours::red);
+	}
+	else
+	{
+		RMSLeft->setColour(Label::backgroundColourId, Colour(0xff7e7e7e));
+	}
+	if (values[5] > 1.f)
+	{
+		RMSRight->setColour(Label::backgroundColourId, Colours::red);
+	}
+	else
+	{
+		RMSRight->setColour(Label::backgroundColourId, Colour(0xff7e7e7e));
+	}
+	//this->repaint();
+}
+
+void MeterComponent::mouseDown(const MouseEvent& mouseIn)
+{
+	juce::Point<int> relativeMouseDown;
+	//Could get ontains or reallycontains to work
+	if (relativeMouseDown = (mouseIn.getMouseDownPosition() - peakLeft->getPosition()), 
+		relativeMouseDown.getX() >= 0 && relativeMouseDown.getX() < peakLeft->getWidth() &&
+		relativeMouseDown.getY() >= 0 && relativeMouseDown.getY() < peakLeft->getHeight())
+	{
+		peakLeft->setColour(Label::backgroundColourId, Colour(0xff7e7e7e));
+		values[2] = 0.f;
+	}
+	else if (relativeMouseDown = (mouseIn.getMouseDownPosition() - peakRight->getPosition()),
+			 relativeMouseDown.getX() >= 0 && relativeMouseDown.getX() < peakRight->getWidth() &&
+			 relativeMouseDown.getY() >= 0 && relativeMouseDown.getY() < peakRight->getHeight())
+	{
+		peakRight->setColour(Label::backgroundColourId, Colour(0xff7e7e7e));
+		values[3] = 0.f;
+	}
+	else if (relativeMouseDown = (mouseIn.getMouseDownPosition() - peakText->getPosition()),
+			 relativeMouseDown.getX() >= 0 && relativeMouseDown.getX() < peakText->getWidth() &&
+			 relativeMouseDown.getY() >= 0 && relativeMouseDown.getY() < peakText->getHeight())
+	{
+		peakRight->setColour(Label::backgroundColourId, Colour(0xff7e7e7e));
+		peakLeft->setColour(Label::backgroundColourId, Colour(0xff7e7e7e));
+		values[2] = 0.f;
+		values[3] = 0.f;
+	}
 }
 
 //[/MiscUserCode]
@@ -307,32 +335,6 @@ BEGIN_JUCER_METADATA
           strokeColour="solid: ffffffff"/>
     <RECT pos="8 10 40 182" fill="solid: ff000000" hasStroke="1" stroke="5, mitered, butt"
           strokeColour="solid: ffffffff"/>
-    <RECT pos="13 15 30 174" fill="linear: 0 0, 0 100, 0=ffff0000, 1=ff008000"
-          hasStroke="0"/>
-    <RECT pos="60 180 20 8" fill="solid: ffa52a9f" hasStroke="0"/>
-    <RECT pos="60 164 20 8" fill="solid: ffa52a9f" hasStroke="0"/>
-    <RECT pos="60 148 20 8" fill="solid: ffa52a9f" hasStroke="0"/>
-    <RECT pos="60 132 20 8" fill="solid: ffa52a9f" hasStroke="0"/>
-    <RECT pos="60 116 20 8" fill="solid: ffa52a9f" hasStroke="0"/>
-    <RECT pos="60 100 20 8" fill="solid: ffff2a9f" hasStroke="0"/>
-    <RECT pos="60 84 20 8" fill="solid: ffff2a9f" hasStroke="0"/>
-    <RECT pos="60 68 20 8" fill="solid: ffff2a9f" hasStroke="0"/>
-    <RECT pos="60 52 20 8" fill="solid: ffff9c9f" hasStroke="0"/>
-    <RECT pos="60 36 20 8" fill="solid: ffff9c9f" hasStroke="0"/>
-    <RECT pos="92 180 20 8" fill="solid: ffa52a9f" hasStroke="0"/>
-    <RECT pos="92 164 20 8" fill="solid: ffa52a9f" hasStroke="0"/>
-    <RECT pos="92 148 20 8" fill="solid: ffa52a9f" hasStroke="0"/>
-    <RECT pos="92 132 20 8" fill="solid: ffa52a9f" hasStroke="0"/>
-    <RECT pos="92 116 20 8" fill="solid: ffa52a9f" hasStroke="0"/>
-    <RECT pos="92 100 20 8" fill="solid: ffff2a9f" hasStroke="0"/>
-    <RECT pos="92 84 20 8" fill="solid: ffff2a9f" hasStroke="0"/>
-    <RECT pos="92 68 20 8" fill="solid: ffff2a9f" hasStroke="0"/>
-    <RECT pos="92 52 20 8" fill="solid: ffff9c9f" hasStroke="0"/>
-    <RECT pos="92 36 20 8" fill="solid: ffff9c9f" hasStroke="0"/>
-    <RECT pos="92 20 20 8" fill="solid: ffffcd9f" hasStroke="0"/>
-    <RECT pos="60 20 20 8" fill="solid: ffffcd9f" hasStroke="0"/>
-    <RECT pos="125 15 30 174" fill="linear: 0 0, 0 100, 0=ffff0000, 1=ff008000"
-          hasStroke="0"/>
   </BACKGROUND>
   <LABEL name="curLeft" id="e44918e7c6b44efc" memberName="curLeft" virtualName=""
          explicitFocusOrder="0" pos="168 16 40 32" bkgCol="ff7e7e7e" edTextCol="ff000000"
@@ -380,6 +382,9 @@ BEGIN_JUCER_METADATA
          edBkgCol="0" labelText="RMS" editableSingleClick="0" editableDoubleClick="0"
          focusDiscardsChanges="0" fontname="Default font" fontsize="15"
          bold="0" italic="0" justification="36"/>
+  <JUCERCOMP name="ledPeakMeterChild" id="be4156e19e2686ec" memberName="ledPeakMeterChild"
+             virtualName="" explicitFocusOrder="0" pos="56 12 56 180" sourceFile="MeterComponent3.cpp"
+             constructorParams=""/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA

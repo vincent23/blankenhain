@@ -43,7 +43,10 @@ public:
 
     //==============================================================================
     //[UserMethods]     -- You can add your own custom methods in this section.
-	void update(float*);
+	void setLValue(float in);
+	float getLValue();
+	void setRValue(float in);
+	float getRValue();
     //[/UserMethods]
 
     void paint (Graphics& g);
@@ -53,6 +56,8 @@ public:
 
 private:
     //[UserVariables]   -- You can add your own custom variables in this section.
+	float valueL;
+	float valueR;
     //[/UserVariables]
 
     //==============================================================================

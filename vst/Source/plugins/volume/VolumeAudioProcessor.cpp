@@ -19,6 +19,7 @@ VolumeAudioProcessor::VolumeAudioProcessor()
 	addParameter(volumeL);
 	addParameter(volumeR);
 	addParameter(stereoCoupling);
+	meterValues.resize(2u, 0.f);
 }
 
 void VolumeAudioProcessor::prepareToPlay(double sampleRate, int samplesPerBlock)
@@ -40,6 +41,10 @@ std::vector<float> VolumeAudioProcessor::getMeterValues(void)
 
 void VolumeAudioProcessor::processBlock(AudioSampleBuffer& buffer, MidiBuffer& midiMessages)
 {
+	//For Metering, reset "current" Values
+	meterValues[0] = 0.f;
+	meterValues[1] = 0.f;
+
 	// In case we have more outputs than inputs, this code clears any output
 	// channels that didn't contain input data, (because these aren't
 	// guaranteed to be empty - they may contain garbage).
@@ -75,14 +80,14 @@ void VolumeAudioProcessor::processBlock(AudioSampleBuffer& buffer, MidiBuffer& m
 
 			/* METERING CODE */
 
-			//LeftCur
+			//Current
 			if (buffer.getSample(0, interpolationIteration) > meterValues[0])
 			{
-				meterValues[2] = buffer.getSample(1, interpolationIteration);
+				meterValues[0] = buffer.getSample(1, interpolationIteration);
 			}
-			if (buffer.getSample(1, interpolationIteration) > meterValues[0])
+			if (buffer.getSample(1, interpolationIteration) > meterValues[1])
 			{
-				meterValues[3] = buffer.getSample(1, interpolationIteration);
+				meterValues[1] = buffer.getSample(1, interpolationIteration);
 			}
 
 			/* END METERING CODE*/
@@ -93,8 +98,21 @@ void VolumeAudioProcessor::processBlock(AudioSampleBuffer& buffer, MidiBuffer& m
 			buffer.setSample(/*channel*/ 0, bufferIteration, bufferValue * currentVolumeL);
 			bufferValue = buffer.getSample(/*channel*/ 1, bufferIteration);
 			buffer.setSample(/*channel*/ 1, bufferIteration, bufferValue * currentVolumeL);
+
+			/* METERING CODE */
+
+			//Current
+			if (buffer.getSample(0, bufferIteration) > meterValues[0])
+			{
+				meterValues[0] = buffer.getSample(1, bufferIteration);
+			}
+			if (buffer.getSample(1, bufferIteration) > meterValues[1])
+			{
+				meterValues[1] = buffer.getSample(1, bufferIteration);
+			}
+
+			/* END METERING CODE*/
 		}
-		volumeL->setOldValue(volumeL->getValue());
 	}
 	else
 	{
@@ -117,6 +135,20 @@ void VolumeAudioProcessor::processBlock(AudioSampleBuffer& buffer, MidiBuffer& m
 			(oldVolumeR + ((interpolationIteration + 1) * (currentVolumeR - oldVolumeR) \
 			/ maxInterpolation )));
 
+			/* METERING CODE */
+
+			//Current
+			if (buffer.getSample(0, interpolationIteration) > meterValues[0])
+			{
+				meterValues[0] = buffer.getSample(1, interpolationIteration);
+			}
+			if (buffer.getSample(1, interpolationIteration) > meterValues[1])
+			{
+				meterValues[1] = buffer.getSample(1, interpolationIteration);
+			}
+
+			/* END METERING CODE*/
+
 		}
 		for (size_t bufferIteration = maxInterpolation; bufferIteration < buffer.getNumSamples(); bufferIteration++)
 		{
@@ -124,10 +156,25 @@ void VolumeAudioProcessor::processBlock(AudioSampleBuffer& buffer, MidiBuffer& m
 			buffer.setSample(/*channel*/ 0, bufferIteration, bufferValue * currentVolumeL);
 			bufferValue = buffer.getSample(/*channel*/ 1, bufferIteration);
 			buffer.setSample(/*channel*/ 1, bufferIteration, bufferValue * currentVolumeR);
+
+			/* METERING CODE */
+
+			//Current
+			if (buffer.getSample(0, bufferIteration) > meterValues[0])
+			{
+				meterValues[0] = buffer.getSample(1, bufferIteration);
+			}
+			if (buffer.getSample(1, bufferIteration) > meterValues[1])
+			{
+				meterValues[1] = buffer.getSample(1, bufferIteration);
+			}
+
+			/* END METERING CODE*/
+
 		}
-		volumeL->setOldValue(volumeL->getValue());
-		volumeR->setOldValue(volumeR->getValue());
 	}
+	volumeL->setOldValue(volumeL->getValue());
+	volumeR->setOldValue(volumeR->getValue());
 }
 
 AudioProcessorEditor* VolumeAudioProcessor::createEditor()
