@@ -194,7 +194,7 @@ void VolumeAudioProcessorEditor::timerCallback()
 	volumeRSlider->setValue(processor.getVolumeR(), juce::dontSendNotification);
 	volumeLSlider->setValue(processor.getVolumeL(), juce::dontSendNotification);
 	stereoCouplingButton->setToggleState(processor.getStereoCoupling(), juce::dontSendNotification);
-	meterChild->setValue(processor.getMeterValues());
+	meterChild->setValue(processor.getMeterValues(), processor.getLastKnownSampleRate(), processor.getLastKnownBlockSize());
 }
 //[/MiscUserCode]
 

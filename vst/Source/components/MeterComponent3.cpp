@@ -129,46 +129,109 @@ void ledPeakMeterComponent::paint (Graphics& g)
     g.fillRect (proportionOfWidth (0.0667f), proportionOfHeight (0.0229f), proportionOfWidth (0.3333f), proportionOfHeight (0.0457f));
 
     //[UserPaint] Add your own custom painting code here..
-
-	if (valueL > 0.1f)
+	if (valueL > 0.05f)
 	{
-		if (valueL > 0.2f)
+		g.setColour(Colour(0xffa52a9f));
+		g.fillRect(proportionOfWidth(0.6000f), proportionOfHeight(0.9371f), proportionOfWidth(0.3333f), proportionOfHeight(0.0457f));
+		if (valueL > 0.1f)
 		{
 			g.setColour(Colour(0xffa52a9f));
-			g.fillRect(proportionOfWidth(0.6000f), proportionOfHeight(0.7543f), proportionOfWidth(0.3333f), proportionOfHeight(0.0457f));
-			if (valueL > 0.3f)
+			g.fillRect(proportionOfWidth(0.6000f), proportionOfHeight(0.8457f), proportionOfWidth(0.3333f), proportionOfHeight(0.0457f));
+			if (valueL > 0.2f)
 			{
 				g.setColour(Colour(0xffa52a9f));
-				g.fillRect(proportionOfWidth(0.6000f), proportionOfHeight(0.6629f), proportionOfWidth(0.3333f), proportionOfHeight(0.0457f));
-				if (valueL > 0.4f)
+				g.fillRect(proportionOfWidth(0.6000f), proportionOfHeight(0.7543f), proportionOfWidth(0.3333f), proportionOfHeight(0.0457f));
+				if (valueL > 0.3f)
 				{
 					g.setColour(Colour(0xffa52a9f));
-					g.fillRect(proportionOfWidth(0.6000f), proportionOfHeight(0.5714f), proportionOfWidth(0.3333f), proportionOfHeight(0.0457f));
-					if (valueL > 0.5f)
+					g.fillRect(proportionOfWidth(0.6000f), proportionOfHeight(0.6629f), proportionOfWidth(0.3333f), proportionOfHeight(0.0457f));
+					if (valueL > 0.4f)
 					{
-						g.setColour(Colour(0xffff2a9f));
-						g.fillRect(proportionOfWidth(0.6000f), proportionOfHeight(0.4800f), proportionOfWidth(0.3333f), proportionOfHeight(0.0457f));
-						if (valueL > 0.6f)
+						g.setColour(Colour(0xffa52a9f));
+						g.fillRect(proportionOfWidth(0.6000f), proportionOfHeight(0.5714f), proportionOfWidth(0.3333f), proportionOfHeight(0.0457f));
+						if (valueL > 0.5f)
 						{
 							g.setColour(Colour(0xffff2a9f));
-							g.fillRect(proportionOfWidth(0.6000f), proportionOfHeight(0.3886f), proportionOfWidth(0.3333f), proportionOfHeight(0.0457f));
-							if (valueL > 0.7f)
+							g.fillRect(proportionOfWidth(0.6000f), proportionOfHeight(0.4800f), proportionOfWidth(0.3333f), proportionOfHeight(0.0457f));
+							if (valueL > 0.6f)
 							{
 								g.setColour(Colour(0xffff2a9f));
-								g.fillRect(proportionOfWidth(0.6000f), proportionOfHeight(0.2971f), proportionOfWidth(0.3333f), proportionOfHeight(0.0457f));
-								if (valueL > 0.8f)
+								g.fillRect(proportionOfWidth(0.6000f), proportionOfHeight(0.3886f), proportionOfWidth(0.3333f), proportionOfHeight(0.0457f));
+								if (valueL > 0.7f)
 								{
-									g.setColour(Colour(0xffff9c9f));
-									g.fillRect(proportionOfWidth(0.6000f), proportionOfHeight(0.2057f), proportionOfWidth(0.3333f), proportionOfHeight(0.0457f));
-									if (valueL > 0.9f)
+									g.setColour(Colour(0xffff2a9f));
+									g.fillRect(proportionOfWidth(0.6000f), proportionOfHeight(0.2971f), proportionOfWidth(0.3333f), proportionOfHeight(0.0457f));
+									if (valueL > 0.8f)
 									{
 										g.setColour(Colour(0xffff9c9f));
-										g.fillRect(proportionOfWidth(0.6000f), proportionOfHeight(0.1143f), proportionOfWidth(0.3333f), proportionOfHeight(0.0457f));
+										g.fillRect(proportionOfWidth(0.6000f), proportionOfHeight(0.2057f), proportionOfWidth(0.3333f), proportionOfHeight(0.0457f));
 										if (valueL > 0.9f)
 										{
-											g.setColour(Colour(0xffffcd9f));
-											g.fillRect(proportionOfWidth(0.6000f), proportionOfHeight(0.0229f), proportionOfWidth(0.3333f), proportionOfHeight(0.0457f));
+											g.setColour(Colour(0xffff9c9f));
+											g.fillRect(proportionOfWidth(0.6000f), proportionOfHeight(0.1143f), proportionOfWidth(0.3333f), proportionOfHeight(0.0457f));
+											if (valueL > 1.f)
+											{
+												g.setColour(Colour(0xffff0d00));
+												g.fillRect(proportionOfWidth(0.6000f), proportionOfHeight(0.0229f), proportionOfWidth(0.3333f), proportionOfHeight(0.0457f));
 
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	if (valueR > 0.05f)
+	{
+		g.setColour(Colour(0xffa52a9f));
+		g.fillRect(proportionOfWidth(0.0667f), proportionOfHeight(0.9371f), proportionOfWidth(0.3333f), proportionOfHeight(0.0457f));
+		if (valueR > 0.1f)
+		{
+			g.setColour(Colour(0xffa52a9f));
+			g.fillRect(proportionOfWidth(0.0667f), proportionOfHeight(0.8457f), proportionOfWidth(0.3333f), proportionOfHeight(0.0457f));
+			if (valueR > 0.2f)
+			{
+				g.setColour(Colour(0xffa52a9f));
+				g.fillRect(proportionOfWidth(0.0667f), proportionOfHeight(0.7543f), proportionOfWidth(0.3333f), proportionOfHeight(0.0457f));
+				if (valueR > 0.3f)
+				{
+					g.setColour(Colour(0xffa52a9f));
+					g.fillRect(proportionOfWidth(0.0667f), proportionOfHeight(0.6629f), proportionOfWidth(0.3333f), proportionOfHeight(0.0457f));
+					if (valueR > 0.4f)
+					{
+						g.setColour(Colour(0xffa52a9f));
+						g.fillRect(proportionOfWidth(0.0667f), proportionOfHeight(0.5714f), proportionOfWidth(0.3333f), proportionOfHeight(0.0457f));
+						if (valueR > 0.5f)
+						{
+							g.setColour(Colour(0xffff2a9f));
+							g.fillRect(proportionOfWidth(0.0667f), proportionOfHeight(0.4800f), proportionOfWidth(0.3333f), proportionOfHeight(0.0457f));
+							if (valueR > 0.6f)
+							{
+								g.setColour(Colour(0xffff2a9f));
+								g.fillRect(proportionOfWidth(0.0667f), proportionOfHeight(0.3886f), proportionOfWidth(0.3333f), proportionOfHeight(0.0457f));
+								if (valueR > 0.7f)
+								{
+									g.setColour(Colour(0xffff2a9f));
+									g.fillRect(proportionOfWidth(0.0667f), proportionOfHeight(0.2971f), proportionOfWidth(0.3333f), proportionOfHeight(0.0457f));
+									if (valueR > 0.8f)
+									{
+										g.setColour(Colour(0xffff9c9f));
+										g.fillRect(proportionOfWidth(0.0667f), proportionOfHeight(0.2057f), proportionOfWidth(0.3333f), proportionOfHeight(0.0457f));
+										if (valueR > 0.9f)
+										{
+											g.setColour(Colour(0xffff9c9f));
+											g.fillRect(proportionOfWidth(0.0667f), proportionOfHeight(0.1143f), proportionOfWidth(0.3333f), proportionOfHeight(0.0457f));
+											if (valueR > 1.f)
+											{
+												g.setColour(Colour(0xffff0d00));
+												g.fillRect(proportionOfWidth(0.0667f), proportionOfHeight(0.0229f), proportionOfWidth(0.3333f), proportionOfHeight(0.0457f));
+
+											}
 										}
 									}
 								}

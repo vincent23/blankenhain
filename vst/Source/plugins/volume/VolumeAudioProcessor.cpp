@@ -45,6 +45,10 @@ void VolumeAudioProcessor::processBlock(AudioSampleBuffer& buffer, MidiBuffer& m
 	meterValues[0] = 0.f;
 	meterValues[1] = 0.f;
 
+	//Set lastKnownSampleRate and lastKnownBlockSize
+	this->setLastKnownSampleRate(this->getSampleRate());
+	this->setLastKnownBlockSize(this->getBlockSize());
+
 	// In case we have more outputs than inputs, this code clears any output
 	// channels that didn't contain input data, (because these aren't
 	// guaranteed to be empty - they may contain garbage).
@@ -81,13 +85,13 @@ void VolumeAudioProcessor::processBlock(AudioSampleBuffer& buffer, MidiBuffer& m
 			/* METERING CODE */
 
 			//Current
-			if (buffer.getSample(0, interpolationIteration) > meterValues[0])
+			if (buffer.getSample(1, interpolationIteration) > meterValues[0])
 			{
 				meterValues[0] = buffer.getSample(1, interpolationIteration);
 			}
-			if (buffer.getSample(1, interpolationIteration) > meterValues[1])
+			if (buffer.getSample(0, interpolationIteration) > meterValues[1])
 			{
-				meterValues[1] = buffer.getSample(1, interpolationIteration);
+				meterValues[1] = buffer.getSample(0, interpolationIteration);
 			}
 
 			/* END METERING CODE*/
@@ -102,13 +106,13 @@ void VolumeAudioProcessor::processBlock(AudioSampleBuffer& buffer, MidiBuffer& m
 			/* METERING CODE */
 
 			//Current
-			if (buffer.getSample(0, bufferIteration) > meterValues[0])
+			if (buffer.getSample(1, bufferIteration) > meterValues[0])
 			{
 				meterValues[0] = buffer.getSample(1, bufferIteration);
 			}
-			if (buffer.getSample(1, bufferIteration) > meterValues[1])
+			if (buffer.getSample(0, bufferIteration) > meterValues[1])
 			{
-				meterValues[1] = buffer.getSample(1, bufferIteration);
+				meterValues[1] = buffer.getSample(0, bufferIteration);
 			}
 
 			/* END METERING CODE*/
@@ -138,13 +142,13 @@ void VolumeAudioProcessor::processBlock(AudioSampleBuffer& buffer, MidiBuffer& m
 			/* METERING CODE */
 
 			//Current
-			if (buffer.getSample(0, interpolationIteration) > meterValues[0])
+			if (buffer.getSample(1, interpolationIteration) > meterValues[0])
 			{
 				meterValues[0] = buffer.getSample(1, interpolationIteration);
 			}
-			if (buffer.getSample(1, interpolationIteration) > meterValues[1])
+			if (buffer.getSample(0, interpolationIteration) > meterValues[1])
 			{
-				meterValues[1] = buffer.getSample(1, interpolationIteration);
+				meterValues[1] = buffer.getSample(0, interpolationIteration);
 			}
 
 			/* END METERING CODE*/
@@ -160,19 +164,21 @@ void VolumeAudioProcessor::processBlock(AudioSampleBuffer& buffer, MidiBuffer& m
 			/* METERING CODE */
 
 			//Current
-			if (buffer.getSample(0, bufferIteration) > meterValues[0])
+			if (buffer.getSample(1, bufferIteration) > meterValues[0])
 			{
 				meterValues[0] = buffer.getSample(1, bufferIteration);
 			}
-			if (buffer.getSample(1, bufferIteration) > meterValues[1])
+			if (buffer.getSample(0, bufferIteration) > meterValues[1])
 			{
-				meterValues[1] = buffer.getSample(1, bufferIteration);
+				meterValues[1] = buffer.getSample(0, bufferIteration);
 			}
 
 			/* END METERING CODE*/
 
 		}
 	}
+
+	//Set current values as old values for interpolation in next buffer iteration
 	volumeL->setOldValue(volumeL->getValue());
 	volumeR->setOldValue(volumeR->getValue());
 }
@@ -186,10 +192,6 @@ void VolumeAudioProcessor::setVolumeL(FloatParameter newVolumeL) {
 	volumeL->setValueNotifyingHost(newVolumeL.getNormalizedValue());
 }
 
-/**
- * This set function will change the SLIDER value to a NORMALIZED
- * value so you do not have to worry :)
- */ 
 void VolumeAudioProcessor::setVolumeR(FloatParameter newVolumeR) 
 {
 	volumeR->setValueNotifyingHost(newVolumeR.getNormalizedValue());

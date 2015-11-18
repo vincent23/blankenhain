@@ -105,3 +105,23 @@ void BlankenhainAudioProcessor::setStateInformation(const void* data, int sizeIn
 	var state = JSON::parse(inputStream);
 	setState(state);
 }
+
+void BlankenhainAudioProcessor::setLastKnownSampleRate(double in)
+{
+	lastKnownSampleRate = in;
+}
+
+double BlankenhainAudioProcessor::getLastKnownSampleRate(void) 
+{
+	return this->lastKnownSampleRate;
+}
+
+void BlankenhainAudioProcessor::setLastKnownBlockSize(int in)
+{
+	lastKnownBlockSize = in;
+}
+
+int BlankenhainAudioProcessor::getLastKnownBlockSize(void)
+{
+	return this->lastKnownBlockSize;
+}

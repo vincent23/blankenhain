@@ -44,9 +44,13 @@ public:
 
     //==============================================================================
     //[UserMethods]     -- You can add your own custom methods in this section.
-	void setValue(std::vector<float> in);
+	void setValue(std::vector<float> in, double sampleRate = 44100, int blockSize = 512);
 	void mouseDown(const MouseEvent& mouseIn) override;
-	//void setRValue(float in);
+
+	// this is called from inside setValue
+	// dont use this manually
+	void peakFollower(std::vector<float> newValues, double sampleRate = 44100, int blockSize = 512);
+
     //[/UserMethods]
 
     void paint (Graphics& g);

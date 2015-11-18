@@ -35,7 +35,7 @@ MeterComponent::MeterComponent ()
 
     addAndMakeVisible (curLeft = new Label ("curLeft",
                                             TRANS("? dB")));
-    curLeft->setFont (Font (15.00f, Font::plain));
+    curLeft->setFont (Font (12.00f, Font::plain));
     curLeft->setJustificationType (Justification::centred);
     curLeft->setEditable (false, false, false);
     curLeft->setColour (Label::backgroundColourId, Colour (0xff7e7e7e));
@@ -44,7 +44,7 @@ MeterComponent::MeterComponent ()
 
     addAndMakeVisible (curRight = new Label ("curRight",
                                              TRANS("? dB")));
-    curRight->setFont (Font (15.00f, Font::plain));
+    curRight->setFont (Font (12.00f, Font::plain));
     curRight->setJustificationType (Justification::centred);
     curRight->setEditable (false, false, false);
     curRight->setColour (Label::backgroundColourId, Colour (0xff7e7e7e));
@@ -53,7 +53,7 @@ MeterComponent::MeterComponent ()
 
     addAndMakeVisible (peakLeft = new Label ("peakLeft",
                                              TRANS("? dB")));
-    peakLeft->setFont (Font (15.00f, Font::plain));
+    peakLeft->setFont (Font (12.00f, Font::plain));
     peakLeft->setJustificationType (Justification::centred);
     peakLeft->setEditable (false, false, false);
     peakLeft->setColour (Label::backgroundColourId, Colour (0xff7e7e7e));
@@ -62,7 +62,7 @@ MeterComponent::MeterComponent ()
 
     addAndMakeVisible (peakRight = new Label ("peakRight",
                                               TRANS("? dB")));
-    peakRight->setFont (Font (15.00f, Font::plain));
+    peakRight->setFont (Font (12.00f, Font::plain));
     peakRight->setJustificationType (Justification::centred);
     peakRight->setEditable (false, false, false);
     peakRight->setColour (Label::backgroundColourId, Colour (0xff7e7e7e));
@@ -71,7 +71,7 @@ MeterComponent::MeterComponent ()
 
     addAndMakeVisible (RMSLeft = new Label ("RMSLeft",
                                             TRANS("? dB")));
-    RMSLeft->setFont (Font (15.00f, Font::plain));
+    RMSLeft->setFont (Font (12.00f, Font::plain));
     RMSLeft->setJustificationType (Justification::centred);
     RMSLeft->setEditable (false, false, false);
     RMSLeft->setColour (Label::backgroundColourId, Colour (0xff7e7e7e));
@@ -80,7 +80,7 @@ MeterComponent::MeterComponent ()
 
     addAndMakeVisible (RMSRight = new Label ("RMSRight",
                                              TRANS("? dB")));
-    RMSRight->setFont (Font (15.00f, Font::plain));
+    RMSRight->setFont (Font (12.00f, Font::plain));
     RMSRight->setJustificationType (Justification::centred);
     RMSRight->setEditable (false, false, false);
     RMSRight->setColour (Label::backgroundColourId, Colour (0xff7e7e7e));
@@ -200,15 +200,15 @@ void MeterComponent::resized()
     //[UserPreResize] Add your own custom resize code here..
     //[/UserPreResize]
 
-    curLeft->setBounds (168, 16, 40, 32);
-    curRight->setBounds (248, 16, 40, 32);
-    peakLeft->setBounds (168, 64, 40, 32);
-    peakRight->setBounds (248, 64, 40, 32);
-    RMSLeft->setBounds (168, 112, 40, 32);
-    RMSRight->setBounds (248, 112, 40, 32);
-    curText->setBounds (208, 16, 40, 32);
-    peakText->setBounds (208, 64, 40, 32);
-    rmsText->setBounds (208, 112, 40, 32);
+    curLeft->setBounds (168, 128, 40, 16);
+    curRight->setBounds (248, 128, 40, 16);
+    peakLeft->setBounds (168, 152, 40, 16);
+    peakRight->setBounds (248, 152, 40, 16);
+    RMSLeft->setBounds (168, 176, 40, 16);
+    RMSRight->setBounds (248, 176, 40, 16);
+    curText->setBounds (208, 128, 40, 16);
+    peakText->setBounds (208, 152, 40, 16);
+    rmsText->setBounds (208, 176, 40, 16);
     ledPeakMeterChild->setBounds (56, 12, 56, 180);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
@@ -218,30 +218,76 @@ void MeterComponent::resized()
 
 //[MiscUserCode] You can add your own definitions of your custom methods or any other code here...
 
-void MeterComponent::setValue(std::vector<float> meterValues)
+void MeterComponent::peakFollower(std::vector<float> newValues, double sampleRate, int blockSize)
 {
-	values[0] = meterValues[0];
-	values[1] = meterValues[1];
-	if (values[2] < meterValues[0]) 
-	{
-		values[2] = meterValues[0];
-	}
-	if (values[3] < meterValues[1])
-	{
-		values[3] = meterValues[1];
-	}
-	values[4] = meterValues[0];
-	values[5] = meterValues[1];
+	//Simple peak follower code by Phil Burk via http://www.musicdsp.org/
+	//Works on normalized floats
 
-	this->curLeft->setText((juce::String(values[0], 2)).substring(0, 4) + " dB", juce::dontSendNotification);
-	this->curRight->setText( (juce::String(values[1],2)).substring(0,4) + " dB", juce::dontSendNotification);
-	this->peakLeft->setText((juce::String(values[2], 2)).substring(0, 4) + " dB", juce::dontSendNotification);
-	this->peakRight->setText((juce::String(values[3], 2)).substring(0, 4) + " dB", juce::dontSendNotification);
-	this->RMSLeft->setText((juce::String(values[4], 2)).substring(0, 4) + " dB", juce::dontSendNotification);
-	this->RMSRight->setText((juce::String(values[5], 2)).substring(0, 4) + " dB", juce::dontSendNotification);
+	float halfLife = .04f; //Half life of meter decay in seconds, no idea yet for a good value...
+	float scalar = pow(0.5f, 1.f / (halfLife * sampleRate / blockSize));
+	float input, output;
+
+	for (unsigned int i = 0; i < newValues.size(); i++)
+	{
+		input = newValues[i];
+		output = this->values[i];
+
+		if (input < 0.f)
+			input = -input;  /* Absolute value. */
+		if (input >= output)
+		{
+			/* When we hit a peak, ride the peak to the top. */
+			output = input;
+		}
+		else
+		{
+			/* Exponential decay of output when signal is low. */
+			output = output * scalar;
+			/*
+			** When current gets close to 0.0, set current to 0.0 to prevent FP underflow
+			** which can cause a severe performance degradation due to a flood
+			** of interrupts.
+			*/
+			if (output < 0.0000001f) output = 0.0000001f;
+		}
+		this->values[i] = output;
+	}
+	for (unsigned int i = 0; i < newValues.size(); i++)
+	{
+		// No exponential decay for PEAK-Meter, since only
+		// Peak Value is desired
+		if (newValues[i] < 0.f)
+			newValues[i] = -newValues[i];  /* Absolute value. */
+		if (newValues[i] >= this->values[i + 2])
+		{
+			/* When we hit a peak, ride the peak to the top. */
+			this->values[i + 2] = newValues[i];
+		}
+	}
+}
+
+
+void MeterComponent::setValue(std::vector<float> meterValues, double sampleRate, int blockSize)
+{
+	// Get exponential decay through peak follower
+	// Will set values from vector meterValues to
+	// internal vector of values, so you dont need
+	// to worry about that my friend :)
+	this->peakFollower(meterValues, sampleRate, blockSize);
+
+	//Set the text boxes, decibel readings
+	this->curLeft->setText((juce::String(log10(values[0]) * 10.f, 2)).substring(0, 4) + " dB", juce::dontSendNotification);
+	this->curRight->setText( (juce::String(log10(values[1]) * 10.f,2)).substring(0,4) + " dB", juce::dontSendNotification);
+	this->peakLeft->setText((juce::String(log10(values[2]) * 10.f, 1)).substring(0, 4) + " dB", juce::dontSendNotification);
+	this->peakRight->setText((juce::String(log10(values[3]) * 10.f, 1)).substring(0, 4) + " dB", juce::dontSendNotification);
+	this->RMSLeft->setText((juce::String(log10(values[4]) * 10.f, 2)).substring(0, 4) + " dB", juce::dontSendNotification);
+	this->RMSRight->setText((juce::String(log10(values[5]) * 10.f, 2)).substring(0, 4) + " dB", juce::dontSendNotification);
+
+	//Give current values to LED-Meters
 	ledPeakMeterChild->setLValue(values[0]);
-	this->repaint();
+	ledPeakMeterChild->setRValue(values[1]);
 
+	//If clipped, paint box of value in red
 	if (values[0] > 1.f)
 	{
 		curLeft->setColour(Label::backgroundColourId, Colours::red);
@@ -282,14 +328,15 @@ void MeterComponent::setValue(std::vector<float> meterValues)
 	{
 		RMSRight->setColour(Label::backgroundColourId, Colour(0xff7e7e7e));
 	}
-	//this->repaint();
+
+	this->repaint();
 }
 
 void MeterComponent::mouseDown(const MouseEvent& mouseIn)
 {
 	juce::Point<int> relativeMouseDown;
-	//Could get ontains or reallycontains to work
-	if (relativeMouseDown = (mouseIn.getMouseDownPosition() - peakLeft->getPosition()), 
+	//Could not get contains or reallycontains to work,  nevermind it.
+	if (relativeMouseDown = (mouseIn.getMouseDownPosition() - peakLeft->getPosition()),
 		relativeMouseDown.getX() >= 0 && relativeMouseDown.getX() < peakLeft->getWidth() &&
 		relativeMouseDown.getY() >= 0 && relativeMouseDown.getY() < peakLeft->getHeight())
 	{
@@ -337,47 +384,49 @@ BEGIN_JUCER_METADATA
           strokeColour="solid: ffffffff"/>
   </BACKGROUND>
   <LABEL name="curLeft" id="e44918e7c6b44efc" memberName="curLeft" virtualName=""
-         explicitFocusOrder="0" pos="168 16 40 32" bkgCol="ff7e7e7e" edTextCol="ff000000"
-         edBkgCol="0" labelText="? dB" editableSingleClick="0" editableDoubleClick="0"
-         focusDiscardsChanges="0" fontname="Default font" fontsize="15"
-         bold="0" italic="0" justification="36"/>
+         explicitFocusOrder="0" pos="168 128 40 16" bkgCol="ff7e7e7e"
+         edTextCol="ff000000" edBkgCol="0" labelText="? dB" editableSingleClick="0"
+         editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
+         fontsize="12" bold="0" italic="0" justification="36"/>
   <LABEL name="curRight" id="40907e8926b60d92" memberName="curRight" virtualName=""
-         explicitFocusOrder="0" pos="248 16 40 32" bkgCol="ff7e7e7e" edTextCol="ff000000"
-         edBkgCol="0" labelText="? dB" editableSingleClick="0" editableDoubleClick="0"
-         focusDiscardsChanges="0" fontname="Default font" fontsize="15"
-         bold="0" italic="0" justification="36"/>
+         explicitFocusOrder="0" pos="248 128 40 16" bkgCol="ff7e7e7e"
+         edTextCol="ff000000" edBkgCol="0" labelText="? dB" editableSingleClick="0"
+         editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
+         fontsize="12" bold="0" italic="0" justification="36"/>
   <LABEL name="peakLeft" id="fb5189acf29f5db8" memberName="peakLeft" virtualName=""
-         explicitFocusOrder="0" pos="168 64 40 32" bkgCol="ff7e7e7e" edTextCol="ff000000"
-         edBkgCol="0" labelText="? dB" editableSingleClick="0" editableDoubleClick="0"
+         explicitFocusOrder="0" pos="168 152 40 16" bkgCol="ff7e7e7e"
+         edTextCol="ff000000" edBkgCol="0" labelText="? dB" editableSingleClick="0"
+         editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
+         fontsize="12" bold="0" italic="0" justification="36"/>
+  <LABEL name="peakRight" id="d7f00102b0c6cb6b" memberName="peakRight"
+         virtualName="" explicitFocusOrder="0" pos="248 152 40 16" bkgCol="ff7e7e7e"
+         edTextCol="ff000000" edBkgCol="0" labelText="? dB" editableSingleClick="0"
+         editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
+         fontsize="12" bold="0" italic="0" justification="36"/>
+  <LABEL name="RMSLeft" id="31d2229f458b750" memberName="RMSLeft" virtualName=""
+         explicitFocusOrder="0" pos="168 176 40 16" bkgCol="ff7e7e7e"
+         edTextCol="ff000000" edBkgCol="0" labelText="? dB" editableSingleClick="0"
+         editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
+         fontsize="12" bold="0" italic="0" justification="36"/>
+  <LABEL name="RMSRight" id="b6e6d28afd03ec9" memberName="RMSRight" virtualName=""
+         explicitFocusOrder="0" pos="248 176 40 16" bkgCol="ff7e7e7e"
+         edTextCol="ff000000" edBkgCol="0" labelText="? dB" editableSingleClick="0"
+         editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
+         fontsize="12" bold="0" italic="0" justification="36"/>
+  <LABEL name="curText" id="424a38d38b34428b" memberName="curText" virtualName=""
+         explicitFocusOrder="0" pos="208 128 40 16" bkgCol="ff000000"
+         textCol="ffffffff" outlineCol="ffffffff" edTextCol="ff000000"
+         edBkgCol="0" labelText="cur" editableSingleClick="0" editableDoubleClick="0"
          focusDiscardsChanges="0" fontname="Default font" fontsize="15"
          bold="0" italic="0" justification="36"/>
-  <LABEL name="peakRight" id="d7f00102b0c6cb6b" memberName="peakRight"
-         virtualName="" explicitFocusOrder="0" pos="248 64 40 32" bkgCol="ff7e7e7e"
-         edTextCol="ff000000" edBkgCol="0" labelText="? dB" editableSingleClick="0"
-         editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
-         fontsize="15" bold="0" italic="0" justification="36"/>
-  <LABEL name="RMSLeft" id="31d2229f458b750" memberName="RMSLeft" virtualName=""
-         explicitFocusOrder="0" pos="168 112 40 32" bkgCol="ff7e7e7e"
-         edTextCol="ff000000" edBkgCol="0" labelText="? dB" editableSingleClick="0"
-         editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
-         fontsize="15" bold="0" italic="0" justification="36"/>
-  <LABEL name="RMSRight" id="b6e6d28afd03ec9" memberName="RMSRight" virtualName=""
-         explicitFocusOrder="0" pos="248 112 40 32" bkgCol="ff7e7e7e"
-         edTextCol="ff000000" edBkgCol="0" labelText="? dB" editableSingleClick="0"
-         editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
-         fontsize="15" bold="0" italic="0" justification="36"/>
-  <LABEL name="curText" id="424a38d38b34428b" memberName="curText" virtualName=""
-         explicitFocusOrder="0" pos="208 16 40 32" bkgCol="ff000000" textCol="ffffffff"
-         outlineCol="ffffffff" edTextCol="ff000000" edBkgCol="0" labelText="cur"
-         editableSingleClick="0" editableDoubleClick="0" focusDiscardsChanges="0"
-         fontname="Default font" fontsize="15" bold="0" italic="0" justification="36"/>
   <LABEL name="peakText" id="f3dea9733105c26d" memberName="peakText" virtualName=""
-         explicitFocusOrder="0" pos="208 64 40 32" bkgCol="ff000000" textCol="ffffffff"
-         outlineCol="ffffffff" edTextCol="ff000000" edBkgCol="0" labelText="Peak"
-         editableSingleClick="0" editableDoubleClick="0" focusDiscardsChanges="0"
-         fontname="Default font" fontsize="15" bold="0" italic="0" justification="36"/>
+         explicitFocusOrder="0" pos="208 152 40 16" bkgCol="ff000000"
+         textCol="ffffffff" outlineCol="ffffffff" edTextCol="ff000000"
+         edBkgCol="0" labelText="Peak" editableSingleClick="0" editableDoubleClick="0"
+         focusDiscardsChanges="0" fontname="Default font" fontsize="15"
+         bold="0" italic="0" justification="36"/>
   <LABEL name="rmsText" id="643eeda53297a283" memberName="rmsText" virtualName=""
-         explicitFocusOrder="0" pos="208 112 40 32" bkgCol="ff000000"
+         explicitFocusOrder="0" pos="208 176 40 16" bkgCol="ff000000"
          textCol="ffffffff" outlineCol="ffffffff" edTextCol="ff000000"
          edBkgCol="0" labelText="RMS" editableSingleClick="0" editableDoubleClick="0"
          focusDiscardsChanges="0" fontname="Default font" fontsize="15"

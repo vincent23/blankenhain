@@ -33,10 +33,18 @@ public:
 	void setStateInformation(const void* data, int sizeInBytes) override;
 
 	virtual std::vector<float> getMeterValues(void) = 0;
+	
+	double getLastKnownSampleRate(void);
+	void setLastKnownSampleRate(double in);
+
+	int getLastKnownBlockSize(void);
+	void setLastKnownBlockSize(int in);
 
 protected:
 	virtual var getState() = 0;
 	virtual void setState(const var& state) = 0;
+	double lastKnownSampleRate = 44100;
+	int lastKnownBlockSize = 512;
 
 private:
 	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(BlankenhainAudioProcessor)
