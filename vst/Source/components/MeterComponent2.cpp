@@ -184,14 +184,19 @@ void MeterComponent::paint (Graphics& g)
 		0.0f, 100.0f,
 		false));
 
-	g.fillRect(13, 15, 30, 174);
+	//g.fillRect(13, 15 , 30, 174);
+
+	float tempValL = ( values[0] * -174.f + 174.f ) < 0.f ? 0.f : (values[0] * -174.f + 174.f);
+	float tempValR = ( values[1] * -174.f + 174.f ) < 0.f ? 0.f : (values[1] * -174.f + 174.f);
+
+	g.fillRect(13, int (15 + tempValL), 30, int( 174 - tempValL));
 
 	g.setGradientFill(ColourGradient(Colours::red,
 		0.0f, 0.0f,
 		Colours::green,
 		0.0f, 100.0f,
 		false));
-	g.fillRect(125, 15, 30, 174);
+	g.fillRect(125, int(15 + tempValR), 30, int(174 - tempValR));
     //[/UserPaint]
 }
 
