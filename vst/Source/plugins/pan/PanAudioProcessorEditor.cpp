@@ -7,7 +7,7 @@
   the "//[xyz]" and "//[/xyz]" sections will be retained when the file is loaded
   and re-saved.
 
-  Created with Introjucer version: 3.2.0
+  Created with Introjucer version: 4.0.1
 
   ------------------------------------------------------------------------------
 
@@ -33,6 +33,7 @@ PanAudioProcessorEditor::PanAudioProcessorEditor (PanAudioProcessor& p)
     //[Constructor_pre] You can add your own custom stuff here..
     //[/Constructor_pre]
 
+    addAndMakeVisible (meterChild = new MeterComponent());
     addAndMakeVisible (panningSlider = new Slider ("panningSlider"));
     panningSlider->setRange (-50, 50, 1);
     panningSlider->setSliderStyle (Slider::RotaryVerticalDrag);
@@ -54,7 +55,7 @@ PanAudioProcessorEditor::PanAudioProcessorEditor (PanAudioProcessor& p)
     //[UserPreSize]
     //[/UserPreSize]
 
-    setSize (200, 200);
+    setSize (370, 300);
 
 
     //[Constructor] You can add your own custom stuff here..
@@ -67,6 +68,7 @@ PanAudioProcessorEditor::~PanAudioProcessorEditor()
     //[Destructor_pre]. You can add your own custom destruction code here..
     //[/Destructor_pre]
 
+    meterChild = nullptr;
     panningSlider = nullptr;
     label = nullptr;
 
@@ -92,8 +94,9 @@ void PanAudioProcessorEditor::resized()
     //[UserPreResize] Add your own custom resize code here..
     //[/UserPreResize]
 
-    panningSlider->setBounds (proportionOfWidth (0.0000f), 0, proportionOfWidth (1.0000f), proportionOfHeight (0.8000f));
-    label->setBounds (proportionOfWidth (0.0000f), proportionOfHeight (0.8500f), proportionOfWidth (1.0000f), proportionOfHeight (0.1500f));
+    meterChild->setBounds (200, 0, 168, 304);
+    panningSlider->setBounds (proportionOfWidth (0.0432f), 24, 168, proportionOfHeight (0.6400f));
+    label->setBounds (proportionOfWidth (0.0000f), proportionOfHeight (0.7733f), proportionOfWidth (0.5405f), proportionOfHeight (0.1500f));
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -120,6 +123,11 @@ void PanAudioProcessorEditor::sliderValueChanged (Slider* sliderThatWasMoved)
 void PanAudioProcessorEditor::timerCallback()
 {
 	panningSlider->setValue(processor.getPanning(), juce::dontSendNotification);
+
+	// Do not worry about a thing and let this neat function
+	// do all the paint/repaint stuff regarding metering.
+	// Pass stuff on like this ;)
+	meterChild->setValue(processor.getMeterValues(), processor.getLastKnownSampleRate(), processor.getLastKnownBlockSize());
 }
 //[/MiscUserCode]
 
@@ -135,17 +143,20 @@ BEGIN_JUCER_METADATA
 
 <JUCER_COMPONENT documentType="Component" className="PanAudioProcessorEditor"
                  componentName="" parentClasses="public AudioProcessorEditor, public Timer"
-                 constructorParams="VolumeAudioProcessor&amp; p" variableInitialisers="AudioProcessorEditor(&amp;p), processor(p)"
+                 constructorParams="PanAudioProcessor&amp; p" variableInitialisers="AudioProcessorEditor(&amp;p), processor(p)"
                  snapPixels="8" snapActive="1" snapShown="1" overlayOpacity="0.330"
-                 fixedSize="1" initialWidth="200" initialHeight="200">
+                 fixedSize="1" initialWidth="370" initialHeight="300">
   <BACKGROUND backgroundColour="ffffffff"/>
+  <JUCERCOMP name="" id="9bae3019e598c401" memberName="meterChild" virtualName=""
+             explicitFocusOrder="0" pos="200 0 168 304" sourceFile="../../components/MeterComponent.cpp"
+             constructorParams=""/>
   <SLIDER name="panningSlider" id="e1fc1f10f0eb0d22" memberName="panningSlider"
-          virtualName="" explicitFocusOrder="0" pos="0% 0 100% 80%" thumbcol="ff000000"
-          rotarysliderfill="7f000000" textboxhighlight="40000000" min="-50"
-          max="50" int="1" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
+          virtualName="" explicitFocusOrder="0" pos="4.324% 24 168 64%"
+          thumbcol="ff000000" rotarysliderfill="7f000000" textboxhighlight="40000000"
+          min="-50" max="50" int="1" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <LABEL name="new label" id="2889253ab4f709e" memberName="label" virtualName=""
-         explicitFocusOrder="0" pos="0% 85% 100% 15%" edTextCol="ff000000"
+         explicitFocusOrder="0" pos="0% 77.333% 54.054% 15%" edTextCol="ff000000"
          edBkgCol="0" labelText="panning" editableSingleClick="0" editableDoubleClick="0"
          focusDiscardsChanges="0" fontname="Default font" fontsize="26.300000000000000711"
          bold="0" italic="0" justification="36"/>

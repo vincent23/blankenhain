@@ -7,7 +7,7 @@
   the "//[xyz]" and "//[/xyz]" sections will be retained when the file is loaded
   and re-saved.
 
-  Created with Introjucer version: 3.2.0
+  Created with Introjucer version: 4.0.1
 
   ------------------------------------------------------------------------------
 
@@ -25,6 +25,7 @@
 #include "JuceHeader.h"
 //[/Headers]
 
+#include "../../components/MeterComponent.h"
 
 
 //==============================================================================
@@ -47,7 +48,7 @@ public:
     //==============================================================================
     //[UserMethods]     -- You can add your own custom methods in this section.
 	void timerCallback() override;
-	//[/UserMethods]
+    //[/UserMethods]
 
     void paint (Graphics& g);
     void resized();
@@ -61,6 +62,7 @@ private:
     //[/UserVariables]
 
     //==============================================================================
+    ScopedPointer<MeterComponent> meterChild;
     ScopedPointer<Slider> panningSlider;
     ScopedPointer<Label> label;
 

@@ -31,14 +31,15 @@ void PanAudioProcessor::releaseResources()
 
 void PanAudioProcessor::processBlock(AudioSampleBuffer& buffer, MidiBuffer& midiMessages)
 {
+	this->initializing(buffer);
+
 	for (int i = getNumInputChannels(); i < getNumOutputChannels(); ++i) {
 		buffer.clear(i, 0, buffer.getNumSamples());
 	}
-
-	//currentPanning: Set by Editor before this buffer iteration
-	//oldPanning: Was Set in Editor after last buffer Iteration
+	// currentPanning: Set by Editor before this buffer iteration
+	// oldPanning: Was Set in Editor after last buffer Iteration
 	// Interpolation from oldPanning to currentPanning
-	//momentaryPanning: Helper Variable, keeps results of current Interpolation iteration during Interpolation
+	// momentaryPanning: Helper Variable, keeps results of current Interpolation iteration during Interpolation
 	float currentPanning, oldPanning, bufferValue, momentaryPanning;
 
 	unsigned int maxInterpolation;
@@ -87,6 +88,8 @@ void PanAudioProcessor::processBlock(AudioSampleBuffer& buffer, MidiBuffer& midi
 		}
 	}
 	panning->setOldValue();
+	this->meteringBuffer(buffer);
+	this->finalizing(buffer);
 }
 
 AudioProcessorEditor* PanAudioProcessor::createEditor()

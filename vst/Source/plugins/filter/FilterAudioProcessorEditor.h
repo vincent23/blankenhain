@@ -7,7 +7,7 @@
   the "//[xyz]" and "//[/xyz]" sections will be retained when the file is loaded
   and re-saved.
 
-  Created with Introjucer version: 3.2.0
+  Created with Introjucer version: 4.0.1
 
   ------------------------------------------------------------------------------
 
@@ -25,6 +25,7 @@
 #include "FilterAudioProcessor.h"
 //[/Headers]
 
+#include "../../components/MeterComponent.h"
 
 
 //==============================================================================
@@ -69,6 +70,7 @@ private:
     ScopedPointer<Slider> resonanceSlider;
     ScopedPointer<Label> label2;
     ScopedPointer<Label> label3;
+    ScopedPointer<MeterComponent> meterChild;
 
 
     //==============================================================================

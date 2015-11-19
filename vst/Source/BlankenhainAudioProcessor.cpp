@@ -157,6 +157,10 @@ void BlankenhainAudioProcessor::finalizing(AudioSampleBuffer& buffer)
 	meterValues[3] /= float(buffer.getNumSamples());
 	meterValues[2] = sqrt(meterValues[2]);
 	meterValues[3] = sqrt(meterValues[3]);
+	if (meterValues[2] > 1 || meterValues[3] > 1)
+	{
+
+	}
 }
 
 void BlankenhainAudioProcessor::meteringBuffer(AudioSampleBuffer& buffer)
@@ -173,7 +177,7 @@ void BlankenhainAudioProcessor::meteringBuffer(AudioSampleBuffer& buffer)
 			meterValues[0] = abs(buffer.getSample(/*channel*/ 0, iteration));
 		}
 		meterValues[2] += buffer.getSample(/*channel*/ 0, iteration) * buffer.getSample(/*channel*/ 0, iteration);
-		meterValues[3] += buffer.getSample(/*channel*/ 1, iteration) * buffer.getSample(/*channel*/ 0, iteration);
+		meterValues[3] += buffer.getSample(/*channel*/ 1, iteration) * buffer.getSample(/*channel*/ 1, iteration);
 	}
 	/* END METERING CODE*/
 }

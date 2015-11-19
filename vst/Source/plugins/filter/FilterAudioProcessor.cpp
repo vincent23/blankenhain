@@ -25,24 +25,13 @@ void FilterAudioProcessor::releaseResources()
 
 void FilterAudioProcessor::processBlock(AudioSampleBuffer& buffer, MidiBuffer& midiMessages)
 {
-	// In case we have more outputs than inputs, this code clears any output
-	// channels that didn't contain input data, (because these aren't
-	// guaranteed to be empty - they may contain garbage).
-	// I've added this to avoid people getting screaming feedback
-	// when they first compile the plugin, but obviously you don't need to
-	// this code if your algorithm already fills all the output channels.
-	for (int i = getNumInputChannels(); i < getNumOutputChannels(); ++i) {
-		buffer.clear(i, 0, buffer.getNumSamples());
-	}
-	//internalBuffer = new Sample[bufferSize];
-	// This is the place where you'd normally do the guts of your plugin's
-	// audio processing...
+	this->initializing(buffer);
 
 	const size_t bufferIterationCount = buffer.getNumSamples() / bufferSize;
 	for (size_t bufferIteration = 0; bufferIteration < bufferIterationCount; bufferIteration++) {
 		for (size_t i = 0; i < bufferSize; i++) {
 			int sampleIndex = bufferIteration * bufferSize + i;
-			internalBuffer[i] = Sample(buffer.getSample(0, sampleIndex), buffer.getSample(1, sampleIndex));
+			internalBuffer[i] = Sample(buffer.getSample(1, sampleIndex), buffer.getSample(0, sampleIndex));
 		}
 		switch (filterType) {
 		case High:
@@ -93,6 +82,9 @@ void FilterAudioProcessor::processBlock(AudioSampleBuffer& buffer, MidiBuffer& m
 		buffer.setSample(0, sampleIndex, sampleValues[0]);
 		buffer.setSample(1, sampleIndex, sampleValues[1]);
 	}
+
+	this->meteringBuffer(buffer);
+	this->finalizing(buffer);
 }
 
 AudioProcessorEditor* FilterAudioProcessor::createEditor()

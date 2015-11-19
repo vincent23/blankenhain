@@ -79,7 +79,7 @@ VolumeAudioProcessorEditor::VolumeAudioProcessorEditor (VolumeAudioProcessor& p)
     //[UserPreSize]
     //[/UserPreSize]
 
-    setSize (500, 200);
+    setSize (370, 300);
 
 
     //[Constructor] You can add your own custom stuff here..
@@ -122,12 +122,12 @@ void VolumeAudioProcessorEditor::resized()
     //[UserPreResize] Add your own custom resize code here..
     //[/UserPreResize]
 
-    volumeRSlider->setBounds (100, 0, 100, 150);
-    volumeLSlider->setBounds (0, 0, 100, 150);
-    stereoCouplingButton->setBounds (0, 170, 200, 30);
-    label->setBounds (0, 150, 100, 20);
-    label2->setBounds (100, 150, 100, 20);
-    meterChild->setBounds (200, 0, 300, 200);
+    volumeRSlider->setBounds (100, 0, 100, 232);
+    volumeLSlider->setBounds (0, 0, 100, 232);
+    stereoCouplingButton->setBounds (40, 264, 160, 30);
+    label->setBounds (0, 240, 100, 20);
+    label2->setBounds (96, 240, 100, 20);
+    meterChild->setBounds (200, 0, 176, 304);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -216,34 +216,34 @@ BEGIN_JUCER_METADATA
                  componentName="" parentClasses="public AudioProcessorEditor, public Timer"
                  constructorParams="VolumeAudioProcessor&amp; p" variableInitialisers="AudioProcessorEditor(&amp;p), processor(p)"
                  snapPixels="8" snapActive="1" snapShown="1" overlayOpacity="0.330"
-                 fixedSize="1" initialWidth="500" initialHeight="200">
+                 fixedSize="1" initialWidth="370" initialHeight="300">
   <BACKGROUND backgroundColour="ffffffff"/>
   <SLIDER name="volumeRSlider" id="cdb02c40117b4d0c" memberName="volumeRSlider"
-          virtualName="" explicitFocusOrder="0" pos="100 0 100 150" tooltip="controls right channel volume"
+          virtualName="" explicitFocusOrder="0" pos="100 0 100 232" tooltip="controls right channel volume"
           bkgcol="75ffffff" min="-120" max="12" int="0.10000000000000000555"
           style="LinearVertical" textBoxPos="TextBoxBelow" textBoxEditable="1"
           textBoxWidth="80" textBoxHeight="20" skewFactor="5"/>
   <SLIDER name="volumeLSlider" id="821d9281dc888e9a" memberName="volumeLSlider"
-          virtualName="" explicitFocusOrder="0" pos="0 0 100 150" tooltip="Controls left channel volume"
+          virtualName="" explicitFocusOrder="0" pos="0 0 100 232" tooltip="Controls left channel volume"
           bkgcol="75ffffff" min="-120" max="12" int="0.10000000000000000555"
           style="LinearVertical" textBoxPos="TextBoxBelow" textBoxEditable="1"
           textBoxWidth="80" textBoxHeight="20" skewFactor="5"/>
   <TOGGLEBUTTON name="stereoCouplingButton" id="40b98681bdbd4219" memberName="stereoCouplingButton"
-                virtualName="" explicitFocusOrder="0" pos="0 170 200 30" txtcol="ff000000"
+                virtualName="" explicitFocusOrder="0" pos="40 264 160 30" txtcol="ff000000"
                 buttonText="Stereo Coupling" connectedEdges="11" needsCallback="1"
                 radioGroupId="0" state="1"/>
   <LABEL name="new label" id="2b4e89a9f299c472" memberName="label" virtualName=""
-         explicitFocusOrder="0" pos="0 150 100 20" edTextCol="ff000000"
+         explicitFocusOrder="0" pos="0 240 100 20" edTextCol="ff000000"
          edBkgCol="0" labelText="Left Channel" editableSingleClick="0"
          editableDoubleClick="0" focusDiscardsChanges="0" fontname="Arial"
          fontsize="15" bold="0" italic="0" justification="36"/>
   <LABEL name="new label" id="3f08f432e7c102bb" memberName="label2" virtualName=""
-         explicitFocusOrder="0" pos="100 150 100 20" edTextCol="ff000000"
+         explicitFocusOrder="0" pos="96 240 100 20" edTextCol="ff000000"
          edBkgCol="0" labelText="Right Channel" editableSingleClick="0"
          editableDoubleClick="0" focusDiscardsChanges="0" fontname="Arial"
          fontsize="15" bold="0" italic="0" justification="36"/>
   <JUCERCOMP name="meterChild" id="bafad9d58caaf2d5" memberName="meterChild"
-             virtualName="" explicitFocusOrder="0" pos="200 0 300 200" sourceFile="../../components/MeterComponent.cpp"
+             virtualName="" explicitFocusOrder="0" pos="200 0 176 304" sourceFile="../../components/MeterComponent.cpp"
              constructorParams=""/>
 </JUCER_COMPONENT>
 
