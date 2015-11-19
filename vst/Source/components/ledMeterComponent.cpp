@@ -20,7 +20,7 @@
 //[Headers] You can add your own extra header files here...
 //[/Headers]
 
-#include "MeterComponent3.h"
+#include "ledMeterComponent.h"
 
 
 //[MiscUserDefs] You can add your own user definitions and misc code here...
@@ -129,7 +129,7 @@ void ledPeakMeterComponent::paint (Graphics& g)
     g.fillRect (proportionOfWidth (0.0667f), proportionOfHeight (0.0229f), proportionOfWidth (0.3333f), proportionOfHeight (0.0457f));
 
     //[UserPaint] Add your own custom painting code here..
-	if (valueL > 0.05f)
+	if (valueR > 0.05f)
 	{
 		g.setColour(Colour(0xffa52a9f));
 		g.fillRect(proportionOfWidth(0.6000f), proportionOfHeight(0.9371f), proportionOfWidth(0.3333f), proportionOfHeight(0.0457f));
@@ -186,7 +186,7 @@ void ledPeakMeterComponent::paint (Graphics& g)
 		}
 	}
 
-	if (valueR > 0.05f)
+	if (valueL > 0.05f)
 	{
 		g.setColour(Colour(0xffa52a9f));
 		g.fillRect(proportionOfWidth(0.0667f), proportionOfHeight(0.9371f), proportionOfWidth(0.3333f), proportionOfHeight(0.0457f));

@@ -37,8 +37,6 @@ public:
 	float getVolumeR();
 	bool getStereoCoupling();
 
-	std::vector<float> getMeterValues(void) override;
-
 protected:
 	var getState() override;
 	void setState(const var& state) override;
@@ -47,8 +45,6 @@ private:
 	FloatParameter *volumeL;
 	FloatParameter *volumeR;
 	BoolParameter *stereoCoupling;
-
-	std::vector<float> meterValues;
 
 	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(VolumeAudioProcessor)
 };

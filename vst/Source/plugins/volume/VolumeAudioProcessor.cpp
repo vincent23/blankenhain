@@ -19,7 +19,6 @@ VolumeAudioProcessor::VolumeAudioProcessor()
 	addParameter(volumeL);
 	addParameter(volumeR);
 	addParameter(stereoCoupling);
-	meterValues.resize(2u, 0.f);
 }
 
 void VolumeAudioProcessor::prepareToPlay(double sampleRate, int samplesPerBlock)
@@ -34,30 +33,9 @@ void VolumeAudioProcessor::releaseResources()
 	// spare memory, etc.
 }
 
-std::vector<float> VolumeAudioProcessor::getMeterValues(void)
-{
-	return this->meterValues;
-}
-
 void VolumeAudioProcessor::processBlock(AudioSampleBuffer& buffer, MidiBuffer& midiMessages)
 {
-	//For Metering, reset "current" Values
-	meterValues[0] = 0.f;
-	meterValues[1] = 0.f;
-
-	//Set lastKnownSampleRate and lastKnownBlockSize
-	this->setLastKnownSampleRate(this->getSampleRate());
-	this->setLastKnownBlockSize(this->getBlockSize());
-
-	// In case we have more outputs than inputs, this code clears any output
-	// channels that didn't contain input data, (because these aren't
-	// guaranteed to be empty - they may contain garbage).
-	// I've added this to avoid people getting screaming feedback
-	// when they first compile the plugin, but obviously you don't need to
-	// this code if your algorithm already fills all the output channels.
-	for (int i = getNumInputChannels(); i < getNumOutputChannels(); ++i) {
-		buffer.clear(i, 0, buffer.getNumSamples());
-	}
+	this->initializing(buffer);
 
 	float currentVolumeL, currentVolumeR, bufferValue, oldVolumeL, oldVolumeR;
 	unsigned int maxInterpolation;
@@ -81,20 +59,6 @@ void VolumeAudioProcessor::processBlock(AudioSampleBuffer& buffer, MidiBuffer& m
 			(oldVolumeL + ((interpolationIteration + 1) * (currentVolumeL - oldVolumeL) \
 			/ maxInterpolation)));
 
-
-			/* METERING CODE */
-
-			//Current
-			if (buffer.getSample(1, interpolationIteration) > meterValues[0])
-			{
-				meterValues[0] = buffer.getSample(1, interpolationIteration);
-			}
-			if (buffer.getSample(0, interpolationIteration) > meterValues[1])
-			{
-				meterValues[1] = buffer.getSample(0, interpolationIteration);
-			}
-
-			/* END METERING CODE*/
 		}
 		for (size_t bufferIteration = maxInterpolation; bufferIteration < buffer.getNumSamples(); bufferIteration++)
 		{
@@ -103,19 +67,6 @@ void VolumeAudioProcessor::processBlock(AudioSampleBuffer& buffer, MidiBuffer& m
 			bufferValue = buffer.getSample(/*channel*/ 1, bufferIteration);
 			buffer.setSample(/*channel*/ 1, bufferIteration, bufferValue * currentVolumeL);
 
-			/* METERING CODE */
-
-			//Current
-			if (buffer.getSample(1, bufferIteration) > meterValues[0])
-			{
-				meterValues[0] = buffer.getSample(1, bufferIteration);
-			}
-			if (buffer.getSample(0, bufferIteration) > meterValues[1])
-			{
-				meterValues[1] = buffer.getSample(0, bufferIteration);
-			}
-
-			/* END METERING CODE*/
 		}
 	}
 	else
@@ -139,19 +90,6 @@ void VolumeAudioProcessor::processBlock(AudioSampleBuffer& buffer, MidiBuffer& m
 			(oldVolumeR + ((interpolationIteration + 1) * (currentVolumeR - oldVolumeR) \
 			/ maxInterpolation )));
 
-			/* METERING CODE */
-
-			//Current
-			if (buffer.getSample(1, interpolationIteration) > meterValues[0])
-			{
-				meterValues[0] = buffer.getSample(1, interpolationIteration);
-			}
-			if (buffer.getSample(0, interpolationIteration) > meterValues[1])
-			{
-				meterValues[1] = buffer.getSample(0, interpolationIteration);
-			}
-
-			/* END METERING CODE*/
 
 		}
 		for (size_t bufferIteration = maxInterpolation; bufferIteration < buffer.getNumSamples(); bufferIteration++)
@@ -160,27 +98,14 @@ void VolumeAudioProcessor::processBlock(AudioSampleBuffer& buffer, MidiBuffer& m
 			buffer.setSample(/*channel*/ 0, bufferIteration, bufferValue * currentVolumeL);
 			bufferValue = buffer.getSample(/*channel*/ 1, bufferIteration);
 			buffer.setSample(/*channel*/ 1, bufferIteration, bufferValue * currentVolumeR);
-
-			/* METERING CODE */
-
-			//Current
-			if (buffer.getSample(1, bufferIteration) > meterValues[0])
-			{
-				meterValues[0] = buffer.getSample(1, bufferIteration);
-			}
-			if (buffer.getSample(0, bufferIteration) > meterValues[1])
-			{
-				meterValues[1] = buffer.getSample(0, bufferIteration);
-			}
-
-			/* END METERING CODE*/
-
 		}
 	}
-
 	//Set current values as old values for interpolation in next buffer iteration
 	volumeL->setOldValue(volumeL->getValue());
 	volumeR->setOldValue(volumeR->getValue());
+
+	this->meteringBuffer(buffer);
+	this->finalizing(buffer);
 }
 
 AudioProcessorEditor* VolumeAudioProcessor::createEditor()

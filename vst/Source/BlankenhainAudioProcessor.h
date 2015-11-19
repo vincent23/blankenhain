@@ -32,19 +32,31 @@ public:
 	void getStateInformation(MemoryBlock& destData) override;
 	void setStateInformation(const void* data, int sizeInBytes) override;
 
-	virtual std::vector<float> getMeterValues(void) = 0;
-	
 	double getLastKnownSampleRate(void);
 	void setLastKnownSampleRate(double in);
 
 	int getLastKnownBlockSize(void);
 	void setLastKnownBlockSize(int in);
 
+	std::vector<float> getMeterValues(void);
+
+	//ONLY CALL THESE TWO FROM WITHIN PROCESSBLOCK
+	void initializing(AudioSampleBuffer&);
+	void finalizing(AudioSampleBuffer&);
+
+	//METERING
+	void meteringBuffer(AudioSampleBuffer&);
+	void meteringSingle(float, float);
+
 protected:
 	virtual var getState() = 0;
 	virtual void setState(const var& state) = 0;
+
 	double lastKnownSampleRate = 44100;
 	int lastKnownBlockSize = 512;
+
+	//Left Peak, Right Peak, Left RMS, Right RMS
+	std::vector<float> meterValues = { 0.f,0.f,0.f,0.f };
 
 private:
 	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(BlankenhainAudioProcessor)

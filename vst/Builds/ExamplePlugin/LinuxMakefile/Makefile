@@ -49,8 +49,7 @@ ifeq ($(CONFIG),Release)
 endif
 
 OBJECTS := \
-  $(OBJDIR)/MeterComponent3_fe541ac0.o \
-  $(OBJDIR)/MeterComponent2_fe46033f.o \
+  $(OBJDIR)/ledMeterComponent_d8305f00.o \
   $(OBJDIR)/MeterComponent_9495de5d.o \
   $(OBJDIR)/ModulationMatrixComponent_70333921.o \
   $(OBJDIR)/WaveVerschwurbelungComponent_cf2fc23b.o \
@@ -107,14 +106,9 @@ strip:
 	@echo Stripping Blankenhain
 	-@strip --strip-unneeded $(OUTDIR)/$(TARGET)
 
-$(OBJDIR)/MeterComponent3_fe541ac0.o: ../../../Source/components/MeterComponent3.cpp
+$(OBJDIR)/ledMeterComponent_d8305f00.o: ../../../Source/components/ledMeterComponent.cpp
 	-@mkdir -p $(OBJDIR)
-	@echo "Compiling MeterComponent3.cpp"
-	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
-
-$(OBJDIR)/MeterComponent2_fe46033f.o: ../../../Source/components/MeterComponent2.cpp
-	-@mkdir -p $(OBJDIR)
-	@echo "Compiling MeterComponent2.cpp"
+	@echo "Compiling ledMeterComponent.cpp"
 	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 
 $(OBJDIR)/MeterComponent_9495de5d.o: ../../../Source/components/MeterComponent.cpp

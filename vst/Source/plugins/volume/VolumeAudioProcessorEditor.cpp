@@ -194,6 +194,10 @@ void VolumeAudioProcessorEditor::timerCallback()
 	volumeRSlider->setValue(processor.getVolumeR(), juce::dontSendNotification);
 	volumeLSlider->setValue(processor.getVolumeL(), juce::dontSendNotification);
 	stereoCouplingButton->setToggleState(processor.getStereoCoupling(), juce::dontSendNotification);
+
+	// Do not worry about a thing and let this neat function
+	// do all the paint/repaint stuff regarding metering.
+	// Pass stuff on like this ;)
 	meterChild->setValue(processor.getMeterValues(), processor.getLastKnownSampleRate(), processor.getLastKnownBlockSize());
 }
 //[/MiscUserCode]
@@ -239,7 +243,7 @@ BEGIN_JUCER_METADATA
          editableDoubleClick="0" focusDiscardsChanges="0" fontname="Arial"
          fontsize="15" bold="0" italic="0" justification="36"/>
   <JUCERCOMP name="meterChild" id="bafad9d58caaf2d5" memberName="meterChild"
-             virtualName="" explicitFocusOrder="0" pos="200 0 300 200" sourceFile="../../components/MeterComponent2.cpp"
+             virtualName="" explicitFocusOrder="0" pos="200 0 300 200" sourceFile="../../components/MeterComponent.cpp"
              constructorParams=""/>
 </JUCER_COMPONENT>
 

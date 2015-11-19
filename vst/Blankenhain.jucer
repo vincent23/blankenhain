@@ -13,17 +13,13 @@
   <MAINGROUP id="JxkcXj" name="Blankenhain">
     <GROUP id="{CEB9C7EF-9627-E2F3-83AA-B82B15D50FA4}" name="Source">
       <GROUP id="{C3EB4C8E-A5B0-7418-72B9-06572CF58418}" name="components">
-        <FILE id="cEsJs5" name="MeterComponent3.cpp" compile="1" resource="0"
-              file="Source/components/MeterComponent3.cpp"/>
-        <FILE id="j4VvNd" name="MeterComponent3.h" compile="0" resource="0"
-              file="Source/components/MeterComponent3.h"/>
-        <FILE id="MbQMwn" name="MeterComponent2.cpp" compile="1" resource="0"
-              file="Source/components/MeterComponent2.cpp"/>
-        <FILE id="gHiEDM" name="MeterComponent2.h" compile="0" resource="0"
-              file="Source/components/MeterComponent2.h"/>
-        <FILE id="SftrH3" name="MeterComponent.cpp" compile="1" resource="0"
+        <FILE id="cEsJs5" name="ledMeterComponent.cpp" compile="1" resource="0"
+              file="Source/components/ledMeterComponent.cpp"/>
+        <FILE id="j4VvNd" name="ledMeterComponent.h" compile="0" resource="0"
+              file="Source/components/ledMeterComponent.h"/>
+        <FILE id="MbQMwn" name="MeterComponent.cpp" compile="1" resource="0"
               file="Source/components/MeterComponent.cpp"/>
-        <FILE id="O6Edp4" name="MeterComponent.h" compile="0" resource="0"
+        <FILE id="gHiEDM" name="MeterComponent.h" compile="0" resource="0"
               file="Source/components/MeterComponent.h"/>
         <FILE id="qMStqQ" name="ModulationMatrixComponent.cpp" compile="1"
               resource="0" file="Source/components/ModulationMatrixComponent.cpp"/>

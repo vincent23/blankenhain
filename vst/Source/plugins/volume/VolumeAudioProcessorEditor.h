@@ -25,7 +25,7 @@
 #include "VolumeAudioProcessor.h"
 //[/Headers]
 
-#include "../../components/MeterComponent2.h"
+#include "../../components/MeterComponent.h"
 
 
 //==============================================================================

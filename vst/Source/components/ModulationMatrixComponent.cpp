@@ -232,27 +232,27 @@ void ModulationMatrixComponent::resized()
     //[UserPreResize] Add your own custom resize code here..
     //[/UserPreResize]
 
-    slider->setBounds (proportionOfWidth (0.0136f), proportionOfHeight (0.0085f), proportionOfWidth (0.2600f), proportionOfHeight (0.1124f));
-    comboBox3->setBounds (proportionOfWidth (0.2801f), proportionOfHeight (0.0085f), proportionOfWidth (0.6941f), proportionOfHeight (0.0520f));
-    comboBox2->setBounds (proportionOfWidth (0.2801f), proportionOfHeight (0.0689f), proportionOfWidth (0.6941f), proportionOfHeight (0.0520f));
-    slider2->setBounds (proportionOfWidth (0.0172f), proportionOfHeight (0.1379f), proportionOfWidth (0.2600f), proportionOfHeight (0.1124f));
-    comboBox4->setBounds (proportionOfWidth (0.2837f), proportionOfHeight (0.1379f), proportionOfWidth (0.6941f), proportionOfHeight (0.0520f));
-    comboBox5->setBounds (proportionOfWidth (0.2837f), proportionOfHeight (0.1983f), proportionOfWidth (0.6941f), proportionOfHeight (0.0520f));
-    slider3->setBounds (proportionOfWidth (0.0193f), proportionOfHeight (0.2630f), proportionOfWidth (0.2600f), proportionOfHeight (0.1124f));
-    comboBox6->setBounds (proportionOfWidth (0.2858f), proportionOfHeight (0.2630f), proportionOfWidth (0.6941f), proportionOfHeight (0.0520f));
-    comboBox7->setBounds (proportionOfWidth (0.2858f), proportionOfHeight (0.3234f), proportionOfWidth (0.6941f), proportionOfHeight (0.0520f));
-    slider4->setBounds (proportionOfWidth (0.0236f), proportionOfHeight (0.3934f), proportionOfWidth (0.2600f), proportionOfHeight (0.1124f));
-    comboBox8->setBounds (proportionOfWidth (0.2901f), proportionOfHeight (0.3934f), proportionOfWidth (0.6941f), proportionOfHeight (0.0520f));
-    comboBox9->setBounds (proportionOfWidth (0.2901f), proportionOfHeight (0.4549f), proportionOfWidth (0.6941f), proportionOfHeight (0.0520f));
-    slider5->setBounds (proportionOfWidth (0.0287f), proportionOfHeight (0.5260f), proportionOfWidth (0.2600f), proportionOfHeight (0.1124f));
-    comboBox10->setBounds (proportionOfWidth (0.2951f), proportionOfHeight (0.5260f), proportionOfWidth (0.6941f), proportionOfHeight (0.0520f));
-    comboBox11->setBounds (proportionOfWidth (0.2951f), proportionOfHeight (0.5864f), proportionOfWidth (0.6941f), proportionOfHeight (0.0520f));
-    slider6->setBounds (proportionOfWidth (0.0308f), proportionOfHeight (0.6532f), proportionOfWidth (0.2600f), proportionOfHeight (0.1124f));
-    comboBox12->setBounds (proportionOfWidth (0.2980f), proportionOfHeight (0.6532f), proportionOfWidth (0.6941f), proportionOfHeight (0.0520f));
-    comboBox13->setBounds (proportionOfWidth (0.2980f), proportionOfHeight (0.7137f), proportionOfWidth (0.6941f), proportionOfHeight (0.0520f));
-    slider7->setBounds (proportionOfWidth (0.0315f), proportionOfHeight (0.7911f), proportionOfWidth (0.2600f), proportionOfHeight (0.1124f));
-    comboBox14->setBounds (proportionOfWidth (0.2987f), proportionOfHeight (0.7911f), proportionOfWidth (0.6941f), proportionOfHeight (0.0520f));
-    comboBox15->setBounds (proportionOfWidth (0.2987f), proportionOfHeight (0.8526f), proportionOfWidth (0.6941f), proportionOfHeight (0.0520f));
+    slider->setBounds (proportionOfWidth (0.0139f), proportionOfHeight (0.0085f), proportionOfWidth (0.2603f), proportionOfHeight (0.1124f));
+    comboBox3->setBounds (proportionOfWidth (0.2804f), proportionOfHeight (0.0085f), proportionOfWidth (0.6940f), proportionOfHeight (0.0520f));
+    comboBox2->setBounds (proportionOfWidth (0.2804f), proportionOfHeight (0.0689f), proportionOfWidth (0.6940f), proportionOfHeight (0.0520f));
+    slider2->setBounds (proportionOfWidth (0.0170f), proportionOfHeight (0.1379f), proportionOfWidth (0.2603f), proportionOfHeight (0.1124f));
+    comboBox4->setBounds (proportionOfWidth (0.2835f), proportionOfHeight (0.1379f), proportionOfWidth (0.6940f), proportionOfHeight (0.0520f));
+    comboBox5->setBounds (proportionOfWidth (0.2835f), proportionOfHeight (0.1983f), proportionOfWidth (0.6940f), proportionOfHeight (0.0520f));
+    slider3->setBounds (proportionOfWidth (0.0194f), proportionOfHeight (0.2630f), proportionOfWidth (0.2603f), proportionOfHeight (0.1124f));
+    comboBox6->setBounds (proportionOfWidth (0.2858f), proportionOfHeight (0.2630f), proportionOfWidth (0.6940f), proportionOfHeight (0.0520f));
+    comboBox7->setBounds (proportionOfWidth (0.2858f), proportionOfHeight (0.3234f), proportionOfWidth (0.6940f), proportionOfHeight (0.0520f));
+    slider4->setBounds (proportionOfWidth (0.0240f), proportionOfHeight (0.3934f), proportionOfWidth (0.2603f), proportionOfHeight (0.1124f));
+    comboBox8->setBounds (proportionOfWidth (0.2905f), proportionOfHeight (0.3934f), proportionOfWidth (0.6940f), proportionOfHeight (0.0520f));
+    comboBox9->setBounds (proportionOfWidth (0.2905f), proportionOfHeight (0.4549f), proportionOfWidth (0.6940f), proportionOfHeight (0.0520f));
+    slider5->setBounds (proportionOfWidth (0.0287f), proportionOfHeight (0.5260f), proportionOfWidth (0.2603f), proportionOfHeight (0.1124f));
+    comboBox10->setBounds (proportionOfWidth (0.2951f), proportionOfHeight (0.5260f), proportionOfWidth (0.6940f), proportionOfHeight (0.0520f));
+    comboBox11->setBounds (proportionOfWidth (0.2951f), proportionOfHeight (0.5864f), proportionOfWidth (0.6940f), proportionOfHeight (0.0520f));
+    slider6->setBounds (proportionOfWidth (0.0310f), proportionOfHeight (0.6532f), proportionOfWidth (0.2603f), proportionOfHeight (0.1124f));
+    comboBox12->setBounds (proportionOfWidth (0.2982f), proportionOfHeight (0.6532f), proportionOfWidth (0.6940f), proportionOfHeight (0.0520f));
+    comboBox13->setBounds (proportionOfWidth (0.2982f), proportionOfHeight (0.7137f), proportionOfWidth (0.6940f), proportionOfHeight (0.0520f));
+    slider7->setBounds (proportionOfWidth (0.0318f), proportionOfHeight (0.7911f), proportionOfWidth (0.2603f), proportionOfHeight (0.1124f));
+    comboBox14->setBounds (proportionOfWidth (0.2990f), proportionOfHeight (0.7911f), proportionOfWidth (0.6940f), proportionOfHeight (0.0520f));
+    comboBox15->setBounds (proportionOfWidth (0.2990f), proportionOfHeight (0.8526f), proportionOfWidth (0.6940f), proportionOfHeight (0.0520f));
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -403,74 +403,74 @@ BEGIN_JUCER_METADATA
                  overlayOpacity="0.330" fixedSize="0" initialWidth="600" initialHeight="400">
   <BACKGROUND backgroundColour="ff0df8f0"/>
   <SLIDER name="new slider" id="f6f08879a93058f0" memberName="slider" virtualName=""
-          explicitFocusOrder="0" pos="1.394% 0.848% 26.026% 11.241%" min="0"
+          explicitFocusOrder="0" pos="1.455% 0.902% 26.058% 11.274%" min="0"
           max="10" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <COMBOBOX name="new combo box" id="b7db82d8a055a4ee" memberName="comboBox3"
-            virtualName="" explicitFocusOrder="0" pos="28.04% 0.848% 69.404% 5.196%"
+            virtualName="" explicitFocusOrder="0" pos="28.042% 0.902% 69.444% 5.186%"
             editable="0" layout="33" items="" textWhenNonSelected="" textWhenNoItems="(no choices)"/>
   <COMBOBOX name="new combo box" id="646bd6e5692668c8" memberName="comboBox2"
-            virtualName="" explicitFocusOrder="0" pos="28.04% 6.893% 69.404% 5.196%"
+            virtualName="" explicitFocusOrder="0" pos="28.042% 6.877% 69.444% 5.186%"
             editable="0" layout="33" items="" textWhenNonSelected="" textWhenNoItems="(no choices)"/>
   <SLIDER name="new slider" id="3176397a2b7dd6d6" memberName="slider2"
-          virtualName="" explicitFocusOrder="0" pos="1.704% 13.786% 26.026% 11.241%"
+          virtualName="" explicitFocusOrder="0" pos="1.72% 13.754% 26.058% 11.274%"
           min="0" max="10" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <COMBOBOX name="new combo box" id="213f9efddeec291" memberName="comboBox4"
-            virtualName="" explicitFocusOrder="0" pos="28.35% 13.786% 69.404% 5.196%"
+            virtualName="" explicitFocusOrder="0" pos="28.307% 13.754% 69.444% 5.186%"
             editable="0" layout="33" items="" textWhenNonSelected="" textWhenNoItems="(no choices)"/>
   <COMBOBOX name="new combo box" id="90da7bae1d177065" memberName="comboBox5"
-            virtualName="" explicitFocusOrder="0" pos="28.35% 19.83% 69.404% 5.196%"
+            virtualName="" explicitFocusOrder="0" pos="28.307% 19.842% 69.444% 5.186%"
             editable="0" layout="33" items="" textWhenNonSelected="" textWhenNoItems="(no choices)"/>
   <SLIDER name="new slider" id="e2f06d9246c597b4" memberName="slider3"
-          virtualName="" explicitFocusOrder="0" pos="1.936% 26.299% 26.026% 11.241%"
+          virtualName="" explicitFocusOrder="0" pos="1.984% 26.268% 26.058% 11.274%"
           min="0" max="10" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <COMBOBOX name="new combo box" id="43ca18d9f7da6060" memberName="comboBox6"
-            virtualName="" explicitFocusOrder="0" pos="28.582% 26.299% 69.404% 5.196%"
+            virtualName="" explicitFocusOrder="0" pos="28.571% 26.268% 69.444% 5.186%"
             editable="0" layout="33" items="" textWhenNonSelected="" textWhenNoItems="(no choices)"/>
   <COMBOBOX name="new combo box" id="b62bd7059ab76ac0" memberName="comboBox7"
-            virtualName="" explicitFocusOrder="0" pos="28.582% 32.344% 69.404% 5.196%"
+            virtualName="" explicitFocusOrder="0" pos="28.571% 32.356% 69.444% 5.186%"
             editable="0" layout="33" items="" textWhenNonSelected="" textWhenNoItems="(no choices)"/>
   <SLIDER name="new slider" id="ca418ad06b5b8910" memberName="slider4"
-          virtualName="" explicitFocusOrder="0" pos="2.401% 39.343% 26.026% 11.241%"
+          virtualName="" explicitFocusOrder="0" pos="2.381% 39.346% 26.058% 11.274%"
           min="0" max="10" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <COMBOBOX name="new combo box" id="a688b9eb93e0b151" memberName="comboBox8"
-            virtualName="" explicitFocusOrder="0" pos="29.047% 39.343% 69.404% 5.196%"
+            virtualName="" explicitFocusOrder="0" pos="29.101% 39.346% 69.444% 5.186%"
             editable="0" layout="33" items="" textWhenNonSelected="" textWhenNoItems="(no choices)"/>
   <COMBOBOX name="new combo box" id="ee9686c3d0c11b09" memberName="comboBox9"
-            virtualName="" explicitFocusOrder="0" pos="29.047% 45.493% 69.404% 5.196%"
+            virtualName="" explicitFocusOrder="0" pos="29.101% 45.547% 69.444% 5.186%"
             editable="0" layout="33" items="" textWhenNonSelected="" textWhenNoItems="(no choices)"/>
   <SLIDER name="new slider" id="46be721db4317a81" memberName="slider5"
-          virtualName="" explicitFocusOrder="0" pos="2.866% 52.598% 26.026% 11.241%"
+          virtualName="" explicitFocusOrder="0" pos="2.91% 52.649% 26.058% 11.274%"
           min="0" max="10" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <COMBOBOX name="new combo box" id="22752d9a3de7b204" memberName="comboBox10"
-            virtualName="" explicitFocusOrder="0" pos="29.512% 52.598% 69.404% 5.196%"
+            virtualName="" explicitFocusOrder="0" pos="29.497% 52.649% 69.444% 5.186%"
             editable="0" layout="33" items="" textWhenNonSelected="" textWhenNoItems="(no choices)"/>
   <COMBOBOX name="new combo box" id="fcf91e3060635091" memberName="comboBox11"
-            virtualName="" explicitFocusOrder="0" pos="29.512% 58.643% 69.404% 5.196%"
+            virtualName="" explicitFocusOrder="0" pos="29.497% 58.625% 69.444% 5.186%"
             editable="0" layout="33" items="" textWhenNonSelected="" textWhenNoItems="(no choices)"/>
   <SLIDER name="new slider" id="774ed45b9613caf" memberName="slider6" virtualName=""
-          explicitFocusOrder="0" pos="3.098% 65.323% 26.026% 11.241%" min="0"
+          explicitFocusOrder="0" pos="3.042% 65.276% 26.058% 11.274%" min="0"
           max="10" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <COMBOBOX name="new combo box" id="412531e0dec8984b" memberName="comboBox12"
-            virtualName="" explicitFocusOrder="0" pos="29.822% 65.323% 69.404% 5.196%"
+            virtualName="" explicitFocusOrder="0" pos="29.762% 65.276% 69.444% 5.186%"
             editable="0" layout="33" items="" textWhenNonSelected="" textWhenNoItems="(no choices)"/>
   <COMBOBOX name="new combo box" id="911643bc8e4b58fb" memberName="comboBox13"
-            virtualName="" explicitFocusOrder="0" pos="29.822% 71.368% 69.404% 5.196%"
+            virtualName="" explicitFocusOrder="0" pos="29.762% 71.364% 69.444% 5.186%"
             editable="0" layout="33" items="" textWhenNonSelected="" textWhenNoItems="(no choices)"/>
   <SLIDER name="new slider" id="1fe26777a1bc2fd8" memberName="slider7"
-          virtualName="" explicitFocusOrder="0" pos="3.176% 79.109% 26.026% 11.241%"
+          virtualName="" explicitFocusOrder="0" pos="3.175% 79.143% 26.058% 11.274%"
           min="0" max="10" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <COMBOBOX name="new combo box" id="efc59eb9fbc245ad" memberName="comboBox14"
-            virtualName="" explicitFocusOrder="0" pos="29.899% 79.109% 69.404% 5.196%"
+            virtualName="" explicitFocusOrder="0" pos="29.894% 79.143% 69.444% 5.186%"
             editable="0" layout="33" items="" textWhenNonSelected="" textWhenNoItems="(no choices)"/>
   <COMBOBOX name="new combo box" id="ac2e7179b10ef6be" memberName="comboBox15"
-            virtualName="" explicitFocusOrder="0" pos="29.899% 85.26% 69.404% 5.196%"
+            virtualName="" explicitFocusOrder="0" pos="29.894% 85.231% 69.444% 5.186%"
             editable="0" layout="33" items="" textWhenNonSelected="" textWhenNoItems="(no choices)"/>
 </JUCER_COMPONENT>
 

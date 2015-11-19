@@ -17,14 +17,13 @@
   ==============================================================================
 */
 
-#ifndef __JUCE_HEADER_C1C2B6D0C586EE72__
-#define __JUCE_HEADER_C1C2B6D0C586EE72__
+#ifndef __JUCE_HEADER_7A3B872BF856237F__
+#define __JUCE_HEADER_7A3B872BF856237F__
 
 //[Headers]     -- You can add your own extra header files here --
 #include "JuceHeader.h"
 //[/Headers]
 
-#include "MeterComponent3.h"
 
 
 //==============================================================================
@@ -35,22 +34,19 @@
     Describe your class and how it works here!
                                                                     //[/Comments]
 */
-class MeterComponent  : public Component
+class ledPeakMeterComponent  : public Component
 {
 public:
     //==============================================================================
-    MeterComponent ();
-    ~MeterComponent();
+    ledPeakMeterComponent ();
+    ~ledPeakMeterComponent();
 
     //==============================================================================
     //[UserMethods]     -- You can add your own custom methods in this section.
-	void setValue(std::vector<float> in, double sampleRate = 44100, int blockSize = 512);
-	void mouseDown(const MouseEvent& mouseIn) override;
-
-	// this is called from inside setValue
-	// dont use this manually
-	void peakFollower(std::vector<float> newValues, double sampleRate = 44100, int blockSize = 512);
-
+	void setLValue(float in);
+	float getLValue();
+	void setRValue(float in);
+	float getRValue();
     //[/UserMethods]
 
     void paint (Graphics& g);
@@ -60,27 +56,18 @@ public:
 
 private:
     //[UserVariables]   -- You can add your own custom variables in this section.
-	std::vector<float> values;
+	float valueL;
+	float valueR;
     //[/UserVariables]
 
     //==============================================================================
-    ScopedPointer<Label> curLeft;
-    ScopedPointer<Label> curRight;
-    ScopedPointer<Label> peakLeft;
-    ScopedPointer<Label> peakRight;
-    ScopedPointer<Label> RMSLeft;
-    ScopedPointer<Label> RMSRight;
-    ScopedPointer<Label> curText;
-    ScopedPointer<Label> peakText;
-    ScopedPointer<Label> rmsText;
-    ScopedPointer<ledPeakMeterComponent> ledPeakMeterChild;
 
 
     //==============================================================================
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MeterComponent)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ledPeakMeterComponent)
 };
 
 //[EndFile] You can add extra defines here...
 //[/EndFile]
 
-#endif   // __JUCE_HEADER_C1C2B6D0C586EE72__
+#endif   // __JUCE_HEADER_7A3B872BF856237F__

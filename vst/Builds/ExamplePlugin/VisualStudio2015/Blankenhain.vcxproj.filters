@@ -325,10 +325,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\Source\components\MeterComponent3.cpp">
-      <Filter>Blankenhain\Source\components</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Source\components\MeterComponent2.cpp">
+    <ClCompile Include="..\..\..\Source\components\ledMeterComponent.cpp">
       <Filter>Blankenhain\Source\components</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Source\components\MeterComponent.cpp">
@@ -1602,10 +1599,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\Source\components\MeterComponent3.h">
-      <Filter>Blankenhain\Source\components</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Source\components\MeterComponent2.h">
+    <ClInclude Include="..\..\..\Source\components\ledMeterComponent.h">
       <Filter>Blankenhain\Source\components</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\Source\components\MeterComponent.h">

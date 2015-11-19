@@ -125,3 +125,74 @@ int BlankenhainAudioProcessor::getLastKnownBlockSize(void)
 {
 	return this->lastKnownBlockSize;
 }
+
+std::vector<float> BlankenhainAudioProcessor::getMeterValues(void)
+{
+	return this->meterValues;
+}
+
+void BlankenhainAudioProcessor::initializing(AudioSampleBuffer& buffer)
+{
+	//For Metering, reset "current" Values
+	for (unsigned int i = 0; i < meterValues.size(); i++)
+	{
+		meterValues[i] = 0.f;
+	}
+
+	//Set lastKnownSampleRate and lastKnownBlockSize
+	this->setLastKnownSampleRate(this->getSampleRate());
+	this->setLastKnownBlockSize(this->getBlockSize());
+
+	// In case we have more outputs than inputs, this code clears any output
+	// channels that didn't contain input data.
+	for (int i = getNumInputChannels(); i < getNumOutputChannels(); ++i) {
+		buffer.clear(i, 0, buffer.getNumSamples());
+	}
+}
+
+void BlankenhainAudioProcessor::finalizing(AudioSampleBuffer& buffer)
+{
+	//Get RMSD
+	meterValues[2] /= float(buffer.getNumSamples());
+	meterValues[3] /= float(buffer.getNumSamples());
+	meterValues[2] = sqrt(meterValues[2]);
+	meterValues[3] = sqrt(meterValues[3]);
+}
+
+void BlankenhainAudioProcessor::meteringBuffer(AudioSampleBuffer& buffer)
+{
+	/* METERING CODE */
+	for (size_t iteration = 0; iteration < buffer.getNumSamples(); iteration++)
+	{
+		if (abs(buffer.getSample(/*channel*/ 1, iteration)) > meterValues[0])
+		{
+			meterValues[1] = abs(buffer.getSample(/*channel*/ 1, iteration));
+		}
+		if (abs(buffer.getSample(/*channel*/ 0, iteration)) > meterValues[1])
+		{
+			meterValues[0] = abs(buffer.getSample(/*channel*/ 0, iteration));
+		}
+		meterValues[2] += buffer.getSample(/*channel*/ 0, iteration) * buffer.getSample(/*channel*/ 0, iteration);
+		meterValues[3] += buffer.getSample(/*channel*/ 1, iteration) * buffer.getSample(/*channel*/ 0, iteration);
+	}
+	/* END METERING CODE*/
+}
+
+void BlankenhainAudioProcessor::meteringSingle(float one, float two)
+{
+	/* METERING CODE */
+
+	//Current
+	if (abs(one) > meterValues[0])
+	{
+		meterValues[0] = abs(one);
+	}
+	if (abs(two) > meterValues[1])
+	{
+		meterValues[1] = abs(two);
+	}
+	meterValues[2] += one * one;
+	meterValues[3] += two * two;
+
+	/* END METERING CODE*/
+}
