@@ -7,7 +7,7 @@
   the "//[xyz]" and "//[/xyz]" sections will be retained when the file is loaded
   and re-saved.
 
-  Created with Introjucer version: 3.2.0
+  Created with Introjucer version: 4.0.1
 
   ------------------------------------------------------------------------------
 
@@ -33,6 +33,14 @@ BitcrushAudioProcessorEditor::BitcrushAudioProcessorEditor (BitcrushAudioProcess
     //[Constructor_pre] You can add your own custom stuff here..
     //[/Constructor_pre]
 
+    addAndMakeVisible (label2 = new Label ("new label",
+                                           TRANS("Downsample")));
+    label2->setFont (Font (15.00f, Font::plain));
+    label2->setJustificationType (Justification::centred);
+    label2->setEditable (false, false, false);
+    label2->setColour (TextEditor::textColourId, Colours::black);
+    label2->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
+
     addAndMakeVisible (bitcrushSlider = new Slider ("new slider"));
     bitcrushSlider->setRange (0, 1, 0.01);
     bitcrushSlider->setSliderStyle (Slider::RotaryVerticalDrag);
@@ -53,14 +61,6 @@ BitcrushAudioProcessorEditor::BitcrushAudioProcessorEditor (BitcrushAudioProcess
     downsampleSlider->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
     downsampleSlider->addListener (this);
 
-    addAndMakeVisible (label2 = new Label ("new label",
-                                           TRANS("Downsample")));
-    label2->setFont (Font (15.00f, Font::plain));
-    label2->setJustificationType (Justification::centred);
-    label2->setEditable (false, false, false);
-    label2->setColour (TextEditor::textColourId, Colours::black);
-    label2->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
-
     addAndMakeVisible (wetSlider = new Slider ("new slider"));
     wetSlider->setRange (0, 1, 0.01);
     wetSlider->setSliderStyle (Slider::RotaryVerticalDrag);
@@ -75,11 +75,12 @@ BitcrushAudioProcessorEditor::BitcrushAudioProcessorEditor (BitcrushAudioProcess
     label3->setColour (TextEditor::textColourId, Colours::black);
     label3->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
 
+    addAndMakeVisible (meterChild = new MeterComponent());
 
     //[UserPreSize]
     //[/UserPreSize]
 
-    setSize (600, 400);
+    setSize (600, 300);
 
 
     //[Constructor] You can add your own custom stuff here..
@@ -92,12 +93,13 @@ BitcrushAudioProcessorEditor::~BitcrushAudioProcessorEditor()
     //[Destructor_pre]. You can add your own custom destruction code here..
     //[/Destructor_pre]
 
+    label2 = nullptr;
     bitcrushSlider = nullptr;
     label = nullptr;
     downsampleSlider = nullptr;
-    label2 = nullptr;
     wetSlider = nullptr;
     label3 = nullptr;
+    meterChild = nullptr;
 
 
     //[Destructor]. You can add your own custom destruction code here..
@@ -121,12 +123,13 @@ void BitcrushAudioProcessorEditor::resized()
     //[UserPreResize] Add your own custom resize code here..
     //[/UserPreResize]
 
-    bitcrushSlider->setBounds (32, 152, 150, 128);
-    label->setBounds (32, 120, 150, 24);
-    downsampleSlider->setBounds (228, 156, 150, 128);
-    label2->setBounds (228, 124, 150, 24);
-    wetSlider->setBounds (411, 154, 150, 128);
-    label3->setBounds (411, 122, 150, 24);
+    label2->setBounds (168, 80, 104, 24);
+    bitcrushSlider->setBounds (24, 120, 112, 120);
+    label->setBounds (24, 88, 112, 24);
+    downsampleSlider->setBounds (168, 112, 104, 124);
+    wetSlider->setBounds (296, 104, 112, 128);
+    label3->setBounds (304, 80, 104, 24);
+    meterChild->setBounds (424, 0, 258, 352);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -167,6 +170,11 @@ void BitcrushAudioProcessorEditor::timerCallback()
 	bitcrushSlider->setValue(processor.getBitcrush(), juce::dontSendNotification);
 	downsampleSlider->setValue(processor.getDownsample(), juce::dontSendNotification);
 	wetSlider->setValue(processor.getWet(), juce::dontSendNotification);
+
+	// Do not worry about a thing and let this neat function
+	// do all the paint/repaint stuff regarding metering.
+	// Pass stuff on like this ;)
+	meterChild->setValue(processor.getMeterValues(), processor.getLastKnownSampleRate(), processor.getLastKnownBlockSize());
 }
 //[/MiscUserCode]
 
@@ -184,38 +192,41 @@ BEGIN_JUCER_METADATA
                  componentName="" parentClasses="public AudioProcessorEditor, public Timer"
                  constructorParams="BitcrushAudioProcessor&amp; p" variableInitialisers="AudioProcessorEditor(&amp;p), processor(p)"
                  snapPixels="8" snapActive="1" snapShown="1" overlayOpacity="0.330"
-                 fixedSize="0" initialWidth="600" initialHeight="400">
+                 fixedSize="1" initialWidth="600" initialHeight="300">
   <BACKGROUND backgroundColour="ffffffff"/>
+  <LABEL name="new label" id="faa41b91f6352928" memberName="label2" virtualName=""
+         explicitFocusOrder="0" pos="168 80 104 24" edTextCol="ff000000"
+         edBkgCol="0" labelText="Downsample" editableSingleClick="0" editableDoubleClick="0"
+         focusDiscardsChanges="0" fontname="Default font" fontsize="15"
+         bold="0" italic="0" justification="36"/>
   <SLIDER name="new slider" id="b5861bd8e286163" memberName="bitcrushSlider"
-          virtualName="" explicitFocusOrder="0" pos="32 152 150 128" min="0"
+          virtualName="" explicitFocusOrder="0" pos="24 120 112 120" min="0"
           max="1" int="0.010000000000000000208" style="RotaryVerticalDrag"
           textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="80"
           textBoxHeight="20" skewFactor="1"/>
   <LABEL name="new label" id="200d0a1d62b4a5cf" memberName="label" virtualName=""
-         explicitFocusOrder="0" pos="32 120 150 24" edTextCol="ff000000"
+         explicitFocusOrder="0" pos="24 88 112 24" edTextCol="ff000000"
          edBkgCol="0" labelText="Bitcrush" editableSingleClick="0" editableDoubleClick="0"
          focusDiscardsChanges="0" fontname="Default font" fontsize="15"
          bold="0" italic="0" justification="36"/>
   <SLIDER name="new slider" id="6167eff95746422b" memberName="downsampleSlider"
-          virtualName="" explicitFocusOrder="0" pos="228 156 150 128" min="0"
+          virtualName="" explicitFocusOrder="0" pos="168 112 104 124" min="0"
           max="1" int="0.010000000000000000208" style="RotaryVerticalDrag"
           textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="80"
           textBoxHeight="20" skewFactor="1"/>
-  <LABEL name="new label" id="faa41b91f6352928" memberName="label2" virtualName=""
-         explicitFocusOrder="0" pos="228 124 150 24" edTextCol="ff000000"
-         edBkgCol="0" labelText="Downsample" editableSingleClick="0" editableDoubleClick="0"
-         focusDiscardsChanges="0" fontname="Default font" fontsize="15"
-         bold="0" italic="0" justification="36"/>
   <SLIDER name="new slider" id="1f984711f42a8c25" memberName="wetSlider"
-          virtualName="" explicitFocusOrder="0" pos="411 154 150 128" min="0"
+          virtualName="" explicitFocusOrder="0" pos="296 104 112 128" min="0"
           max="1" int="0.010000000000000000208" style="RotaryVerticalDrag"
           textBoxPos="TextBoxBelow" textBoxEditable="1" textBoxWidth="80"
           textBoxHeight="20" skewFactor="1"/>
   <LABEL name="new label" id="ed75009d2f079042" memberName="label3" virtualName=""
-         explicitFocusOrder="0" pos="411 122 150 24" edTextCol="ff000000"
+         explicitFocusOrder="0" pos="304 80 104 24" edTextCol="ff000000"
          edBkgCol="0" labelText="Dry/Wet" editableSingleClick="0" editableDoubleClick="0"
          focusDiscardsChanges="0" fontname="Default font" fontsize="15"
          bold="0" italic="0" justification="36"/>
+  <JUCERCOMP name="meterChild" id="24679acdf902a533" memberName="meterChild"
+             virtualName="" explicitFocusOrder="0" pos="424 0 258 352" sourceFile="../../components/MeterComponent.cpp"
+             constructorParams=""/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA

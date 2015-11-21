@@ -7,7 +7,7 @@
   the "//[xyz]" and "//[/xyz]" sections will be retained when the file is loaded
   and re-saved.
 
-  Created with Introjucer version: 3.2.0
+  Created with Introjucer version: 4.0.1
 
   ------------------------------------------------------------------------------
 
@@ -25,6 +25,7 @@
 #include "BitcrushAudioProcessor.h"
 //[/Headers]
 
+#include "../../components/MeterComponent.h"
 
 
 //==============================================================================
@@ -61,12 +62,13 @@ private:
     //[/UserVariables]
 
     //==============================================================================
+    ScopedPointer<Label> label2;
     ScopedPointer<Slider> bitcrushSlider;
     ScopedPointer<Label> label;
     ScopedPointer<Slider> downsampleSlider;
-    ScopedPointer<Label> label2;
     ScopedPointer<Slider> wetSlider;
     ScopedPointer<Label> label3;
+    ScopedPointer<MeterComponent> meterChild;
 
 
     //==============================================================================

@@ -25,12 +25,8 @@ void BitcrushAudioProcessor::releaseResources()
 
 void BitcrushAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer& midiMessages)
 {
-	// In case we have more outputs than inputs, this code clears any output
-	// channels that didn't contain input data, (because these aren't
-	// guaranteed to be empty - they may contain garbage).
-	// I've added this to avoid people getting screaming feedback
-	// when they first compile the plugin, but obviously you don't need to
-	// this code if your algorithm already fills all the output channels.
+	this->initializing(buffer);
+
 	for (int i = getNumInputChannels(); i < getNumOutputChannels(); ++i) {
 		buffer.clear(i, 0, buffer.getNumSamples());
 	}
@@ -43,7 +39,8 @@ void BitcrushAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer
 
 	// This is the place where you'd normally do the guts of your plugin's
 	// audio processing...
-	for (int channel = 0; channel < getNumInputChannels(); channel++) {
+	for (int channel = 0; channel < getNumInputChannels(); channel++) 
+	{
 		for (int sample = 0; sample < buffer.getNumSamples() - groupedSamples; sample += groupedSamples) {
 			float averagedSample = 0.;
 			for (int i = 0; i < groupedSamples; i++) {
@@ -74,6 +71,9 @@ void BitcrushAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer
 			buffer.setSample(channel, i, sampleValue * (1. - wet_) + crushed * wet_);
 		}
 	}
+
+	this->meteringBuffer(buffer);
+	this->finalizing(buffer);
 }
 
 AudioProcessorEditor* BitcrushAudioProcessor::createEditor()
