@@ -5,10 +5,10 @@
               buildVST="1" buildVST3="0" buildAU="0" buildRTAS="0" buildAAX="0"
               pluginName="Blankenhain Dummy" pluginDesc="This a dummy description. See README for the right way to set this."
               pluginManufacturer="rtificial" pluginManufacturerCode="RTFC"
-              pluginCode="BLKH" pluginChannelConfigs="{1, 1}, {2, 2}" pluginIsSynth="0"
-              pluginWantsMidiIn="1" pluginProducesMidiOut="1" pluginSilenceInIsSilenceOut="0"
-              pluginEditorRequiresKeys="0" pluginAUExportPrefix="" pluginRTASCategory=""
-              aaxIdentifier="" pluginAAXCategory="" jucerVersion="4.1.0" companyName="rtificial"
+              pluginCode="BLKH" pluginChannelConfigs="" pluginIsSynth="0" pluginWantsMidiIn="1"
+              pluginProducesMidiOut="1" pluginSilenceInIsSilenceOut="0" pluginEditorRequiresKeys="0"
+              pluginAUExportPrefix="" pluginRTASCategory="" aaxIdentifier=""
+              pluginAAXCategory="" jucerVersion="4.1.0" companyName="rtificial"
               companyWebsite="http://rtificial.org" companyEmail="mail@rtificial.org"
               pluginIsMidiEffectPlugin="0">
   <MAINGROUP id="JxkcXj" name="Blankenhain">
