@@ -168,13 +168,13 @@ void BlankenhainAudioProcessor::meteringBuffer(AudioSampleBuffer& buffer)
 	/* METERING CODE */
 	for (size_t iteration = 0; iteration < buffer.getNumSamples(); iteration++)
 	{
-		if (abs(buffer.getSample(/*channel*/ 1, iteration)) > meterValues[0])
-		{
-			meterValues[1] = abs(buffer.getSample(/*channel*/ 1, iteration));
-		}
-		if (abs(buffer.getSample(/*channel*/ 0, iteration)) > meterValues[1])
+		if (abs(buffer.getSample(/*channel*/ 0, iteration)) > meterValues[0])
 		{
 			meterValues[0] = abs(buffer.getSample(/*channel*/ 0, iteration));
+		}
+		if (abs(buffer.getSample(/*channel*/ 1, iteration)) > meterValues[1])
+		{
+			meterValues[1] = abs(buffer.getSample(/*channel*/ 1, iteration));
 		}
 		meterValues[2] += buffer.getSample(/*channel*/ 0, iteration) * buffer.getSample(/*channel*/ 0, iteration);
 		meterValues[3] += buffer.getSample(/*channel*/ 1, iteration) * buffer.getSample(/*channel*/ 1, iteration);
