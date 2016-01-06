@@ -5,9 +5,9 @@
 
 BitcrushAudioProcessor::BitcrushAudioProcessor()
 {
-	bitcrush = new FloatParameter("Bitcrush", .5);
-	downsample = new FloatParameter("Downsample", .0);
-	wet = new FloatParameter("Dry/Wet", 1.);
+	bitcrush = new FloatParameter(.5, "Bitcrush");
+	downsample = new FloatParameter(.0, "Downsample");
+	wet = new FloatParameter(1., "Dry/Wet");
 	addParameter(bitcrush);
 	addParameter(downsample);
 	addParameter(wet);

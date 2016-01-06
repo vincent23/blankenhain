@@ -6,8 +6,8 @@
 FilterAudioProcessor::FilterAudioProcessor() :
 	filterType(FilterType::Low)
 {
-	resonance = new FloatParameter(0.5, "Resonance", 0.5f, juce::NormalisableRange<float>(0.f, 5.f));
-	frequency = new FloatParameter((500.f), "Frequency", 0.5f, juce::NormalisableRange<float>(40.f, 22000.f,0.f,0.3f));
+	resonance = new FloatParameter(0.5, "Resonance", 0.5f, NormalizedRange(0.f, 5.f));
+	frequency = new FloatParameter((500.f), "Frequency", 0.5f, NormalizedRange(40.f, 22000.f, 0.3f));
 
 	addParameter(resonance);
 	addParameter(frequency);
@@ -29,7 +29,7 @@ void FilterAudioProcessor::processBlock(AudioSampleBuffer& buffer, MidiBuffer& m
 {
 	this->initializing(buffer);
 
-	processBlockwise<FilterConstants::blockSize>(buffer, internalBuffer, [this] (size_t samples, size_t offset) {
+	processBlockwise<FilterConstants::blockSize>(buffer, internalBuffer, [this](size_t samples, size_t offset) {
 		switch (filterType) {
 		case High:
 			filter->processHigh(internalBuffer, samples, getFrequency(), getResonance());

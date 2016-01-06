@@ -14,14 +14,9 @@ class FloatParameter : public AudioProcessorParameter
 public:
 	//USE THIS CONSTRUCTOR
 	FloatParameter(float defaultValue, const String& name = "I was not initialized properly. U bad boy mhmhm.", \
-		float bufferScalingValue_ = 1.f, NormalisableRange<float> normalisableRange = NormalisableRange<float>());
+		float bufferScalingValue_ = 1.f, const NormalizedRange& normalizedRange = NormalizedRange());
 	//COPY BY REFERENCE
-	FloatParameter(FloatParameter const&);
-
-
-	//LEGACY CONSTRCUTOR DONT USE THIS
-	FloatParameter(const String& name, float defaultValue, float bufferScalingValue_ = 1.f, NormalisableRange<float> normalisableRange \
-		= NormalisableRange<float>());
+	FloatParameter(const FloatParameter&);
 
 	float getValue() const override;
 	void setValue(float unnormalizedNewValue_) override;
@@ -43,7 +38,7 @@ public:
 
 private:
 	const float defaultValue;
-	const NormalisableRange<float> range;
+	NormalizedRange range;
 	float value;
 	float oldValue;
 	const float bufferScalingValue;

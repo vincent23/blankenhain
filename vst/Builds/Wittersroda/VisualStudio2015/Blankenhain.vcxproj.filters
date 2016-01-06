@@ -1570,6 +1570,9 @@
     <ClCompile Include="..\..\..\..\synth\src\Filter.cpp">
       <Filter>Juce Modules\synth\src</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\..\synth\src\NormalizedRange.cpp">
+      <Filter>Juce Modules\synth\src</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\..\..\synth\.\synth.cpp">
       <Filter>Juce Modules\synth\.</Filter>
     </ClCompile>
@@ -3046,6 +3049,9 @@
       <Filter>Juce Modules\synth\src</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\..\synth\src\FPUState.h">
+      <Filter>Juce Modules\synth\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\synth\src\NormalizedRange.h">
       <Filter>Juce Modules\synth\src</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\..\synth\src\Sample.h">

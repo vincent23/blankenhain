@@ -5,5 +5,6 @@
 #include "src/FPUState.h"
 #include "src/Filter.h"
 #include "src/AlignedType.h"
+#include "src/NormalizedRange.h"
 
 #endif // BLANKENHAIN_SYNTH_H_INCLUDED

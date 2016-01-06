@@ -1246,6 +1246,9 @@
     <ClCompile Include="..\..\..\..\synth\src\Filter.cpp">
       <ExcludedFromBuild>true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="..\..\..\..\synth\src\NormalizedRange.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="..\..\..\..\synth\.\synth.cpp">
       <ExcludedFromBuild>true</ExcludedFromBuild>
     </ClCompile>
@@ -1752,6 +1755,7 @@
     <ClInclude Include="..\..\..\..\synth\src\AlignedType.h"/>
     <ClInclude Include="..\..\..\..\synth\src\Filter.h"/>
     <ClInclude Include="..\..\..\..\synth\src\FPUState.h"/>
+    <ClInclude Include="..\..\..\..\synth\src\NormalizedRange.h"/>
     <ClInclude Include="..\..\..\..\synth\src\Sample.h"/>
     <ClInclude Include="..\..\..\..\synth\synth.h"/>
     <ClInclude Include="..\..\..\JuceLibraryCode\AppConfig.h"/>

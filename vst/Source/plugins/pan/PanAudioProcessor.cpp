@@ -5,7 +5,7 @@
 
 PanAudioProcessor::PanAudioProcessor()
 {
-	panning = new FloatParameter(0.0f,"panning",0.5f,juce::NormalisableRange<float>(-50.f, 50.f,0.f));
+	panning = new FloatParameter(0.0f, "panning", 0.5f, NormalizedRange(-50.f, 50.f));
 	addParameter(panning);
 }
 
@@ -39,17 +39,17 @@ void PanAudioProcessor::processBlock(AudioSampleBuffer& buffer, MidiBuffer& midi
 	oldPanning = panning->getNormalizedOldValue();
 	maxInterpolation = int(buffer.getNumSamples() * panning->getBufferScalingValue());
 
-	if (getNumInputChannels() == 1) 
+	if (getNumInputChannels() == 1)
 	{
 		for (size_t interpolationIteration = 0; interpolationIteration < maxInterpolation; interpolationIteration++)
 		{
 			bufferValue = buffer.getSample(/*channel*/ 0, interpolationIteration);
 			momentaryPanning = (oldPanning + ((interpolationIteration + 1) * (currentPanning - oldPanning) / maxInterpolation));
 			buffer.setSample(/*channel*/ 0, interpolationIteration, bufferValue * \
-							 (1.f - 2 * (std::max(0.5f, momentaryPanning) - 0.5f)));
+				(1.f - 2 * (std::max(0.5f, momentaryPanning) - 0.5f)));
 
 			buffer.setSample(/*channel*/ 1, interpolationIteration, bufferValue * \
-							 2 * (std::min(0.5f, momentaryPanning)));
+				2 * (std::min(0.5f, momentaryPanning)));
 		}
 		for (size_t bufferIteration = maxInterpolation; bufferIteration < buffer.getNumSamples(); bufferIteration++)
 		{
@@ -76,7 +76,7 @@ void PanAudioProcessor::processBlock(AudioSampleBuffer& buffer, MidiBuffer& midi
 			bufferValue = buffer.getSample(/*channel*/ 0, bufferIteration);
 			buffer.setSample(/*channel*/ 0, bufferIteration, bufferValue * (1.f - 2 * (std::max(0.5f, currentPanning) - 0.5f)));
 			bufferValue = buffer.getSample(/*channel*/ 1, bufferIteration);
-			buffer.setSample(/*channel*/ 1, bufferIteration, bufferValue * 2 * (std::min(0.5f, currentPanning) ) );
+			buffer.setSample(/*channel*/ 1, bufferIteration, bufferValue * 2 * (std::min(0.5f, currentPanning)));
 		}
 	}
 	panning->setOldValue();

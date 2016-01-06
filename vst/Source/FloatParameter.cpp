@@ -1,26 +1,19 @@
 #include "FloatParameter.h"
 
-FloatParameter::FloatParameter(float defaultValue_, const String& name_, float scalingValue_, NormalisableRange<float> normalisableRange_)
-			   :defaultValue(normalisableRange_.convertTo0to1(defaultValue_)), value(normalisableRange_.convertTo0to1(defaultValue_)), \
-			    oldValue(normalisableRange_.convertTo0to1(defaultValue_)), name(name_), range(normalisableRange_), \
-			    bufferScalingValue(scalingValue_)
+FloatParameter::FloatParameter(float defaultValue_, const String& name_, float scalingValue_, const NormalizedRange& normalizedRange_)
+	:defaultValue(normalizedRange_.toNormalized(defaultValue_)), value(normalizedRange_.toNormalized(defaultValue_)), \
+	oldValue(normalizedRange_.toNormalized(defaultValue_)), name(name_), range(normalizedRange_), \
+	bufferScalingValue(scalingValue_)
 {
 };
 
-FloatParameter::FloatParameter(const String& name_, float defaultValue_, float scalingValue_, NormalisableRange<float> normalisableRange_)
-			   : defaultValue(normalisableRange_.convertTo0to1(defaultValue_)), value(normalisableRange_.convertTo0to1(defaultValue_)), \
-			   oldValue(normalisableRange_.convertTo0to1(defaultValue_)), name(name_), \
-			   bufferScalingValue(scalingValue_)
-{
-};
-
-FloatParameter::FloatParameter(FloatParameter const& in)
-		       :defaultValue(in.defaultValue), value(in.value), \
-		       oldValue(in.oldValue), name(in.name), \
-		       bufferScalingValue(in.bufferScalingValue), range(in.range) {};
+FloatParameter::FloatParameter(const FloatParameter& in)
+	:defaultValue(in.defaultValue), value(in.value), \
+	oldValue(in.oldValue), name(in.name), \
+	bufferScalingValue(in.bufferScalingValue), range(in.range) {};
 
 float FloatParameter::getOldValue() const {
-	return range.convertFrom0to1(oldValue);
+	return range.fromNormalized(oldValue);
 }
 
 float FloatParameter::getBufferScalingValue() const {
@@ -28,7 +21,7 @@ float FloatParameter::getBufferScalingValue() const {
 }
 
 void FloatParameter::setOldValue(float oldValue_) {
-	oldValue = range.convertTo0to1(oldValue_);
+	oldValue = range.toNormalized(oldValue_);
 }
 
 void FloatParameter::setOldValue(void) {
@@ -36,15 +29,15 @@ void FloatParameter::setOldValue(void) {
 }
 
 float FloatParameter::getValue() const {
-	return range.convertFrom0to1(value);
+	return range.fromNormalized(value);
 }
 
 void FloatParameter::setValue(float newValue_) {
-	value = range.convertTo0to1(newValue_);
+	value = range.toNormalized(newValue_);
 }
 
 float FloatParameter::getDefaultValue() const {
-	return range.convertFrom0to1(defaultValue);
+	return range.fromNormalized(defaultValue);
 }
 
 String FloatParameter::getName(int maximumStringLength) const {

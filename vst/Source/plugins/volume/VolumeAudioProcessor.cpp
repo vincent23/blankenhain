@@ -5,8 +5,8 @@
 
 VolumeAudioProcessor::VolumeAudioProcessor()
 {
-	volumeL = new FloatParameter("volumeL", 120.f / 132.f, 0.5f, NormalisableRange<float>(-120.f, 12.f, 0.f, 5.f));
-	volumeR = new FloatParameter("volumeR", 120.f / 132.f, 0.5f, NormalisableRange<float>(-120.f, 12.f, 0.f, 5.f));
+	volumeL = new FloatParameter(120.f / 132.f, "volumeL", 0.5f, NormalizedRange(-120.f, 12.f, 5.f));
+	volumeR = new FloatParameter(120.f / 132.f, "volumeR", 0.5f, NormalizedRange(-120.f, 12.f, 5.f));
 	stereoCoupling = new BoolParameter("stereoCoupling", true);
 	addParameter(volumeL);
 	addParameter(volumeR);
