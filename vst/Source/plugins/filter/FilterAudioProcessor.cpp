@@ -27,61 +27,22 @@ void FilterAudioProcessor::processBlock(AudioSampleBuffer& buffer, MidiBuffer& m
 {
 	this->initializing(buffer);
 
-	const size_t bufferIterationCount = buffer.getNumSamples() / bufferSize;
-	for (size_t bufferIteration = 0; bufferIteration < bufferIterationCount; bufferIteration++) {
-		for (size_t i = 0; i < bufferSize; i++) {
-			int sampleIndex = bufferIteration * bufferSize + i;
-			internalBuffer[i] = Sample(buffer.getSample(1, sampleIndex), buffer.getSample(0, sampleIndex));
-		}
+	processBlockwise<FilterConstants::blockSize>(buffer, internalBuffer, [this] (size_t samples, size_t offset) {
 		switch (filterType) {
 		case High:
-			filter->processHigh(internalBuffer, bufferSize, getFrequency(), getResonance());
+			filter->processHigh(internalBuffer, samples, getFrequency(), getResonance());
 			break;
 		case Low:
-			filter->processLow(internalBuffer, bufferSize, getFrequency(), getResonance());
+			filter->processLow(internalBuffer, samples, getFrequency(), getResonance());
 			break;
 		case Band:
-			filter->processBand(internalBuffer, bufferSize, getFrequency(), getResonance());
+			filter->processBand(internalBuffer, samples, getFrequency(), getResonance());
 			break;
 		case Notch:
-			filter->processNotch(internalBuffer, bufferSize, getFrequency(), getResonance());
+			filter->processNotch(internalBuffer, samples, getFrequency(), getResonance());
 			break;
 		}
-		for (size_t i = 0; i < bufferSize; i++) {
-			int sampleIndex = bufferIteration * bufferSize + i;
-			alignas(16) double sampleValues[2];
-			internalBuffer[i].store_aligned(sampleValues);
-			buffer.setSample(0, sampleIndex, sampleValues[0]);
-			buffer.setSample(1, sampleIndex, sampleValues[1]);
-		}
-	}
-
-	const size_t remainingSamples = buffer.getNumSamples() % bufferSize;
-	for (size_t i = 0; i < remainingSamples; i++) {
-		int sampleIndex = bufferIterationCount * bufferSize + i;
-		internalBuffer[i] = Sample(buffer.getSample(0, sampleIndex), buffer.getSample(1, sampleIndex));
-	}
-	switch (filterType) {
-	case High:
-		filter->processHigh(internalBuffer, remainingSamples, getFrequency(), getResonance());
-		break;
-	case Low:
-		filter->processLow(internalBuffer, remainingSamples, getFrequency(), getResonance());
-		break;
-	case Band:
-		filter->processBand(internalBuffer, remainingSamples, getFrequency(), getResonance());
-		break;
-	case Notch:
-		filter->processNotch(internalBuffer, remainingSamples, getFrequency(), getResonance());
-		break;
-	}
-	for (size_t i = 0; i < remainingSamples; i++) {
-		int sampleIndex = bufferIterationCount * bufferSize + i;
-		alignas(16) double sampleValues[2];
-		internalBuffer[i].store_aligned(sampleValues);
-		buffer.setSample(0, sampleIndex, sampleValues[0]);
-		buffer.setSample(1, sampleIndex, sampleValues[1]);
-	}
+	});
 
 	this->meteringBuffer(buffer);
 	this->finalizing(buffer);

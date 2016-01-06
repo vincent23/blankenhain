@@ -3,6 +3,10 @@
 
 #include "Sample.h"
 
+namespace FilterConstants {
+	constexpr size_t blockSize = 16;
+}
+
 struct Filter : public AlignedType {
 	Filter();
 

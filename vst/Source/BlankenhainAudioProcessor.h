@@ -52,6 +52,9 @@ protected:
 	virtual var getState() = 0;
 	virtual void setState(const var& state) = 0;
 
+	template<size_t BlockSize, typename ProcessFunction>
+	void processBlockwise(AudioSampleBuffer& audioBuffer, Sample* processBuffer, ProcessFunction processFunction);
+
 	double lastKnownSampleRate = 44100;
 	int lastKnownBlockSize = 512;
 
@@ -61,5 +64,38 @@ protected:
 private:
 	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(BlankenhainAudioProcessor)
 };
+
+
+template<size_t BlockSize, typename ProcessFunction>
+void BlankenhainAudioProcessor::processBlockwise(AudioSampleBuffer& audioBuffer, Sample* processBuffer, ProcessFunction processFunction) {
+	size_t offset = 0;
+	for (; offset + BlockSize <= audioBuffer.getNumSamples(); offset += BlockSize) {
+		for (size_t i = 0; i < BlockSize; i++) {
+			int sampleIndex = offset + i;
+			processBuffer[i] = Sample(audioBuffer.getSample(0, sampleIndex), audioBuffer.getSample(1, sampleIndex));
+		}
+		processFunction(BlockSize, offset);
+		for (size_t i = 0; i < BlockSize; i++) {
+			int sampleIndex = offset + i;
+			alignas(16) double sampleValues[2];
+			processBuffer[i].store_aligned(sampleValues);
+			audioBuffer.setSample(0, sampleIndex, sampleValues[0]);
+			audioBuffer.setSample(1, sampleIndex, sampleValues[1]);
+		}
+	}
+	const size_t remainingSamples = audioBuffer.getNumSamples() - offset;
+	for (size_t i = 0; i < remainingSamples; i++) {
+		int sampleIndex = offset + i;
+		processBuffer[i] = Sample(audioBuffer.getSample(0, sampleIndex), audioBuffer.getSample(1, sampleIndex));
+	}
+	processFunction(remainingSamples, offset);
+	for (size_t i = 0; i < remainingSamples; i++) {
+		int sampleIndex = offset + i;
+		alignas(16) double sampleValues[2];
+		processBuffer[i].store_aligned(sampleValues);
+		audioBuffer.setSample(0, sampleIndex, sampleValues[0]);
+		audioBuffer.setSample(1, sampleIndex, sampleValues[1]);
+	}
+}
 
 #endif  // BLANKENHAIN_AUDIO_PROCESSOR_H_INCLUDED
