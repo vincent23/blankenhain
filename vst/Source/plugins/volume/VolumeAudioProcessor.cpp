@@ -1,12 +1,4 @@
-/*
-  ==============================================================================
-
-    VolumeAudioProcessor.cpp
-    Created: 2 Nov 2015 10:44:30am
-    Author:  Dusti
-
-  ==============================================================================
-*/
+#ifdef PLUGIN_VOLUME
 
 #include "VolumeAudioProcessor.h"
 #include "VolumeAudioProcessorEditor.h"
@@ -157,3 +149,5 @@ float VolumeAudioProcessor::getVolumeR() {
 bool VolumeAudioProcessor::getStereoCoupling() {
 	return stereoCoupling->getBoolValue();
 }
+
+#endif

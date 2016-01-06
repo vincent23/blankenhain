@@ -1,3 +1,5 @@
+#ifdef PLUGIN_WITTERSRODA
+
 #include "WittersrodaAudioProcessor.h"
 #include "WittersrodaAudioProcessorEditor.h"
 
@@ -51,3 +53,5 @@ var WittersrodaAudioProcessor::getState()
 void WittersrodaAudioProcessor::setState(const var & state)
 {
 }
+
+#endif

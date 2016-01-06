@@ -18,6 +18,7 @@
 */
 
 //[Headers] You can add your own extra header files here...
+#ifdef PLUGIN_VOLUME
 //[/Headers]
 
 #include "VolumeAudioProcessorEditor.h"
@@ -253,4 +254,5 @@ END_JUCER_METADATA
 
 
 //[EndFile] You can add extra defines here...
+#endif
 //[/EndFile]

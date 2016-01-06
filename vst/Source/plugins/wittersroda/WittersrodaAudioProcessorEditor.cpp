@@ -18,6 +18,7 @@
 */
 
 //[Headers] You can add your own extra header files here...
+#ifdef PLUGIN_WITTERSRODA
 //[/Headers]
 
 #include "WittersrodaAudioProcessorEditor.h"
@@ -172,4 +173,5 @@ END_JUCER_METADATA
 
 
 //[EndFile] You can add extra defines here...
+#endif
 //[/EndFile]

@@ -1,3 +1,5 @@
+#ifdef PLUGIN_EXAMPLE
+
 #include "ExampleAudioProcessor.h"
 #include "ExampleAudioProcessorEditor.h"
 
@@ -51,3 +53,5 @@ var ExampleAudioProcessor::getState()
 void ExampleAudioProcessor::setState(const var & state)
 {
 }
+
+#endif

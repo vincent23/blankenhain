@@ -18,6 +18,7 @@
 */
 
 //[Headers] You can add your own extra header files here...
+#ifdef PLUGIN_BITCRUSH
 //[/Headers]
 
 #include "BitcrushAudioProcessorEditor.h"
@@ -235,4 +236,5 @@ END_JUCER_METADATA
 
 
 //[EndFile] You can add extra defines here...
+#endif
 //[/EndFile]

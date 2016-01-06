@@ -1,12 +1,4 @@
-/*
-  ==============================================================================
-
-    PanAudioProcessor.cpp
-    Created: 2 Nov 2015 9:24:36pm
-    Author:  Dusti
-
-  ==============================================================================
-*/
+#ifdef PLUGIN_PAN
 
 #include "PanAudioProcessor.h"
 #include "PanAudioProcessorEditor.h"
@@ -117,3 +109,5 @@ void PanAudioProcessor::setState(const var & state)
 float PanAudioProcessor::getPanning() {
 	return panning->getValue();
 }
+
+#endif

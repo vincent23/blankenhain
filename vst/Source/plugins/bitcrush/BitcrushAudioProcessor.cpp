@@ -1,3 +1,5 @@
+#ifdef PLUGIN_BITCRUSH
+
 #include "BitcrushAudioProcessor.h"
 #include "BitcrushAudioProcessorEditor.h"
 
@@ -126,3 +128,5 @@ float BitcrushAudioProcessor::getWet() const
 {
 	return wet->getValue();
 }
+
+#endif

@@ -1,3 +1,5 @@
+#ifdef PLUGIN_FILTER
+
 #include "FilterAudioProcessor.h"
 #include "FilterAudioProcessorEditor.h"
 
@@ -105,3 +107,5 @@ float FilterAudioProcessor::getFrequency() {
 int FilterAudioProcessor::getFilterType() {
 	return filterType;
 }
+
+#endif

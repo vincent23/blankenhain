@@ -18,6 +18,7 @@
 */
 
 //[Headers] You can add your own extra header files here...
+#ifdef PLUGIN_FILTER
 //[/Headers]
 
 #include "FilterAudioProcessorEditor.h"
@@ -249,4 +250,5 @@ END_JUCER_METADATA
 
 
 //[EndFile] You can add extra defines here...
+#endif
 //[/EndFile]
