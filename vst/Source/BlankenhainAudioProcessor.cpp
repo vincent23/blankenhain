@@ -2,6 +2,10 @@
 
 BlankenhainAudioProcessor::BlankenhainAudioProcessor()
 {
+	busArrangement.inputBuses.clear();
+	busArrangement.outputBuses.clear();
+	busArrangement.inputBuses.add(AudioProcessorBus("Input", AudioChannelSet::stereo()));
+	busArrangement.outputBuses.add(AudioProcessorBus("Output", AudioChannelSet::stereo()));
 }
 
 const String BlankenhainAudioProcessor::getName() const
