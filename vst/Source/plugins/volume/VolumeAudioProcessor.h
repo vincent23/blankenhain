@@ -1,15 +1,4 @@
-/*
-  ==============================================================================
-
-    VolumeAudioProcessor.h
-    Created: 2 Nov 2015 10:44:30am
-    Author:  Dusti
-
-  ==============================================================================
-*/
-
-#ifndef VOLUMEAUDIOPROCESSOR_H_INCLUDED
-#define VOLUMEAUDIOPROCESSOR_H_INCLUDED
+#pragma once
 
 #include <juce>
 #include "BlankenhainAudioProcessor.h"
@@ -48,6 +37,3 @@ private:
 
 	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(VolumeAudioProcessor)
 };
-
-
-#endif  // VOLUMEAUDIOPROCESSOR_H_INCLUDED

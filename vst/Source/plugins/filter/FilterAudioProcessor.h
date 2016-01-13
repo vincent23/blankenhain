@@ -1,5 +1,4 @@
-#ifndef FILTER_AUDIO_PROCESSOR_H_INCLUDED
-#define FILTER_AUDIO_PROCESSOR_H_INCLUDED
+#pragma once
 
 #include <juce>
 #include "BlankenhainAudioProcessor.h"
@@ -43,6 +42,3 @@ private:
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(FilterAudioProcessor)
 };
-
-
-#endif // FILTER_AUDIO_PROCESSOR_H_INCLUDED

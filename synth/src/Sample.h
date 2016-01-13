@@ -1,5 +1,4 @@
-#ifndef SAMPLE_H_INCLUDED
-#define SAMPLE_H_INCLUDED
+#pragma once
 
 #include <emmintrin.h>
 #include "AlignedType.h"
@@ -89,5 +88,3 @@ inline Sample operator*(const Sample& a, const Sample& b) {
 inline Sample operator/(const Sample& a, const Sample& b) {
 	return Sample(_mm_div_pd(a.v, b.v));
 }
-
-#endif // SAMPLE_H_INCLUDED

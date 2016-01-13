@@ -1,5 +1,4 @@
-#ifndef FILTER_H_INCLUDED
-#define FILTER_H_INCLUDED
+#pragma once
 
 #include "Sample.h"
 
@@ -18,5 +17,3 @@ struct Filter : public AlignedType {
 
 	Sample x_1, y_1, y_2;
 };
-
-#endif // FILTER_H_INCLUDED

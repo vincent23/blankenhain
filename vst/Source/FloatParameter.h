@@ -1,5 +1,4 @@
-#ifndef FLOAT_PARAMETER_H_INCLUDED
-#define FLOAT_PARAMETER_H_INCLUDED
+#pragma once
 
 #include <juce>
 #include <functional>
@@ -47,5 +46,3 @@ private:
 	
 	const String name; 
 };
-
-#endif // FLOAT_PARAMETER_H_INCLUDED

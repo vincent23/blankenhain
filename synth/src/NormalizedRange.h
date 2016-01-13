@@ -1,5 +1,4 @@
-#ifndef NORMALIZEDRANGE_H_INCLUDED
-#define NORMALIZEDRANGE_H_INCLUDED
+#pragma once
 
 class NormalizedRange
 {
@@ -12,5 +11,4 @@ public:
 private:
 	const float start, end, skew;
 };
-#endif
 

@@ -1,5 +1,4 @@
-#ifndef BLANKENHAIN_AUDIO_PROCESSOR_H_INCLUDED
-#define BLANKENHAIN_AUDIO_PROCESSOR_H_INCLUDED
+#pragma once
 
 #include <juce>
 #include <vector>
@@ -97,5 +96,3 @@ void BlankenhainAudioProcessor::processBlockwise(AudioSampleBuffer& audioBuffer,
 		audioBuffer.setSample(1, sampleIndex, sampleValues[1]);
 	}
 }
-
-#endif  // BLANKENHAIN_AUDIO_PROCESSOR_H_INCLUDED

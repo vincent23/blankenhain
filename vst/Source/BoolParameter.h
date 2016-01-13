@@ -1,15 +1,4 @@
-/*
-  ==============================================================================
-
-    BoolParameter.h
-    Created: 2 Nov 2015 12:08:32pm
-    Author:  Dusti
-
-  ==============================================================================
-*/
-
-#ifndef BOOLPARAMETER_H_INCLUDED
-#define BOOLPARAMETER_H_INCLUDED
+#pragma once
 
 #include <juce>
 
@@ -34,6 +23,3 @@ private:
 	bool value;
 	const String name;
 };
-
-
-#endif  // BOOLPARAMETER_H_INCLUDED

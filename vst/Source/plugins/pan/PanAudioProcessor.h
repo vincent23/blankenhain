@@ -1,15 +1,4 @@
-/*
-  ==============================================================================
-
-    PanAudioProcessor.h
-    Created: 2 Nov 2015 9:24:36pm
-    Author:  Dusti
-
-  ==============================================================================
-*/
-
-#ifndef PANAUDIOPROCESSOR_H_INCLUDED
-#define PANAUDIOPROCESSOR_H_INCLUDED
+#pragma once
 
 #include <juce>
 #include "BlankenhainAudioProcessor.h"
@@ -40,6 +29,3 @@ private:
 
 	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(PanAudioProcessor)
 };
-
-
-#endif  // PANAUDIOPROCESSOR_H_INCLUDED

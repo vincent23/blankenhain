@@ -1,5 +1,5 @@
-#ifndef ALIGNEDTYPE_H_INCLUDED
-#define ALIGNEDTYPE_H_INCLUDED
+#pragma once
+
 class AlignedType
 {
 	private:
@@ -12,4 +12,3 @@ class AlignedType
 		void operator delete[](void *p);
 		unsigned int getAlignment();
 };
-#endif

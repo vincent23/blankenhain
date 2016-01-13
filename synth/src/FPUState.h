@@ -1,5 +1,4 @@
-#ifndef FPUSTATE_H_INCLUDED
-#define FPUSTATE_H_INCLUDED
+#pragma once
 
 /**
  * RAII class for setting the right FPU flags (flush to zero,
@@ -27,5 +26,3 @@ public:
 private:
 	unsigned int previousControlRegister;
 };
-
-#endif // FPUSTATE_H_INCLUDED

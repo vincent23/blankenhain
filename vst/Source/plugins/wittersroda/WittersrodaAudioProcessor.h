@@ -1,5 +1,4 @@
-#ifndef WITTERSRODA_AUDIO_PROCESSOR_H_INCLUDED
-#define WITTERSRODA_AUDIO_PROCESSOR_H_INCLUDED
+#pragma once
 
 #include <juce>
 #include "BlankenhainAudioProcessor.h"
@@ -23,6 +22,3 @@ protected:
 private:
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(WittersrodaAudioProcessor)
 };
-
-
-#endif // WITTERSRODA_AUDIO_PROCESSOR_H_INCLUDED
