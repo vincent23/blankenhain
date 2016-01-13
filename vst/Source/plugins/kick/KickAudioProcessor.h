@@ -4,6 +4,7 @@
 #include "BlankenhainAudioProcessor.h"
 #include "FloatParameter.h"
 #include "BoolParameter.h"
+#include <memory>
 
 class KickAudioProcessor : public BlankenhainAudioProcessor
 {
@@ -22,8 +23,8 @@ protected:
 	void setState(const var& state) override;
 
 private:
-	KickSynth kickSynth;
-	Sample* internalBuffer = new Sample[16];
+	std::unique_ptr<KickSynth> kickSynth = std::unique_ptr<KickSynth>(new KickSynth());
+	std::unique_ptr<Sample> internalBuffer = std::unique_ptr<Sample>(new Sample[16]);
 
 	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(KickAudioProcessor)
 };

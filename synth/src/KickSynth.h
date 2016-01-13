@@ -3,7 +3,7 @@
 #include "Sample.h"
 #include "Filter.h"
 
-class KickSynth : AlignedType
+class KickSynth : public AlignedType
 {
 public:
 	KickSynth();

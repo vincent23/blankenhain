@@ -24,21 +24,21 @@ void KickAudioProcessor::processBlock(AudioSampleBuffer& buffer, MidiBuffer& mid
 	this->initializing(buffer);
 
 	MidiBuffer::Iterator midiIterator(midiMessages);
-	processBlockwise<16>(buffer, internalBuffer, [this, &midiIterator](size_t samples, size_t offset) mutable {
+	processBlockwise<16>(buffer, internalBuffer.get(), [this, &midiIterator](size_t samples, size_t offset) mutable {
 		MidiMessage message;
 		int messagePosition;
 		if (midiIterator.getNextEvent(message, messagePosition)) {
 			// TODO slightly wrong
 			if (messagePosition >= offset) {
 				if (message.isNoteOn()) {
-					kickSynth.kick();
+					kickSynth->kick();
 				}
 				midiIterator.setNextSamplePosition(messagePosition + 1);
 			}
-			kickSynth.play(internalBuffer, samples);
+			kickSynth->play(internalBuffer.get(), samples);
 		}
 		else {
-			kickSynth.play(internalBuffer, samples);
+			kickSynth->play(internalBuffer.get(), samples);
 		}
 	});
 
