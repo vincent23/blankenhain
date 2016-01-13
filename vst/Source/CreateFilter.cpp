@@ -6,6 +6,7 @@
 #include "plugins/volume/VolumeAudioProcessor.h"
 #include "plugins/pan/PanAudioProcessor.h"
 #include "plugins/bitcrush/BitcrushAudioProcessor.h"
+#include "plugins/kick/KickAudioProcessor.h"
 
 // this creates the correct plugin based on preprocessor flags
 AudioProcessor* JUCE_CALLTYPE createPluginFilter()
@@ -23,6 +24,8 @@ AudioProcessor* JUCE_CALLTYPE createPluginFilter()
 	return new PanAudioProcessor();
 #elif PLUGIN_BITCRUSH
 	return new BitcrushAudioProcessor();
+#elif PLUGIN_KICK
+	return new KickAudioProcessor();
 #else
 	static_assert(false, "The build config of your plugin is broken. "
 		"Please see README for instructions on how to add new plugins.");

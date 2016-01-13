@@ -14,10 +14,16 @@
   <MAINGROUP id="JxkcXj" name="Blankenhain">
     <GROUP id="{CEB9C7EF-9627-E2F3-83AA-B82B15D50FA4}" name="Source">
       <GROUP id="{C3EB4C8E-A5B0-7418-72B9-06572CF58418}" name="components">
+        <FILE id="xxWX0T" name="AdsrComponent.cpp" compile="1" resource="0"
+              file="Source/components/AdsrComponent.cpp"/>
+        <FILE id="IOu2bL" name="AdsrComponent.h" compile="0" resource="0" file="Source/components/AdsrComponent.h"/>
         <FILE id="cEsJs5" name="ledMeterComponent.cpp" compile="1" resource="0"
               file="Source/components/ledMeterComponent.cpp"/>
         <FILE id="j4VvNd" name="ledMeterComponent.h" compile="0" resource="0"
               file="Source/components/ledMeterComponent.h"/>
+        <FILE id="H27eUq" name="LfoComponent.cpp" compile="1" resource="0"
+              file="Source/components/LfoComponent.cpp"/>
+        <FILE id="HAxGje" name="LfoComponent.h" compile="0" resource="0" file="Source/components/LfoComponent.h"/>
         <FILE id="MbQMwn" name="MeterComponent.cpp" compile="1" resource="0"
               file="Source/components/MeterComponent.cpp"/>
         <FILE id="gHiEDM" name="MeterComponent.h" compile="0" resource="0"
@@ -26,22 +32,42 @@
               resource="0" file="Source/components/ModulationMatrixComponent.cpp"/>
         <FILE id="fOA15A" name="ModulationMatrixComponent.h" compile="0" resource="0"
               file="Source/components/ModulationMatrixComponent.h"/>
-        <FILE id="LGRjT4" name="WaveVerschwurbelungComponent.cpp" compile="1"
-              resource="0" file="Source/components/WaveVerschwurbelungComponent.cpp"/>
-        <FILE id="RXJAZb" name="WaveVerschwurbelungComponent.h" compile="0"
-              resource="0" file="Source/components/WaveVerschwurbelungComponent.h"/>
         <FILE id="ukithJ" name="WaveGenerationComponent.cpp" compile="1" resource="0"
               file="Source/components/WaveGenerationComponent.cpp"/>
         <FILE id="iK9l2P" name="WaveGenerationComponent.h" compile="0" resource="0"
               file="Source/components/WaveGenerationComponent.h"/>
-        <FILE id="xxWX0T" name="AdsrComponent.cpp" compile="1" resource="0"
-              file="Source/components/AdsrComponent.cpp"/>
-        <FILE id="IOu2bL" name="AdsrComponent.h" compile="0" resource="0" file="Source/components/AdsrComponent.h"/>
-        <FILE id="HAxGje" name="LfoComponent.h" compile="0" resource="0" file="Source/components/LfoComponent.h"/>
-        <FILE id="H27eUq" name="LfoComponent.cpp" compile="1" resource="0"
-              file="Source/components/LfoComponent.cpp"/>
+        <FILE id="LGRjT4" name="WaveVerschwurbelungComponent.cpp" compile="1"
+              resource="0" file="Source/components/WaveVerschwurbelungComponent.cpp"/>
+        <FILE id="RXJAZb" name="WaveVerschwurbelungComponent.h" compile="0"
+              resource="0" file="Source/components/WaveVerschwurbelungComponent.h"/>
       </GROUP>
       <GROUP id="{19EF4637-6B84-4B6A-69FF-029D7E3D590C}" name="plugins">
+        <GROUP id="{E0E72F6E-D0B3-5F73-56CB-98A77B644419}" name="bitcrush">
+          <FILE id="CkmpdB" name="BitcrushAudioProcessorEditor.h" compile="0"
+                resource="0" file="Source/plugins/bitcrush/BitcrushAudioProcessorEditor.h"/>
+          <FILE id="PGjzme" name="BitcrushAudioProcessor.cpp" compile="1" resource="0"
+                file="Source/plugins/bitcrush/BitcrushAudioProcessor.cpp"/>
+          <FILE id="IQSNJd" name="BitcrushAudioProcessor.h" compile="0" resource="0"
+                file="Source/plugins/bitcrush/BitcrushAudioProcessor.h"/>
+          <FILE id="ihAxb0" name="BitcrushAudioProcessorEditor.cpp" compile="1"
+                resource="0" file="Source/plugins/bitcrush/BitcrushAudioProcessorEditor.cpp"/>
+        </GROUP>
+        <GROUP id="{763B29F5-27FB-77D9-3B5F-D2404A4E7148}" name="equalizer">
+          <FILE id="FntB1b" name="EqualizerAudioProcessorEditor.cpp" compile="1"
+                resource="0" file="Source/plugins/equalizer/EqualizerAudioProcessorEditor.cpp"/>
+          <FILE id="ogKmqm" name="EqualizerAudioProcessorEditor.h" compile="0"
+                resource="0" file="Source/plugins/equalizer/EqualizerAudioProcessorEditor.h"/>
+        </GROUP>
+        <GROUP id="{E21AB1C1-6D93-1656-87E6-1B9511767974}" name="example">
+          <FILE id="vApoJH" name="ExampleAudioProcessor.cpp" compile="1" resource="0"
+                file="Source/plugins/example/ExampleAudioProcessor.cpp"/>
+          <FILE id="xJmKvJ" name="ExampleAudioProcessor.h" compile="0" resource="0"
+                file="Source/plugins/example/ExampleAudioProcessor.h"/>
+          <FILE id="cgsVa6" name="ExampleAudioProcessorEditor.cpp" compile="1"
+                resource="0" file="Source/plugins/example/ExampleAudioProcessorEditor.cpp"/>
+          <FILE id="iq3ohk" name="ExampleAudioProcessorEditor.h" compile="0"
+                resource="0" file="Source/plugins/example/ExampleAudioProcessorEditor.h"/>
+        </GROUP>
         <GROUP id="{470BF1A1-A05C-14FC-0378-181E6C55BAD8}" name="filter">
           <FILE id="pJOcBW" name="FilterAudioProcessor.cpp" compile="1" resource="0"
                 file="Source/plugins/filter/FilterAudioProcessor.cpp"/>
@@ -52,17 +78,15 @@
           <FILE id="giSC0w" name="FilterAudioProcessorEditor.h" compile="0" resource="0"
                 file="Source/plugins/filter/FilterAudioProcessorEditor.h"/>
         </GROUP>
-        <GROUP id="{763B29F5-27FB-77D9-3B5F-D2404A4E7148}" name="equalizer">
-          <FILE id="FntB1b" name="EqualizerAudioProcessorEditor.cpp" compile="1"
-                resource="0" file="Source/plugins/equalizer/EqualizerAudioProcessorEditor.cpp"/>
-          <FILE id="ogKmqm" name="EqualizerAudioProcessorEditor.h" compile="0"
-                resource="0" file="Source/plugins/equalizer/EqualizerAudioProcessorEditor.h"/>
-        </GROUP>
-        <GROUP id="{6EA90266-4B47-01CE-D8F4-797E9A1DE91F}" name="rhythmic_gate">
-          <FILE id="rhS3Ng" name="RhythmicGateAudioProcessorEditor.cpp" compile="1"
-                resource="0" file="Source/plugins/rhythmic_gate/RhythmicGateAudioProcessorEditor.cpp"/>
-          <FILE id="xEr2q3" name="RhythmicGateAudioProcessorEditor.h" compile="0"
-                resource="0" file="Source/plugins/rhythmic_gate/RhythmicGateAudioProcessorEditor.h"/>
+        <GROUP id="{74220E34-2193-2A22-AB1C-0A878FCB5911}" name="kick">
+          <FILE id="nDqv8u" name="KickAudioProcessor.cpp" compile="1" resource="0"
+                file="Source/plugins/kick/KickAudioProcessor.cpp"/>
+          <FILE id="Eyp6kh" name="KickAudioProcessor.h" compile="0" resource="0"
+                file="Source/plugins/kick/KickAudioProcessor.h"/>
+          <FILE id="fGzmXl" name="KickAudioProcessorEditor.cpp" compile="1" resource="0"
+                file="Source/plugins/kick/KickAudioProcessorEditor.cpp"/>
+          <FILE id="mjazbQ" name="KickAudioProcessorEditor.h" compile="0" resource="0"
+                file="Source/plugins/kick/KickAudioProcessorEditor.h"/>
         </GROUP>
         <GROUP id="{60BD488A-238A-73A3-EF0B-D1D89042C6E8}" name="pan">
           <FILE id="S9Pduq" name="PanAudioProcessor.cpp" compile="1" resource="0"
@@ -74,15 +98,11 @@
           <FILE id="fNHT7b" name="PanAudioProcessorEditor.h" compile="0" resource="0"
                 file="Source/plugins/pan/PanAudioProcessorEditor.h"/>
         </GROUP>
-        <GROUP id="{E0E72F6E-D0B3-5F73-56CB-98A77B644419}" name="bitcrush">
-          <FILE id="CkmpdB" name="BitcrushAudioProcessorEditor.h" compile="0"
-                resource="0" file="Source/plugins/bitcrush/BitcrushAudioProcessorEditor.h"/>
-          <FILE id="PGjzme" name="BitcrushAudioProcessor.cpp" compile="1" resource="0"
-                file="Source/plugins/bitcrush/BitcrushAudioProcessor.cpp"/>
-          <FILE id="IQSNJd" name="BitcrushAudioProcessor.h" compile="0" resource="0"
-                file="Source/plugins/bitcrush/BitcrushAudioProcessor.h"/>
-          <FILE id="ihAxb0" name="BitcrushAudioProcessorEditor.cpp" compile="1"
-                resource="0" file="Source/plugins/bitcrush/BitcrushAudioProcessorEditor.cpp"/>
+        <GROUP id="{6EA90266-4B47-01CE-D8F4-797E9A1DE91F}" name="rhythmic_gate">
+          <FILE id="rhS3Ng" name="RhythmicGateAudioProcessorEditor.cpp" compile="1"
+                resource="0" file="Source/plugins/rhythmic_gate/RhythmicGateAudioProcessorEditor.cpp"/>
+          <FILE id="xEr2q3" name="RhythmicGateAudioProcessorEditor.h" compile="0"
+                resource="0" file="Source/plugins/rhythmic_gate/RhythmicGateAudioProcessorEditor.h"/>
         </GROUP>
         <GROUP id="{4138F0C9-86B0-0803-C829-30055CB4762F}" name="volume">
           <FILE id="XuRSyQ" name="VolumeAudioProcessor.cpp" compile="1" resource="0"
@@ -93,16 +113,6 @@
                 resource="0" file="Source/plugins/volume/VolumeAudioProcessorEditor.cpp"/>
           <FILE id="psX2hu" name="VolumeAudioProcessorEditor.h" compile="0" resource="0"
                 file="Source/plugins/volume/VolumeAudioProcessorEditor.h"/>
-        </GROUP>
-        <GROUP id="{E21AB1C1-6D93-1656-87E6-1B9511767974}" name="example">
-          <FILE id="vApoJH" name="ExampleAudioProcessor.cpp" compile="1" resource="0"
-                file="Source/plugins/example/ExampleAudioProcessor.cpp"/>
-          <FILE id="xJmKvJ" name="ExampleAudioProcessor.h" compile="0" resource="0"
-                file="Source/plugins/example/ExampleAudioProcessor.h"/>
-          <FILE id="cgsVa6" name="ExampleAudioProcessorEditor.cpp" compile="1"
-                resource="0" file="Source/plugins/example/ExampleAudioProcessorEditor.cpp"/>
-          <FILE id="iq3ohk" name="ExampleAudioProcessorEditor.h" compile="0"
-                resource="0" file="Source/plugins/example/ExampleAudioProcessorEditor.h"/>
         </GROUP>
         <GROUP id="{17EF1EFF-4C08-1A7F-B06B-68828B08A7C5}" name="wittersroda">
           <FILE id="mdb4j2" name="WittersrodaAudioProcessor.cpp" compile="1"
@@ -320,6 +330,29 @@
         <MODULEPATH id="juce_audio_devices" path="juce_modules"/>
         <MODULEPATH id="juce_audio_basics" path="juce_modules"/>
         <MODULEPATH id="synth" path="../../blankenhain"/>
+      </MODULEPATHS>
+    </VS2015>
+    <VS2015 targetFolder="Builds/Kick/VisualStudio2015" vstFolder="" extraDefs="PLUGIN_KICK&#10;JucePlugin_Name=&quot;Blankenhain\ Kick&quot;&#10;JucePlugin_Desc=&quot;Kickdrum.&quot;&#10;JucePlugin_PluginCode='BhKk'"
+            extraCompilerFlags="/I..\..\..\Source">
+      <CONFIGURATIONS>
+        <CONFIGURATION name="Debug" winWarningLevel="4" generateManifest="1" winArchitecture="32-bit"
+                       isDebug="1" optimisation="1" targetName="bh_kick" binaryPath="..\builtPlugins"/>
+        <CONFIGURATION name="Release" winWarningLevel="4" generateManifest="1" winArchitecture="32-bit"
+                       isDebug="0" optimisation="3" targetName="bh_kick" binaryPath="..\builtPlugins"/>
+      </CONFIGURATIONS>
+      <MODULEPATHS>
+        <MODULEPATH id="synth" path="../../blankenhain"/>
+        <MODULEPATH id="juce_gui_extra" path="juce_modules"/>
+        <MODULEPATH id="juce_gui_basics" path="juce_modules"/>
+        <MODULEPATH id="juce_graphics" path="juce_modules"/>
+        <MODULEPATH id="juce_events" path="juce_modules"/>
+        <MODULEPATH id="juce_data_structures" path="juce_modules"/>
+        <MODULEPATH id="juce_core" path="juce_modules"/>
+        <MODULEPATH id="juce_audio_processors" path="juce_modules"/>
+        <MODULEPATH id="juce_audio_plugin_client" path="juce_modules"/>
+        <MODULEPATH id="juce_audio_formats" path="juce_modules"/>
+        <MODULEPATH id="juce_audio_devices" path="juce_modules"/>
+        <MODULEPATH id="juce_audio_basics" path="juce_modules"/>
       </MODULEPATHS>
     </VS2015>
   </EXPORTFORMATS>

@@ -135,25 +135,27 @@
     </Bscmake>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\Source\components\AdsrComponent.cpp"/>
     <ClCompile Include="..\..\..\Source\components\ledMeterComponent.cpp"/>
+    <ClCompile Include="..\..\..\Source\components\LfoComponent.cpp"/>
     <ClCompile Include="..\..\..\Source\components\MeterComponent.cpp"/>
     <ClCompile Include="..\..\..\Source\components\ModulationMatrixComponent.cpp"/>
-    <ClCompile Include="..\..\..\Source\components\WaveVerschwurbelungComponent.cpp"/>
     <ClCompile Include="..\..\..\Source\components\WaveGenerationComponent.cpp"/>
-    <ClCompile Include="..\..\..\Source\components\AdsrComponent.cpp"/>
-    <ClCompile Include="..\..\..\Source\components\LfoComponent.cpp"/>
-    <ClCompile Include="..\..\..\Source\plugins\filter\FilterAudioProcessor.cpp"/>
-    <ClCompile Include="..\..\..\Source\plugins\filter\FilterAudioProcessorEditor.cpp"/>
-    <ClCompile Include="..\..\..\Source\plugins\equalizer\EqualizerAudioProcessorEditor.cpp"/>
-    <ClCompile Include="..\..\..\Source\plugins\rhythmic_gate\RhythmicGateAudioProcessorEditor.cpp"/>
-    <ClCompile Include="..\..\..\Source\plugins\pan\PanAudioProcessor.cpp"/>
-    <ClCompile Include="..\..\..\Source\plugins\pan\PanAudioProcessorEditor.cpp"/>
+    <ClCompile Include="..\..\..\Source\components\WaveVerschwurbelungComponent.cpp"/>
     <ClCompile Include="..\..\..\Source\plugins\bitcrush\BitcrushAudioProcessor.cpp"/>
     <ClCompile Include="..\..\..\Source\plugins\bitcrush\BitcrushAudioProcessorEditor.cpp"/>
-    <ClCompile Include="..\..\..\Source\plugins\volume\VolumeAudioProcessor.cpp"/>
-    <ClCompile Include="..\..\..\Source\plugins\volume\VolumeAudioProcessorEditor.cpp"/>
+    <ClCompile Include="..\..\..\Source\plugins\equalizer\EqualizerAudioProcessorEditor.cpp"/>
     <ClCompile Include="..\..\..\Source\plugins\example\ExampleAudioProcessor.cpp"/>
     <ClCompile Include="..\..\..\Source\plugins\example\ExampleAudioProcessorEditor.cpp"/>
+    <ClCompile Include="..\..\..\Source\plugins\filter\FilterAudioProcessor.cpp"/>
+    <ClCompile Include="..\..\..\Source\plugins\filter\FilterAudioProcessorEditor.cpp"/>
+    <ClCompile Include="..\..\..\Source\plugins\kick\KickAudioProcessor.cpp"/>
+    <ClCompile Include="..\..\..\Source\plugins\kick\KickAudioProcessorEditor.cpp"/>
+    <ClCompile Include="..\..\..\Source\plugins\pan\PanAudioProcessor.cpp"/>
+    <ClCompile Include="..\..\..\Source\plugins\pan\PanAudioProcessorEditor.cpp"/>
+    <ClCompile Include="..\..\..\Source\plugins\rhythmic_gate\RhythmicGateAudioProcessorEditor.cpp"/>
+    <ClCompile Include="..\..\..\Source\plugins\volume\VolumeAudioProcessor.cpp"/>
+    <ClCompile Include="..\..\..\Source\plugins\volume\VolumeAudioProcessorEditor.cpp"/>
     <ClCompile Include="..\..\..\Source\plugins\wittersroda\WittersrodaAudioProcessor.cpp"/>
     <ClCompile Include="..\..\..\Source\plugins\wittersroda\WittersrodaAudioProcessorEditor.cpp"/>
     <ClCompile Include="..\..\..\Source\BlankenhainAudioProcessor.cpp"/>
@@ -1284,25 +1286,27 @@
     <ClCompile Include="..\..\..\..\synth\synth.cpp"/>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\Source\components\AdsrComponent.h"/>
     <ClInclude Include="..\..\..\Source\components\ledMeterComponent.h"/>
+    <ClInclude Include="..\..\..\Source\components\LfoComponent.h"/>
     <ClInclude Include="..\..\..\Source\components\MeterComponent.h"/>
     <ClInclude Include="..\..\..\Source\components\ModulationMatrixComponent.h"/>
-    <ClInclude Include="..\..\..\Source\components\WaveVerschwurbelungComponent.h"/>
     <ClInclude Include="..\..\..\Source\components\WaveGenerationComponent.h"/>
-    <ClInclude Include="..\..\..\Source\components\AdsrComponent.h"/>
-    <ClInclude Include="..\..\..\Source\components\LfoComponent.h"/>
-    <ClInclude Include="..\..\..\Source\plugins\filter\FilterAudioProcessor.h"/>
-    <ClInclude Include="..\..\..\Source\plugins\filter\FilterAudioProcessorEditor.h"/>
-    <ClInclude Include="..\..\..\Source\plugins\equalizer\EqualizerAudioProcessorEditor.h"/>
-    <ClInclude Include="..\..\..\Source\plugins\rhythmic_gate\RhythmicGateAudioProcessorEditor.h"/>
-    <ClInclude Include="..\..\..\Source\plugins\pan\PanAudioProcessor.h"/>
-    <ClInclude Include="..\..\..\Source\plugins\pan\PanAudioProcessorEditor.h"/>
+    <ClInclude Include="..\..\..\Source\components\WaveVerschwurbelungComponent.h"/>
     <ClInclude Include="..\..\..\Source\plugins\bitcrush\BitcrushAudioProcessorEditor.h"/>
     <ClInclude Include="..\..\..\Source\plugins\bitcrush\BitcrushAudioProcessor.h"/>
-    <ClInclude Include="..\..\..\Source\plugins\volume\VolumeAudioProcessor.h"/>
-    <ClInclude Include="..\..\..\Source\plugins\volume\VolumeAudioProcessorEditor.h"/>
+    <ClInclude Include="..\..\..\Source\plugins\equalizer\EqualizerAudioProcessorEditor.h"/>
     <ClInclude Include="..\..\..\Source\plugins\example\ExampleAudioProcessor.h"/>
     <ClInclude Include="..\..\..\Source\plugins\example\ExampleAudioProcessorEditor.h"/>
+    <ClInclude Include="..\..\..\Source\plugins\filter\FilterAudioProcessor.h"/>
+    <ClInclude Include="..\..\..\Source\plugins\filter\FilterAudioProcessorEditor.h"/>
+    <ClInclude Include="..\..\..\Source\plugins\kick\KickAudioProcessor.h"/>
+    <ClInclude Include="..\..\..\Source\plugins\kick\KickAudioProcessorEditor.h"/>
+    <ClInclude Include="..\..\..\Source\plugins\pan\PanAudioProcessor.h"/>
+    <ClInclude Include="..\..\..\Source\plugins\pan\PanAudioProcessorEditor.h"/>
+    <ClInclude Include="..\..\..\Source\plugins\rhythmic_gate\RhythmicGateAudioProcessorEditor.h"/>
+    <ClInclude Include="..\..\..\Source\plugins\volume\VolumeAudioProcessor.h"/>
+    <ClInclude Include="..\..\..\Source\plugins\volume\VolumeAudioProcessorEditor.h"/>
     <ClInclude Include="..\..\..\Source\plugins\wittersroda\WittersrodaAudioProcessor.h"/>
     <ClInclude Include="..\..\..\Source\plugins\wittersroda\WittersrodaAudioProcessorEditor.h"/>
     <ClInclude Include="..\..\..\Source\BlankenhainAudioProcessor.h"/>

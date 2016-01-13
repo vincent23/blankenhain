@@ -49,25 +49,27 @@ ifeq ($(CONFIG),Release)
 endif
 
 OBJECTS := \
+  $(OBJDIR)/AdsrComponent_813055dc.o \
   $(OBJDIR)/ledMeterComponent_d8305f00.o \
+  $(OBJDIR)/LfoComponent_8e5e1c31.o \
   $(OBJDIR)/MeterComponent_9495de5d.o \
   $(OBJDIR)/ModulationMatrixComponent_70333921.o \
-  $(OBJDIR)/WaveVerschwurbelungComponent_cf2fc23b.o \
   $(OBJDIR)/WaveGenerationComponent_9dda340d.o \
-  $(OBJDIR)/AdsrComponent_813055dc.o \
-  $(OBJDIR)/LfoComponent_8e5e1c31.o \
-  $(OBJDIR)/FilterAudioProcessor_1254b8cc.o \
-  $(OBJDIR)/FilterAudioProcessorEditor_ec770a99.o \
-  $(OBJDIR)/EqualizerAudioProcessorEditor_ccd8dd3f.o \
-  $(OBJDIR)/RhythmicGateAudioProcessorEditor_c8e57c22.o \
-  $(OBJDIR)/PanAudioProcessor_ab4c94c8.o \
-  $(OBJDIR)/PanAudioProcessorEditor_b780f995.o \
+  $(OBJDIR)/WaveVerschwurbelungComponent_cf2fc23b.o \
   $(OBJDIR)/BitcrushAudioProcessor_1c2f69cc.o \
   $(OBJDIR)/BitcrushAudioProcessorEditor_d9c8fb99.o \
-  $(OBJDIR)/VolumeAudioProcessor_5d80ce8c.o \
-  $(OBJDIR)/VolumeAudioProcessorEditor_b62bd059.o \
+  $(OBJDIR)/EqualizerAudioProcessorEditor_ccd8dd3f.o \
   $(OBJDIR)/ExampleAudioProcessor_ee4a53e2.o \
   $(OBJDIR)/ExampleAudioProcessorEditor_2e557d2f.o \
+  $(OBJDIR)/FilterAudioProcessor_1254b8cc.o \
+  $(OBJDIR)/FilterAudioProcessorEditor_ec770a99.o \
+  $(OBJDIR)/KickAudioProcessor_56b4e94c.o \
+  $(OBJDIR)/KickAudioProcessorEditor_710db19.o \
+  $(OBJDIR)/PanAudioProcessor_ab4c94c8.o \
+  $(OBJDIR)/PanAudioProcessorEditor_b780f995.o \
+  $(OBJDIR)/RhythmicGateAudioProcessorEditor_c8e57c22.o \
+  $(OBJDIR)/VolumeAudioProcessor_5d80ce8c.o \
+  $(OBJDIR)/VolumeAudioProcessorEditor_b62bd059.o \
   $(OBJDIR)/WittersrodaAudioProcessor_3fce612a.o \
   $(OBJDIR)/WittersrodaAudioProcessorEditor_de9c7477.o \
   $(OBJDIR)/BlankenhainAudioProcessor_79973627.o \
@@ -106,9 +108,19 @@ strip:
 	@echo Stripping Blankenhain
 	-@strip --strip-unneeded $(OUTDIR)/$(TARGET)
 
+$(OBJDIR)/AdsrComponent_813055dc.o: ../../../Source/components/AdsrComponent.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling AdsrComponent.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+
 $(OBJDIR)/ledMeterComponent_d8305f00.o: ../../../Source/components/ledMeterComponent.cpp
 	-@mkdir -p $(OBJDIR)
 	@echo "Compiling ledMeterComponent.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+
+$(OBJDIR)/LfoComponent_8e5e1c31.o: ../../../Source/components/LfoComponent.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling LfoComponent.cpp"
 	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 
 $(OBJDIR)/MeterComponent_9495de5d.o: ../../../Source/components/MeterComponent.cpp
@@ -121,54 +133,14 @@ $(OBJDIR)/ModulationMatrixComponent_70333921.o: ../../../Source/components/Modul
 	@echo "Compiling ModulationMatrixComponent.cpp"
 	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 
-$(OBJDIR)/WaveVerschwurbelungComponent_cf2fc23b.o: ../../../Source/components/WaveVerschwurbelungComponent.cpp
-	-@mkdir -p $(OBJDIR)
-	@echo "Compiling WaveVerschwurbelungComponent.cpp"
-	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
-
 $(OBJDIR)/WaveGenerationComponent_9dda340d.o: ../../../Source/components/WaveGenerationComponent.cpp
 	-@mkdir -p $(OBJDIR)
 	@echo "Compiling WaveGenerationComponent.cpp"
 	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 
-$(OBJDIR)/AdsrComponent_813055dc.o: ../../../Source/components/AdsrComponent.cpp
+$(OBJDIR)/WaveVerschwurbelungComponent_cf2fc23b.o: ../../../Source/components/WaveVerschwurbelungComponent.cpp
 	-@mkdir -p $(OBJDIR)
-	@echo "Compiling AdsrComponent.cpp"
-	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
-
-$(OBJDIR)/LfoComponent_8e5e1c31.o: ../../../Source/components/LfoComponent.cpp
-	-@mkdir -p $(OBJDIR)
-	@echo "Compiling LfoComponent.cpp"
-	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
-
-$(OBJDIR)/FilterAudioProcessor_1254b8cc.o: ../../../Source/plugins/filter/FilterAudioProcessor.cpp
-	-@mkdir -p $(OBJDIR)
-	@echo "Compiling FilterAudioProcessor.cpp"
-	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
-
-$(OBJDIR)/FilterAudioProcessorEditor_ec770a99.o: ../../../Source/plugins/filter/FilterAudioProcessorEditor.cpp
-	-@mkdir -p $(OBJDIR)
-	@echo "Compiling FilterAudioProcessorEditor.cpp"
-	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
-
-$(OBJDIR)/EqualizerAudioProcessorEditor_ccd8dd3f.o: ../../../Source/plugins/equalizer/EqualizerAudioProcessorEditor.cpp
-	-@mkdir -p $(OBJDIR)
-	@echo "Compiling EqualizerAudioProcessorEditor.cpp"
-	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
-
-$(OBJDIR)/RhythmicGateAudioProcessorEditor_c8e57c22.o: ../../../Source/plugins/rhythmic_gate/RhythmicGateAudioProcessorEditor.cpp
-	-@mkdir -p $(OBJDIR)
-	@echo "Compiling RhythmicGateAudioProcessorEditor.cpp"
-	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
-
-$(OBJDIR)/PanAudioProcessor_ab4c94c8.o: ../../../Source/plugins/pan/PanAudioProcessor.cpp
-	-@mkdir -p $(OBJDIR)
-	@echo "Compiling PanAudioProcessor.cpp"
-	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
-
-$(OBJDIR)/PanAudioProcessorEditor_b780f995.o: ../../../Source/plugins/pan/PanAudioProcessorEditor.cpp
-	-@mkdir -p $(OBJDIR)
-	@echo "Compiling PanAudioProcessorEditor.cpp"
+	@echo "Compiling WaveVerschwurbelungComponent.cpp"
 	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 
 $(OBJDIR)/BitcrushAudioProcessor_1c2f69cc.o: ../../../Source/plugins/bitcrush/BitcrushAudioProcessor.cpp
@@ -181,14 +153,9 @@ $(OBJDIR)/BitcrushAudioProcessorEditor_d9c8fb99.o: ../../../Source/plugins/bitcr
 	@echo "Compiling BitcrushAudioProcessorEditor.cpp"
 	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 
-$(OBJDIR)/VolumeAudioProcessor_5d80ce8c.o: ../../../Source/plugins/volume/VolumeAudioProcessor.cpp
+$(OBJDIR)/EqualizerAudioProcessorEditor_ccd8dd3f.o: ../../../Source/plugins/equalizer/EqualizerAudioProcessorEditor.cpp
 	-@mkdir -p $(OBJDIR)
-	@echo "Compiling VolumeAudioProcessor.cpp"
-	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
-
-$(OBJDIR)/VolumeAudioProcessorEditor_b62bd059.o: ../../../Source/plugins/volume/VolumeAudioProcessorEditor.cpp
-	-@mkdir -p $(OBJDIR)
-	@echo "Compiling VolumeAudioProcessorEditor.cpp"
+	@echo "Compiling EqualizerAudioProcessorEditor.cpp"
 	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 
 $(OBJDIR)/ExampleAudioProcessor_ee4a53e2.o: ../../../Source/plugins/example/ExampleAudioProcessor.cpp
@@ -199,6 +166,51 @@ $(OBJDIR)/ExampleAudioProcessor_ee4a53e2.o: ../../../Source/plugins/example/Exam
 $(OBJDIR)/ExampleAudioProcessorEditor_2e557d2f.o: ../../../Source/plugins/example/ExampleAudioProcessorEditor.cpp
 	-@mkdir -p $(OBJDIR)
 	@echo "Compiling ExampleAudioProcessorEditor.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+
+$(OBJDIR)/FilterAudioProcessor_1254b8cc.o: ../../../Source/plugins/filter/FilterAudioProcessor.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling FilterAudioProcessor.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+
+$(OBJDIR)/FilterAudioProcessorEditor_ec770a99.o: ../../../Source/plugins/filter/FilterAudioProcessorEditor.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling FilterAudioProcessorEditor.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+
+$(OBJDIR)/KickAudioProcessor_56b4e94c.o: ../../../Source/plugins/kick/KickAudioProcessor.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling KickAudioProcessor.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+
+$(OBJDIR)/KickAudioProcessorEditor_710db19.o: ../../../Source/plugins/kick/KickAudioProcessorEditor.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling KickAudioProcessorEditor.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+
+$(OBJDIR)/PanAudioProcessor_ab4c94c8.o: ../../../Source/plugins/pan/PanAudioProcessor.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling PanAudioProcessor.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+
+$(OBJDIR)/PanAudioProcessorEditor_b780f995.o: ../../../Source/plugins/pan/PanAudioProcessorEditor.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling PanAudioProcessorEditor.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+
+$(OBJDIR)/RhythmicGateAudioProcessorEditor_c8e57c22.o: ../../../Source/plugins/rhythmic_gate/RhythmicGateAudioProcessorEditor.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling RhythmicGateAudioProcessorEditor.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+
+$(OBJDIR)/VolumeAudioProcessor_5d80ce8c.o: ../../../Source/plugins/volume/VolumeAudioProcessor.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling VolumeAudioProcessor.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+
+$(OBJDIR)/VolumeAudioProcessorEditor_b62bd059.o: ../../../Source/plugins/volume/VolumeAudioProcessorEditor.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling VolumeAudioProcessorEditor.cpp"
 	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 
 $(OBJDIR)/WittersrodaAudioProcessor_3fce612a.o: ../../../Source/plugins/wittersroda/WittersrodaAudioProcessor.cpp

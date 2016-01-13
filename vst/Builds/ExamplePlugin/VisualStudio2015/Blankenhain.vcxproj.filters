@@ -14,26 +14,29 @@
     <Filter Include="Blankenhain\Source\plugins">
       <UniqueIdentifier>{B56517A3-59A9-4A60-CDBF-28A25493C568}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Blankenhain\Source\plugins\filter">
-      <UniqueIdentifier>{86D26C52-9046-7335-28C9-363B8C620B76}</UniqueIdentifier>
+    <Filter Include="Blankenhain\Source\plugins\bitcrush">
+      <UniqueIdentifier>{AD139CA8-73A6-3839-4892-69F4AA382771}</UniqueIdentifier>
     </Filter>
     <Filter Include="Blankenhain\Source\plugins\equalizer">
       <UniqueIdentifier>{FF1C70E5-1F53-EB8C-6AD6-1CF7860AD3B6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Blankenhain\Source\plugins\rhythmic_gate">
-      <UniqueIdentifier>{182B6E08-11C0-5633-FA00-D2A9CD8714CC}</UniqueIdentifier>
+    <Filter Include="Blankenhain\Source\plugins\example">
+      <UniqueIdentifier>{3E9D2847-9E4E-4230-C370-DD7770C1B523}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Blankenhain\Source\plugins\filter">
+      <UniqueIdentifier>{86D26C52-9046-7335-28C9-363B8C620B76}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Blankenhain\Source\plugins\kick">
+      <UniqueIdentifier>{9EF614E4-1683-6A9E-31C2-0B6318DF9991}</UniqueIdentifier>
     </Filter>
     <Filter Include="Blankenhain\Source\plugins\pan">
       <UniqueIdentifier>{5E0F5B3D-55D9-45E2-05F2-61C5AE042853}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Blankenhain\Source\plugins\bitcrush">
-      <UniqueIdentifier>{AD139CA8-73A6-3839-4892-69F4AA382771}</UniqueIdentifier>
+    <Filter Include="Blankenhain\Source\plugins\rhythmic_gate">
+      <UniqueIdentifier>{182B6E08-11C0-5633-FA00-D2A9CD8714CC}</UniqueIdentifier>
     </Filter>
     <Filter Include="Blankenhain\Source\plugins\volume">
       <UniqueIdentifier>{6E9E94BE-A65E-9F6A-7E34-9F5B17581B2A}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Blankenhain\Source\plugins\example">
-      <UniqueIdentifier>{3E9D2847-9E4E-4230-C370-DD7770C1B523}</UniqueIdentifier>
     </Filter>
     <Filter Include="Blankenhain\Source\plugins\wittersroda">
       <UniqueIdentifier>{823520B5-F3D9-A3BA-6A0D-519E10F95045}</UniqueIdentifier>
@@ -328,7 +331,13 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\Source\components\AdsrComponent.cpp">
+      <Filter>Blankenhain\Source\components</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\..\Source\components\ledMeterComponent.cpp">
+      <Filter>Blankenhain\Source\components</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Source\components\LfoComponent.cpp">
       <Filter>Blankenhain\Source\components</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Source\components\MeterComponent.cpp">
@@ -337,35 +346,11 @@
     <ClCompile Include="..\..\..\Source\components\ModulationMatrixComponent.cpp">
       <Filter>Blankenhain\Source\components</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Source\components\WaveVerschwurbelungComponent.cpp">
-      <Filter>Blankenhain\Source\components</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\Source\components\WaveGenerationComponent.cpp">
       <Filter>Blankenhain\Source\components</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Source\components\AdsrComponent.cpp">
+    <ClCompile Include="..\..\..\Source\components\WaveVerschwurbelungComponent.cpp">
       <Filter>Blankenhain\Source\components</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Source\components\LfoComponent.cpp">
-      <Filter>Blankenhain\Source\components</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Source\plugins\filter\FilterAudioProcessor.cpp">
-      <Filter>Blankenhain\Source\plugins\filter</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Source\plugins\filter\FilterAudioProcessorEditor.cpp">
-      <Filter>Blankenhain\Source\plugins\filter</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Source\plugins\equalizer\EqualizerAudioProcessorEditor.cpp">
-      <Filter>Blankenhain\Source\plugins\equalizer</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Source\plugins\rhythmic_gate\RhythmicGateAudioProcessorEditor.cpp">
-      <Filter>Blankenhain\Source\plugins\rhythmic_gate</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Source\plugins\pan\PanAudioProcessor.cpp">
-      <Filter>Blankenhain\Source\plugins\pan</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Source\plugins\pan\PanAudioProcessorEditor.cpp">
-      <Filter>Blankenhain\Source\plugins\pan</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Source\plugins\bitcrush\BitcrushAudioProcessor.cpp">
       <Filter>Blankenhain\Source\plugins\bitcrush</Filter>
@@ -373,17 +358,41 @@
     <ClCompile Include="..\..\..\Source\plugins\bitcrush\BitcrushAudioProcessorEditor.cpp">
       <Filter>Blankenhain\Source\plugins\bitcrush</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Source\plugins\volume\VolumeAudioProcessor.cpp">
-      <Filter>Blankenhain\Source\plugins\volume</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\Source\plugins\volume\VolumeAudioProcessorEditor.cpp">
-      <Filter>Blankenhain\Source\plugins\volume</Filter>
+    <ClCompile Include="..\..\..\Source\plugins\equalizer\EqualizerAudioProcessorEditor.cpp">
+      <Filter>Blankenhain\Source\plugins\equalizer</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Source\plugins\example\ExampleAudioProcessor.cpp">
       <Filter>Blankenhain\Source\plugins\example</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Source\plugins\example\ExampleAudioProcessorEditor.cpp">
       <Filter>Blankenhain\Source\plugins\example</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Source\plugins\filter\FilterAudioProcessor.cpp">
+      <Filter>Blankenhain\Source\plugins\filter</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Source\plugins\filter\FilterAudioProcessorEditor.cpp">
+      <Filter>Blankenhain\Source\plugins\filter</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Source\plugins\kick\KickAudioProcessor.cpp">
+      <Filter>Blankenhain\Source\plugins\kick</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Source\plugins\kick\KickAudioProcessorEditor.cpp">
+      <Filter>Blankenhain\Source\plugins\kick</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Source\plugins\pan\PanAudioProcessor.cpp">
+      <Filter>Blankenhain\Source\plugins\pan</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Source\plugins\pan\PanAudioProcessorEditor.cpp">
+      <Filter>Blankenhain\Source\plugins\pan</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Source\plugins\rhythmic_gate\RhythmicGateAudioProcessorEditor.cpp">
+      <Filter>Blankenhain\Source\plugins\rhythmic_gate</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Source\plugins\volume\VolumeAudioProcessor.cpp">
+      <Filter>Blankenhain\Source\plugins\volume</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Source\plugins\volume\VolumeAudioProcessorEditor.cpp">
+      <Filter>Blankenhain\Source\plugins\volume</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Source\plugins\wittersroda\WittersrodaAudioProcessor.cpp">
       <Filter>Blankenhain\Source\plugins\wittersroda</Filter>
@@ -1638,7 +1647,13 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\Source\components\AdsrComponent.h">
+      <Filter>Blankenhain\Source\components</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\..\Source\components\ledMeterComponent.h">
+      <Filter>Blankenhain\Source\components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Source\components\LfoComponent.h">
       <Filter>Blankenhain\Source\components</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\Source\components\MeterComponent.h">
@@ -1647,35 +1662,11 @@
     <ClInclude Include="..\..\..\Source\components\ModulationMatrixComponent.h">
       <Filter>Blankenhain\Source\components</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Source\components\WaveVerschwurbelungComponent.h">
-      <Filter>Blankenhain\Source\components</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\Source\components\WaveGenerationComponent.h">
       <Filter>Blankenhain\Source\components</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Source\components\AdsrComponent.h">
+    <ClInclude Include="..\..\..\Source\components\WaveVerschwurbelungComponent.h">
       <Filter>Blankenhain\Source\components</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Source\components\LfoComponent.h">
-      <Filter>Blankenhain\Source\components</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Source\plugins\filter\FilterAudioProcessor.h">
-      <Filter>Blankenhain\Source\plugins\filter</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Source\plugins\filter\FilterAudioProcessorEditor.h">
-      <Filter>Blankenhain\Source\plugins\filter</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Source\plugins\equalizer\EqualizerAudioProcessorEditor.h">
-      <Filter>Blankenhain\Source\plugins\equalizer</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Source\plugins\rhythmic_gate\RhythmicGateAudioProcessorEditor.h">
-      <Filter>Blankenhain\Source\plugins\rhythmic_gate</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Source\plugins\pan\PanAudioProcessor.h">
-      <Filter>Blankenhain\Source\plugins\pan</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Source\plugins\pan\PanAudioProcessorEditor.h">
-      <Filter>Blankenhain\Source\plugins\pan</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\Source\plugins\bitcrush\BitcrushAudioProcessorEditor.h">
       <Filter>Blankenhain\Source\plugins\bitcrush</Filter>
@@ -1683,17 +1674,41 @@
     <ClInclude Include="..\..\..\Source\plugins\bitcrush\BitcrushAudioProcessor.h">
       <Filter>Blankenhain\Source\plugins\bitcrush</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Source\plugins\volume\VolumeAudioProcessor.h">
-      <Filter>Blankenhain\Source\plugins\volume</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\Source\plugins\volume\VolumeAudioProcessorEditor.h">
-      <Filter>Blankenhain\Source\plugins\volume</Filter>
+    <ClInclude Include="..\..\..\Source\plugins\equalizer\EqualizerAudioProcessorEditor.h">
+      <Filter>Blankenhain\Source\plugins\equalizer</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\Source\plugins\example\ExampleAudioProcessor.h">
       <Filter>Blankenhain\Source\plugins\example</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\Source\plugins\example\ExampleAudioProcessorEditor.h">
       <Filter>Blankenhain\Source\plugins\example</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Source\plugins\filter\FilterAudioProcessor.h">
+      <Filter>Blankenhain\Source\plugins\filter</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Source\plugins\filter\FilterAudioProcessorEditor.h">
+      <Filter>Blankenhain\Source\plugins\filter</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Source\plugins\kick\KickAudioProcessor.h">
+      <Filter>Blankenhain\Source\plugins\kick</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Source\plugins\kick\KickAudioProcessorEditor.h">
+      <Filter>Blankenhain\Source\plugins\kick</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Source\plugins\pan\PanAudioProcessor.h">
+      <Filter>Blankenhain\Source\plugins\pan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Source\plugins\pan\PanAudioProcessorEditor.h">
+      <Filter>Blankenhain\Source\plugins\pan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Source\plugins\rhythmic_gate\RhythmicGateAudioProcessorEditor.h">
+      <Filter>Blankenhain\Source\plugins\rhythmic_gate</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Source\plugins\volume\VolumeAudioProcessor.h">
+      <Filter>Blankenhain\Source\plugins\volume</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Source\plugins\volume\VolumeAudioProcessorEditor.h">
+      <Filter>Blankenhain\Source\plugins\volume</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\Source\plugins\wittersroda\WittersrodaAudioProcessor.h">
       <Filter>Blankenhain\Source\plugins\wittersroda</Filter>
