@@ -4,3 +4,4 @@
 #include "src/Filter.cpp"
 #include "src/AlignedType.cpp"
 #include "src/NormalizedRange.cpp"
+#include "src/KickSynth.cpp"

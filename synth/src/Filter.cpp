@@ -1,9 +1,9 @@
 #include "Filter.h"
 #include <cmath>
 #include <algorithm>
-Filter::Filter() :
-	x_1(0), y_1(0), y_2(0)
+Filter::Filter()
 {
+	reset();
 }
 
 void Filter::processHigh(Sample* data, size_t numberOfSamples, double frequency, double resonance) {
@@ -102,4 +102,11 @@ void Filter::process(Sample* data, size_t numberOfSamples, double a1_, double a2
 		y_1 = out2;
 		sample = out2;
 	}
+}
+
+void Filter::reset()
+{
+	x_1 = Sample(0);
+	y_1 = Sample(0);
+	y_2 = Sample(0);
 }

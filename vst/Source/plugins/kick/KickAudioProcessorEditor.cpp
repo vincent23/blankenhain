@@ -42,6 +42,7 @@ KickAudioProcessorEditor::KickAudioProcessorEditor (KickAudioProcessor& p)
 
 
     //[Constructor] You can add your own custom stuff here..
+	startTimer(100);
     //[/Constructor]
 }
 
@@ -84,6 +85,7 @@ void KickAudioProcessorEditor::resized()
 //[MiscUserCode] You can add your own definitions of your custom methods or any other code here...
 void KickAudioProcessorEditor::timerCallback()
 {
+	meterComponent->setValue(processor.getMeterValues(), processor.getLastKnownSampleRate(), processor.getLastKnownBlockSize());
 }
 //[/MiscUserCode]
 

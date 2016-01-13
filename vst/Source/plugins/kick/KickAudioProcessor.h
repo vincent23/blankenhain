@@ -5,7 +5,6 @@
 #include "FloatParameter.h"
 #include "BoolParameter.h"
 
-
 class KickAudioProcessor : public BlankenhainAudioProcessor
 {
 public:
@@ -21,6 +20,10 @@ public:
 protected:
 	var getState() override;
 	void setState(const var& state) override;
+
+private:
+	KickSynth kickSynth;
+	Sample* internalBuffer = new Sample[16];
 
 	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(KickAudioProcessor)
 };
