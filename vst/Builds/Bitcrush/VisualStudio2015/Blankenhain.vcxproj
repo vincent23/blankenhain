@@ -144,6 +144,8 @@
     <ClCompile Include="..\..\..\Source\components\WaveVerschwurbelungComponent.cpp"/>
     <ClCompile Include="..\..\..\Source\plugins\bitcrush\BitcrushAudioProcessor.cpp"/>
     <ClCompile Include="..\..\..\Source\plugins\bitcrush\BitcrushAudioProcessorEditor.cpp"/>
+    <ClCompile Include="..\..\..\Source\plugins\compressor\CompressorAudioProcessor.cpp"/>
+    <ClCompile Include="..\..\..\Source\plugins\compressor\CompressorAudioProcessorEditor.cpp"/>
     <ClCompile Include="..\..\..\Source\plugins\equalizer\EqualizerAudioProcessorEditor.cpp"/>
     <ClCompile Include="..\..\..\Source\plugins\example\ExampleAudioProcessor.cpp"/>
     <ClCompile Include="..\..\..\Source\plugins\example\ExampleAudioProcessorEditor.cpp"/>
@@ -1248,6 +1250,9 @@
     <ClCompile Include="..\..\..\..\synth\src\Filter.cpp">
       <ExcludedFromBuild>true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="..\..\..\..\synth\src\KickSynth.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="..\..\..\..\synth\src\NormalizedRange.cpp">
       <ExcludedFromBuild>true</ExcludedFromBuild>
     </ClCompile>
@@ -1295,6 +1300,8 @@
     <ClInclude Include="..\..\..\Source\components\WaveVerschwurbelungComponent.h"/>
     <ClInclude Include="..\..\..\Source\plugins\bitcrush\BitcrushAudioProcessorEditor.h"/>
     <ClInclude Include="..\..\..\Source\plugins\bitcrush\BitcrushAudioProcessor.h"/>
+    <ClInclude Include="..\..\..\Source\plugins\compressor\CompressorAudioProcessor.h"/>
+    <ClInclude Include="..\..\..\Source\plugins\compressor\CompressorAudioProcessorEditor.h"/>
     <ClInclude Include="..\..\..\Source\plugins\equalizer\EqualizerAudioProcessorEditor.h"/>
     <ClInclude Include="..\..\..\Source\plugins\example\ExampleAudioProcessor.h"/>
     <ClInclude Include="..\..\..\Source\plugins\example\ExampleAudioProcessorEditor.h"/>
@@ -1759,6 +1766,7 @@
     <ClInclude Include="..\..\..\..\synth\src\AlignedType.h"/>
     <ClInclude Include="..\..\..\..\synth\src\Filter.h"/>
     <ClInclude Include="..\..\..\..\synth\src\FPUState.h"/>
+    <ClInclude Include="..\..\..\..\synth\src\KickSynth.h"/>
     <ClInclude Include="..\..\..\..\synth\src\NormalizedRange.h"/>
     <ClInclude Include="..\..\..\..\synth\src\Sample.h"/>
     <ClInclude Include="..\..\..\..\synth\synth.h"/>

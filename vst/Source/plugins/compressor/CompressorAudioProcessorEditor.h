@@ -17,15 +17,14 @@
   ==============================================================================
 */
 
-#ifndef __JUCE_HEADER_80A7691534793726__
-#define __JUCE_HEADER_80A7691534793726__
+#ifndef __JUCE_HEADER_4E02674C1E53CFBC__
+#define __JUCE_HEADER_4E02674C1E53CFBC__
 
 //[Headers]     -- You can add your own extra header files here --
 #include "JuceHeader.h"
-#include "FilterAudioProcessor.h"
+#include "CompressorAudioProcessor.h"
 //[/Headers]
 
-#include "../../components/MeterComponent.h"
 
 
 //==============================================================================
@@ -36,15 +35,13 @@
     Describe your class and how it works here!
                                                                     //[/Comments]
 */
-class FilterAudioProcessorEditor  : public AudioProcessorEditor,
-                                    public Timer,
-                                    public ComboBoxListener,
-                                    public SliderListener
+class CompressorAudioProcessorEditor  : public AudioProcessorEditor,
+                                        public Timer
 {
 public:
     //==============================================================================
-    FilterAudioProcessorEditor (FilterAudioProcessor& p);
-    ~FilterAudioProcessorEditor();
+    CompressorAudioProcessorEditor (CompressorAudioProcessor& p);
+    ~CompressorAudioProcessorEditor();
 
     //==============================================================================
     //[UserMethods]     -- You can add your own custom methods in this section.
@@ -53,31 +50,22 @@ public:
 
     void paint (Graphics& g) override;
     void resized() override;
-    void comboBoxChanged (ComboBox* comboBoxThatHasChanged) override;
-    void sliderValueChanged (Slider* sliderThatWasMoved) override;
 
 
 
 private:
     //[UserVariables]   -- You can add your own custom variables in this section.
-    FilterAudioProcessor& processor;
+	CompressorAudioProcessor& processor;
     //[/UserVariables]
 
     //==============================================================================
-    ScopedPointer<Label> label;
-    ScopedPointer<ComboBox> filterTypeSelector;
-    ScopedPointer<Slider> frequencySlider;
-    ScopedPointer<Slider> resonanceSlider;
-    ScopedPointer<Label> label2;
-    ScopedPointer<Label> label3;
-    ScopedPointer<MeterComponent> meterChild;
 
 
     //==============================================================================
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (FilterAudioProcessorEditor)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CompressorAudioProcessorEditor)
 };
 
 //[EndFile] You can add extra defines here...
 //[/EndFile]
 
-#endif   // __JUCE_HEADER_80A7691534793726__
+#endif   // __JUCE_HEADER_4E02674C1E53CFBC__

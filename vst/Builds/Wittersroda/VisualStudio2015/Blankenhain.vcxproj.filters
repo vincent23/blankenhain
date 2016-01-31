@@ -17,6 +17,9 @@
     <Filter Include="Blankenhain\Source\plugins\bitcrush">
       <UniqueIdentifier>{AD139CA8-73A6-3839-4892-69F4AA382771}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Blankenhain\Source\plugins\compressor">
+      <UniqueIdentifier>{042ED276-32D8-6EA0-4359-3D2F35699850}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Blankenhain\Source\plugins\equalizer">
       <UniqueIdentifier>{FF1C70E5-1F53-EB8C-6AD6-1CF7860AD3B6}</UniqueIdentifier>
     </Filter>
@@ -357,6 +360,12 @@
     </ClCompile>
     <ClCompile Include="..\..\..\Source\plugins\bitcrush\BitcrushAudioProcessorEditor.cpp">
       <Filter>Blankenhain\Source\plugins\bitcrush</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Source\plugins\compressor\CompressorAudioProcessor.cpp">
+      <Filter>Blankenhain\Source\plugins\compressor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Source\plugins\compressor\CompressorAudioProcessorEditor.cpp">
+      <Filter>Blankenhain\Source\plugins\compressor</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Source\plugins\equalizer\EqualizerAudioProcessorEditor.cpp">
       <Filter>Blankenhain\Source\plugins\equalizer</Filter>
@@ -1579,6 +1588,9 @@
     <ClCompile Include="..\..\..\..\synth\src\Filter.cpp">
       <Filter>Juce Modules\synth\src</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\..\synth\src\KickSynth.cpp">
+      <Filter>Juce Modules\synth\src</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\..\..\synth\src\NormalizedRange.cpp">
       <Filter>Juce Modules\synth\src</Filter>
     </ClCompile>
@@ -1673,6 +1685,12 @@
     </ClInclude>
     <ClInclude Include="..\..\..\Source\plugins\bitcrush\BitcrushAudioProcessor.h">
       <Filter>Blankenhain\Source\plugins\bitcrush</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Source\plugins\compressor\CompressorAudioProcessor.h">
+      <Filter>Blankenhain\Source\plugins\compressor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Source\plugins\compressor\CompressorAudioProcessorEditor.h">
+      <Filter>Blankenhain\Source\plugins\compressor</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\Source\plugins\equalizer\EqualizerAudioProcessorEditor.h">
       <Filter>Blankenhain\Source\plugins\equalizer</Filter>
@@ -3064,6 +3082,9 @@
       <Filter>Juce Modules\synth\src</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\..\synth\src\FPUState.h">
+      <Filter>Juce Modules\synth\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\synth\src\KickSynth.h">
       <Filter>Juce Modules\synth\src</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\..\synth\src\NormalizedRange.h">

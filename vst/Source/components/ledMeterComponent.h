@@ -7,7 +7,7 @@
   the "//[xyz]" and "//[/xyz]" sections will be retained when the file is loaded
   and re-saved.
 
-  Created with Introjucer version: 4.0.1
+  Created with Introjucer version: 4.1.0
 
   ------------------------------------------------------------------------------
 
@@ -49,8 +49,8 @@ public:
 	float getRValue();
     //[/UserMethods]
 
-    void paint (Graphics& g);
-    void resized();
+    void paint (Graphics& g) override;
+    void resized() override;
 
 
 

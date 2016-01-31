@@ -52,6 +52,16 @@
           <FILE id="ihAxb0" name="BitcrushAudioProcessorEditor.cpp" compile="1"
                 resource="0" file="Source/plugins/bitcrush/BitcrushAudioProcessorEditor.cpp"/>
         </GROUP>
+        <GROUP id="{E42AFEFF-F111-E58E-A805-36723B0DFB8C}" name="compressor">
+          <FILE id="DeU2Ch" name="CompressorAudioProcessor.cpp" compile="1" resource="0"
+                file="Source/plugins/compressor/CompressorAudioProcessor.cpp"/>
+          <FILE id="f6QxLD" name="CompressorAudioProcessor.h" compile="0" resource="0"
+                file="Source/plugins/compressor/CompressorAudioProcessor.h"/>
+          <FILE id="qrY79y" name="CompressorAudioProcessorEditor.cpp" compile="1"
+                resource="0" file="Source/plugins/compressor/CompressorAudioProcessorEditor.cpp"/>
+          <FILE id="rEyvAT" name="CompressorAudioProcessorEditor.h" compile="0"
+                resource="0" file="Source/plugins/compressor/CompressorAudioProcessorEditor.h"/>
+        </GROUP>
         <GROUP id="{763B29F5-27FB-77D9-3B5F-D2404A4E7148}" name="equalizer">
           <FILE id="FntB1b" name="EqualizerAudioProcessorEditor.cpp" compile="1"
                 resource="0" file="Source/plugins/equalizer/EqualizerAudioProcessorEditor.cpp"/>
@@ -339,6 +349,30 @@
                        isDebug="1" optimisation="1" targetName="bh_kick" binaryPath="..\builtPlugins"/>
         <CONFIGURATION name="Release" winWarningLevel="4" generateManifest="1" winArchitecture="32-bit"
                        isDebug="0" optimisation="3" targetName="bh_kick" binaryPath="..\builtPlugins"/>
+      </CONFIGURATIONS>
+      <MODULEPATHS>
+        <MODULEPATH id="synth" path="../../blankenhain"/>
+        <MODULEPATH id="juce_gui_extra" path="juce_modules"/>
+        <MODULEPATH id="juce_gui_basics" path="juce_modules"/>
+        <MODULEPATH id="juce_graphics" path="juce_modules"/>
+        <MODULEPATH id="juce_events" path="juce_modules"/>
+        <MODULEPATH id="juce_data_structures" path="juce_modules"/>
+        <MODULEPATH id="juce_core" path="juce_modules"/>
+        <MODULEPATH id="juce_audio_processors" path="juce_modules"/>
+        <MODULEPATH id="juce_audio_plugin_client" path="juce_modules"/>
+        <MODULEPATH id="juce_audio_formats" path="juce_modules"/>
+        <MODULEPATH id="juce_audio_devices" path="juce_modules"/>
+        <MODULEPATH id="juce_audio_basics" path="juce_modules"/>
+      </MODULEPATHS>
+    </VS2015>
+    <VS2015 targetFolder="Builds/Compressor/VisualStudio2015" vstFolder=""
+            extraDefs="PLUGIN_COMPRESSOR&#10;JucePlugin_Name=&quot;Blankenhain\ Compressor&quot;&#10;JucePlugin_Desc=&quot;Compressor&quot;&#10;JucePlugin_PluginCode='BhCP'"
+            extraCompilerFlags="/I..\..\..\Source">
+      <CONFIGURATIONS>
+        <CONFIGURATION name="Debug" winWarningLevel="4" generateManifest="1" winArchitecture="32-bit"
+                       isDebug="1" optimisation="1" targetName="bh_compressor" binaryPath="..\builtPlugins"/>
+        <CONFIGURATION name="Release" winWarningLevel="4" generateManifest="1" winArchitecture="32-bit"
+                       isDebug="0" optimisation="3" targetName="bh_compressor" binaryPath="..\builtPlugins"/>
       </CONFIGURATIONS>
       <MODULEPATHS>
         <MODULEPATH id="synth" path="../../blankenhain"/>

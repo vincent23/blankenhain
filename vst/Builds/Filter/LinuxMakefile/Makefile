@@ -58,6 +58,8 @@ OBJECTS := \
   $(OBJDIR)/WaveVerschwurbelungComponent_cf2fc23b.o \
   $(OBJDIR)/BitcrushAudioProcessor_1c2f69cc.o \
   $(OBJDIR)/BitcrushAudioProcessorEditor_d9c8fb99.o \
+  $(OBJDIR)/CompressorAudioProcessor_10cf4f2c.o \
+  $(OBJDIR)/CompressorAudioProcessorEditor_647f58f9.o \
   $(OBJDIR)/EqualizerAudioProcessorEditor_ccd8dd3f.o \
   $(OBJDIR)/ExampleAudioProcessor_ee4a53e2.o \
   $(OBJDIR)/ExampleAudioProcessorEditor_2e557d2f.o \
@@ -151,6 +153,16 @@ $(OBJDIR)/BitcrushAudioProcessor_1c2f69cc.o: ../../../Source/plugins/bitcrush/Bi
 $(OBJDIR)/BitcrushAudioProcessorEditor_d9c8fb99.o: ../../../Source/plugins/bitcrush/BitcrushAudioProcessorEditor.cpp
 	-@mkdir -p $(OBJDIR)
 	@echo "Compiling BitcrushAudioProcessorEditor.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+
+$(OBJDIR)/CompressorAudioProcessor_10cf4f2c.o: ../../../Source/plugins/compressor/CompressorAudioProcessor.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling CompressorAudioProcessor.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+
+$(OBJDIR)/CompressorAudioProcessorEditor_647f58f9.o: ../../../Source/plugins/compressor/CompressorAudioProcessorEditor.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling CompressorAudioProcessorEditor.cpp"
 	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 
 $(OBJDIR)/EqualizerAudioProcessorEditor_ccd8dd3f.o: ../../../Source/plugins/equalizer/EqualizerAudioProcessorEditor.cpp
