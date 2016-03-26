@@ -14,6 +14,12 @@
     <Filter Include="Blankenhain\Source\plugins">
       <UniqueIdentifier>{B56517A3-59A9-4A60-CDBF-28A25493C568}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Blankenhain\Source\plugins\limiter">
+      <UniqueIdentifier>{5756326A-DD89-7981-D7FA-772E49E0E637}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Blankenhain\Source\plugins\limiter\limiter">
+      <UniqueIdentifier>{609EC967-15C6-924D-16B3-5D1F9EF42D26}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Blankenhain\Source\plugins\bitcrush">
       <UniqueIdentifier>{AD139CA8-73A6-3839-4892-69F4AA382771}</UniqueIdentifier>
     </Filter>
@@ -355,6 +361,12 @@
     <ClCompile Include="..\..\..\Source\components\WaveVerschwurbelungComponent.cpp">
       <Filter>Blankenhain\Source\components</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\Source\plugins\limiter\LimiterAudioProcessor.cpp">
+      <Filter>Blankenhain\Source\plugins\limiter\limiter</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Source\plugins\limiter\LimiterAudioProcessorEditor.cpp">
+      <Filter>Blankenhain\Source\plugins\limiter\limiter</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\..\Source\plugins\bitcrush\BitcrushAudioProcessor.cpp">
       <Filter>Blankenhain\Source\plugins\bitcrush</Filter>
     </ClCompile>
@@ -413,6 +425,9 @@
       <Filter>Blankenhain\Source</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Source\BoolParameter.cpp">
+      <Filter>Blankenhain\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Source\CircularBuffer.cpp">
       <Filter>Blankenhain\Source</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Source\CreateFilter.cpp">
@@ -1680,6 +1695,12 @@
     <ClInclude Include="..\..\..\Source\components\WaveVerschwurbelungComponent.h">
       <Filter>Blankenhain\Source\components</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\Source\plugins\limiter\LimiterAudioProcessor.h">
+      <Filter>Blankenhain\Source\plugins\limiter\limiter</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Source\plugins\limiter\LimiterAudioProcessorEditor.h">
+      <Filter>Blankenhain\Source\plugins\limiter\limiter</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\..\Source\plugins\bitcrush\BitcrushAudioProcessorEditor.h">
       <Filter>Blankenhain\Source\plugins\bitcrush</Filter>
     </ClInclude>
@@ -1738,6 +1759,9 @@
       <Filter>Blankenhain\Source</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\Source\BoolParameter.h">
+      <Filter>Blankenhain\Source</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Source\CircularBuffer.h">
       <Filter>Blankenhain\Source</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\Source\FloatParameter.h">

@@ -107,7 +107,7 @@ T CircularBuffer<T>::get(size_t iterator)
 template <typename T>
 T CircularBuffer<T>::getMin()
 {
-  T* minimum == &buffer[0];
+  T* minimum = &buffer[0];
   for (int i = 1; i < numberOfSamples; i++)
   {
     if (buffer[i] < *minimum)

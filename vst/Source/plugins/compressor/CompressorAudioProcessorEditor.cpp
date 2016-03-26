@@ -18,6 +18,7 @@
 */
 
 //[Headers] You can add your own extra header files here...
+#ifdef PLUGIN_COMPRESSOR
 //[/Headers]
 
 #include "CompressorAudioProcessorEditor.h"
@@ -307,4 +308,5 @@ END_JUCER_METADATA
 
 
 //[EndFile] You can add extra defines here...
+#endif
 //[/EndFile]

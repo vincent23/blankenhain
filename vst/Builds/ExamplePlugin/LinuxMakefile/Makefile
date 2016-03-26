@@ -56,6 +56,8 @@ OBJECTS := \
   $(OBJDIR)/ModulationMatrixComponent_70333921.o \
   $(OBJDIR)/WaveGenerationComponent_9dda340d.o \
   $(OBJDIR)/WaveVerschwurbelungComponent_cf2fc23b.o \
+  $(OBJDIR)/LimiterAudioProcessor_dd4e975e.o \
+  $(OBJDIR)/LimiterAudioProcessorEditor_ab6033ab.o \
   $(OBJDIR)/BitcrushAudioProcessor_1c2f69cc.o \
   $(OBJDIR)/BitcrushAudioProcessorEditor_d9c8fb99.o \
   $(OBJDIR)/CompressorAudioProcessor_10cf4f2c.o \
@@ -76,6 +78,7 @@ OBJECTS := \
   $(OBJDIR)/WittersrodaAudioProcessorEditor_de9c7477.o \
   $(OBJDIR)/BlankenhainAudioProcessor_79973627.o \
   $(OBJDIR)/BoolParameter_4cee9def.o \
+  $(OBJDIR)/CircularBuffer_a28ba779.o \
   $(OBJDIR)/CreateFilter_f99fea0e.o \
   $(OBJDIR)/FloatParameter_1174567.o \
   $(OBJDIR)/juce_audio_basics_2a5f169b.o \
@@ -143,6 +146,16 @@ $(OBJDIR)/WaveGenerationComponent_9dda340d.o: ../../../Source/components/WaveGen
 $(OBJDIR)/WaveVerschwurbelungComponent_cf2fc23b.o: ../../../Source/components/WaveVerschwurbelungComponent.cpp
 	-@mkdir -p $(OBJDIR)
 	@echo "Compiling WaveVerschwurbelungComponent.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+
+$(OBJDIR)/LimiterAudioProcessor_dd4e975e.o: ../../../Source/plugins/limiter/LimiterAudioProcessor.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling LimiterAudioProcessor.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+
+$(OBJDIR)/LimiterAudioProcessorEditor_ab6033ab.o: ../../../Source/plugins/limiter/LimiterAudioProcessorEditor.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling LimiterAudioProcessorEditor.cpp"
 	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 
 $(OBJDIR)/BitcrushAudioProcessor_1c2f69cc.o: ../../../Source/plugins/bitcrush/BitcrushAudioProcessor.cpp
@@ -243,6 +256,11 @@ $(OBJDIR)/BlankenhainAudioProcessor_79973627.o: ../../../Source/BlankenhainAudio
 $(OBJDIR)/BoolParameter_4cee9def.o: ../../../Source/BoolParameter.cpp
 	-@mkdir -p $(OBJDIR)
 	@echo "Compiling BoolParameter.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+
+$(OBJDIR)/CircularBuffer_a28ba779.o: ../../../Source/CircularBuffer.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling CircularBuffer.cpp"
 	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 
 $(OBJDIR)/CreateFilter_f99fea0e.o: ../../../Source/CreateFilter.cpp

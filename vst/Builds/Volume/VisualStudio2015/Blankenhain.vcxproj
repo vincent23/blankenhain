@@ -142,6 +142,8 @@
     <ClCompile Include="..\..\..\Source\components\ModulationMatrixComponent.cpp"/>
     <ClCompile Include="..\..\..\Source\components\WaveGenerationComponent.cpp"/>
     <ClCompile Include="..\..\..\Source\components\WaveVerschwurbelungComponent.cpp"/>
+    <ClCompile Include="..\..\..\Source\plugins\limiter\LimiterAudioProcessor.cpp"/>
+    <ClCompile Include="..\..\..\Source\plugins\limiter\LimiterAudioProcessorEditor.cpp"/>
     <ClCompile Include="..\..\..\Source\plugins\bitcrush\BitcrushAudioProcessor.cpp"/>
     <ClCompile Include="..\..\..\Source\plugins\bitcrush\BitcrushAudioProcessorEditor.cpp"/>
     <ClCompile Include="..\..\..\Source\plugins\compressor\CompressorAudioProcessor.cpp"/>
@@ -162,6 +164,7 @@
     <ClCompile Include="..\..\..\Source\plugins\wittersroda\WittersrodaAudioProcessorEditor.cpp"/>
     <ClCompile Include="..\..\..\Source\BlankenhainAudioProcessor.cpp"/>
     <ClCompile Include="..\..\..\Source\BoolParameter.cpp"/>
+    <ClCompile Include="..\..\..\Source\CircularBuffer.cpp"/>
     <ClCompile Include="..\..\..\Source\CreateFilter.cpp"/>
     <ClCompile Include="..\..\..\Source\FloatParameter.cpp"/>
     <ClCompile Include="..\..\..\juce_modules\juce_audio_basics\buffers\juce_AudioDataConverters.cpp">
@@ -1298,6 +1301,8 @@
     <ClInclude Include="..\..\..\Source\components\ModulationMatrixComponent.h"/>
     <ClInclude Include="..\..\..\Source\components\WaveGenerationComponent.h"/>
     <ClInclude Include="..\..\..\Source\components\WaveVerschwurbelungComponent.h"/>
+    <ClInclude Include="..\..\..\Source\plugins\limiter\LimiterAudioProcessor.h"/>
+    <ClInclude Include="..\..\..\Source\plugins\limiter\LimiterAudioProcessorEditor.h"/>
     <ClInclude Include="..\..\..\Source\plugins\bitcrush\BitcrushAudioProcessorEditor.h"/>
     <ClInclude Include="..\..\..\Source\plugins\bitcrush\BitcrushAudioProcessor.h"/>
     <ClInclude Include="..\..\..\Source\plugins\compressor\CompressorAudioProcessor.h"/>
@@ -1318,6 +1323,7 @@
     <ClInclude Include="..\..\..\Source\plugins\wittersroda\WittersrodaAudioProcessorEditor.h"/>
     <ClInclude Include="..\..\..\Source\BlankenhainAudioProcessor.h"/>
     <ClInclude Include="..\..\..\Source\BoolParameter.h"/>
+    <ClInclude Include="..\..\..\Source\CircularBuffer.h"/>
     <ClInclude Include="..\..\..\Source\FloatParameter.h"/>
     <ClInclude Include="..\..\..\juce_modules\juce_audio_basics\buffers\juce_AudioDataConverters.h"/>
     <ClInclude Include="..\..\..\juce_modules\juce_audio_basics\buffers\juce_AudioSampleBuffer.h"/>

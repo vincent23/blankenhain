@@ -31,6 +31,7 @@ public:
   T getSum();
 };
 
-
+// instance float circular buffer
+template CircularBuffer<float>;
 
 #endif  // CIRCULARBUFFER_H_INCLUDED

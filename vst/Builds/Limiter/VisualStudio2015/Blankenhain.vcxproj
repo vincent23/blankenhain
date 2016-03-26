@@ -56,7 +56,7 @@
     <ClCompile>
       <Optimization>Disabled</Optimization>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
-      <AdditionalIncludeDirectories>D:\dev\vstsdk365_28_08_2015_build_66\VST3 SDK;..\..\..\JuceLibraryCode;..\..\..\juce_modules;..\..\..\..\..\blankenhain;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\SDKs\VST3 SDK;..\..\..\JuceLibraryCode;..\..\..\juce_modules;..\..\..\..\..\blankenhain;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;WIN32;_WINDOWS;DEBUG;_DEBUG;PLUGIN_LIMITER;JucePlugin_Name=&quot;Blankenhain Limiter&quot;;JucePlugin_Desc=&quot;Limiter&quot;;JucePlugin_PluginCode='BhLM';JUCER_VS2015_F1935BC9=1;JUCE_APP_VERSION=1.0.0;JUCE_APP_VERSION_HEX=0x10000;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
@@ -99,7 +99,7 @@
     </Midl>
     <ClCompile>
       <Optimization>Full</Optimization>
-      <AdditionalIncludeDirectories>D:\dev\vstsdk365_28_08_2015_build_66\VST3 SDK;..\..\..\JuceLibraryCode;..\..\..\juce_modules;..\..\..\..\..\blankenhain;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\SDKs\VST3 SDK;..\..\..\JuceLibraryCode;..\..\..\juce_modules;..\..\..\..\..\blankenhain;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;WIN32;_WINDOWS;NDEBUG;PLUGIN_LIMITER;JucePlugin_Name=&quot;Blankenhain Limiter&quot;;JucePlugin_Desc=&quot;Limiter&quot;;JucePlugin_PluginCode='BhLM';JUCER_VS2015_F1935BC9=1;JUCE_APP_VERSION=1.0.0;JUCE_APP_VERSION_HEX=0x10000;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
@@ -170,9 +170,6 @@
       <ExcludedFromBuild>true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\..\..\juce_modules\juce_audio_basics\buffers\juce_FloatVectorOperations.cpp">
-      <ExcludedFromBuild>true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\..\..\juce_modules\juce_audio_basics\effects\juce_CatmullRomInterpolator.cpp">
       <ExcludedFromBuild>true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\..\..\juce_modules\juce_audio_basics\effects\juce_FFT.cpp">
@@ -601,9 +598,6 @@
     <ClCompile Include="..\..\..\juce_modules\juce_core\misc\juce_Result.cpp">
       <ExcludedFromBuild>true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="..\..\..\juce_modules\juce_core\misc\juce_RuntimePermissions.cpp">
-      <ExcludedFromBuild>true</ExcludedFromBuild>
-    </ClCompile>
     <ClCompile Include="..\..\..\juce_modules\juce_core\misc\juce_Uuid.cpp">
       <ExcludedFromBuild>true</ExcludedFromBuild>
     </ClCompile>
@@ -614,9 +608,6 @@
       <ExcludedFromBuild>true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\..\..\juce_modules\juce_core\native\juce_android_Network.cpp">
-      <ExcludedFromBuild>true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\..\..\juce_modules\juce_core\native\juce_android_RuntimePermissions.cpp">
       <ExcludedFromBuild>true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\..\..\juce_modules\juce_core\native\juce_android_SystemStats.cpp">
@@ -1336,7 +1327,6 @@
     <ClInclude Include="..\..\..\juce_modules\juce_audio_basics\buffers\juce_AudioDataConverters.h"/>
     <ClInclude Include="..\..\..\juce_modules\juce_audio_basics\buffers\juce_AudioSampleBuffer.h"/>
     <ClInclude Include="..\..\..\juce_modules\juce_audio_basics\buffers\juce_FloatVectorOperations.h"/>
-    <ClInclude Include="..\..\..\juce_modules\juce_audio_basics\effects\juce_CatmullRomInterpolator.h"/>
     <ClInclude Include="..\..\..\juce_modules\juce_audio_basics\effects\juce_Decibels.h"/>
     <ClInclude Include="..\..\..\juce_modules\juce_audio_basics\effects\juce_FFT.h"/>
     <ClInclude Include="..\..\..\juce_modules\juce_audio_basics\effects\juce_IIRFilter.h"/>
@@ -1461,7 +1451,6 @@
     <ClInclude Include="..\..\..\juce_modules\juce_core\maths\juce_NormalisableRange.h"/>
     <ClInclude Include="..\..\..\juce_modules\juce_core\maths\juce_Random.h"/>
     <ClInclude Include="..\..\..\juce_modules\juce_core\maths\juce_Range.h"/>
-    <ClInclude Include="..\..\..\juce_modules\juce_core\maths\juce_StatisticsAccumulator.h"/>
     <ClInclude Include="..\..\..\juce_modules\juce_core\memory\juce_Atomic.h"/>
     <ClInclude Include="..\..\..\juce_modules\juce_core\memory\juce_ByteOrder.h"/>
     <ClInclude Include="..\..\..\juce_modules\juce_core\memory\juce_ContainerDeletePolicy.h"/>
@@ -1548,7 +1537,6 @@
     <ClInclude Include="..\..\..\juce_modules\juce_core\zip\juce_ZipFile.h"/>
     <ClInclude Include="..\..\..\juce_modules\juce_core\unit_tests\juce_UnitTest.h"/>
     <ClInclude Include="..\..\..\juce_modules\juce_core\misc\juce_Result.h"/>
-    <ClInclude Include="..\..\..\juce_modules\juce_core\misc\juce_RuntimePermissions.h"/>
     <ClInclude Include="..\..\..\juce_modules\juce_core\misc\juce_Uuid.h"/>
     <ClInclude Include="..\..\..\juce_modules\juce_core\misc\juce_WindowsRegistry.h"/>
     <ClInclude Include="..\..\..\juce_modules\juce_core\native\juce_android_JNIHelpers.h"/>
