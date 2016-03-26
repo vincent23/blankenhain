@@ -49,7 +49,7 @@ void* AlignedType::operator new[](unsigned int size)
 	#endif
 	return result;
 	//Use std::new in case something goes wrong
-	return ::operator new(size);
+	//return ::operator new(size);
 }
 
 void AlignedType::operator delete (void *p) throw()

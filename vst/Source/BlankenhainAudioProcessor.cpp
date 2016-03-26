@@ -170,7 +170,7 @@ void BlankenhainAudioProcessor::finalizing(AudioSampleBuffer& buffer)
 void BlankenhainAudioProcessor::meteringBuffer(AudioSampleBuffer& buffer)
 {
 	/* METERING CODE */
-	for (size_t iteration = 0; iteration < buffer.getNumSamples(); iteration++)
+	for (size_t iteration = 0; (int) iteration < buffer.getNumSamples(); iteration++)
 	{
 		if (abs(buffer.getSample(/*channel*/ 0, iteration)) > meterValues[0])
 		{

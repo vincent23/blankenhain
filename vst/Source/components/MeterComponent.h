@@ -59,8 +59,8 @@ public:
 
     //[/UserMethods]
 
-    void paint (Graphics& g) override;
-    void resized() override;
+    void paint (Graphics& g);
+    void resized();
 
 
 
