@@ -5,6 +5,16 @@
 
 CompressorAudioProcessor::CompressorAudioProcessor()
 {
+  ratio = new FloatParameter(1.f, "ratio", 1.f, NormalizedRange(0.f, 6.f, 1.f));
+  release = new FloatParameter(10.f / 132.f, "release", 1.f, NormalizedRange(0.f, 1000.f, 1.f));
+  threshold = new FloatParameter(0.f, "threshold", 1.f, NormalizedRange(-36.f, 0.f, 3.f));
+  attack = new FloatParameter(10.f, "attack", 1.f, NormalizedRange(0.f, 1000.f, 1.f));
+  postgain = new FloatParameter(0.f, "postgain", 1.f, NormalizedRange(0.f, 24.f, 1.f));
+  addParameter(ratio);
+  addParameter(release);
+  addParameter(threshold);
+  addParameter(attack);
+  addParameter(postgain);
 }
 
 void CompressorAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
@@ -31,16 +41,18 @@ void CompressorAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuff
 		buffer.clear(i, 0, buffer.getNumSamples());
 	}
 
+  this->initializing(buffer);
+
 	// This is the place where you'd normally do the guts of your plugin's
 	// audio processing...
 	jassert(getNumInputChannels() == 2);
-	float attack = 0.2;
-	float release = 1;
-	float attackGain = exp(-1/(attack * 44100));
-	float releaseGain = exp(-1 / (release * 44100));
-	float threshold = -12;
-	float ratio = 4;
-	float slope = 1 - (1/ratio);
+	float attack_ = attack->getValue();
+	float release_ = release->getValue();
+	float attackGain = exp(-1/(attack_ * 44100));
+	float releaseGain = exp(-1 / (release_ * 44100));
+	float threshold_ = threshold->getValue();
+	float ratio_ = ratio->getValue();
+	float slope = 1 - (1/ratio_);
 	for (int i = 0; i < buffer.getNumSamples(); i++) {
 		for (int channel = 0; channel < getNumInputChannels(); channel++) {
 			float* channelData = buffer.getWritePointer(channel);
@@ -57,10 +69,14 @@ void CompressorAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuff
 			float* channelData = buffer.getWritePointer(channel);
 			float input = channelData[i];
 			float inputDb = 20 * log10(abs(input));
-			float gainDb = std::min(0.f, slope * (threshold - inputDb));
+			float gainDb = std::min(0.f, slope * (threshold_ - inputDb));
 			channelData[i] *= pow(10.f, gainDb / 20.f);
+      channelData[i] *= pow(10.f, postgain->getValue() / 10.f);
 		}
 	}
+
+  this->meteringBuffer(buffer);
+  this->finalizing(buffer);
 }
 
 AudioProcessorEditor* CompressorAudioProcessor::createEditor()
@@ -68,13 +84,64 @@ AudioProcessorEditor* CompressorAudioProcessor::createEditor()
 	return new CompressorAudioProcessorEditor(*this);
 }
 
-var CompressorAudioProcessor::getState()
-{
-	return var();
+void CompressorAudioProcessor::setRelease(FloatParameter release_) {
+  release->setValueNotifyingHost(release_.getNormalizedValue());
+}
+
+void CompressorAudioProcessor::setRatio(FloatParameter newRatio) {
+  ratio->setValueNotifyingHost(newRatio.getNormalizedValue());
+}
+
+void CompressorAudioProcessor::setAttack(FloatParameter newAttack) {
+  attack->setValueNotifyingHost(newAttack.getNormalizedValue());
+}
+
+void CompressorAudioProcessor::setThreshold(FloatParameter newThreshold) {
+  threshold->setValueNotifyingHost(newThreshold.getNormalizedValue());
+}
+
+void CompressorAudioProcessor::setPostgain(FloatParameter newPostgain) {
+  postgain->setValueNotifyingHost(newPostgain.getNormalizedValue());
 }
 
 void CompressorAudioProcessor::setState(const var & state)
 {
+  ratio->setValue(state.getProperty("ratio", ratio->getValue()));
+  attack->setValue(state.getProperty("attack", attack->getValue()));
+  release->setValue(state.getProperty("release", release->getValue()));
+  threshold->setValue(state.getProperty("threshold", threshold->getValue()));
+  postgain->setValue(state.getProperty("postgain", postgain->getValue()));
+}
+
+var CompressorAudioProcessor::getState()
+{
+  DynamicObject* properties = new DynamicObject;
+  properties->setProperty("ratio", ratio->getValue());
+  properties->setProperty("attack", attack->getValue());
+  properties->setProperty("release", release->getValue());
+  properties->setProperty("threshold", threshold->getValue());
+  properties->setProperty("postgain", postgain->getValue());
+  return var(&properties);
+}
+
+float CompressorAudioProcessor::getRelease() {
+  return release->getValue();
+}
+
+float CompressorAudioProcessor::getRatio() {
+  return ratio->getValue();
+}
+
+float CompressorAudioProcessor::getAttack() {
+  return attack->getValue();
+}
+
+float CompressorAudioProcessor::getThreshold() {
+  return threshold->getValue();
+}
+
+float CompressorAudioProcessor::getPostgain() {
+  return postgain->getValue();
 }
 
 #endif

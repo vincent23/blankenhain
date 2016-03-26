@@ -25,6 +25,7 @@
 #include "CompressorAudioProcessor.h"
 //[/Headers]
 
+#include "../../components/MeterComponent.h"
 
 
 //==============================================================================
@@ -36,7 +37,8 @@
                                                                     //[/Comments]
 */
 class CompressorAudioProcessorEditor  : public AudioProcessorEditor,
-                                        public Timer
+                                        public Timer,
+                                        public SliderListener
 {
 public:
     //==============================================================================
@@ -48,8 +50,9 @@ public:
 	void timerCallback() override;
     //[/UserMethods]
 
-    void paint (Graphics& g) override;
-    void resized() override;
+    void paint (Graphics& g);
+    void resized();
+    void sliderValueChanged (Slider* sliderThatWasMoved);
 
 
 
@@ -59,6 +62,17 @@ private:
     //[/UserVariables]
 
     //==============================================================================
+    ScopedPointer<MeterComponent> meterChild;
+    ScopedPointer<Slider> attackSlider;
+    ScopedPointer<Label> attackText;
+    ScopedPointer<Slider> releaseSlider;
+    ScopedPointer<Label> releaseText;
+    ScopedPointer<Slider> thresholdSlider;
+    ScopedPointer<Label> thresholdText;
+    ScopedPointer<Slider> ratioSlider;
+    ScopedPointer<Label> ratioText;
+    ScopedPointer<Slider> postgainSlider;
+    ScopedPointer<Label> postgainText;
 
 
     //==============================================================================
