@@ -22,8 +22,10 @@
 
 //[Headers]     -- You can add your own extra header files here --
 #include "JuceHeader.h"
+#include "EqualizerAudioProcessor.h"
 //[/Headers]
 
+#include "../../components/MeterComponent.h"
 
 
 //==============================================================================
@@ -34,16 +36,18 @@
     Describe your class and how it works here!
                                                                     //[/Comments]
 */
-class EqualizerAudioProcessorEditor  : public Component,
+class EqualizerAudioProcessorEditor  : public AudioProcessorEditor,
+                                       public Timer,
                                        public SliderListener
 {
 public:
     //==============================================================================
-    EqualizerAudioProcessorEditor ();
+    EqualizerAudioProcessorEditor (EqualizerAudioProcessor& p);
     ~EqualizerAudioProcessorEditor();
 
     //==============================================================================
     //[UserMethods]     -- You can add your own custom methods in this section.
+    void timerCallback() override;
     //[/UserMethods]
 
     void paint (Graphics& g);
@@ -54,19 +58,21 @@ public:
 
 private:
     //[UserVariables]   -- You can add your own custom variables in this section.
+    EqualizerAudioProcessor& processor;
     //[/UserVariables]
 
     //==============================================================================
-    ScopedPointer<Slider> slider;
-    ScopedPointer<Slider> slider2;
-    ScopedPointer<Slider> slider3;
-    ScopedPointer<Slider> slider4;
-    ScopedPointer<Slider> slider5;
-    ScopedPointer<Label> label;
-    ScopedPointer<Label> label2;
-    ScopedPointer<Label> label3;
-    ScopedPointer<Label> label4;
-    ScopedPointer<Label> label5;
+    ScopedPointer<Slider> lowSlider;
+    ScopedPointer<Slider> midSlider;
+    ScopedPointer<Slider> highFreqSlider;
+    ScopedPointer<Slider> lowFreqSlider;
+    ScopedPointer<Slider> highSlider;
+    ScopedPointer<Label> highLabel;
+    ScopedPointer<Label> highFreqLabel;
+    ScopedPointer<Label> midLabel;
+    ScopedPointer<Label> lowFreqLabel;
+    ScopedPointer<Label> lowLabel;
+    ScopedPointer<MeterComponent> meterChild;
 
 
     //==============================================================================

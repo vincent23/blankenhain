@@ -9,6 +9,7 @@
 #include "plugins/kick/KickAudioProcessor.h"
 #include "plugins/compressor/CompressorAudioProcessor.h"
 #include "plugins/limiter/LimiterAudioProcessor.h"
+#include "plugins/equalizer/EqualizerAudioProcessor.h"
 
 // this creates the correct plugin based on preprocessor flags
 AudioProcessor* JUCE_CALLTYPE createPluginFilter()
@@ -32,6 +33,8 @@ AudioProcessor* JUCE_CALLTYPE createPluginFilter()
 	return new CompressorAudioProcessor();
 #elif PLUGIN_LIMITER
   return new LimiterAudioProcessor();
+#elif PLUGIN_EQUALIZER
+  return new EqualizerAudioProcessor();
 #else
 	static_assert(false, "The build config of your plugin is broken. "
 		"Please see README for instructions on how to add new plugins.");

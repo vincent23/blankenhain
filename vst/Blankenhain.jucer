@@ -75,6 +75,10 @@
                 resource="0" file="Source/plugins/compressor/CompressorAudioProcessorEditor.h"/>
         </GROUP>
         <GROUP id="{763B29F5-27FB-77D9-3B5F-D2404A4E7148}" name="equalizer">
+          <FILE id="WLXhk2" name="EqualizerAudioProcessor.cpp" compile="1" resource="0"
+                file="Source/plugins/equalizer/EqualizerAudioProcessor.cpp"/>
+          <FILE id="Gl542D" name="EqualizerAudioProcessor.h" compile="0" resource="0"
+                file="Source/plugins/equalizer/EqualizerAudioProcessor.h"/>
           <FILE id="FntB1b" name="EqualizerAudioProcessorEditor.cpp" compile="1"
                 resource="0" file="Source/plugins/equalizer/EqualizerAudioProcessorEditor.cpp"/>
           <FILE id="ogKmqm" name="EqualizerAudioProcessorEditor.h" compile="0"
@@ -412,6 +416,30 @@
       <CONFIGURATIONS>
         <CONFIGURATION name="Debug" winWarningLevel="4" generateManifest="1" winArchitecture="32-bit"
                        isDebug="1" optimisation="1" targetName="bh_limiter" binaryPath="..\builtPlugins"/>
+        <CONFIGURATION name="Release" winWarningLevel="4" generateManifest="1" winArchitecture="32-bit"
+                       isDebug="0" optimisation="3" targetName="Blankenhain"/>
+      </CONFIGURATIONS>
+      <MODULEPATHS>
+        <MODULEPATH id="synth" path="../../blankenhain"/>
+        <MODULEPATH id="juce_gui_extra" path="juce_modules"/>
+        <MODULEPATH id="juce_gui_basics" path="juce_modules"/>
+        <MODULEPATH id="juce_graphics" path="juce_modules"/>
+        <MODULEPATH id="juce_events" path="juce_modules"/>
+        <MODULEPATH id="juce_data_structures" path="juce_modules"/>
+        <MODULEPATH id="juce_core" path="juce_modules"/>
+        <MODULEPATH id="juce_audio_processors" path="juce_modules"/>
+        <MODULEPATH id="juce_audio_plugin_client" path="juce_modules"/>
+        <MODULEPATH id="juce_audio_formats" path="juce_modules"/>
+        <MODULEPATH id="juce_audio_devices" path="juce_modules"/>
+        <MODULEPATH id="juce_audio_basics" path="juce_modules"/>
+      </MODULEPATHS>
+    </VS2015>
+    <VS2015 targetFolder="Builds/Equalizer/VisualStudio2015" vstFolder=""
+            extraDefs="PLUGIN_EQUALIZER&#10;JucePlugin_Name=&quot;Blankenhain\ Equalizer&quot;&#10;JucePlugin_Desc=&quot;Equalizer&quot;&#10;JucePlugin_PluginCode='BhEQ'"
+            extraCompilerFlags="/I..\..\..\Source">
+      <CONFIGURATIONS>
+        <CONFIGURATION name="Debug" winWarningLevel="4" generateManifest="1" winArchitecture="32-bit"
+                       isDebug="1" optimisation="1" targetName="bh_equalizer" binaryPath="..\builtPlugins"/>
         <CONFIGURATION name="Release" winWarningLevel="4" generateManifest="1" winArchitecture="32-bit"
                        isDebug="0" optimisation="3" targetName="Blankenhain"/>
       </CONFIGURATIONS>
