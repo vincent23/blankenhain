@@ -50,34 +50,55 @@ LimiterAudioProcessorEditor::LimiterAudioProcessorEditor (LimiterAudioProcessor&
     releaseText->setColour (TextEditor::textColourId, Colours::black);
     releaseText->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
 
-    addAndMakeVisible (thresholdSlider = new Slider ("thresholdSlider"));
-    thresholdSlider->setTooltip (TRANS("in dB"));
-    thresholdSlider->setRange (-36, 0, 0);
-    thresholdSlider->setSliderStyle (Slider::RotaryVerticalDrag);
-    thresholdSlider->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
-    thresholdSlider->addListener (this);
-
-    addAndMakeVisible (thresholdText = new Label ("thresholdText",
-                                                  TRANS("Threshold")));
-    thresholdText->setFont (Font (15.00f, Font::plain));
-    thresholdText->setJustificationType (Justification::centred);
-    thresholdText->setEditable (false, false, false);
-    thresholdText->setColour (TextEditor::textColourId, Colours::black);
-    thresholdText->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
-
     addAndMakeVisible (lookaheadSlider = new Slider ("lookaheadSlider"));
-    lookaheadSlider->setRange (0, 6, 0);
+    lookaheadSlider->setRange (5, 10000, 0);
     lookaheadSlider->setSliderStyle (Slider::RotaryVerticalDrag);
     lookaheadSlider->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
     lookaheadSlider->addListener (this);
 
     addAndMakeVisible (lookaheadText = new Label ("lookaheadText",
-                                                  TRANS("Ratio")));
+                                                  TRANS("Lookahead")));
     lookaheadText->setFont (Font (15.00f, Font::plain));
     lookaheadText->setJustificationType (Justification::centred);
     lookaheadText->setEditable (false, false, false);
     lookaheadText->setColour (TextEditor::textColourId, Colours::black);
     lookaheadText->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
+
+    addAndMakeVisible (igainSlider = new Slider ("igainSlider"));
+    igainSlider->setRange (-5, 15, 0);
+    igainSlider->setSliderStyle (Slider::LinearBar);
+    igainSlider->setTextBoxStyle (Slider::TextBoxLeft, false, 80, 20);
+    igainSlider->addListener (this);
+
+    addAndMakeVisible (ogainSlider = new Slider ("ogainSlider"));
+    ogainSlider->setRange (-5, 5, 0);
+    ogainSlider->setSliderStyle (Slider::LinearBar);
+    ogainSlider->setTextBoxStyle (Slider::TextBoxLeft, false, 80, 20);
+    ogainSlider->addListener (this);
+
+    addAndMakeVisible (igainText = new Label ("igainText",
+                                              TRANS("Input Gain")));
+    igainText->setFont (Font (15.00f, Font::plain));
+    igainText->setJustificationType (Justification::centred);
+    igainText->setEditable (false, false, false);
+    igainText->setColour (TextEditor::textColourId, Colours::black);
+    igainText->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
+
+    addAndMakeVisible (ogainText = new Label ("ogainText",
+                                              TRANS("Output Gain")));
+    ogainText->setFont (Font (15.00f, Font::plain));
+    ogainText->setJustificationType (Justification::centred);
+    ogainText->setEditable (false, false, false);
+    ogainText->setColour (TextEditor::textColourId, Colours::black);
+    ogainText->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
+
+    addAndMakeVisible (bypassButton = new ToggleButton ("bypassButton"));
+    bypassButton->setButtonText (TRANS("Bypass"));
+    bypassButton->addListener (this);
+
+    addAndMakeVisible (suggestedOgainLabel = new TextButton ("suggestedOgainLabel"));
+    suggestedOgainLabel->setButtonText (TRANS("suggested: "));
+    suggestedOgainLabel->addListener (this);
 
 
     //[UserPreSize]
@@ -87,7 +108,7 @@ LimiterAudioProcessorEditor::LimiterAudioProcessorEditor (LimiterAudioProcessor&
 
 
     //[Constructor] You can add your own custom stuff here..
-    startTimer(100);
+    startTimer(80);
     //[/Constructor]
 }
 
@@ -99,10 +120,14 @@ LimiterAudioProcessorEditor::~LimiterAudioProcessorEditor()
     meterChild = nullptr;
     releaseSlider = nullptr;
     releaseText = nullptr;
-    thresholdSlider = nullptr;
-    thresholdText = nullptr;
     lookaheadSlider = nullptr;
     lookaheadText = nullptr;
+    igainSlider = nullptr;
+    ogainSlider = nullptr;
+    igainText = nullptr;
+    ogainText = nullptr;
+    bypassButton = nullptr;
+    suggestedOgainLabel = nullptr;
 
 
     //[Destructor]. You can add your own custom destruction code here..
@@ -129,10 +154,14 @@ void LimiterAudioProcessorEditor::resized()
     meterChild->setBounds (424, 0, 200, 304);
     releaseSlider->setBounds (120, 16, 96, 88);
     releaseText->setBounds (128, 107, 79, 24);
-    thresholdSlider->setBounds (232, 16, 96, 88);
-    thresholdText->setBounds (240, 107, 79, 24);
     lookaheadSlider->setBounds (16, 16, 96, 88);
     lookaheadText->setBounds (24, 112, 79, 24);
+    igainSlider->setBounds (32, 168, 360, 24);
+    ogainSlider->setBounds (32, 224, 360, 24);
+    igainText->setBounds (176, 192, 79, 24);
+    ogainText->setBounds (176, 256, 79, 24);
+    bypassButton->setBounds (232, 16, 160, 24);
+    suggestedOgainLabel->setBounds (224, 48, 168, 73);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -149,21 +178,49 @@ void LimiterAudioProcessorEditor::sliderValueChanged (Slider* sliderThatWasMoved
 
         //[/UserSliderCode_releaseSlider]
     }
-    else if (sliderThatWasMoved == thresholdSlider)
-    {
-        //[UserSliderCode_thresholdSlider] -- add your slider handling code here..
-      processor.setThreshold(sliderThatWasMoved->getValue());
-        //[/UserSliderCode_thresholdSlider]
-    }
     else if (sliderThatWasMoved == lookaheadSlider)
     {
         //[UserSliderCode_lookaheadSlider] -- add your slider handling code here..
       processor.setLookahead(sliderThatWasMoved->getValue());
         //[/UserSliderCode_lookaheadSlider]
     }
+    else if (sliderThatWasMoved == igainSlider)
+    {
+        //[UserSliderCode_igainSlider] -- add your slider handling code here..
+      processor.setIgain(sliderThatWasMoved->getValue());
+        //[/UserSliderCode_igainSlider]
+    }
+    else if (sliderThatWasMoved == ogainSlider)
+    {
+        //[UserSliderCode_ogainSlider] -- add your slider handling code here..
+      processor.setOgain(sliderThatWasMoved->getValue());
+        //[/UserSliderCode_ogainSlider]
+    }
 
     //[UsersliderValueChanged_Post]
     //[/UsersliderValueChanged_Post]
+}
+
+void LimiterAudioProcessorEditor::buttonClicked (Button* buttonThatWasClicked)
+{
+    //[UserbuttonClicked_Pre]
+    //[/UserbuttonClicked_Pre]
+
+    if (buttonThatWasClicked == bypassButton)
+    {
+        //[UserButtonCode_bypassButton] -- add your button handler code here..
+      processor.switchBypass();
+        //[/UserButtonCode_bypassButton]
+    }
+    else if (buttonThatWasClicked == suggestedOgainLabel)
+    {
+        //[UserButtonCode_suggestedOgainLabel] -- add your button handler code here..
+      processor.suggestedOgain = 99999999999;
+        //[/UserButtonCode_suggestedOgainLabel]
+    }
+
+    //[UserbuttonClicked_Post]
+    //[/UserbuttonClicked_Post]
 }
 
 
@@ -174,8 +231,9 @@ void LimiterAudioProcessorEditor::timerCallback()
 
   lookaheadSlider->setValue(processor.getLookahead(), juce::dontSendNotification);
   releaseSlider->setValue(processor.getRelease(), juce::dontSendNotification);
-  thresholdSlider->setValue(processor.getThreshold(), juce::dontSendNotification);
-
+  ogainSlider->setValue(processor.getOgain(), juce::dontSendNotification);
+  igainSlider->setValue(processor.getIgain(), juce::dontSendNotification);
+  suggestedOgainLabel->setButtonText("suggested output gain: " + juce::String(processor.suggestedOgain));
 
   // Do not worry about a thing and let this neat function
   // do all the paint/repaint stuff regarding metering.
@@ -212,24 +270,39 @@ BEGIN_JUCER_METADATA
          edBkgCol="0" labelText="Release" editableSingleClick="0" editableDoubleClick="0"
          focusDiscardsChanges="0" fontname="Default font" fontsize="15"
          bold="0" italic="0" justification="36"/>
-  <SLIDER name="thresholdSlider" id="df8a56a098604715" memberName="thresholdSlider"
-          virtualName="" explicitFocusOrder="0" pos="232 16 96 88" tooltip="in dB"
-          min="-36" max="0" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
-          textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
-  <LABEL name="thresholdText" id="d8ec008ec365bd94" memberName="thresholdText"
-         virtualName="" explicitFocusOrder="0" pos="240 107 79 24" edTextCol="ff000000"
-         edBkgCol="0" labelText="Threshold" editableSingleClick="0" editableDoubleClick="0"
-         focusDiscardsChanges="0" fontname="Default font" fontsize="15"
-         bold="0" italic="0" justification="36"/>
   <SLIDER name="lookaheadSlider" id="4939e3fba015c9af" memberName="lookaheadSlider"
-          virtualName="" explicitFocusOrder="0" pos="16 16 96 88" min="0"
-          max="6" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
+          virtualName="" explicitFocusOrder="0" pos="16 16 96 88" min="5"
+          max="10000" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <LABEL name="lookaheadText" id="8bb6cc62e2932c59" memberName="lookaheadText"
          virtualName="" explicitFocusOrder="0" pos="24 112 79 24" edTextCol="ff000000"
-         edBkgCol="0" labelText="Ratio" editableSingleClick="0" editableDoubleClick="0"
+         edBkgCol="0" labelText="Lookahead" editableSingleClick="0" editableDoubleClick="0"
          focusDiscardsChanges="0" fontname="Default font" fontsize="15"
          bold="0" italic="0" justification="36"/>
+  <SLIDER name="igainSlider" id="2c3a47a560f54711" memberName="igainSlider"
+          virtualName="" explicitFocusOrder="0" pos="32 168 360 24" min="-5"
+          max="15" int="0" style="LinearBar" textBoxPos="TextBoxLeft" textBoxEditable="1"
+          textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
+  <SLIDER name="ogainSlider" id="10661bb15ced9774" memberName="ogainSlider"
+          virtualName="" explicitFocusOrder="0" pos="32 224 360 24" min="-5"
+          max="5" int="0" style="LinearBar" textBoxPos="TextBoxLeft" textBoxEditable="1"
+          textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
+  <LABEL name="igainText" id="dcaaa3d61af125ba" memberName="igainText"
+         virtualName="" explicitFocusOrder="0" pos="176 192 79 24" edTextCol="ff000000"
+         edBkgCol="0" labelText="Input Gain" editableSingleClick="0" editableDoubleClick="0"
+         focusDiscardsChanges="0" fontname="Default font" fontsize="15"
+         bold="0" italic="0" justification="36"/>
+  <LABEL name="ogainText" id="22d65e1a1134eca9" memberName="ogainText"
+         virtualName="" explicitFocusOrder="0" pos="176 256 79 24" edTextCol="ff000000"
+         edBkgCol="0" labelText="Output Gain" editableSingleClick="0"
+         editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
+         fontsize="15" bold="0" italic="0" justification="36"/>
+  <TOGGLEBUTTON name="bypassButton" id="fed4abcd299cb57d" memberName="bypassButton"
+                virtualName="" explicitFocusOrder="0" pos="232 16 160 24" buttonText="Bypass"
+                connectedEdges="0" needsCallback="1" radioGroupId="0" state="0"/>
+  <TEXTBUTTON name="suggestedOgainLabel" id="b2e9b4947a0accb6" memberName="suggestedOgainLabel"
+              virtualName="" explicitFocusOrder="0" pos="224 48 168 73" buttonText="suggested: "
+              connectedEdges="0" needsCallback="1" radioGroupId="0"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA

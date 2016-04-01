@@ -38,7 +38,8 @@
 */
 class LimiterAudioProcessorEditor  : public AudioProcessorEditor,
                                      public Timer,
-                                     public SliderListener
+                                     public SliderListener,
+                                     public ButtonListener
 {
 public:
     //==============================================================================
@@ -53,6 +54,7 @@ public:
     void paint (Graphics& g);
     void resized();
     void sliderValueChanged (Slider* sliderThatWasMoved);
+    void buttonClicked (Button* buttonThatWasClicked);
 
 
 
@@ -65,10 +67,14 @@ private:
     ScopedPointer<MeterComponent> meterChild;
     ScopedPointer<Slider> releaseSlider;
     ScopedPointer<Label> releaseText;
-    ScopedPointer<Slider> thresholdSlider;
-    ScopedPointer<Label> thresholdText;
     ScopedPointer<Slider> lookaheadSlider;
     ScopedPointer<Label> lookaheadText;
+    ScopedPointer<Slider> igainSlider;
+    ScopedPointer<Slider> ogainSlider;
+    ScopedPointer<Label> igainText;
+    ScopedPointer<Label> ogainText;
+    ScopedPointer<ToggleButton> bypassButton;
+    ScopedPointer<TextButton> suggestedOgainLabel;
 
 
     //==============================================================================
