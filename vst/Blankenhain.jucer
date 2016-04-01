@@ -147,6 +147,8 @@
                 resource="0" file="Source/plugins/wittersroda/WittersrodaAudioProcessorEditor.h"/>
         </GROUP>
       </GROUP>
+      <FILE id="UDxC5E" name="AuxFunc.cpp" compile="1" resource="0" file="Source/AuxFunc.cpp"/>
+      <FILE id="MBY0Wc" name="AuxFunc.h" compile="0" resource="0" file="Source/AuxFunc.h"/>
       <FILE id="bg5w3k" name="BlankenhainAudioProcessor.cpp" compile="1"
             resource="0" file="Source/BlankenhainAudioProcessor.cpp"/>
       <FILE id="DUl9CG" name="BlankenhainAudioProcessor.h" compile="0" resource="0"
