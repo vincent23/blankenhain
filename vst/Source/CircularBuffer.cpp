@@ -13,9 +13,10 @@
 template <typename T>
 CircularBuffer<T>::CircularBuffer(size_t numberOfSamples_) 
   : buffer(nullptr), numberOfSamples(numberOfSamples_),
+  maxNumberOfSamples(numberOfSamples), oldNumberOfSamples(0u),
   currentPosition(0u)
 {
-  buffer = new T[numberOfSamples];
+  buffer = new T[maxNumberOfSamples];
   for (size_t i = 0; i < numberOfSamples; i++)
   {
     buffer[i] = T();
@@ -37,7 +38,12 @@ void CircularBuffer<T>::push(T const& in)
 {
   buffer[currentPosition] = in;
   currentPosition++;
-  if (currentPosition == numberOfSamples) currentPosition = 0u;
+  if (currentPosition == oldNumberOfSamples && oldNumberOfSamples != 0u)
+  {
+    currentPosition = 0u;
+    oldNumberOfSamples = 0u;
+  }
+  else if (currentPosition == numberOfSamples) currentPosition = 0u;
 }
 
 template <typename T>
@@ -46,7 +52,12 @@ T CircularBuffer<T>::pushpop(T const& in)
   T out = buffer[currentPosition];
   buffer[currentPosition] = in;
   currentPosition++;
-  if (currentPosition == numberOfSamples) currentPosition = 0u;
+  if (currentPosition == oldNumberOfSamples && oldNumberOfSamples != 0u)
+  {
+    currentPosition = 0u;
+    oldNumberOfSamples = 0u;
+  }
+  else if (currentPosition == numberOfSamples) currentPosition = 0u;
   return out;
 }
 
@@ -59,20 +70,7 @@ size_t CircularBuffer<T>::getSize()
 template <typename T>
 void CircularBuffer<T>::setSize(size_t size_)
 {
-  if (size_ < numberOfSamples)
-  {
-    T* temp = new T[size_];
-    for (size_t i = 0; i < size_; i++)
-    {
-      temp[i] = buffer[i];
-    }
-    delete[] buffer;
-    buffer = temp;
-    temp = nullptr;
-    numberOfSamples = size_;
-  }
-  else if (size_ == numberOfSamples) return;
-  else
+  if(size_ >= maxNumberOfSamples)
   {
     T* temp = new T[size_];
     for (size_t i = 0; i < numberOfSamples; i++)
@@ -86,6 +84,16 @@ void CircularBuffer<T>::setSize(size_t size_)
     delete[] buffer;
     buffer = temp;
     temp = nullptr;
+    numberOfSamples = size_;
+  }
+  else if (size_ > numberOfSamples)
+  {
+    oldNumberOfSamples = numberOfSamples;
+    numberOfSamples = size_;
+  }
+  else if (size_ == numberOfSamples) return;
+  else
+  {
     numberOfSamples = size_;
   }
   currentPosition = 0u;
