@@ -1,5 +1,5 @@
 #pragma once
-
+#include "AuxFunc.h"
 #include <juce>
 #include <vector>
 
@@ -47,6 +47,13 @@ public:
 	void meteringBuffer(AudioSampleBuffer&);
 	void meteringSingle(float, float);
 
+  bool getBypass() const;
+  void setBypass(bool value);
+  void setIngain(float value);
+  float getIngain() const;
+  float getOutgain() const;
+  void setOutgain(float value);
+
 protected:
 	virtual var getState() = 0;
 	virtual void setState(const var& state) = 0;
@@ -59,6 +66,9 @@ protected:
 
 	//Left Peak, Right Peak, Left RMS, Right RMS
 	std::vector<float> meterValues = { 0.f,0.f,0.f,0.f };
+  bool bypass = false;
+  float inGain = 1.f;
+  float outGain = 1.f;
 
 private:
 	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(BlankenhainAudioProcessor)
@@ -96,3 +106,4 @@ void BlankenhainAudioProcessor::processBlockwise(AudioSampleBuffer& audioBuffer,
 		audioBuffer.setSample(1, sampleIndex, sampleValues[1]);
 	}
 }
+

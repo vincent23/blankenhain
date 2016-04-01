@@ -28,7 +28,8 @@
 //[/MiscUserDefs]
 
 //==============================================================================
-MeterComponent::MeterComponent ()
+MeterComponent::MeterComponent (BlankenhainAudioProcessor& p)
+    : processor(p)
 {
     //[Constructor_pre] You can add your own custom stuff here..
     //[/Constructor_pre]
@@ -122,11 +123,46 @@ MeterComponent::MeterComponent ()
     rmsText->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
 
     addAndMakeVisible (ledPeakMeterChild = new ledPeakMeterComponent());
+    addAndMakeVisible (inSlider = new Slider ("inSlider"));
+    inSlider->setRange (-12, 12, 0);
+    inSlider->setSliderStyle (Slider::LinearVertical);
+    inSlider->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
+    inSlider->addListener (this);
+
+    addAndMakeVisible (outSlider = new Slider ("outSlider"));
+    outSlider->setRange (-12, 12, 0);
+    outSlider->setSliderStyle (Slider::LinearVertical);
+    outSlider->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
+    outSlider->addListener (this);
+
+    addAndMakeVisible (Inlabel = new Label ("Inlabel",
+                                            TRANS("In")));
+    Inlabel->setFont (Font (15.00f, Font::plain));
+    Inlabel->setJustificationType (Justification::centredLeft);
+    Inlabel->setEditable (false, false, false);
+    Inlabel->setColour (Label::textColourId, Colours::white);
+    Inlabel->setColour (TextEditor::textColourId, Colours::black);
+    Inlabel->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
+
+    addAndMakeVisible (OutLabel = new Label ("OutLabel",
+                                             TRANS("Out")));
+    OutLabel->setFont (Font (15.00f, Font::plain));
+    OutLabel->setJustificationType (Justification::centredLeft);
+    OutLabel->setEditable (false, false, false);
+    OutLabel->setColour (Label::textColourId, Colours::white);
+    OutLabel->setColour (TextEditor::textColourId, Colours::black);
+    OutLabel->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
+
+    addAndMakeVisible (toggleButton = new ToggleButton ("new toggle button"));
+    toggleButton->setButtonText (TRANS("bypass"));
+    toggleButton->addListener (this);
+    toggleButton->setColour (ToggleButton::textColourId, Colours::white);
+
 
     //[UserPreSize]
     //[/UserPreSize]
 
-    setSize (170, 300);
+    setSize (220, 300);
 
 
     //[Constructor] You can add your own custom stuff here..
@@ -153,6 +189,11 @@ MeterComponent::~MeterComponent()
     peakText = nullptr;
     rmsText = nullptr;
     ledPeakMeterChild = nullptr;
+    inSlider = nullptr;
+    outSlider = nullptr;
+    Inlabel = nullptr;
+    OutLabel = nullptr;
+    toggleButton = nullptr;
 
 
     //[Destructor]. You can add your own custom destruction code here..
@@ -217,8 +258,51 @@ void MeterComponent::resized()
     peakText->setBounds (64, 240, 40, 16);
     rmsText->setBounds (64, 264, 40, 16);
     ledPeakMeterChild->setBounds (56, 12, 56, 180);
+    inSlider->setBounds (168, 8, 48, 104);
+    outSlider->setBounds (168, 120, 48, 104);
+    Inlabel->setBounds (160, 8, 23, 24);
+    OutLabel->setBounds (160, 120, 32, 24);
+    toggleButton->setBounds (156, 232, 56, 48);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
+}
+
+void MeterComponent::sliderValueChanged (Slider* sliderThatWasMoved)
+{
+    //[UsersliderValueChanged_Pre]
+    //[/UsersliderValueChanged_Pre]
+
+    if (sliderThatWasMoved == inSlider)
+    {
+        //[UserSliderCode_inSlider] -- add your slider handling code here..
+      processor.setIngain(sliderThatWasMoved->getValue());
+        //[/UserSliderCode_inSlider]
+    }
+    else if (sliderThatWasMoved == outSlider)
+    {
+        //[UserSliderCode_outSlider] -- add your slider handling code here..
+      processor.setOutgain(sliderThatWasMoved->getValue());
+        //[/UserSliderCode_outSlider]
+    }
+
+    //[UsersliderValueChanged_Post]
+    //[/UsersliderValueChanged_Post]
+}
+
+void MeterComponent::buttonClicked (Button* buttonThatWasClicked)
+{
+    //[UserbuttonClicked_Pre]
+    //[/UserbuttonClicked_Pre]
+
+    if (buttonThatWasClicked == toggleButton)
+    {
+        //[UserButtonCode_toggleButton] -- add your button handler code here..
+      processor.setBypass(!processor.getBypass());
+        //[/UserButtonCode_toggleButton]
+    }
+
+    //[UserbuttonClicked_Post]
+    //[/UserbuttonClicked_Post]
 }
 
 
@@ -323,12 +407,12 @@ void MeterComponent::setValue(std::vector<float> meterValues, double sampleRate,
 	this->peakFollower(meterValues, sampleRate, blockSize);
 
 	//Set the text boxes, decibel readings
-	this->curLeft->setText((juce::String(log10(bareValues[0]) * 10.f, 2)).substring(0, 4) + " dB", juce::dontSendNotification);
-	this->curRight->setText( (juce::String(log10(bareValues[1]) * 10.f,2)).substring(0,4) + " dB", juce::dontSendNotification);
-	this->peakLeft->setText((juce::String(log10(decayingValues[2]) * 10.f, 1)).substring(0, 4) + " dB", juce::dontSendNotification);
-	this->peakRight->setText((juce::String(log10(decayingValues[3]) * 10.f, 1)).substring(0, 4) + " dB", juce::dontSendNotification);
-	this->RMSLeft->setText((juce::String(log10(bareValues[4]) * 10.f, 2)).substring(0, 4) + " dB", juce::dontSendNotification);
-	this->RMSRight->setText((juce::String(log10(bareValues[5]) * 10.f, 2)).substring(0, 4) + " dB", juce::dontSendNotification);
+	this->curLeft->setText(  (juce::String(aux::linearToDecibel(bareValues[0])     , 2)).substring(0, 4) + " dB", juce::dontSendNotification);
+	this->curRight->setText( (juce::String(aux::linearToDecibel(bareValues[1])     , 2)).substring(0,4) + " dB", juce::dontSendNotification);
+	this->peakLeft->setText( (juce::String(aux::linearToDecibel(decayingValues[2]) , 1)).substring(0, 4) + " dB", juce::dontSendNotification);
+	this->peakRight->setText((juce::String(aux::linearToDecibel(decayingValues[3]) , 1)).substring(0, 4) + " dB", juce::dontSendNotification);
+	this->RMSLeft->setText(  (juce::String(aux::linearToDecibel(bareValues[4])     , 2)).substring(0, 4) + " dB", juce::dontSendNotification);
+	this->RMSRight->setText( (juce::String(aux::linearToDecibel(bareValues[5])     , 2)).substring(0, 4) + " dB", juce::dontSendNotification);
 
 	//Give current values to LED-Meters
 	ledPeakMeterChild->setLValue(decayingValues[1]);
@@ -425,9 +509,10 @@ void MeterComponent::mouseDown(const MouseEvent& mouseIn)
 BEGIN_JUCER_METADATA
 
 <JUCER_COMPONENT documentType="Component" className="MeterComponent" componentName="meterChild"
-                 parentClasses="public Component" constructorParams="" variableInitialisers=""
-                 snapPixels="8" snapActive="1" snapShown="1" overlayOpacity="0.330"
-                 fixedSize="1" initialWidth="170" initialHeight="300">
+                 parentClasses="public Component" constructorParams="BlankenhainAudioProcessor&amp; p"
+                 variableInitialisers="processor(p)" snapPixels="8" snapActive="1"
+                 snapShown="1" overlayOpacity="0.330" fixedSize="1" initialWidth="220"
+                 initialHeight="300">
   <BACKGROUND backgroundColour="ff000000">
     <RECT pos="120 10 40 182" fill="solid: ff000000" hasStroke="1" stroke="5, mitered, butt"
           strokeColour="solid: ffffffff"/>
@@ -482,6 +567,28 @@ BEGIN_JUCER_METADATA
   <JUCERCOMP name="ledPeakMeterChild" id="be4156e19e2686ec" memberName="ledPeakMeterChild"
              virtualName="" explicitFocusOrder="0" pos="56 12 56 180" sourceFile="ledMeterComponent.cpp"
              constructorParams=""/>
+  <SLIDER name="inSlider" id="7b7c7fed83036044" memberName="inSlider" virtualName=""
+          explicitFocusOrder="0" pos="168 8 48 104" min="-12" max="12"
+          int="0" style="LinearVertical" textBoxPos="TextBoxBelow" textBoxEditable="1"
+          textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
+  <SLIDER name="outSlider" id="1a9cecb548ca24d6" memberName="outSlider"
+          virtualName="" explicitFocusOrder="0" pos="168 120 48 104" min="-12"
+          max="12" int="0" style="LinearVertical" textBoxPos="TextBoxBelow"
+          textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
+  <LABEL name="Inlabel" id="7368dae04b28cd61" memberName="Inlabel" virtualName=""
+         explicitFocusOrder="0" pos="160 8 23 24" textCol="ffffffff" edTextCol="ff000000"
+         edBkgCol="0" labelText="In" editableSingleClick="0" editableDoubleClick="0"
+         focusDiscardsChanges="0" fontname="Default font" fontsize="15"
+         bold="0" italic="0" justification="33"/>
+  <LABEL name="OutLabel" id="188d50d159a1bd3c" memberName="OutLabel" virtualName=""
+         explicitFocusOrder="0" pos="160 120 32 24" textCol="ffffffff"
+         edTextCol="ff000000" edBkgCol="0" labelText="Out" editableSingleClick="0"
+         editableDoubleClick="0" focusDiscardsChanges="0" fontname="Default font"
+         fontsize="15" bold="0" italic="0" justification="33"/>
+  <TOGGLEBUTTON name="new toggle button" id="f24c5edb5f9dfec4" memberName="toggleButton"
+                virtualName="" explicitFocusOrder="0" pos="156 232 56 48" txtcol="ffffffff"
+                buttonText="bypass" connectedEdges="0" needsCallback="1" radioGroupId="0"
+                state="0"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA

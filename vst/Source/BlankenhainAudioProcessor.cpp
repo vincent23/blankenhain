@@ -152,19 +152,24 @@ void BlankenhainAudioProcessor::initializing(AudioSampleBuffer& buffer)
 	for (int i = getNumInputChannels(); i < getNumOutputChannels(); ++i) {
 		buffer.clear(i, 0, buffer.getNumSamples());
 	}
+  // Ingain
+  for (int i = 0; i < buffer.getNumSamples(); i++) {
+    for (int channel = 0; channel < getNumInputChannels(); channel++) {
+      float* channelData = buffer.getWritePointer(channel);
+      channelData[i] *= aux::decibelToLinear(this->getIngain());
+    }
+  }
 }
 
 void BlankenhainAudioProcessor::finalizing(AudioSampleBuffer& buffer)
 {
-	//Get RMSD
-	meterValues[2] /= float(buffer.getNumSamples());
-	meterValues[3] /= float(buffer.getNumSamples());
-	meterValues[2] = sqrt(meterValues[2]);
-	meterValues[3] = sqrt(meterValues[3]);
-	if (meterValues[2] > 1 || meterValues[3] > 1)
-	{
-
-	}
+  // Outgain
+  for (int i = 0; i < buffer.getNumSamples(); i++) {
+    for (int channel = 0; channel < getNumInputChannels(); channel++) {
+      float* channelData = buffer.getWritePointer(channel);
+      channelData[i] *= aux::decibelToLinear(this->getOutgain());
+    }
+  }
 }
 
 void BlankenhainAudioProcessor::meteringBuffer(AudioSampleBuffer& buffer)
@@ -184,6 +189,16 @@ void BlankenhainAudioProcessor::meteringBuffer(AudioSampleBuffer& buffer)
 		meterValues[3] += buffer.getSample(/*channel*/ 1, iteration) * buffer.getSample(/*channel*/ 1, iteration);
 	}
 	/* END METERING CODE*/
+
+  //Get RMSD
+  meterValues[2] /= float(buffer.getNumSamples());
+  meterValues[3] /= float(buffer.getNumSamples());
+  meterValues[2] = sqrt(meterValues[2]);
+  meterValues[3] = sqrt(meterValues[3]);
+  if (meterValues[2] > 1 || meterValues[3] > 1)
+  {
+
+  }
 }
 
 void BlankenhainAudioProcessor::meteringSingle(float one, float two)
@@ -204,3 +219,10 @@ void BlankenhainAudioProcessor::meteringSingle(float one, float two)
 
 	/* END METERING CODE*/
 }
+
+bool BlankenhainAudioProcessor::getBypass() const { return this->bypass; }
+void BlankenhainAudioProcessor::setBypass(bool value) { this->bypass = value; }
+void BlankenhainAudioProcessor::setIngain(float value) { this->inGain = value; }
+void BlankenhainAudioProcessor::setOutgain(float value) { this->outGain = value; }
+float BlankenhainAudioProcessor::getIngain() const { return this->inGain; }
+float BlankenhainAudioProcessor::getOutgain() const { return this->outGain; }

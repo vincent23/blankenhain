@@ -22,7 +22,8 @@
 
 //[Headers]     -- You can add your own extra header files here --
 #include "JuceHeader.h"
-#include "ledMeterComponent.h"
+#include "AuxFunc.h"
+#include "BlankenhainAudioProcessor.h"
 //[/Headers]
 
 #include "ledMeterComponent.h"
@@ -36,31 +37,36 @@
     Describe your class and how it works here!
                                                                     //[/Comments]
 */
-class MeterComponent  : public Component
+class MeterComponent  : public Component,
+                        public SliderListener,
+                        public ButtonListener
 {
 public:
     //==============================================================================
-    MeterComponent ();
+    MeterComponent (BlankenhainAudioProcessor& p);
     ~MeterComponent();
 
     //==============================================================================
     //[UserMethods]     -- You can add your own custom methods in this section.
 
-	//USE THIS TO PROCESS THE float-vec "in" from the processor.
-	//do not call peakFollower
-	void setValue(std::vector<float> in, double sampleRate = 44100, int blockSize = 512);
+	  //USE THIS TO PROCESS THE float-vec "in" from the processor.
+	  //do not call peakFollower
+	  void setValue(std::vector<float> in, double sampleRate = 44100, int blockSize = 512);
+
+	  void mouseDown(const MouseEvent& mouseIn) override;
+
+	  // this is called from inside setValue
+	  // dont use this manually
+	  void peakFollower(std::vector<float> newValues, double sampleRate = 44100, int blockSize = 512);
 
 
-	void mouseDown(const MouseEvent& mouseIn) override;
-
-	// this is called from inside setValue
-	// dont use this manually
-	void peakFollower(std::vector<float> newValues, double sampleRate = 44100, int blockSize = 512);
 
     //[/UserMethods]
 
     void paint (Graphics& g);
     void resized();
+    void sliderValueChanged (Slider* sliderThatWasMoved);
+    void buttonClicked (Button* buttonThatWasClicked);
 
 
 
@@ -68,6 +74,7 @@ private:
     //[UserVariables]   -- You can add your own custom variables in this section.
 	std::vector<float> bareValues;
 	std::vector<float> decayingValues;
+  BlankenhainAudioProcessor& processor;
     //[/UserVariables]
 
     //==============================================================================
@@ -81,6 +88,11 @@ private:
     ScopedPointer<Label> peakText;
     ScopedPointer<Label> rmsText;
     ScopedPointer<ledPeakMeterComponent> ledPeakMeterChild;
+    ScopedPointer<Slider> inSlider;
+    ScopedPointer<Slider> outSlider;
+    ScopedPointer<Label> Inlabel;
+    ScopedPointer<Label> OutLabel;
+    ScopedPointer<ToggleButton> toggleButton;
 
 
     //==============================================================================
