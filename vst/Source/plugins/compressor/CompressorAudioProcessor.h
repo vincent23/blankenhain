@@ -3,6 +3,8 @@
 #include <juce>
 #include "BlankenhainAudioProcessor.h"
 #include "FloatParameter.h"
+#include "BoolParameter.h"
+#include "CircularBuffer.h"
 
 class CompressorAudioProcessor : public BlankenhainAudioProcessor
 {
@@ -20,13 +22,13 @@ public:
     void setThreshold(float threshold);
     void setAttack(float attack);
     void setRelease(float release);
-    void setPostgain(float postgain);
+    void setLimiter(bool value);
 
     float getRatio();
     float getRelease();
     float getThreshold();
     float getAttack();
-    float getPostgain();
+    bool getLimiter();
 protected:
 	var getState() override;
 	void setState(const var& state) override;
@@ -37,7 +39,8 @@ private:
   FloatParameter *attack;
   FloatParameter *ratio;
   FloatParameter *threshold;
-  FloatParameter *postgain;
+  BoolParameter *limiterOn;
+  CircularBuffer<float> delayLine;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(CompressorAudioProcessor)
 };

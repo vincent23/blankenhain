@@ -94,6 +94,10 @@ CompressorAudioProcessorEditor::CompressorAudioProcessorEditor (CompressorAudioP
     ratioText->setColour (TextEditor::textColourId, Colours::black);
     ratioText->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
 
+    addAndMakeVisible (limiterButton = new ToggleButton ("limiterNutton"));
+    limiterButton->setButtonText (TRANS("limiter"));
+    limiterButton->addListener (this);
+
 
     //[UserPreSize]
     //[/UserPreSize]
@@ -120,6 +124,7 @@ CompressorAudioProcessorEditor::~CompressorAudioProcessorEditor()
     thresholdText = nullptr;
     ratioSlider = nullptr;
     ratioText = nullptr;
+    limiterButton = nullptr;
 
 
     //[Destructor]. You can add your own custom destruction code here..
@@ -143,15 +148,16 @@ void CompressorAudioProcessorEditor::resized()
     //[UserPreResize] Add your own custom resize code here..
     //[/UserPreResize]
 
-    meterChild->setBounds (416, 0, 232, 304);
+    meterChild->setBounds (424, 0, 232, 304);
     attackSlider->setBounds (8, 16, 96, 88);
     attackText->setBounds (16, 107, 79, 24);
     releaseSlider->setBounds (120, 16, 96, 88);
     releaseText->setBounds (128, 107, 79, 24);
-    thresholdSlider->setBounds (120, 152, 96, 88);
-    thresholdText->setBounds (128, 243, 79, 24);
-    ratioSlider->setBounds (8, 152, 96, 88);
-    ratioText->setBounds (16, 248, 79, 24);
+    thresholdSlider->setBounds (120, 136, 96, 88);
+    thresholdText->setBounds (128, 227, 79, 24);
+    ratioSlider->setBounds (8, 136, 96, 88);
+    ratioText->setBounds (16, 224, 79, 24);
+    limiterButton->setBounds (16, 248, 80, 32);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -192,6 +198,22 @@ void CompressorAudioProcessorEditor::sliderValueChanged (Slider* sliderThatWasMo
     //[/UsersliderValueChanged_Post]
 }
 
+void CompressorAudioProcessorEditor::buttonClicked (Button* buttonThatWasClicked)
+{
+    //[UserbuttonClicked_Pre]
+    //[/UserbuttonClicked_Pre]
+
+    if (buttonThatWasClicked == limiterButton)
+    {
+        //[UserButtonCode_limiterButton] -- add your button handler code here..
+      processor.setLimiter(!processor.getLimiter());
+        //[/UserButtonCode_limiterButton]
+    }
+
+    //[UserbuttonClicked_Post]
+    //[/UserbuttonClicked_Post]
+}
+
 
 
 //[MiscUserCode] You can add your own definitions of your custom methods or any other code here...
@@ -201,7 +223,6 @@ void CompressorAudioProcessorEditor::timerCallback()
   ratioSlider->setValue(processor.getRatio(), juce::dontSendNotification);
   releaseSlider->setValue(processor.getRelease(), juce::dontSendNotification);
   thresholdSlider->setValue(processor.getThreshold(), juce::dontSendNotification);
-  postgainSlider->setValue(processor.getPostgain(), juce::dontSendNotification);
 
   // Do not worry about a thing and let this neat function
   // do all the paint/repaint stuff regarding metering.
@@ -227,7 +248,7 @@ BEGIN_JUCER_METADATA
                  fixedSize="1" initialWidth="650" initialHeight="300">
   <BACKGROUND backgroundColour="ffffffff"/>
   <JUCERCOMP name="" id="dc979ea1bc23b53c" memberName="meterChild" virtualName=""
-             explicitFocusOrder="0" pos="416 0 232 304" sourceFile="../../components/MeterComponent.cpp"
+             explicitFocusOrder="0" pos="424 0 232 304" sourceFile="../../components/MeterComponent.cpp"
              constructorParams="p"/>
   <SLIDER name="attackSlider" id="bc4747722abe5c6" memberName="attackSlider"
           virtualName="" explicitFocusOrder="0" pos="8 16 96 88" tooltip="in ms"
@@ -248,23 +269,26 @@ BEGIN_JUCER_METADATA
          focusDiscardsChanges="0" fontname="Default font" fontsize="15"
          bold="0" italic="0" justification="36"/>
   <SLIDER name="thresholdSlider" id="df8a56a098604715" memberName="thresholdSlider"
-          virtualName="" explicitFocusOrder="0" pos="120 152 96 88" tooltip="in dB"
+          virtualName="" explicitFocusOrder="0" pos="120 136 96 88" tooltip="in dB"
           min="-36" max="0" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <LABEL name="thresholdText" id="d8ec008ec365bd94" memberName="thresholdText"
-         virtualName="" explicitFocusOrder="0" pos="128 243 79 24" edTextCol="ff000000"
+         virtualName="" explicitFocusOrder="0" pos="128 227 79 24" edTextCol="ff000000"
          edBkgCol="0" labelText="Threshold" editableSingleClick="0" editableDoubleClick="0"
          focusDiscardsChanges="0" fontname="Default font" fontsize="15"
          bold="0" italic="0" justification="36"/>
   <SLIDER name="ratioSlider" id="4939e3fba015c9af" memberName="ratioSlider"
-          virtualName="" explicitFocusOrder="0" pos="8 152 96 88" min="0"
+          virtualName="" explicitFocusOrder="0" pos="8 136 96 88" min="0"
           max="12" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <LABEL name="ratioText" id="8bb6cc62e2932c59" memberName="ratioText"
-         virtualName="" explicitFocusOrder="0" pos="16 248 79 24" edTextCol="ff000000"
+         virtualName="" explicitFocusOrder="0" pos="16 224 79 24" edTextCol="ff000000"
          edBkgCol="0" labelText="Ratio" editableSingleClick="0" editableDoubleClick="0"
          focusDiscardsChanges="0" fontname="Default font" fontsize="15"
          bold="0" italic="0" justification="36"/>
+  <TOGGLEBUTTON name="limiterNutton" id="7437df834c6c0403" memberName="limiterButton"
+                virtualName="" explicitFocusOrder="0" pos="16 248 80 32" buttonText="limiter"
+                connectedEdges="0" needsCallback="1" radioGroupId="0" state="0"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA

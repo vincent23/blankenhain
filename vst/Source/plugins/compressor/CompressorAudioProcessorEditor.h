@@ -38,7 +38,8 @@
 */
 class CompressorAudioProcessorEditor  : public AudioProcessorEditor,
                                         public Timer,
-                                        public SliderListener
+                                        public SliderListener,
+                                        public ButtonListener
 {
 public:
     //==============================================================================
@@ -53,6 +54,7 @@ public:
     void paint (Graphics& g);
     void resized();
     void sliderValueChanged (Slider* sliderThatWasMoved);
+    void buttonClicked (Button* buttonThatWasClicked);
 
 
 
@@ -71,6 +73,7 @@ private:
     ScopedPointer<Label> thresholdText;
     ScopedPointer<Slider> ratioSlider;
     ScopedPointer<Label> ratioText;
+    ScopedPointer<ToggleButton> limiterButton;
 
 
     //==============================================================================

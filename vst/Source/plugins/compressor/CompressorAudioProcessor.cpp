@@ -4,17 +4,18 @@
 #include "CompressorAudioProcessorEditor.h"
 
 CompressorAudioProcessor::CompressorAudioProcessor()
+  : delayLine(44100)
 {
   ratio = new FloatParameter(1.f, "ratio", 1.f, NormalizedRange(0.f, 12.f, 1.f));
   release = new FloatParameter(10.f / 132.f, "release", 1.f, NormalizedRange(0.f, 1000.f, 1.f));
   threshold = new FloatParameter(0.f, "threshold", 1.f, NormalizedRange(-36.f, 3.f, 1.f));
   attack = new FloatParameter(10.f, "attack", 1.f, NormalizedRange(0.f, 1000.f, 1.f));
-  postgain = new FloatParameter(0.f, "postgain", 1.f, NormalizedRange(0.f, 24.f, 1.f));
+  limiterOn = new BoolParameter("limiterOn", false);
   addParameter(ratio);
   addParameter(release);
   addParameter(threshold);
   addParameter(attack);
-  addParameter(postgain);
+  addParameter(limiterOn);
 }
 
 void CompressorAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
@@ -48,6 +49,8 @@ void CompressorAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuff
     // audio processing...
     jassert(getNumInputChannels() == 2);
     float attack_ = attack->getValue() / 1000.f;
+    size_t attackTimeInSamples = static_cast<size_t>(attack->getValue() * 44100 / 1000.f);
+    delayLine.setSize(attackTimeInSamples);
     float release_ = release->getValue() / 1000.f;
     float attackGain = exp(-1 / (attack_ * 44100));
     float releaseGain = exp(-1 / (release_ * 44100));
@@ -66,7 +69,8 @@ void CompressorAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuff
         }
       }
       float envelopeValue = std::max(envelope[0], envelope[1]);
-      for (int channel = 0; channel < getNumInputChannels(); channel++) {
+      for (int channel = 0; channel < getNumInputChannels(); channel++) 
+      {
         float* channelData = buffer.getWritePointer(channel);
         float input = envelopeValue;
         float envelopeDb = aux::linearToDecibel(abs(input));
@@ -76,10 +80,14 @@ void CompressorAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuff
         }
         else
         {
-          envelopeDb = slope * (threshold_ - envelopeDb);
+          if (this->getLimiter())
+          {
+            envelopeDb = (threshold_ - envelopeDb);
+          }
+          else envelopeDb = slope * (threshold_ - envelopeDb);
         }
+        channelData[i] = delayLine.pushpop(channelData[i]);
         channelData[i] *= aux::decibelToLinear(envelopeDb);
-        channelData[i] *= aux::decibelToLinear(postgain->getValue());
       }
     }
   }
@@ -108,8 +116,9 @@ void CompressorAudioProcessor::setThreshold(float newThreshold) {
   threshold->setValueNotifyingHost(newThreshold);
 }
 
-void CompressorAudioProcessor::setPostgain(float newPostgain) {
-  postgain->setValueNotifyingHost(newPostgain);
+void CompressorAudioProcessor::setLimiter(bool value)
+{
+  limiterOn->setBoolValue(value);
 }
 
 void CompressorAudioProcessor::setState(const var & state)
@@ -118,7 +127,7 @@ void CompressorAudioProcessor::setState(const var & state)
   attack->setValue(state.getProperty("attack", attack->getValue()));
   release->setValue(state.getProperty("release", release->getValue()));
   threshold->setValue(state.getProperty("threshold", threshold->getValue()));
-  postgain->setValue(state.getProperty("postgain", postgain->getValue()));
+  limiterOn->setBoolValue(state.getProperty("limiter", limiterOn->getBoolValue()));
 }
 
 var CompressorAudioProcessor::getState()
@@ -128,7 +137,7 @@ var CompressorAudioProcessor::getState()
   properties->setProperty("attack", attack->getValue());
   properties->setProperty("release", release->getValue());
   properties->setProperty("threshold", threshold->getValue());
-  properties->setProperty("postgain", postgain->getValue());
+  properties->setProperty("limiter", limiterOn->getBoolValue());
   return var(&properties);
 }
 
@@ -148,8 +157,9 @@ float CompressorAudioProcessor::getThreshold() {
   return threshold->getValue();
 }
 
-float CompressorAudioProcessor::getPostgain() {
-  return postgain->getValue();
+bool CompressorAudioProcessor::getLimiter()
+{
+  return limiterOn->getBoolValue();
 }
 
 #endif
