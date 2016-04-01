@@ -21,6 +21,7 @@
 #define __JUCE_HEADER_A1B1A6D1AFC81DAA__
 
 //[Headers]     -- You can add your own extra header files here --
+#ifdef PLUGIN_EQUALIZER
 #include "JuceHeader.h"
 #include "EqualizerAudioProcessor.h"
 //[/Headers]
@@ -80,6 +81,7 @@ private:
 };
 
 //[EndFile] You can add extra defines here...
+#endif
 //[/EndFile]
 
 #endif   // __JUCE_HEADER_A1B1A6D1AFC81DAA__
