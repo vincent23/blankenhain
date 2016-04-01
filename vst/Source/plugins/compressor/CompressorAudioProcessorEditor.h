@@ -71,8 +71,6 @@ private:
     ScopedPointer<Label> thresholdText;
     ScopedPointer<Slider> ratioSlider;
     ScopedPointer<Label> ratioText;
-    ScopedPointer<Slider> postgainSlider;
-    ScopedPointer<Label> postgainText;
 
 
     //==============================================================================

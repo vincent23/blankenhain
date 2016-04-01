@@ -7,7 +7,7 @@
   the "//[xyz]" and "//[/xyz]" sections will be retained when the file is loaded
   and re-saved.
 
-  Created with Introjucer version: 4.0.1
+  Created with Introjucer version: 4.1.0
 
   ------------------------------------------------------------------------------
 
@@ -34,7 +34,7 @@ PanAudioProcessorEditor::PanAudioProcessorEditor (PanAudioProcessor& p)
     //[Constructor_pre] You can add your own custom stuff here..
     //[/Constructor_pre]
 
-    addAndMakeVisible (meterChild = new MeterComponent());
+    addAndMakeVisible (meterChild = new MeterComponent (p));
     addAndMakeVisible (panningSlider = new Slider ("panningSlider"));
     panningSlider->setRange (-50, 50, 1);
     panningSlider->setSliderStyle (Slider::RotaryVerticalDrag);
@@ -56,7 +56,7 @@ PanAudioProcessorEditor::PanAudioProcessorEditor (PanAudioProcessor& p)
     //[UserPreSize]
     //[/UserPreSize]
 
-    setSize (370, 300);
+    setSize (420, 300);
 
 
     //[Constructor] You can add your own custom stuff here..
@@ -95,9 +95,9 @@ void PanAudioProcessorEditor::resized()
     //[UserPreResize] Add your own custom resize code here..
     //[/UserPreResize]
 
-    meterChild->setBounds (200, 0, 168, 304);
-    panningSlider->setBounds (proportionOfWidth (0.0432f), 24, 168, proportionOfHeight (0.6400f));
-    label->setBounds (proportionOfWidth (0.0000f), proportionOfHeight (0.7733f), proportionOfWidth (0.5405f), proportionOfHeight (0.1500f));
+    meterChild->setBounds (200, 0, 232, 304);
+    panningSlider->setBounds (proportionOfWidth (0.0381f), 24, 168, proportionOfHeight (0.6400f));
+    label->setBounds (proportionOfWidth (-0.0381f), proportionOfHeight (0.7733f), proportionOfWidth (0.5405f), proportionOfHeight (0.1500f));
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -146,18 +146,18 @@ BEGIN_JUCER_METADATA
                  componentName="" parentClasses="public AudioProcessorEditor, public Timer"
                  constructorParams="PanAudioProcessor&amp; p" variableInitialisers="AudioProcessorEditor(&amp;p), processor(p)"
                  snapPixels="8" snapActive="1" snapShown="1" overlayOpacity="0.330"
-                 fixedSize="1" initialWidth="370" initialHeight="300">
+                 fixedSize="1" initialWidth="420" initialHeight="300">
   <BACKGROUND backgroundColour="ffffffff"/>
   <JUCERCOMP name="" id="9bae3019e598c401" memberName="meterChild" virtualName=""
-             explicitFocusOrder="0" pos="200 0 168 304" sourceFile="../../components/MeterComponent.cpp"
-             constructorParams=""/>
+             explicitFocusOrder="0" pos="200 0 232 304" sourceFile="../../components/MeterComponent.cpp"
+             constructorParams="p"/>
   <SLIDER name="panningSlider" id="e1fc1f10f0eb0d22" memberName="panningSlider"
-          virtualName="" explicitFocusOrder="0" pos="4.324% 24 168 64%"
+          virtualName="" explicitFocusOrder="0" pos="3.81% 24 168 64%"
           thumbcol="ff000000" rotarysliderfill="7f000000" textboxhighlight="40000000"
           min="-50" max="50" int="1" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <LABEL name="new label" id="2889253ab4f709e" memberName="label" virtualName=""
-         explicitFocusOrder="0" pos="0% 77.333% 54.054% 15%" edTextCol="ff000000"
+         explicitFocusOrder="0" pos="-3.81% 77.333% 54.048% 15%" edTextCol="ff000000"
          edBkgCol="0" labelText="panning" editableSingleClick="0" editableDoubleClick="0"
          focusDiscardsChanges="0" fontname="Default font" fontsize="26.300000000000000711"
          bold="0" italic="0" justification="36"/>

@@ -7,7 +7,7 @@
   the "//[xyz]" and "//[/xyz]" sections will be retained when the file is loaded
   and re-saved.
 
-  Created with Introjucer version: 4.0.1
+  Created with Introjucer version: 4.1.0
 
   ------------------------------------------------------------------------------
 
@@ -76,12 +76,12 @@ BitcrushAudioProcessorEditor::BitcrushAudioProcessorEditor (BitcrushAudioProcess
     label3->setColour (TextEditor::textColourId, Colours::black);
     label3->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
 
-    addAndMakeVisible (meterChild = new MeterComponent());
+    addAndMakeVisible (meterChild = new MeterComponent (p));
 
     //[UserPreSize]
     //[/UserPreSize]
 
-    setSize (600, 300);
+    setSize (650, 300);
 
 
     //[Constructor] You can add your own custom stuff here..
@@ -193,7 +193,7 @@ BEGIN_JUCER_METADATA
                  componentName="" parentClasses="public AudioProcessorEditor, public Timer"
                  constructorParams="BitcrushAudioProcessor&amp; p" variableInitialisers="AudioProcessorEditor(&amp;p), processor(p)"
                  snapPixels="8" snapActive="1" snapShown="1" overlayOpacity="0.330"
-                 fixedSize="1" initialWidth="600" initialHeight="300">
+                 fixedSize="1" initialWidth="650" initialHeight="300">
   <BACKGROUND backgroundColour="ffffffff"/>
   <LABEL name="new label" id="faa41b91f6352928" memberName="label2" virtualName=""
          explicitFocusOrder="0" pos="168 80 104 24" edTextCol="ff000000"
@@ -227,7 +227,7 @@ BEGIN_JUCER_METADATA
          bold="0" italic="0" justification="36"/>
   <JUCERCOMP name="meterChild" id="24679acdf902a533" memberName="meterChild"
              virtualName="" explicitFocusOrder="0" pos="424 0 258 352" sourceFile="../../components/MeterComponent.cpp"
-             constructorParams=""/>
+             constructorParams="p"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA

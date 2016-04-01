@@ -33,7 +33,7 @@ KickAudioProcessorEditor::KickAudioProcessorEditor (KickAudioProcessor& p)
     //[Constructor_pre] You can add your own custom stuff here..
     //[/Constructor_pre]
 
-    addAndMakeVisible (meterComponent = new MeterComponent());
+    addAndMakeVisible (meterComponent = new MeterComponent (p));
 
     //[UserPreSize]
     //[/UserPreSize]
@@ -75,7 +75,7 @@ void KickAudioProcessorEditor::resized()
     //[UserPreResize] Add your own custom resize code here..
     //[/UserPreResize]
 
-    meterComponent->setBounds (getWidth() - 8 - 168, 8, 168, 200);
+    meterComponent->setBounds (getWidth() - 60 - 232, 24, 232, 296);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -106,8 +106,8 @@ BEGIN_JUCER_METADATA
                  fixedSize="0" initialWidth="600" initialHeight="400">
   <BACKGROUND backgroundColour="ffffffff"/>
   <JUCERCOMP name="" id="7a4fb5fd690c0999" memberName="meterComponent" virtualName=""
-             explicitFocusOrder="0" pos="8Rr 8 168 200" sourceFile="../../components/MeterComponent.cpp"
-             constructorParams=""/>
+             explicitFocusOrder="0" pos="60Rr 24 232 296" sourceFile="../../components/MeterComponent.cpp"
+             constructorParams="p"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA

@@ -34,7 +34,7 @@ LimiterAudioProcessorEditor::LimiterAudioProcessorEditor (LimiterAudioProcessor&
     //[Constructor_pre] You can add your own custom stuff here..
     //[/Constructor_pre]
 
-    addAndMakeVisible (meterChild = new MeterComponent());
+    addAndMakeVisible (meterChild = new MeterComponent (p));
     addAndMakeVisible (releaseSlider = new Slider ("releaseSlider"));
     releaseSlider->setTooltip (TRANS("in ms"));
     releaseSlider->setRange (0, 1000, 0);
@@ -104,7 +104,7 @@ LimiterAudioProcessorEditor::LimiterAudioProcessorEditor (LimiterAudioProcessor&
     //[UserPreSize]
     //[/UserPreSize]
 
-    setSize (600, 300);
+    setSize (650, 300);
 
 
     //[Constructor] You can add your own custom stuff here..
@@ -151,7 +151,7 @@ void LimiterAudioProcessorEditor::resized()
     //[UserPreResize] Add your own custom resize code here..
     //[/UserPreResize]
 
-    meterChild->setBounds (424, 0, 200, 304);
+    meterChild->setBounds (424, 0, 232, 304);
     releaseSlider->setBounds (120, 16, 96, 88);
     releaseText->setBounds (128, 107, 79, 24);
     lookaheadSlider->setBounds (16, 16, 96, 88);
@@ -256,11 +256,11 @@ BEGIN_JUCER_METADATA
                  componentName="" parentClasses="public AudioProcessorEditor, public Timer"
                  constructorParams="LimiterAudioProcessor&amp; p" variableInitialisers="AudioProcessorEditor(&amp;p), processor(p)"
                  snapPixels="8" snapActive="1" snapShown="1" overlayOpacity="0.330"
-                 fixedSize="1" initialWidth="600" initialHeight="300">
+                 fixedSize="1" initialWidth="650" initialHeight="300">
   <BACKGROUND backgroundColour="ffffffff"/>
   <JUCERCOMP name="" id="dc979ea1bc23b53c" memberName="meterChild" virtualName=""
-             explicitFocusOrder="0" pos="424 0 200 304" sourceFile="../../components/MeterComponent.cpp"
-             constructorParams=""/>
+             explicitFocusOrder="0" pos="424 0 232 304" sourceFile="../../components/MeterComponent.cpp"
+             constructorParams="p"/>
   <SLIDER name="releaseSlider" id="61df89e44cdfef81" memberName="releaseSlider"
           virtualName="" explicitFocusOrder="0" pos="120 16 96 88" tooltip="in ms"
           min="0" max="1000" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"

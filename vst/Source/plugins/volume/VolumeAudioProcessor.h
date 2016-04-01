@@ -18,8 +18,8 @@ public:
 
 	AudioProcessorEditor* createEditor() override;
 
-	void setVolumeL(FloatParameter volumeL);
-	void setVolumeR(FloatParameter volumeR);
+	void setVolumeL(float volumeL);
+	void setVolumeR(float volumeR);
 	void setStereoCoupling(bool stereoCoupling);
 	void switchStereoCoupling();
 	float getVolumeL();

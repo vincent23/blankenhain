@@ -24,64 +24,66 @@ void PanAudioProcessor::releaseResources()
 void PanAudioProcessor::processBlock(AudioSampleBuffer& buffer, MidiBuffer& midiMessages)
 {
 	this->initializing(buffer);
+  if (!this->getBypass())
+  {
+    for (int i = getNumInputChannels(); i < getNumOutputChannels(); ++i) {
+      buffer.clear(i, 0, buffer.getNumSamples());
+    }
+    // currentPanning: Set by Editor before this buffer iteration
+    // oldPanning: Was Set in Editor after last buffer Iteration
+    // Interpolation from oldPanning to currentPanning
+    // momentaryPanning: Helper Variable, keeps results of current Interpolation iteration during Interpolation
+    float currentPanning, oldPanning, bufferValue, momentaryPanning;
 
-	for (int i = getNumInputChannels(); i < getNumOutputChannels(); ++i) {
-		buffer.clear(i, 0, buffer.getNumSamples());
-	}
-	// currentPanning: Set by Editor before this buffer iteration
-	// oldPanning: Was Set in Editor after last buffer Iteration
-	// Interpolation from oldPanning to currentPanning
-	// momentaryPanning: Helper Variable, keeps results of current Interpolation iteration during Interpolation
-	float currentPanning, oldPanning, bufferValue, momentaryPanning;
+    unsigned int maxInterpolation;
+    currentPanning = panning->getNormalizedValue();
+    oldPanning = panning->getNormalizedOldValue();
+    maxInterpolation = int(buffer.getNumSamples() * panning->getBufferScalingValue());
 
-	unsigned int maxInterpolation;
-	currentPanning = panning->getNormalizedValue();
-	oldPanning = panning->getNormalizedOldValue();
-	maxInterpolation = int(buffer.getNumSamples() * panning->getBufferScalingValue());
+    if (getNumInputChannels() == 1)
+    {
+      for (size_t interpolationIteration = 0; interpolationIteration < maxInterpolation; interpolationIteration++)
+      {
+        bufferValue = buffer.getSample(/*channel*/ 0, interpolationIteration);
+        momentaryPanning = (oldPanning + ((interpolationIteration + 1) * (currentPanning - oldPanning) / maxInterpolation));
+        buffer.setSample(/*channel*/ 0, interpolationIteration, bufferValue * \
+          (1.f - 2 * (std::max(0.5f, momentaryPanning) - 0.5f)));
 
-	if (getNumInputChannels() == 1)
-	{
-		for (size_t interpolationIteration = 0; interpolationIteration < maxInterpolation; interpolationIteration++)
-		{
-			bufferValue = buffer.getSample(/*channel*/ 0, interpolationIteration);
-			momentaryPanning = (oldPanning + ((interpolationIteration + 1) * (currentPanning - oldPanning) / maxInterpolation));
-			buffer.setSample(/*channel*/ 0, interpolationIteration, bufferValue * \
-				(1.f - 2 * (std::max(0.5f, momentaryPanning) - 0.5f)));
+        buffer.setSample(/*channel*/ 1, interpolationIteration, bufferValue * \
+          2 * (std::min(0.5f, momentaryPanning)));
+      }
+      for (size_t bufferIteration = maxInterpolation; bufferIteration < buffer.getNumSamples(); bufferIteration++)
+      {
+        bufferValue = buffer.getSample(/*channel*/ 0, bufferIteration);
+        buffer.setSample(/*channel*/ 0, bufferIteration, bufferValue * (1.f - 2 * (std::max(0.5f, currentPanning) - 0.5f)));
+        buffer.setSample(/*channel*/ 1, bufferIteration, bufferValue * 2 * (std::min(0.5f, currentPanning)));
+      }
+    }
+    else
+    {
+      for (size_t interpolationIteration = 0; interpolationIteration < maxInterpolation; interpolationIteration++)
+      {
+        momentaryPanning = (oldPanning + ((interpolationIteration + 1) * (currentPanning - oldPanning) / maxInterpolation));
 
-			buffer.setSample(/*channel*/ 1, interpolationIteration, bufferValue * \
-				2 * (std::min(0.5f, momentaryPanning)));
-		}
-		for (size_t bufferIteration = maxInterpolation; bufferIteration < buffer.getNumSamples(); bufferIteration++)
-		{
-			bufferValue = buffer.getSample(/*channel*/ 0, bufferIteration);
-			buffer.setSample(/*channel*/ 0, bufferIteration, bufferValue * (1.f - 2 * (std::max(0.5f, currentPanning) - 0.5f)));
-			buffer.setSample(/*channel*/ 1, bufferIteration, bufferValue * 2 * (std::min(0.5f, currentPanning)));
-		}
-	}
-	else
-	{
-		for (size_t interpolationIteration = 0; interpolationIteration < maxInterpolation; interpolationIteration++)
-		{
-			momentaryPanning = (oldPanning + ((interpolationIteration + 1) * (currentPanning - oldPanning) / maxInterpolation));
-
-			bufferValue = buffer.getSample(/*channel*/ 0, interpolationIteration);
-			buffer.setSample(/*channel*/ 0, interpolationIteration, bufferValue * \
-				(1.f - 2 * (std::max(0.5f, momentaryPanning) - 0.5f)));
-			bufferValue = buffer.getSample(/*channel*/ 1, interpolationIteration);
-			buffer.setSample(/*channel*/ 1, interpolationIteration, bufferValue * \
-				2 * (std::min(0.5f, momentaryPanning)));
-		}
-		for (size_t bufferIteration = maxInterpolation; bufferIteration < buffer.getNumSamples(); bufferIteration++)
-		{
-			bufferValue = buffer.getSample(/*channel*/ 0, bufferIteration);
-			buffer.setSample(/*channel*/ 0, bufferIteration, bufferValue * (1.f - 2 * (std::max(0.5f, currentPanning) - 0.5f)));
-			bufferValue = buffer.getSample(/*channel*/ 1, bufferIteration);
-			buffer.setSample(/*channel*/ 1, bufferIteration, bufferValue * 2 * (std::min(0.5f, currentPanning)));
-		}
-	}
-	panning->setOldValue();
-	this->meteringBuffer(buffer);
+        bufferValue = buffer.getSample(/*channel*/ 0, interpolationIteration);
+        buffer.setSample(/*channel*/ 0, interpolationIteration, bufferValue * \
+          (1.f - 2 * (std::max(0.5f, momentaryPanning) - 0.5f)));
+        bufferValue = buffer.getSample(/*channel*/ 1, interpolationIteration);
+        buffer.setSample(/*channel*/ 1, interpolationIteration, bufferValue * \
+          2 * (std::min(0.5f, momentaryPanning)));
+      }
+      for (size_t bufferIteration = maxInterpolation; bufferIteration < buffer.getNumSamples(); bufferIteration++)
+      {
+        bufferValue = buffer.getSample(/*channel*/ 0, bufferIteration);
+        buffer.setSample(/*channel*/ 0, bufferIteration, bufferValue * (1.f - 2 * (std::max(0.5f, currentPanning) - 0.5f)));
+        bufferValue = buffer.getSample(/*channel*/ 1, bufferIteration);
+        buffer.setSample(/*channel*/ 1, bufferIteration, bufferValue * 2 * (std::min(0.5f, currentPanning)));
+      }
+    }
+    panning->setOldValue();
+  }
 	this->finalizing(buffer);
+  this->meteringBuffer(buffer);
 }
 
 AudioProcessorEditor* PanAudioProcessor::createEditor()

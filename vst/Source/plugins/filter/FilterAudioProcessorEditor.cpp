@@ -82,12 +82,12 @@ FilterAudioProcessorEditor::FilterAudioProcessorEditor (FilterAudioProcessor& p)
     label3->setColour (TextEditor::textColourId, Colours::black);
     label3->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
 
-    addAndMakeVisible (meterChild = new MeterComponent());
+    addAndMakeVisible (meterChild = new MeterComponent (p));
 
     //[UserPreSize]
     //[/UserPreSize]
 
-    setSize (670, 300);
+    setSize (720, 300);
 
 
     //[Constructor] You can add your own custom stuff here..
@@ -130,13 +130,13 @@ void FilterAudioProcessorEditor::resized()
     //[UserPreResize] Add your own custom resize code here..
     //[/UserPreResize]
 
-    label->setBounds (proportionOfWidth (0.4179f), proportionOfHeight (0.0000f), proportionOfWidth (0.3224f), proportionOfHeight (1.0000f));
-    filterTypeSelector->setBounds (proportionOfWidth (0.0597f), proportionOfHeight (0.8000f), proportionOfWidth (0.3105f), proportionOfHeight (0.0967f));
+    label->setBounds (proportionOfWidth (0.3889f), proportionOfHeight (0.0533f), proportionOfWidth (0.2889f), proportionOfHeight (0.8933f));
+    filterTypeSelector->setBounds (proportionOfWidth (0.0597f), proportionOfHeight (0.8000f), proportionOfWidth (0.3111f), proportionOfHeight (0.0967f));
     frequencySlider->setBounds (0, 40, 136, 144);
     resonanceSlider->setBounds (144, 40, 128, 144);
     label2->setBounds (136, 192, 151, 28);
     label3->setBounds (-8, 192, 144, 30);
-    meterChild->setBounds (496, 0, 216, 328);
+    meterChild->setBounds (496, 0, 240, 328);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -209,15 +209,15 @@ BEGIN_JUCER_METADATA
                  componentName="" parentClasses="public AudioProcessorEditor, public Timer"
                  constructorParams="FilterAudioProcessor&amp; p" variableInitialisers="AudioProcessorEditor(&amp;p), processor(p)"
                  snapPixels="8" snapActive="1" snapShown="1" overlayOpacity="0.330"
-                 fixedSize="1" initialWidth="670" initialHeight="300">
+                 fixedSize="1" initialWidth="720" initialHeight="300">
   <BACKGROUND backgroundColour="ffffffff"/>
   <LABEL name="new label" id="6f0b03fe092fc1cc" memberName="label" virtualName=""
-         explicitFocusOrder="0" pos="41.791% 0% 32.239% 100%" edTextCol="ff000000"
+         explicitFocusOrder="0" pos="38.889% 5.333% 28.889% 89.333%" edTextCol="ff000000"
          edBkgCol="0" labelText="LFO" editableSingleClick="0" editableDoubleClick="0"
          focusDiscardsChanges="0" fontname="Default font" fontsize="138.30000000000001137"
          bold="0" italic="0" justification="36"/>
   <COMBOBOX name="new combo box" id="1dcc59c629cf3d96" memberName="filterTypeSelector"
-            virtualName="" explicitFocusOrder="0" pos="5.97% 80% 31.045% 9.667%"
+            virtualName="" explicitFocusOrder="0" pos="5.972% 80% 31.111% 9.667%"
             editable="0" layout="33" items="High&#10;Low&#10;Band&#10;Notch"
             textWhenNonSelected="filter type" textWhenNoItems="(no choices)"/>
   <SLIDER name="new slider" id="8ccfb48a68fba8e0" memberName="frequencySlider"
@@ -240,8 +240,8 @@ BEGIN_JUCER_METADATA
          focusDiscardsChanges="0" fontname="Default font" fontsize="15"
          bold="0" italic="0" justification="36"/>
   <JUCERCOMP name="meterChild" id="208786d5f3981845" memberName="meterChild"
-             virtualName="" explicitFocusOrder="0" pos="496 0 216 328" sourceFile="../../components/MeterComponent.cpp"
-             constructorParams=""/>
+             virtualName="" explicitFocusOrder="0" pos="496 0 240 328" sourceFile="../../components/MeterComponent.cpp"
+             constructorParams="p"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA

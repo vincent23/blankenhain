@@ -75,48 +75,39 @@ void LimiterAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer&
 
   this->initializing(buffer);
 
-  for (int i = 0; i < buffer.getNumSamples(); i++) {
-    for (int channel = 0; channel < getNumInputChannels(); channel++)
-    {
-      if (buffer.getSample(channel, i) > 1.f)
-      {
-        float in = buffer.getSample(channel, i);
-        std::cout << in;
-      }
-    }
-  }
-
-	// This is the place where you'd normally do the guts of your plugin's
-	// audio processing...
-	jassert(getNumInputChannels() == 2);
-  if (!bypass->getBoolValue())
+  if (!this->getBypass())
   {
-    float release_ = release->getValue();
-    for (int i = 0; i < buffer.getNumSamples(); i++) {
-      for (int channel = 0; channel < getNumInputChannels(); channel++)
-      {
-        float current = longCircularBuffer->pushpop(buffer.getSample(channel, i) * igain->getValue());
-        float max = longCircularBuffer->getAbsMax() > (current > 0.f ? current : -1.f * current) ? longCircularBuffer->getAbsMax() : (current > 0.f ? current : -1.f * current);
-        float gainReduction = max > 1.f ? 1.f / max : 1.f;
-        shortCircularBuffer1->push(gainReduction);
-        float sCB1_normsum = shortCircularBuffer1->getSum() / shortCircularBuffer1->getSize();
-        shortCircularBuffer2->push(sCB1_normsum);
-        float sCB2_normsum = shortCircularBuffer2->getSum() / shortCircularBuffer2->getSize();
-        if (sCB2_normsum > gainReduction * release_ / 500.f)
+    // This is the place where you'd normally do the guts of your plugin's
+    // audio processing...
+    jassert(getNumInputChannels() == 2);
+    if (!bypass->getBoolValue())
+    {
+      float release_ = release->getValue();
+      for (int i = 0; i < buffer.getNumSamples(); i++) {
+        for (int channel = 0; channel < getNumInputChannels(); channel++)
         {
-          gainReduction = sCB2_normsum;
+          float current = longCircularBuffer->pushpop(buffer.getSample(channel, i) * igain->getValue());
+          float max = longCircularBuffer->getAbsMax() > (current > 0.f ? current : -1.f * current) ? longCircularBuffer->getAbsMax() : (current > 0.f ? current : -1.f * current);
+          float gainReduction = max > 1.f ? 1.f / max : 1.f;
+          shortCircularBuffer1->push(gainReduction);
+          float sCB1_normsum = shortCircularBuffer1->getSum() / shortCircularBuffer1->getSize();
+          shortCircularBuffer2->push(sCB1_normsum);
+          float sCB2_normsum = shortCircularBuffer2->getSum() / shortCircularBuffer2->getSize();
+          if (sCB2_normsum > gainReduction * release_ / 500.f)
+          {
+            gainReduction = sCB2_normsum;
+          }
+          float ogainnow = ogain->getValue();
+          float olducrrent = current;
+          if (suggestedOgain > 1.f / std::abs(current * gainReduction)) suggestedOgain = 1.f / std::abs(current * gainReduction);
+          current *= ogain->getValue();
+          buffer.setSample(channel, i, current * gainReduction);
         }
-        float ogainnow = ogain->getValue();
-        float olducrrent = current;
-        if (suggestedOgain > 1.f / std::abs(current * gainReduction)) suggestedOgain = 1.f / std::abs(current * gainReduction);
-        current *= ogain->getValue();
-        buffer.setSample(channel, i, current * gainReduction);
       }
     }
   }
-
-  this->meteringBuffer(buffer);
   this->finalizing(buffer);
+  this->meteringBuffer(buffer);
 }
 
 AudioProcessorEditor* LimiterAudioProcessor::createEditor()

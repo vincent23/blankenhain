@@ -28,26 +28,27 @@ void FilterAudioProcessor::releaseResources()
 void FilterAudioProcessor::processBlock(AudioSampleBuffer& buffer, MidiBuffer& midiMessages)
 {
 	this->initializing(buffer);
-
-	processBlockwise<FilterConstants::blockSize>(buffer, internalBuffer, [this](size_t samples, size_t offset) {
-		switch (filterType) {
-		case High:
-			filter->processHigh(internalBuffer, samples, getFrequency(), getResonance());
-			break;
-		case Low:
-			filter->processLow(internalBuffer, samples, getFrequency(), getResonance());
-			break;
-		case Band:
-			filter->processBand(internalBuffer, samples, getFrequency(), getResonance());
-			break;
-		case Notch:
-			filter->processNotch(internalBuffer, samples, getFrequency(), getResonance());
-			break;
-		}
-	});
-
+  if (!this->getBypass())
+  {
+    processBlockwise<FilterConstants::blockSize>(buffer, internalBuffer, [this](size_t samples, size_t offset) {
+      switch (filterType) {
+      case High:
+        filter->processHigh(internalBuffer, samples, getFrequency(), getResonance());
+        break;
+      case Low:
+        filter->processLow(internalBuffer, samples, getFrequency(), getResonance());
+        break;
+      case Band:
+        filter->processBand(internalBuffer, samples, getFrequency(), getResonance());
+        break;
+      case Notch:
+        filter->processNotch(internalBuffer, samples, getFrequency(), getResonance());
+        break;
+      }
+    });
+  }
+  this->finalizing(buffer);
 	this->meteringBuffer(buffer);
-	this->finalizing(buffer);
 }
 
 AudioProcessorEditor* FilterAudioProcessor::createEditor()

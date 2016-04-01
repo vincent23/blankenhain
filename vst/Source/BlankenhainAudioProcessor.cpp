@@ -153,10 +153,13 @@ void BlankenhainAudioProcessor::initializing(AudioSampleBuffer& buffer)
 		buffer.clear(i, 0, buffer.getNumSamples());
 	}
   // Ingain
-  for (int i = 0; i < buffer.getNumSamples(); i++) {
-    for (int channel = 0; channel < getNumInputChannels(); channel++) {
-      float* channelData = buffer.getWritePointer(channel);
-      channelData[i] *= aux::decibelToLinear(this->getIngain());
+  if (!this->getBypass())
+  {
+    for (int i = 0; i < buffer.getNumSamples(); i++) {
+      for (int channel = 0; channel < getNumInputChannels(); channel++) {
+        float* channelData = buffer.getWritePointer(channel);
+        channelData[i] *= aux::decibelToLinear(this->getIngain());
+      }
     }
   }
 }
@@ -164,10 +167,13 @@ void BlankenhainAudioProcessor::initializing(AudioSampleBuffer& buffer)
 void BlankenhainAudioProcessor::finalizing(AudioSampleBuffer& buffer)
 {
   // Outgain
-  for (int i = 0; i < buffer.getNumSamples(); i++) {
-    for (int channel = 0; channel < getNumInputChannels(); channel++) {
-      float* channelData = buffer.getWritePointer(channel);
-      channelData[i] *= aux::decibelToLinear(this->getOutgain());
+  if (!this->getBypass())
+  {
+    for (int i = 0; i < buffer.getNumSamples(); i++) {
+      for (int channel = 0; channel < getNumInputChannels(); channel++) {
+        float* channelData = buffer.getWritePointer(channel);
+        channelData[i] *= aux::decibelToLinear(this->getOutgain());
+      }
     }
   }
 }

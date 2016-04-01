@@ -32,50 +32,52 @@ void BitcrushAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer
 	for (int i = getNumInputChannels(); i < getNumOutputChannels(); ++i) {
 		buffer.clear(i, 0, buffer.getNumSamples());
 	}
+  if (!this->getBypass())
+  {
+    float crush = bitcrush->getValue();
+    float wet_ = wet->getValue();
+    int groupedSamples = std::max(1.f, downsample->getValue() * 100);
+    float bitdepth = 12. * (1. - crush) + 1. * crush;
+    int steps = exp2(bitdepth);
 
-	float crush = bitcrush->getValue();
-	float wet_ = wet->getValue();
-	int groupedSamples = std::max(1.f, downsample->getValue() * 100);
-	float bitdepth = 12. * (1. - crush) + 1. * crush;
-	int steps = exp2(bitdepth);
+    // This is the place where you'd normally do the guts of your plugin's
+    // audio processing...
+    for (int channel = 0; channel < getNumInputChannels(); channel++)
+    {
+      for (int sample = 0; sample < buffer.getNumSamples() - groupedSamples; sample += groupedSamples) {
+        float averagedSample = 0.;
+        for (int i = 0; i < groupedSamples; i++) {
+          averagedSample += buffer.getSample(channel, i + sample) / groupedSamples;
+        }
 
-	// This is the place where you'd normally do the guts of your plugin's
-	// audio processing...
-	for (int channel = 0; channel < getNumInputChannels(); channel++) 
-	{
-		for (int sample = 0; sample < buffer.getNumSamples() - groupedSamples; sample += groupedSamples) {
-			float averagedSample = 0.;
-			for (int i = 0; i < groupedSamples; i++) {
-				averagedSample += buffer.getSample(channel, i + sample) / groupedSamples;
-			}
+        int discretizedSample = averagedSample * steps;
+        float crushed = float(discretizedSample) / steps;
 
-			int discretizedSample = averagedSample * steps;
-			float crushed = float(discretizedSample) / steps;
+        for (int i = 0; i < groupedSamples; i++) {
+          float sampleValue = buffer.getSample(channel, i + sample);
+          buffer.setSample(channel, i + sample, sampleValue * (1. - wet_) + crushed * wet_);
+        }
+      }
 
-			for (int i = 0; i < groupedSamples; i++) {
-				float sampleValue = buffer.getSample(channel, i + sample);
-				buffer.setSample(channel, i + sample, sampleValue * (1. - wet_) + crushed * wet_);
-			}
-		}
+      float averagedSample = 0.;
+      for (int i = (buffer.getNumSamples() / groupedSamples) * groupedSamples; i < buffer.getNumSamples(); i++) {
+        averagedSample += buffer.getSample(channel, i) / (buffer.getNumSamples() % groupedSamples);
+      }
 
-		float averagedSample = 0.;
-		for (int i = (buffer.getNumSamples() / groupedSamples) * groupedSamples; i < buffer.getNumSamples(); i++) {
-			averagedSample += buffer.getSample(channel, i) / (buffer.getNumSamples() % groupedSamples);
-		}
+      float bitdepth = 12. * (1. - crush) + 1. * crush;
+      int steps = exp2(bitdepth);
+      int discretizedSample = averagedSample * steps;
+      float crushed = float(discretizedSample) / steps;
 
-		float bitdepth = 12. * (1. - crush) + 1. * crush;
-		int steps = exp2(bitdepth);
-		int discretizedSample = averagedSample * steps;
-		float crushed = float(discretizedSample) / steps;
-
-		for (int i = (buffer.getNumSamples() / groupedSamples) * groupedSamples; i < buffer.getNumSamples(); i++) {
-			float sampleValue = buffer.getSample(channel, i);
-			buffer.setSample(channel, i, sampleValue * (1. - wet_) + crushed * wet_);
-		}
-	}
-
+      for (int i = (buffer.getNumSamples() / groupedSamples) * groupedSamples; i < buffer.getNumSamples(); i++) {
+        float sampleValue = buffer.getSample(channel, i);
+        buffer.setSample(channel, i, sampleValue * (1. - wet_) + crushed * wet_);
+      }
+    }
+  }
+  this->finalizing(buffer);
 	this->meteringBuffer(buffer);
-	this->finalizing(buffer);
+
 }
 
 AudioProcessorEditor* BitcrushAudioProcessor::createEditor()

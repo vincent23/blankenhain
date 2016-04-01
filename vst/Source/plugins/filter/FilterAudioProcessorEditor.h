@@ -51,10 +51,10 @@ public:
 	void timerCallback() override;
     //[/UserMethods]
 
-    void paint (Graphics& g) override;
-    void resized() override;
-    void comboBoxChanged (ComboBox* comboBoxThatHasChanged) override;
-    void sliderValueChanged (Slider* sliderThatWasMoved) override;
+    void paint (Graphics& g);
+    void resized();
+    void comboBoxChanged (ComboBox* comboBoxThatHasChanged);
+    void sliderValueChanged (Slider* sliderThatWasMoved);
 
 
 

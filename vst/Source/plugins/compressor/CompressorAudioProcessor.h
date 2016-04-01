@@ -16,11 +16,11 @@ public:
 
     AudioProcessorEditor* createEditor() override;
 
-    void setRatio(FloatParameter ratio);
-    void setThreshold(FloatParameter threshold);
-    void setAttack(FloatParameter attack);
-    void setRelease(FloatParameter release);
-    void setPostgain(FloatParameter postgain);
+    void setRatio(float ratio);
+    void setThreshold(float threshold);
+    void setAttack(float attack);
+    void setRelease(float release);
+    void setPostgain(float postgain);
 
     float getRatio();
     float getRelease();

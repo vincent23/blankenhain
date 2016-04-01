@@ -7,7 +7,7 @@
   the "//[xyz]" and "//[/xyz]" sections will be retained when the file is loaded
   and re-saved.
 
-  Created with Introjucer version: 4.0.1
+  Created with Introjucer version: 4.1.0
 
   ------------------------------------------------------------------------------
 
@@ -75,12 +75,12 @@ VolumeAudioProcessorEditor::VolumeAudioProcessorEditor (VolumeAudioProcessor& p)
     label2->setColour (TextEditor::textColourId, Colours::black);
     label2->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
 
-    addAndMakeVisible (meterChild = new MeterComponent());
+    addAndMakeVisible (meterChild = new MeterComponent (p));
 
     //[UserPreSize]
     //[/UserPreSize]
 
-    setSize (370, 300);
+    setSize (420, 300);
 
 
     //[Constructor] You can add your own custom stuff here..
@@ -128,7 +128,7 @@ void VolumeAudioProcessorEditor::resized()
     stereoCouplingButton->setBounds (40, 264, 160, 30);
     label->setBounds (0, 240, 100, 20);
     label2->setBounds (96, 240, 100, 20);
-    meterChild->setBounds (200, 0, 176, 304);
+    meterChild->setBounds (200, 0, 224, 304);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -217,7 +217,7 @@ BEGIN_JUCER_METADATA
                  componentName="" parentClasses="public AudioProcessorEditor, public Timer"
                  constructorParams="VolumeAudioProcessor&amp; p" variableInitialisers="AudioProcessorEditor(&amp;p), processor(p)"
                  snapPixels="8" snapActive="1" snapShown="1" overlayOpacity="0.330"
-                 fixedSize="1" initialWidth="370" initialHeight="300">
+                 fixedSize="1" initialWidth="420" initialHeight="300">
   <BACKGROUND backgroundColour="ffffffff"/>
   <SLIDER name="volumeRSlider" id="cdb02c40117b4d0c" memberName="volumeRSlider"
           virtualName="" explicitFocusOrder="0" pos="100 0 100 232" tooltip="controls right channel volume"
@@ -244,8 +244,8 @@ BEGIN_JUCER_METADATA
          editableDoubleClick="0" focusDiscardsChanges="0" fontname="Arial"
          fontsize="15" bold="0" italic="0" justification="36"/>
   <JUCERCOMP name="meterChild" id="bafad9d58caaf2d5" memberName="meterChild"
-             virtualName="" explicitFocusOrder="0" pos="200 0 176 304" sourceFile="../../components/MeterComponent.cpp"
-             constructorParams=""/>
+             virtualName="" explicitFocusOrder="0" pos="200 0 224 304" sourceFile="../../components/MeterComponent.cpp"
+             constructorParams="p"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA

@@ -28,76 +28,78 @@ void VolumeAudioProcessor::releaseResources()
 void VolumeAudioProcessor::processBlock(AudioSampleBuffer& buffer, MidiBuffer& midiMessages)
 {
 	this->initializing(buffer);
+  if (!this->getBypass())
+  {
+    float currentVolumeL, currentVolumeR, bufferValue, oldVolumeL, oldVolumeR;
+    unsigned int maxInterpolation;
 
-	float currentVolumeL, currentVolumeR, bufferValue, oldVolumeL, oldVolumeR;
-	unsigned int maxInterpolation;
+    if (stereoCoupling->getBoolValue())
+    {
+      currentVolumeL = aux::decibelToLinear(volumeL->getValue());
+      oldVolumeL = aux::decibelToLinear(volumeL->getOldValue());
+      maxInterpolation = int(buffer.getNumSamples() * volumeL->getBufferScalingValue());
+      for (size_t interpolationIteration = 0; interpolationIteration < maxInterpolation; interpolationIteration++)
+      {
+        bufferValue = buffer.getSample(/*channel*/ 0, interpolationIteration);
 
-	if (stereoCoupling->getBoolValue()) 
-	{
-		currentVolumeL = pow(10.f, (volumeL->getValue()) / 10.f);
-		oldVolumeL = pow(10.f, (volumeL->getOldValue()) / 10.f);
-		maxInterpolation = int(buffer.getNumSamples() * volumeL->getBufferScalingValue());
-		for (size_t interpolationIteration = 0; interpolationIteration < maxInterpolation; interpolationIteration++)
-		{
-			bufferValue = buffer.getSample(/*channel*/ 0, interpolationIteration);
+        buffer.setSample(/*channel*/ 0, interpolationIteration, bufferValue * \
+          (oldVolumeL + ((interpolationIteration + 1) * (currentVolumeL - oldVolumeL) \
+            / maxInterpolation)));
 
-			buffer.setSample(/*channel*/ 0, interpolationIteration, bufferValue * \
-			(oldVolumeL + ((interpolationIteration + 1) * (currentVolumeL - oldVolumeL) \
-			/ maxInterpolation)));
+        bufferValue = buffer.getSample(/*channel*/ 1, interpolationIteration);
 
-			bufferValue = buffer.getSample(/*channel*/ 1, interpolationIteration);
+        buffer.setSample(/*channel*/ 1, interpolationIteration, bufferValue * \
+          (oldVolumeL + ((interpolationIteration + 1) * (currentVolumeL - oldVolumeL) \
+            / maxInterpolation)));
 
-			buffer.setSample(/*channel*/ 1, interpolationIteration, bufferValue * \
-			(oldVolumeL + ((interpolationIteration + 1) * (currentVolumeL - oldVolumeL) \
-			/ maxInterpolation)));
+      }
+      for (size_t bufferIteration = maxInterpolation; bufferIteration < buffer.getNumSamples(); bufferIteration++)
+      {
+        bufferValue = buffer.getSample(/*channel*/ 0, bufferIteration);
+        buffer.setSample(/*channel*/ 0, bufferIteration, bufferValue * currentVolumeL);
+        bufferValue = buffer.getSample(/*channel*/ 1, bufferIteration);
+        buffer.setSample(/*channel*/ 1, bufferIteration, bufferValue * currentVolumeL);
 
-		}
-		for (size_t bufferIteration = maxInterpolation; bufferIteration < buffer.getNumSamples(); bufferIteration++)
-		{
-			bufferValue = buffer.getSample(/*channel*/ 0, bufferIteration);
-			buffer.setSample(/*channel*/ 0, bufferIteration, bufferValue * currentVolumeL);
-			bufferValue = buffer.getSample(/*channel*/ 1, bufferIteration);
-			buffer.setSample(/*channel*/ 1, bufferIteration, bufferValue * currentVolumeL);
+      }
+    }
+    else
+    {
+      currentVolumeR = aux::decibelToLinear(volumeR->getValue());
+      currentVolumeL = aux::decibelToLinear(volumeL->getValue());
+      oldVolumeL = aux::decibelToLinear(volumeL->getOldValue());
+      oldVolumeR = aux::decibelToLinear(volumeR->getOldValue());
+      maxInterpolation = int(buffer.getNumSamples() * volumeL->getBufferScalingValue());
+      for (size_t interpolationIteration = 0; interpolationIteration < maxInterpolation; interpolationIteration++)
+      {
+        bufferValue = buffer.getSample(/*channel*/ 0, interpolationIteration);
 
-		}
-	}
-	else
-	{
-		currentVolumeR = pow(10.f, volumeR->getValue() / 10.f);
-		currentVolumeL = pow(10.f, volumeL->getValue() / 10.f);
-		oldVolumeL = pow(10.f, volumeL->getOldValue() / 10.f);
-		oldVolumeR = pow(10.f, volumeR->getOldValue() / 10.f);
-		maxInterpolation = int(buffer.getNumSamples() * volumeL->getBufferScalingValue());
-		for (size_t interpolationIteration = 0; interpolationIteration < maxInterpolation; interpolationIteration++)
-		{
-			bufferValue = buffer.getSample(/*channel*/ 0, interpolationIteration);
+        buffer.setSample(/*channel*/ 0, interpolationIteration, bufferValue * \
+          (oldVolumeL + ((interpolationIteration + 1) * (currentVolumeL - oldVolumeL) \
+            / maxInterpolation)));
 
-			buffer.setSample(/*channel*/ 0, interpolationIteration, bufferValue * \
-			(oldVolumeL + ((interpolationIteration + 1) * (currentVolumeL - oldVolumeL) \
-			/ maxInterpolation)));
+        bufferValue = buffer.getSample(/*channel*/ 1, interpolationIteration);
 
-			bufferValue = buffer.getSample(/*channel*/ 1, interpolationIteration);
-
-			buffer.setSample(/*channel*/ 1, interpolationIteration, bufferValue * \
-			(oldVolumeR + ((interpolationIteration + 1) * (currentVolumeR - oldVolumeR) \
-			/ maxInterpolation )));
+        buffer.setSample(/*channel*/ 1, interpolationIteration, bufferValue * \
+          (oldVolumeR + ((interpolationIteration + 1) * (currentVolumeR - oldVolumeR) \
+            / maxInterpolation)));
 
 
-		}
-		for (size_t bufferIteration = maxInterpolation; bufferIteration < buffer.getNumSamples(); bufferIteration++)
-		{
-			bufferValue = buffer.getSample(/*channel*/ 0, bufferIteration);
-			buffer.setSample(/*channel*/ 0, bufferIteration, bufferValue * currentVolumeL);
-			bufferValue = buffer.getSample(/*channel*/ 1, bufferIteration);
-			buffer.setSample(/*channel*/ 1, bufferIteration, bufferValue * currentVolumeR);
-		}
-	}
-	//Set current values as old values for interpolation in next buffer iteration
-	volumeL->setOldValue(volumeL->getValue());
-	volumeR->setOldValue(volumeR->getValue());
-
+      }
+      for (size_t bufferIteration = maxInterpolation; bufferIteration < buffer.getNumSamples(); bufferIteration++)
+      {
+        bufferValue = buffer.getSample(/*channel*/ 0, bufferIteration);
+        buffer.setSample(/*channel*/ 0, bufferIteration, bufferValue * currentVolumeL);
+        bufferValue = buffer.getSample(/*channel*/ 1, bufferIteration);
+        buffer.setSample(/*channel*/ 1, bufferIteration, bufferValue * currentVolumeR);
+      }
+    }
+    //Set current values as old values for interpolation in next buffer iteration
+    volumeL->setOldValue(volumeL->getValue());
+    volumeR->setOldValue(volumeR->getValue());
+  }
+  this->finalizing(buffer);
 	this->meteringBuffer(buffer);
-	this->finalizing(buffer);
+
 }
 
 AudioProcessorEditor* VolumeAudioProcessor::createEditor()
@@ -105,13 +107,13 @@ AudioProcessorEditor* VolumeAudioProcessor::createEditor()
 	return new VolumeAudioProcessorEditor(*this);
 }
 
-void VolumeAudioProcessor::setVolumeL(FloatParameter newVolumeL) {
-	volumeL->setValueNotifyingHost(newVolumeL.getNormalizedValue());
+void VolumeAudioProcessor::setVolumeL(float newVolumeL) {
+	volumeL->setValueNotifyingHost(newVolumeL);
 }
 
-void VolumeAudioProcessor::setVolumeR(FloatParameter newVolumeR) 
+void VolumeAudioProcessor::setVolumeR(float newVolumeR)
 {
-	volumeR->setValueNotifyingHost(newVolumeR.getNormalizedValue());
+	volumeR->setValueNotifyingHost(newVolumeR);
 }
 
 void VolumeAudioProcessor::setStereoCoupling(bool newStereoCoupling) {
