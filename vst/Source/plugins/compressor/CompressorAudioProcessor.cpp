@@ -46,8 +46,8 @@ void CompressorAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuff
 	// This is the place where you'd normally do the guts of your plugin's
 	// audio processing...
 	jassert(getNumInputChannels() == 2);
-	float attack_ = attack->getValue();
-	float release_ = release->getValue();
+	float attack_ = attack->getValue() / 1000.f;
+	float release_ = release->getValue() / 1000.f;
 	float attackGain = exp(-1/(attack_ * 44100));
 	float releaseGain = exp(-1 / (release_ * 44100));
 	float threshold_ = threshold->getValue();
@@ -67,11 +67,11 @@ void CompressorAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuff
 		float envelopeValue = std::max(envelope[0], envelope[1]);
 		for (int channel = 0; channel < getNumInputChannels(); channel++) {
 			float* channelData = buffer.getWritePointer(channel);
-			float input = channelData[i];
+			float input = envelopeValue;
 			float inputDb = 20 * log10(abs(input));
 			float gainDb = std::min(0.f, slope * (threshold_ - inputDb));
 			channelData[i] *= pow(10.f, gainDb / 20.f);
-      channelData[i] *= pow(10.f, postgain->getValue() / 10.f);
+			channelData[i] *= pow(10.f, postgain->getValue() / 10.f);
 		}
 	}
 
