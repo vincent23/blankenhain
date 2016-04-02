@@ -10,6 +10,7 @@
 #include "plugins/compressor/CompressorAudioProcessor.h"
 #include "plugins/limiter/LimiterAudioProcessor.h"
 #include "plugins/equalizer/EqualizerAudioProcessor.h"
+#include "plugins/delay/DelayAudioProcessor.h"
 
 // this creates the correct plugin based on preprocessor flags
 AudioProcessor* JUCE_CALLTYPE createPluginFilter()
@@ -35,6 +36,8 @@ AudioProcessor* JUCE_CALLTYPE createPluginFilter()
   return new LimiterAudioProcessor();
 #elif PLUGIN_EQUALIZER
   return new EqualizerAudioProcessor();
+#elif PLUGIN_DELAY
+  return new DelayAudioProcessor();
 #else
 	static_assert(false, "The build config of your plugin is broken. "
 		"Please see README for instructions on how to add new plugins.");
