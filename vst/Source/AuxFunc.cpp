@@ -36,4 +36,14 @@ namespace aux
 
     return linear;
   }
+
+  float millisecToSamples(float millisec, float samplerate)
+  {
+    return (millisec / 1000.f) * samplerate;
+  }
+
+  float samplesToMillisec(float samples, float samplerate)
+  {
+    return (samples / samplerate) * 1000.f;
+  }
 }
