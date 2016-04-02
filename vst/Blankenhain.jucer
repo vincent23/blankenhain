@@ -42,17 +42,25 @@
               resource="0" file="Source/components/WaveVerschwurbelungComponent.h"/>
       </GROUP>
       <GROUP id="{19EF4637-6B84-4B6A-69FF-029D7E3D590C}" name="plugins">
+        <GROUP id="{6F861561-BCD1-987F-F4EF-F948FF59D028}" name="delay">
+          <FILE id="X6yOq4" name="DelayAudioProcessor.cpp" compile="1" resource="0"
+                file="Source/plugins/delay/DelayAudioProcessor.cpp"/>
+          <FILE id="QhNT7A" name="DelayAudioProcessor.h" compile="0" resource="0"
+                file="Source/plugins/delay/DelayAudioProcessor.h"/>
+          <FILE id="wFttWn" name="DelayAudioProcessorEditor.cpp" compile="1"
+                resource="0" file="Source/plugins/delay/DelayAudioProcessorEditor.cpp"/>
+          <FILE id="ugopoj" name="DelayAudioProcessorEditor.h" compile="0" resource="0"
+                file="Source/plugins/delay/DelayAudioProcessorEditor.h"/>
+        </GROUP>
         <GROUP id="{6D0A0EA8-BA66-D40E-EC41-1ACB85D5C21F}" name="limiter">
-          <GROUP id="{3430D743-C96C-0DD4-9555-F9DA9EF8BACD}" name="limiter">
-            <FILE id="fEvKHM" name="LimiterAudioProcessor.cpp" compile="1" resource="0"
-                  file="Source/plugins/limiter/LimiterAudioProcessor.cpp"/>
-            <FILE id="ssg4ab" name="LimiterAudioProcessor.h" compile="0" resource="0"
-                  file="Source/plugins/limiter/LimiterAudioProcessor.h"/>
-            <FILE id="DYbZJy" name="LimiterAudioProcessorEditor.cpp" compile="1"
-                  resource="0" file="Source/plugins/limiter/LimiterAudioProcessorEditor.cpp"/>
-            <FILE id="pyBZM4" name="LimiterAudioProcessorEditor.h" compile="0"
-                  resource="0" file="Source/plugins/limiter/LimiterAudioProcessorEditor.h"/>
-          </GROUP>
+          <FILE id="fEvKHM" name="LimiterAudioProcessor.cpp" compile="1" resource="0"
+                file="Source/plugins/limiter/LimiterAudioProcessor.cpp"/>
+          <FILE id="ssg4ab" name="LimiterAudioProcessor.h" compile="0" resource="0"
+                file="Source/plugins/limiter/LimiterAudioProcessor.h"/>
+          <FILE id="DYbZJy" name="LimiterAudioProcessorEditor.cpp" compile="1"
+                resource="0" file="Source/plugins/limiter/LimiterAudioProcessorEditor.cpp"/>
+          <FILE id="pyBZM4" name="LimiterAudioProcessorEditor.h" compile="0"
+                resource="0" file="Source/plugins/limiter/LimiterAudioProcessorEditor.h"/>
         </GROUP>
         <GROUP id="{E0E72F6E-D0B3-5F73-56CB-98A77B644419}" name="bitcrush">
           <FILE id="CkmpdB" name="BitcrushAudioProcessorEditor.h" compile="0"
@@ -440,6 +448,29 @@
       <CONFIGURATIONS>
         <CONFIGURATION name="Debug" winWarningLevel="4" generateManifest="1" winArchitecture="32-bit"
                        isDebug="1" optimisation="1" targetName="bh_equalizer" binaryPath="..\builtPlugins"/>
+        <CONFIGURATION name="Release" winWarningLevel="4" generateManifest="1" winArchitecture="32-bit"
+                       isDebug="0" optimisation="3" targetName="Blankenhain"/>
+      </CONFIGURATIONS>
+      <MODULEPATHS>
+        <MODULEPATH id="synth" path="../../blankenhain"/>
+        <MODULEPATH id="juce_gui_extra" path="juce_modules"/>
+        <MODULEPATH id="juce_gui_basics" path="juce_modules"/>
+        <MODULEPATH id="juce_graphics" path="juce_modules"/>
+        <MODULEPATH id="juce_events" path="juce_modules"/>
+        <MODULEPATH id="juce_data_structures" path="juce_modules"/>
+        <MODULEPATH id="juce_core" path="juce_modules"/>
+        <MODULEPATH id="juce_audio_processors" path="juce_modules"/>
+        <MODULEPATH id="juce_audio_plugin_client" path="juce_modules"/>
+        <MODULEPATH id="juce_audio_formats" path="juce_modules"/>
+        <MODULEPATH id="juce_audio_devices" path="juce_modules"/>
+        <MODULEPATH id="juce_audio_basics" path="juce_modules"/>
+      </MODULEPATHS>
+    </VS2015>
+    <VS2015 targetFolder="Builds/Delay/VisualStudio2015" vstFolder="" extraDefs="PLUGIN_DELAY&#10;JucePlugin_Name=&quot;Blankenhain\ Dlay&quot;&#10;JucePlugin_Desc=&quot;Delay&quot;&#10;JucePlugin_PluginCode='BhDL'&#10;BLANKENHAIN_CHECKS"
+            extraCompilerFlags="/I..\..\..\Source">
+      <CONFIGURATIONS>
+        <CONFIGURATION name="Debug" winWarningLevel="4" generateManifest="1" winArchitecture="32-bit"
+                       isDebug="1" optimisation="1" targetName="bh_delay" binaryPath="..\builtPlugins"/>
         <CONFIGURATION name="Release" winWarningLevel="4" generateManifest="1" winArchitecture="32-bit"
                        isDebug="0" optimisation="3" targetName="Blankenhain"/>
       </CONFIGURATIONS>

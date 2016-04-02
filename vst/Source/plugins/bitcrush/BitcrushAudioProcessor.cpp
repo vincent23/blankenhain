@@ -5,9 +5,9 @@
 
 BitcrushAudioProcessor::BitcrushAudioProcessor()
 {
-	bitcrush = new FloatParameter(.5, "Bitcrush");
-	downsample = new FloatParameter(.0, "Downsample");
-	wet = new FloatParameter(1., "Dry/Wet");
+	bitcrush = new FloatParameter(.5, "Bitcrush", 1.f, NormalizedRange());
+	downsample = new FloatParameter(.0, "Downsample", 1.f, NormalizedRange());
+	wet = new FloatParameter(1., "Dry/Wet", 1.f, NormalizedRange());
 	addParameter(bitcrush);
 	addParameter(downsample);
 	addParameter(wet);
@@ -34,9 +34,9 @@ void BitcrushAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer
 	}
   if (!this->getBypass())
   {
-    float crush = bitcrush->getValue();
-    float wet_ = wet->getValue();
-    int groupedSamples = std::max(1.f, downsample->getValue() * 100);
+    float crush = bitcrush->getUnnormalizedValue();
+    float wet_ = wet->getUnnormalizedValue();
+    int groupedSamples = std::max(1.f, downsample->getUnnormalizedValue() * 100);
     float bitdepth = 12. * (1. - crush) + 1. * crush;
     int steps = exp2(bitdepth);
 
@@ -101,34 +101,40 @@ void BitcrushAudioProcessor::setState(const var & state)
 	wet->setValue(state.getProperty("wet", wet->getDefaultValue()));
 }
 
-void BitcrushAudioProcessor::setBitcrush(float bitcrush_)
+void BitcrushAudioProcessor::setBitcrush(float value)
 {
-	bitcrush->setValueNotifyingHost(bitcrush_);
+  bitcrush->beginChangeGesture();
+  bitcrush->setUnnormalizedValue(value);
+  bitcrush->endChangeGesture();
 }
 
-void BitcrushAudioProcessor::setDownsample(float downsample_)
+void BitcrushAudioProcessor::setDownsample(float value)
 {
-	downsample->setValueNotifyingHost(downsample_);
+  downsample->beginChangeGesture();
+  downsample->setUnnormalizedValue(value);
+  downsample->endChangeGesture();
 }
 
-void BitcrushAudioProcessor::setWet(float wet_)
+void BitcrushAudioProcessor::setWet(float value)
 {
-	wet->setValueNotifyingHost(wet_);
+  wet->beginChangeGesture();
+  wet->setUnnormalizedValue(value);
+  wet->endChangeGesture();
 }
 
 float BitcrushAudioProcessor::getBitcrush() const
 {
-	return bitcrush->getValue();
+	return bitcrush->getUnnormalizedValue();
 }
 
 float BitcrushAudioProcessor::getDownsample() const
 {
-	return downsample->getValue();
+	return downsample->getUnnormalizedValue();
 }
 
 float BitcrushAudioProcessor::getWet() const
 {
-	return wet->getValue();
+	return wet->getUnnormalizedValue();
 }
 
 #endif

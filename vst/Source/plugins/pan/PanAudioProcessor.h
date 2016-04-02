@@ -17,7 +17,7 @@ public:
 
 	AudioProcessorEditor* createEditor() override;
 
-	void setPanning(FloatParameter);
+	void setPanning(float);
 	float getPanning();
 
 protected:

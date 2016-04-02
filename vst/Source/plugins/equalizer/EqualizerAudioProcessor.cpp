@@ -48,14 +48,14 @@ void EqualizerAudioProcessor::processBlock(AudioSampleBuffer& buffer, MidiBuffer
   this->initializing(buffer);
   if (!this->getBypass())
   {
-    double lowfreq = lowFreq->getValue();
-    double highfreq = highFreq->getValue();
+    double lowfreq = lowFreq->getUnnormalizedValue();
+    double highfreq = highFreq->getUnnormalizedValue();
     double mixfreq = 44100;
     es->lf = 2 * sin(3.14159265359 * ((double)lowfreq / (double)mixfreq));
     es->hf = 2 * sin(3.14159265359 * ((double)highfreq / (double)mixfreq));
-    es->lg = aux::decibelToLinear(low->getValue());
-    es->mg = aux::decibelToLinear(mid->getValue());
-    es->hg = aux::decibelToLinear(high->getValue());
+    es->lg = aux::decibelToLinear(low->getUnnormalizedValue());
+    es->mg = aux::decibelToLinear(mid->getUnnormalizedValue());
+    es->hg = aux::decibelToLinear(high->getUnnormalizedValue());
 
     for (int i = 0; i < buffer.getNumSamples(); i++)
     {
@@ -160,52 +160,62 @@ void EqualizerAudioProcessor::setState(const var & state)
 
 void EqualizerAudioProcessor::setLow(float value)
 {
-  low->setValue(value);
+  low->beginChangeGesture();
+  low->setUnnormalizedValue(value);
+  low->endChangeGesture();
 }
 
 void EqualizerAudioProcessor::setMid(float value)
 {
-  mid->setValue(value);
+  mid->beginChangeGesture();
+  mid->setUnnormalizedValue(value);
+  mid->endChangeGesture();
 }
 
 void EqualizerAudioProcessor::setHigh(float value)
 {
-  high->setValue(value);
+  high->beginChangeGesture();
+  high->setUnnormalizedValue(value);
+  high->endChangeGesture();
 }
 
 void EqualizerAudioProcessor::setLowFreq(float value)
 {
-  lowFreq->setValue(value);
+  lowFreq->beginChangeGesture();
+  lowFreq->setUnnormalizedValue(value);
+  lowFreq->endChangeGesture();
 }
 
 void EqualizerAudioProcessor::setHighFreq(float value)
 {
-  highFreq->setValue(value);
+  highFreq->beginChangeGesture();
+  highFreq->setUnnormalizedValue(value);
+  highFreq->endChangeGesture();
 }
 
 float EqualizerAudioProcessor::getLow()
 {
-  return low->getValue();
+  return low->getUnnormalizedValue();
 }
 
 float EqualizerAudioProcessor::getMid()
 {
-  return mid->getValue();
+  return mid->getUnnormalizedValue();
 }
 
 float EqualizerAudioProcessor::getHigh()
 {
-  return high->getValue();
+  return high->getUnnormalizedValue();
 }
 
 float EqualizerAudioProcessor::getLowFreq()
 {
-  return lowFreq->getValue();
+  return lowFreq->getUnnormalizedValue();
 }
 
 float EqualizerAudioProcessor::getHighFreq()
 {
-  return highFreq->getValue();
+  return highFreq->getUnnormalizedValue();
 }
 
 #endif

@@ -42,7 +42,7 @@ DelayAudioProcessorEditor::DelayAudioProcessorEditor (DelayAudioProcessor& p)
     freeLengthSlider->addListener (this);
 
     addAndMakeVisible (feedbackSlider = new Slider ("feedbackSlider"));
-    feedbackSlider->setRange (0, 1, 0);
+    feedbackSlider->setRange (0, 1.5, 0);
     feedbackSlider->setSliderStyle (Slider::RotaryVerticalDrag);
     feedbackSlider->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
     feedbackSlider->addListener (this);
@@ -267,7 +267,7 @@ BEGIN_JUCER_METADATA
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="feedbackSlider" id="e376e1777a473939" memberName="feedbackSlider"
           virtualName="" explicitFocusOrder="0" pos="320 16 80 88" min="0"
-          max="1" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
+          max="1.5" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <SLIDER name="panSlider" id="c1e9498d831e5114" memberName="panSlider"
           virtualName="" explicitFocusOrder="0" pos="208 16 87 88" min="-1"

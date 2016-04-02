@@ -80,7 +80,7 @@ void PanAudioProcessor::processBlock(AudioSampleBuffer& buffer, MidiBuffer& midi
         buffer.setSample(/*channel*/ 1, bufferIteration, bufferValue * 2 * (std::min(0.5f, currentPanning)));
       }
     }
-    panning->setOldValue();
+    panning->setUnnormalizedOldValue();
   }
 	this->finalizing(buffer);
   this->meteringBuffer(buffer);
@@ -91,8 +91,10 @@ AudioProcessorEditor* PanAudioProcessor::createEditor()
 	return new PanAudioProcessorEditor(*this);
 }
 
-void PanAudioProcessor::setPanning(FloatParameter newPanning) {
-	panning->setValueNotifyingHost(newPanning.getNormalizedValue());
+void PanAudioProcessor::setPanning(float value) {
+  panning->beginChangeGesture();
+  panning->setUnnormalizedValue(value);
+  panning->endChangeGesture();
 }
 
 
@@ -105,11 +107,11 @@ var PanAudioProcessor::getState()
 
 void PanAudioProcessor::setState(const var & state)
 {
-	panning->setValue(state.getProperty("panning", panning->getDefaultValue()));
+	panning->setValue(state.getProperty("panning", panning->getValue()));
 }
 
 float PanAudioProcessor::getPanning() {
-	return panning->getValue();
+	return panning->getUnnormalizedValue();
 }
 
 #endif

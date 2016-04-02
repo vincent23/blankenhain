@@ -5,26 +5,36 @@
 
 // Internally all floats should be normalized, since 
 // this is necessary for communication with DAW-Host.
-// Therefore, you need to specify to lambdas for conversion
-// to and from normalized values for your stuff
+// Therefore, you need to specify NormalizedRanges
+// For your stuff in order to get unnormalized values
 
 class FloatParameter : public AudioProcessorParameter
 {
 public:
-	//USE THIS CONSTRUCTOR
+	// USE THIS CONSTRUCTOR
 	FloatParameter(float defaultValue, const String& name = "I was not initialized properly. U bad boy mhmhm.", \
 		float bufferScalingValue_ = 1.f, const NormalizedRange& normalizedRange = NormalizedRange());
-	//COPY BY REFERENCE
+	// COPY BY REFERENCE
 	FloatParameter(const FloatParameter&);
 
+  // These are overwritten and will be called by the DAW host
+  // The values are expected to be normalized
 	float getValue() const override;
-	void setValue(float unnormalizedNewValue_) override;
+	void setValue(float normalizedNewValue_) override;
+  float getDefaultValue() const override;
 
-	float getOldValue() const;
-	void setOldValue(float unnormalizedOldValue_);
-	void setOldValue(void);
+  // Now, for the functions taking unnormalized values.
+  // Checks will be performed if they are in range if
+  // #BLANKENHAIN_CHECKS is enabled.
+  float getUnnormalizedValue() const;
+  void setUnnormalizedValue(float unnormalized);
 
-	float getDefaultValue() const override;
+  // For sofisticated interpolation stuff, not
+  // used to much right now
+	float getUnnormalizedOldValue() const;
+	void setUnnormalizedOldValue(float unnormalizedOldValue_);
+	void setUnnormalizedOldValue(void);
+
 	float getBufferScalingValue() const;
 
 	String getName(int maximumStringLength) const override;

@@ -35,8 +35,8 @@ void VolumeAudioProcessor::processBlock(AudioSampleBuffer& buffer, MidiBuffer& m
 
     if (stereoCoupling->getBoolValue())
     {
-      currentVolumeL = aux::decibelToLinear(volumeL->getValue());
-      oldVolumeL = aux::decibelToLinear(volumeL->getOldValue());
+      currentVolumeL = aux::decibelToLinear(volumeL->getUnnormalizedValue());
+      oldVolumeL = aux::decibelToLinear(volumeL->getUnnormalizedOldValue());
       maxInterpolation = int(buffer.getNumSamples() * volumeL->getBufferScalingValue());
       for (size_t interpolationIteration = 0; interpolationIteration < maxInterpolation; interpolationIteration++)
       {
@@ -64,10 +64,10 @@ void VolumeAudioProcessor::processBlock(AudioSampleBuffer& buffer, MidiBuffer& m
     }
     else
     {
-      currentVolumeR = aux::decibelToLinear(volumeR->getValue());
-      currentVolumeL = aux::decibelToLinear(volumeL->getValue());
-      oldVolumeL = aux::decibelToLinear(volumeL->getOldValue());
-      oldVolumeR = aux::decibelToLinear(volumeR->getOldValue());
+      currentVolumeR = aux::decibelToLinear(volumeR->getUnnormalizedValue());
+      currentVolumeL = aux::decibelToLinear(volumeL->getUnnormalizedValue());
+      oldVolumeL = aux::decibelToLinear(volumeL->getUnnormalizedOldValue());
+      oldVolumeR = aux::decibelToLinear(volumeR->getUnnormalizedOldValue());
       maxInterpolation = int(buffer.getNumSamples() * volumeL->getBufferScalingValue());
       for (size_t interpolationIteration = 0; interpolationIteration < maxInterpolation; interpolationIteration++)
       {
@@ -94,8 +94,8 @@ void VolumeAudioProcessor::processBlock(AudioSampleBuffer& buffer, MidiBuffer& m
       }
     }
     //Set current values as old values for interpolation in next buffer iteration
-    volumeL->setOldValue(volumeL->getValue());
-    volumeR->setOldValue(volumeR->getValue());
+    volumeL->setUnnormalizedOldValue(volumeL->getUnnormalizedValue());
+    volumeR->setUnnormalizedOldValue(volumeR->getUnnormalizedValue());
   }
   this->finalizing(buffer);
 	this->meteringBuffer(buffer);
@@ -107,21 +107,29 @@ AudioProcessorEditor* VolumeAudioProcessor::createEditor()
 	return new VolumeAudioProcessorEditor(*this);
 }
 
-void VolumeAudioProcessor::setVolumeL(float newVolumeL) {
-	volumeL->setValueNotifyingHost(newVolumeL);
+void VolumeAudioProcessor::setVolumeL(float value) {
+  volumeL->beginChangeGesture();
+  volumeL->setUnnormalizedValue(value);
+  volumeL->endChangeGesture();
 }
 
-void VolumeAudioProcessor::setVolumeR(float newVolumeR)
+void VolumeAudioProcessor::setVolumeR(float value)
 {
-	volumeR->setValueNotifyingHost(newVolumeR);
+  volumeR->beginChangeGesture();
+  volumeR->setUnnormalizedValue(value);
+  volumeR->endChangeGesture();
 }
 
 void VolumeAudioProcessor::setStereoCoupling(bool newStereoCoupling) {
+  stereoCoupling->beginChangeGesture();
 	stereoCoupling->setValueNotifyingHost((float) newStereoCoupling);
+  stereoCoupling->endChangeGesture();
 }
 
 void VolumeAudioProcessor::switchStereoCoupling(void) {
+  stereoCoupling->beginChangeGesture();
 	stereoCoupling->setValueNotifyingHost( (float) (! stereoCoupling->getBoolValue() ) );
+  stereoCoupling->endChangeGesture();
 }
 
 var VolumeAudioProcessor::getState()
@@ -141,11 +149,11 @@ void VolumeAudioProcessor::setState(const var & state)
 }
 
 float VolumeAudioProcessor::getVolumeL() {
-	return (*volumeL).getValue();
+	return (*volumeL).getUnnormalizedValue();
 }
 
 float VolumeAudioProcessor::getVolumeR() {
-	return volumeR->getValue();
+	return volumeR->getUnnormalizedValue();
 }
 
 bool VolumeAudioProcessor::getStereoCoupling() {

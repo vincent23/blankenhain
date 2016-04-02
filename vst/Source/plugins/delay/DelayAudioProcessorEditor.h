@@ -49,6 +49,7 @@ public:
     //==============================================================================
     //[UserMethods]     -- You can add your own custom methods in this section.
     void timerCallback() override;
+    bool hasSliderBeenChangedSinceLastTimerCallback = false;
     //[/UserMethods]
 
     void paint (Graphics& g);

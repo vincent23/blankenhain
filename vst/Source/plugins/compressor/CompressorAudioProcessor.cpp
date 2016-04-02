@@ -48,14 +48,14 @@ void CompressorAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuff
     // This is the place where you'd normally do the guts of your plugin's
     // audio processing...
     jassert(getNumInputChannels() == 2);
-    float attack_ = attack->getValue() / 1000.f;
-    size_t attackTimeInSamples = static_cast<size_t>(attack->getValue() * 44100 / 1000.f);
+    float attack_ = attack->getUnnormalizedValue() / 1000.f;
+    size_t attackTimeInSamples = static_cast<size_t>(attack->getUnnormalizedValue() * 44100 / 1000.f);
     delayLine.setSize(attackTimeInSamples);
-    float release_ = release->getValue() / 1000.f;
+    float release_ = release->getUnnormalizedValue() / 1000.f;
     float attackGain = exp(-1 / (attack_ * 44100));
     float releaseGain = exp(-1 / (release_ * 44100));
-    float threshold_ = threshold->getValue();
-    float ratio_ = ratio->getValue();
+    float threshold_ = threshold->getUnnormalizedValue();
+    float ratio_ = ratio->getUnnormalizedValue();
     float slope = 1 - (1 / ratio_);
     for (int i = 0; i < buffer.getNumSamples(); i++) {
       for (int channel = 0; channel < getNumInputChannels(); channel++) {
@@ -100,20 +100,28 @@ AudioProcessorEditor* CompressorAudioProcessor::createEditor()
 	return new CompressorAudioProcessorEditor(*this);
 }
 
-void CompressorAudioProcessor::setRelease(float release_) {
-  release->setValueNotifyingHost(release_);
+void CompressorAudioProcessor::setRelease(float value) {
+  release->beginChangeGesture();
+  release->setUnnormalizedValue(value);
+  release->endChangeGesture();
 }
 
 void CompressorAudioProcessor::setRatio(float newRatio) {
-  ratio->setValueNotifyingHost(newRatio);
+  ratio->beginChangeGesture();
+  ratio->setUnnormalizedValue(newRatio);
+  ratio->endChangeGesture();
 }
 
 void CompressorAudioProcessor::setAttack(float newAttack) {
-  attack->setValueNotifyingHost(newAttack);
+  attack->beginChangeGesture();
+  attack->setUnnormalizedValue(newAttack);
+  attack->endChangeGesture();
 }
 
 void CompressorAudioProcessor::setThreshold(float newThreshold) {
-  threshold->setValueNotifyingHost(newThreshold);
+  threshold->beginChangeGesture();
+  threshold->setUnnormalizedValue(newThreshold);
+  threshold->endChangeGesture();
 }
 
 void CompressorAudioProcessor::setLimiter(bool value)
@@ -142,19 +150,19 @@ var CompressorAudioProcessor::getState()
 }
 
 float CompressorAudioProcessor::getRelease() {
-  return release->getValue();
+  return release->getUnnormalizedValue();
 }
 
 float CompressorAudioProcessor::getRatio() {
-  return ratio->getValue();
+  return ratio->getUnnormalizedValue();
 }
 
 float CompressorAudioProcessor::getAttack() {
-  return attack->getValue();
+  return attack->getUnnormalizedValue();
 }
 
 float CompressorAudioProcessor::getThreshold() {
-  return threshold->getValue();
+  return threshold->getUnnormalizedValue();
 }
 
 bool CompressorAudioProcessor::getLimiter()

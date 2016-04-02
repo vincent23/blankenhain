@@ -18,7 +18,7 @@ DelayAudioProcessor::DelayAudioProcessor() : delayline(44100u)
 {
   pan  = new FloatParameter(0.f, "pan", 1.f, NormalizedRange(-1.f, 1.f));
   length  = new FloatParameter(100.f, "length", 1.f, NormalizedRange(1.f, 5000.f));
-  feedback = new FloatParameter(0.f, "feedback", 1.f, NormalizedRange(0.f, 1.f));
+  feedback = new FloatParameter(0.f, "feedback", 1.f, NormalizedRange(0.f, 1.5f));
   drywet = new FloatParameter(0.f, "drywet", 1.f, NormalizedRange(0.f, 1.f));
 
   addParameter(pan);
@@ -50,8 +50,8 @@ void DelayAudioProcessor::processBlock(AudioSampleBuffer& buffer, MidiBuffer& mi
   }
   if (!this->getBypass())
   {
-    delayline.setSize(aux::millisecToSamples(length->getValue()));
-    float feedback_ = feedback->getValue();
+    delayline.setSize(aux::millisecToSamples(length->getUnnormalizedValue()));
+    float feedback_ = feedback->getUnnormalizedValue();
     for (int i = 0; i < buffer.getNumSamples(); i++)
     {
       float avg = 0.f;
@@ -64,25 +64,25 @@ void DelayAudioProcessor::processBlock(AudioSampleBuffer& buffer, MidiBuffer& mi
 
       float original0 = buffer.getWritePointer(0)[i];
       float original1 = buffer.getWritePointer(1)[i];
-      if (drywet->getValue() > 0.5)
+      if (drywet->getUnnormalizedValue() > 0.5)
       {
-        original0 *= (1 - drywet->getValue()) * 2.f;
-        original1 *= (1 - drywet->getValue()) * 2.f;
+        original0 *= (1 - drywet->getUnnormalizedValue()) * 2.f;
+        original1 *= (1 - drywet->getUnnormalizedValue()) * 2.f;
       }
       float line = delayline.get();
-      if (drywet->getValue() < 0.5) line *= drywet->getValue() * 2.f;
+      if (drywet->getUnnormalizedValue() < 0.5) line *= drywet->getUnnormalizedValue() * 2.f;
 
-      if(pan->getValue() <= 0.)
+      if(pan->getUnnormalizedValue() <= 0.)
       {
         buffer.getWritePointer(0)[i] = original0 +  line;
-        buffer.getWritePointer(1)[i] = original1 + (line * (1.f + pan->getValue()));
+        buffer.getWritePointer(1)[i] = original1 + (line * (1.f + pan->getUnnormalizedValue()));
       }
-      else if (pan->getValue() >= 0.)
+      else if (pan->getUnnormalizedValue() >= 0.)
       {
-        buffer.getWritePointer(0)[i] = original0 + (line * (1.f - pan->getValue()));
+        buffer.getWritePointer(0)[i] = original0 + (line * (1.f - pan->getUnnormalizedValue()));
         buffer.getWritePointer(1)[i] = original1 + line;
       }
-      delayline.push((delayline.get()) * feedback->getValue() + avg);
+      delayline.push((delayline.get()) * feedback->getUnnormalizedValue() + avg);
     }
   }
   this->finalizing(buffer);
@@ -114,37 +114,45 @@ void DelayAudioProcessor::setState(const var & state)
 
 void DelayAudioProcessor::setLength(float value)
 {
-  length->setValueNotifyingHost(value);
+  length->beginChangeGesture();
+  length->setUnnormalizedValue(value);
+  length->endChangeGesture();
 }
 
 void DelayAudioProcessor::setPan(float value)
 {
-  pan->setValueNotifyingHost(value);
+  pan->beginChangeGesture();
+  pan->setUnnormalizedValue(value);
+  pan->endChangeGesture();
 }
 
 void DelayAudioProcessor::setFeedback(float value)
 {
-  feedback->setValueNotifyingHost(value);
+  feedback->beginChangeGesture();
+  feedback->setUnnormalizedValue(value);
+  feedback->endChangeGesture();
 }
 
 void DelayAudioProcessor::setDrywet(float value)
 {
-  drywet->setValueNotifyingHost(value);
+  drywet->beginChangeGesture();
+  drywet->setUnnormalizedValue(value);
+  drywet->endChangeGesture();
 }
 
 float DelayAudioProcessor::getLength() const
 {
-  return length->getValue();
+  return length->getUnnormalizedValue();
 }
 
 float DelayAudioProcessor::getDrywet() const
 {
-  return drywet->getValue();
+  return drywet->getUnnormalizedValue();
 }
 
 float DelayAudioProcessor::getPan() const
 {
-  return pan->getValue();
+  return pan->getUnnormalizedValue();
 }
 
 float DelayAudioProcessor::getBPM() const
@@ -154,7 +162,7 @@ float DelayAudioProcessor::getBPM() const
 
 float DelayAudioProcessor::getFeedback() const
 {
-  return feedback->getValue();
+  return feedback->getUnnormalizedValue();
 }
 
 #endif

@@ -56,12 +56,16 @@ AudioProcessorEditor* FilterAudioProcessor::createEditor()
 	return new FilterAudioProcessorEditor(*this);
 }
 
-void FilterAudioProcessor::setResonance(FloatParameter newResonance) {
-	resonance->setValueNotifyingHost(newResonance.getNormalizedValue());
+void FilterAudioProcessor::setResonance(float value) {
+  resonance->beginChangeGesture();
+  resonance->setUnnormalizedValue(value);
+  resonance->endChangeGesture();
 }
 
-void FilterAudioProcessor::setFrequency(FloatParameter newFrequency) {
-	frequency->setValueNotifyingHost(newFrequency.getNormalizedValue());
+void FilterAudioProcessor::setFrequency(float value) {
+  frequency->beginChangeGesture();
+  frequency->setUnnormalizedValue(value);
+  frequency->endChangeGesture();
 }
 
 void FilterAudioProcessor::setFilterType(int index) {
@@ -98,11 +102,11 @@ void FilterAudioProcessor::setState(const var & state)
 }
 
 float FilterAudioProcessor::getResonance() {
-	return resonance->getValue();
+	return resonance->getUnnormalizedValue();
 }
 
 float FilterAudioProcessor::getFrequency() {
-	return frequency->getValue();
+	return frequency->getUnnormalizedValue();
 }
 
 int FilterAudioProcessor::getFilterType() {

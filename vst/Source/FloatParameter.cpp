@@ -12,7 +12,7 @@ FloatParameter::FloatParameter(const FloatParameter& in)
 	oldValue(in.oldValue), name(in.name), \
 	bufferScalingValue(in.bufferScalingValue), range(in.range) {};
 
-float FloatParameter::getOldValue() const {
+float FloatParameter::getUnnormalizedOldValue() const {
 	return range.fromNormalized(oldValue);
 }
 
@@ -20,24 +20,37 @@ float FloatParameter::getBufferScalingValue() const {
 	return bufferScalingValue;
 }
 
-void FloatParameter::setOldValue(float oldValue_) {
+float FloatParameter::getUnnormalizedValue() const
+{
+  return range.fromNormalized(value);
+}
+void FloatParameter::setUnnormalizedValue(float unnormalized)
+{
+ this->setValueNotifyingHost(range.toNormalized(unnormalized));
+}
+
+void FloatParameter::setUnnormalizedOldValue(float oldValue_) {
 	oldValue = range.toNormalized(oldValue_);
 }
 
-void FloatParameter::setOldValue(void) {
+void FloatParameter::setUnnormalizedOldValue(void) {
 	oldValue = value;
 }
 
-float FloatParameter::getValue() const {
-	return range.fromNormalized(value);
+// Note: Needs to return normalized values
+float FloatParameter::getValue() const 
+{
+	return value;
 }
 
+// Note: Expects normalized values
 void FloatParameter::setValue(float newValue_) {
-	value = range.toNormalized(newValue_);
+	value = newValue_;
 }
 
+// Returns value between 0 and 1
 float FloatParameter::getDefaultValue() const {
-	return range.fromNormalized(defaultValue);
+	return defaultValue;
 }
 
 String FloatParameter::getName(int maximumStringLength) const {
