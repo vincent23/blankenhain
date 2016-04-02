@@ -3,6 +3,12 @@
 #include <juce>
 #include <vector>
 
+// Range checks and so on. Good For VST,
+// however takes CPU power.
+// #define BLANKENHAIN_CHECKS
+// define it in juice
+
+
 class BlankenhainAudioProcessor : public AudioProcessor
 {
 public:
@@ -46,7 +52,6 @@ public:
 	//METERING
 	void meteringBuffer(AudioSampleBuffer&);
 	void meteringSingle(float, float);
-
   bool getBypass() const;
   void setBypass(bool value);
   void setIngain(float value);
