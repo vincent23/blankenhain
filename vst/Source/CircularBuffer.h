@@ -27,7 +27,7 @@ public:
   T pushpop(T const& in);
   size_t getSize();
   void setSize(size_t size_);
-  T get(size_t iterator);
+  T get(int iterator = -1);
 };
 
 #endif  // CIRCULARBUFFER_H_INCLUDED

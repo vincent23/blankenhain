@@ -17,7 +17,7 @@ CircularBuffer<T>::CircularBuffer(size_t numberOfSamples_)
   currentPosition(0u)
 {
   buffer = new T[maxNumberOfSamples];
-  for (size_t i = 0; i < numberOfSamples; i++)
+  for (size_t i = 0; i < maxNumberOfSamples; i++)
   {
     buffer[i] = T();
   }
@@ -85,6 +85,7 @@ void CircularBuffer<T>::setSize(size_t size_)
     buffer = temp;
     temp = nullptr;
     numberOfSamples = size_;
+    maxNumberOfSamples = size_;
   }
   else if (size_ > numberOfSamples)
   {
@@ -100,9 +101,10 @@ void CircularBuffer<T>::setSize(size_t size_)
 };
 
 template <typename T>
-T CircularBuffer<T>::get(size_t iterator)
+T CircularBuffer<T>::get(int iterator)
 {
-  if (iterator < numberOfSamples)
+  if (iterator < 0) return buffer[currentPosition];
+  else if (iterator < numberOfSamples)
   {
     return buffer[iterator];
   }
