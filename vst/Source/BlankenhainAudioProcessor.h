@@ -77,13 +77,19 @@ private:
 
 template<size_t BlockSize, typename ProcessFunction>
 void BlankenhainAudioProcessor::processBlockwise(AudioSampleBuffer& audioBuffer, Sample* processBuffer, ProcessFunction processFunction) {
+  // Main Loop, performed till AudioBufferFloats are less than an integer multiple of Blocksize
 	size_t offset = 0;
-	for (; static_cast<int>(offset + BlockSize) <= audioBuffer.getNumSamples(); offset += BlockSize) {
+  for (; static_cast<int>(offset + BlockSize) <= audioBuffer.getNumSamples(); offset += BlockSize) 
+  {
+    // This fills SIMD-Sample-Array of size "Blocksize" from AudioBuffer
 		for (size_t i = 0; i < BlockSize; i++) {
 			int sampleIndex = offset + i;
 			processBuffer[i] = Sample(audioBuffer.getSample(0, sampleIndex), audioBuffer.getSample(1, sampleIndex));
 		}
+    // Now, audio processing is performed
 		processFunction(BlockSize, offset);
+
+    // And data is written back from SIMD-Sample-Array to AudioBuffer
 		for (size_t i = 0; i < BlockSize; i++) {
 			int sampleIndex = offset + i;
 			alignas(16) double sampleValues[2];
@@ -92,6 +98,8 @@ void BlankenhainAudioProcessor::processBlockwise(AudioSampleBuffer& audioBuffer,
 			audioBuffer.setSample(1, sampleIndex, static_cast<float>(sampleValues[1]));
 		}
 	}
+
+  // Take care of the remaining samples
 	const size_t remainingSamples = audioBuffer.getNumSamples() - offset;
 	for (size_t i = 0; i < remainingSamples; i++) {
 		int sampleIndex = offset + i;
