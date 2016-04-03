@@ -28,61 +28,9 @@ void PanAudioProcessor::processBlock(AudioSampleBuffer& buffer, MidiBuffer& midi
 	this->initializing(buffer);
   if (!this->getBypass())
   {
-    for (int i = getTotalNumInputChannels(); i < getTotalNumOutputChannels(); ++i) {
-      buffer.clear(i, 0, buffer.getNumSamples());
-    }
-    // currentPanning: Set by Editor before this buffer iteration
-    // oldPanning: Was Set in Editor after last buffer Iteration
-    // Interpolation from oldPanning to currentPanning
-    // momentaryPanning: Helper Variable, keeps results of current Interpolation iteration during Interpolation
-    float currentPanning, oldPanning, bufferValue, momentaryPanning;
-
-    unsigned int maxInterpolation;
-    currentPanning = panning->getNormalizedValue();
-    oldPanning = panning->getNormalizedOldValue();
-    maxInterpolation = int(buffer.getNumSamples() * panning->getBufferScalingValue());
-
-    if (getMono())
-    {
-      for (size_t interpolationIteration = 0; interpolationIteration < maxInterpolation; interpolationIteration++)
-      {
-        bufferValue = buffer.getSample(/*channel*/ 0, interpolationIteration);
-        momentaryPanning = (oldPanning + ((interpolationIteration + 1) * (currentPanning - oldPanning) / maxInterpolation));
-        buffer.setSample(/*channel*/ 0, interpolationIteration, bufferValue * \
-          (1.f - 2 * (std::max(0.5f, momentaryPanning) - 0.5f)));
-
-        buffer.setSample(/*channel*/ 1, interpolationIteration, bufferValue * \
-          2 * (std::min(0.5f, momentaryPanning)));
-      }
-      for (size_t bufferIteration = maxInterpolation; static_cast<int>(bufferIteration) < buffer.getNumSamples(); bufferIteration++)
-      {
-        bufferValue = buffer.getSample(/*channel*/ 0, bufferIteration);
-        buffer.setSample(/*channel*/ 0, bufferIteration, bufferValue * (1.f - 2 * (std::max(0.5f, currentPanning) - 0.5f)));
-        buffer.setSample(/*channel*/ 1, bufferIteration, bufferValue * 2 * (std::min(0.5f, currentPanning)));
-      }
-    }
-    else
-    {
-      for (size_t interpolationIteration = 0; interpolationIteration < maxInterpolation; interpolationIteration++)
-      {
-        momentaryPanning = (oldPanning + ((interpolationIteration + 1) * (currentPanning - oldPanning) / maxInterpolation));
-
-        bufferValue = buffer.getSample(/*channel*/ 0, interpolationIteration);
-        buffer.setSample(/*channel*/ 0, interpolationIteration, bufferValue * \
-          (1.f - 2 * (std::max(0.5f, momentaryPanning) - 0.5f)));
-        bufferValue = buffer.getSample(/*channel*/ 1, interpolationIteration);
-        buffer.setSample(/*channel*/ 1, interpolationIteration, bufferValue * \
-          2 * (std::min(0.5f, momentaryPanning)));
-      }
-      for (size_t bufferIteration = maxInterpolation; static_cast<int>(bufferIteration) < buffer.getNumSamples(); bufferIteration++)
-      {
-        bufferValue = buffer.getSample(/*channel*/ 0, bufferIteration);
-        buffer.setSample(/*channel*/ 0, bufferIteration, bufferValue * (1.f - 2 * (std::max(0.5f, currentPanning) - 0.5f)));
-        bufferValue = buffer.getSample(/*channel*/ 1, bufferIteration);
-        buffer.setSample(/*channel*/ 1, bufferIteration, bufferValue * 2 * (std::min(0.5f, currentPanning)));
-      }
-    }
-    panning->setUnnormalizedOldValue();
+    processBlockwise<FilterConstants::blockSize>(buffer, internalBuffer, [this](size_t samples, size_t offset) {
+      processPanning(internalBuffer, samples, getPanning(), getMono());
+    });
   }
 	this->finalizing(buffer);
   this->meteringBuffer(buffer);
@@ -123,6 +71,34 @@ float PanAudioProcessor::getPanning() {
 bool PanAudioProcessor::getMono()
 {
   return mono->getBoolValue();
+}
+
+// Channel number is expected to be == 2
+// CurrentPanning between -50 and 50
+void processPanning(Sample* data, size_t numberOfSamples, float panningValue, bool mono)
+{
+  if (mono)
+  {
+    for (size_t bufferIteration = 0u; bufferIteration < numberOfSamples; bufferIteration++)
+    {
+      alignas(16) double lr[2];
+      data[bufferIteration].store_aligned(lr);
+      lr[1] = lr[0] * (1.f + std::min(0.0f, panningValue) * 0.02f);
+      lr[0] = lr[0] * (1.f - std::max(0.0f, panningValue) * 0.02f);
+      data[bufferIteration] = load_aligned(lr);
+    }
+  }
+  else
+  {
+    for (size_t bufferIteration = 0u; bufferIteration < numberOfSamples; bufferIteration++)
+    {
+      alignas(16) double lr[2];
+      data[bufferIteration].store_aligned(lr);
+      lr[0] = lr[0] * (1.f - std::max(0.0f, panningValue) * 0.02f);
+      lr[1] = lr[1] * (1.f + std::min(0.0f, panningValue) * 0.02f);
+      data[bufferIteration] = load_aligned(lr);
+    }
+  }
 }
 
 #endif
