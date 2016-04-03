@@ -51,11 +51,6 @@ bool BlankenhainAudioProcessor::producesMidi() const
 #endif
 }
 
-bool BlankenhainAudioProcessor::silenceInProducesSilenceOut() const
-{
-	return false;
-}
-
 double BlankenhainAudioProcessor::getTailLengthSeconds() const
 {
 	return 0.0;
