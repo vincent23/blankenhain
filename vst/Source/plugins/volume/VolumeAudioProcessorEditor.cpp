@@ -141,18 +141,18 @@ void VolumeAudioProcessorEditor::sliderValueChanged (Slider* sliderThatWasMoved)
     if (sliderThatWasMoved == volumeRSlider)
     {
         //[UserSliderCode_volumeRSlider] -- add your slider handling code here..
-		processor.setVolumeR(sliderThatWasMoved->getValue());
+		  processor.setVolumeR(static_cast<float>(sliderThatWasMoved->getValue()));
         //[/UserSliderCode_volumeRSlider]
     }
     else if (sliderThatWasMoved == volumeLSlider)
     {
         //[UserSliderCode_volumeLSlider] -- add your slider handling code here..
-		processor.setVolumeL(sliderThatWasMoved->getValue());
-		if (processor.getStereoCoupling())
-		{
-			volumeRSlider->setValue(sliderThatWasMoved->getValue());
-			processor.setVolumeR(sliderThatWasMoved->getValue());
-		}
+		  processor.setVolumeL(static_cast<float>(sliderThatWasMoved->getValue()));
+		  if (processor.getStereoCoupling())
+		  {
+		  	volumeRSlider->setValue(static_cast<float>(sliderThatWasMoved->getValue()));
+	  		processor.setVolumeR(static_cast<float>(sliderThatWasMoved->getValue()));
+	  	}
 
         //[/UserSliderCode_volumeLSlider]
     }

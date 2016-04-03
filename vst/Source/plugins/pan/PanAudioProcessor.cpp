@@ -26,7 +26,7 @@ void PanAudioProcessor::processBlock(AudioSampleBuffer& buffer, MidiBuffer& midi
 	this->initializing(buffer);
   if (!this->getBypass())
   {
-    for (int i = getNumInputChannels(); i < getNumOutputChannels(); ++i) {
+    for (int i = getTotalNumInputChannels(); i < getTotalNumOutputChannels(); ++i) {
       buffer.clear(i, 0, buffer.getNumSamples());
     }
     // currentPanning: Set by Editor before this buffer iteration
@@ -52,7 +52,7 @@ void PanAudioProcessor::processBlock(AudioSampleBuffer& buffer, MidiBuffer& midi
         buffer.setSample(/*channel*/ 1, interpolationIteration, bufferValue * \
           2 * (std::min(0.5f, momentaryPanning)));
       }
-      for (size_t bufferIteration = maxInterpolation; bufferIteration < buffer.getNumSamples(); bufferIteration++)
+      for (size_t bufferIteration = maxInterpolation; static_cast<int>(bufferIteration) < buffer.getNumSamples(); bufferIteration++)
       {
         bufferValue = buffer.getSample(/*channel*/ 0, bufferIteration);
         buffer.setSample(/*channel*/ 0, bufferIteration, bufferValue * (1.f - 2 * (std::max(0.5f, currentPanning) - 0.5f)));
@@ -72,7 +72,7 @@ void PanAudioProcessor::processBlock(AudioSampleBuffer& buffer, MidiBuffer& midi
         buffer.setSample(/*channel*/ 1, interpolationIteration, bufferValue * \
           2 * (std::min(0.5f, momentaryPanning)));
       }
-      for (size_t bufferIteration = maxInterpolation; bufferIteration < buffer.getNumSamples(); bufferIteration++)
+      for (size_t bufferIteration = maxInterpolation; static_cast<int>(bufferIteration) < buffer.getNumSamples(); bufferIteration++)
       {
         bufferValue = buffer.getSample(/*channel*/ 0, bufferIteration);
         buffer.setSample(/*channel*/ 0, bufferIteration, bufferValue * (1.f - 2 * (std::max(0.5f, currentPanning) - 0.5f)));
@@ -102,7 +102,7 @@ var PanAudioProcessor::getState()
 {
 	DynamicObject* properties = new DynamicObject;
 	properties->setProperty("panning", panning->getValue());
-	return var(&properties);
+	return var(properties);
 }
 
 void PanAudioProcessor::setState(const var & state)

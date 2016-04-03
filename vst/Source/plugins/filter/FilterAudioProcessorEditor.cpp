@@ -165,13 +165,13 @@ void FilterAudioProcessorEditor::sliderValueChanged (Slider* sliderThatWasMoved)
     if (sliderThatWasMoved == frequencySlider)
     {
         //[UserSliderCode_frequencySlider] -- add your slider handling code here..
-		processor.setFrequency(sliderThatWasMoved->getValue());
+		processor.setFrequency(static_cast<float>(sliderThatWasMoved->getValue()));
         //[/UserSliderCode_frequencySlider]
     }
     else if (sliderThatWasMoved == resonanceSlider)
     {
         //[UserSliderCode_resonanceSlider] -- add your slider handling code here..
-		processor.setResonance(sliderThatWasMoved->getValue());
+		processor.setResonance(static_cast<float>(sliderThatWasMoved->getValue()));
         //[/UserSliderCode_resonanceSlider]
     }
 

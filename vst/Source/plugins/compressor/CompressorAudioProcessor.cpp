@@ -7,9 +7,9 @@ CompressorAudioProcessor::CompressorAudioProcessor()
   : delayLine(44100)
 {
   ratio = new FloatParameter(1.f, "ratio", 1.f, NormalizedRange(0.f, 12.f, 1.f));
-  release = new FloatParameter(10.f / 132.f, "release", 1.f, NormalizedRange(0.f, 1000.f, 1.f));
-  threshold = new FloatParameter(0.f, "threshold", 1.f, NormalizedRange(-36.f, 3.f, 1.f));
-  attack = new FloatParameter(10.f, "attack", 1.f, NormalizedRange(0.f, 1000.f, 1.f));
+  release = new FloatParameter(10.f / 132.f, "release", 1.f, NormalizedRange(0.f, 100.f, 1.f));
+  threshold = new FloatParameter(0.f, "threshold", 1.f, NormalizedRange(-48.f, 3.f, 1.f));
+  attack = new FloatParameter(10.f, "attack", 1.f, NormalizedRange(0.f, 100.f, 1.f));
   limiterOn = new BoolParameter("limiterOn", false);
   addParameter(ratio);
   addParameter(release);
@@ -18,11 +18,14 @@ CompressorAudioProcessor::CompressorAudioProcessor()
   addParameter(limiterOn);
 }
 
+#pragma warning( push )
+#pragma warning( disable : 4100)
 void CompressorAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
     // Use this method as the place to do any pre-playback
     // initialisation that you need..
 }
+#pragma warning( pop ) 
 
 void CompressorAudioProcessor::releaseResources()
 {
@@ -38,7 +41,7 @@ void CompressorAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuff
 	// I've added this to avoid people getting screaming feedback
 	// when they first compile the plugin, but obviously you don't need to
 	// this code if your algorithm already fills all the output channels.
-	for (int i = getNumInputChannels(); i < getNumOutputChannels(); ++i) {
+	for (int i = getTotalNumInputChannels(); i < getTotalNumOutputChannels(); ++i) {
 		buffer.clear(i, 0, buffer.getNumSamples());
 	}
 
@@ -47,7 +50,7 @@ void CompressorAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuff
   {
     // This is the place where you'd normally do the guts of your plugin's
     // audio processing...
-    jassert(getNumInputChannels() == 2);
+    //jassert(getTotalNumInputChannels() == 2);
     float attack_ = attack->getUnnormalizedValue() / 1000.f;
     size_t attackTimeInSamples = static_cast<size_t>(attack->getUnnormalizedValue() * 44100 / 1000.f);
     delayLine.setSize(attackTimeInSamples);
@@ -58,7 +61,7 @@ void CompressorAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuff
     float ratio_ = ratio->getUnnormalizedValue();
     float slope = 1 - (1 / ratio_);
     for (int i = 0; i < buffer.getNumSamples(); i++) {
-      for (int channel = 0; channel < getNumInputChannels(); channel++) {
+      for (int channel = 0; channel < getTotalNumInputChannels(); channel++) {
         float* channelData = buffer.getWritePointer(channel);
         float input = abs(channelData[i]);
         if (envelope[channel] < input) {
@@ -69,7 +72,7 @@ void CompressorAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuff
         }
       }
       float envelopeValue = std::max(envelope[0], envelope[1]);
-      for (int channel = 0; channel < getNumInputChannels(); channel++) 
+      for (int channel = 0; channel < getTotalNumInputChannels(); channel++)
       {
         float* channelData = buffer.getWritePointer(channel);
         float input = envelopeValue;
@@ -146,7 +149,7 @@ var CompressorAudioProcessor::getState()
   properties->setProperty("release", release->getValue());
   properties->setProperty("threshold", threshold->getValue());
   properties->setProperty("limiter", limiterOn->getBoolValue());
-  return var(&properties);
+  return var(properties);
 }
 
 float CompressorAudioProcessor::getRelease() {

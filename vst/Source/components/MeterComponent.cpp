@@ -275,13 +275,13 @@ void MeterComponent::sliderValueChanged (Slider* sliderThatWasMoved)
     if (sliderThatWasMoved == inSlider)
     {
         //[UserSliderCode_inSlider] -- add your slider handling code here..
-      processor.setIngain(sliderThatWasMoved->getValue());
+      processor.setIngain(static_cast<float>(sliderThatWasMoved->getValue()));
         //[/UserSliderCode_inSlider]
     }
     else if (sliderThatWasMoved == outSlider)
     {
         //[UserSliderCode_outSlider] -- add your slider handling code here..
-      processor.setOutgain(sliderThatWasMoved->getValue());
+      processor.setOutgain(static_cast<float>(sliderThatWasMoved->getValue()));
         //[/UserSliderCode_outSlider]
     }
 
@@ -318,7 +318,7 @@ void MeterComponent::peakFollower(std::vector<float> newValues, double sampleRat
 	//Works on normalized floats
 
 	float halfLife = .04f; //Half life of meter decay in seconds, no idea yet for a good value...
-	float scalar = pow(0.5f, 1.f / (halfLife * sampleRate / blockSize));
+	float scalar = pow<float>(0.5f, 1.f / (halfLife * static_cast<float>(sampleRate) / static_cast<float>(blockSize)));
 	float input, output;
 
 	for (unsigned int i = 0; i < 2u; i++)

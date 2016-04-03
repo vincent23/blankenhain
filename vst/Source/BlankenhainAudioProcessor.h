@@ -1,4 +1,5 @@
 #pragma once
+#pragma warning( disable : 4100)
 #include "AuxFunc.h"
 #include <juce>
 #include <vector>
@@ -17,11 +18,6 @@ public:
 	bool hasEditor() const override;
 
 	const String getName() const override;
-
-	const String getInputChannelName(int channelIndex) const override;
-	const String getOutputChannelName(int channelIndex) const override;
-	bool isInputChannelStereoPair(int index) const override;
-	bool isOutputChannelStereoPair(int index) const override;
 
 	bool acceptsMidi() const override;
 	bool producesMidi() const override;
@@ -82,7 +78,7 @@ private:
 template<size_t BlockSize, typename ProcessFunction>
 void BlankenhainAudioProcessor::processBlockwise(AudioSampleBuffer& audioBuffer, Sample* processBuffer, ProcessFunction processFunction) {
 	size_t offset = 0;
-	for (; offset + BlockSize <= audioBuffer.getNumSamples(); offset += BlockSize) {
+	for (; static_cast<int>(offset + BlockSize) <= audioBuffer.getNumSamples(); offset += BlockSize) {
 		for (size_t i = 0; i < BlockSize; i++) {
 			int sampleIndex = offset + i;
 			processBuffer[i] = Sample(audioBuffer.getSample(0, sampleIndex), audioBuffer.getSample(1, sampleIndex));
@@ -92,8 +88,8 @@ void BlankenhainAudioProcessor::processBlockwise(AudioSampleBuffer& audioBuffer,
 			int sampleIndex = offset + i;
 			alignas(16) double sampleValues[2];
 			processBuffer[i].store_aligned(sampleValues);
-			audioBuffer.setSample(0, sampleIndex, sampleValues[0]);
-			audioBuffer.setSample(1, sampleIndex, sampleValues[1]);
+			audioBuffer.setSample(0, sampleIndex, static_cast<float>(sampleValues[0]));
+			audioBuffer.setSample(1, sampleIndex, static_cast<float>(sampleValues[1]));
 		}
 	}
 	const size_t remainingSamples = audioBuffer.getNumSamples() - offset;
@@ -106,8 +102,8 @@ void BlankenhainAudioProcessor::processBlockwise(AudioSampleBuffer& audioBuffer,
 		int sampleIndex = offset + i;
 		alignas(16) double sampleValues[2];
 		processBuffer[i].store_aligned(sampleValues);
-		audioBuffer.setSample(0, sampleIndex, sampleValues[0]);
-		audioBuffer.setSample(1, sampleIndex, sampleValues[1]);
+		audioBuffer.setSample(0, sampleIndex, static_cast<float>(sampleValues[0]));
+		audioBuffer.setSample(1, sampleIndex, static_cast<float>(sampleValues[1]));
 	}
 }
 

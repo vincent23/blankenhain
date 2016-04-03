@@ -189,25 +189,25 @@ void DelayAudioProcessorEditor::sliderValueChanged (Slider* sliderThatWasMoved)
     if (sliderThatWasMoved == freeLengthSlider)
     {
         //[UserSliderCode_freeLengthSlider] -- add your slider handling code here..
-      processor.setLength(sliderThatWasMoved->getValue());
+      processor.setLength(static_cast<float>(sliderThatWasMoved->getValue()));
         //[/UserSliderCode_freeLengthSlider]
     }
     else if (sliderThatWasMoved == feedbackSlider)
     {
         //[UserSliderCode_feedbackSlider] -- add your slider handling code here..
-      processor.setFeedback(sliderThatWasMoved->getValue());
+      processor.setFeedback(static_cast<float>(sliderThatWasMoved->getValue()));
         //[/UserSliderCode_feedbackSlider]
     }
     else if (sliderThatWasMoved == panSlider)
     {
         //[UserSliderCode_panSlider] -- add your slider handling code here..
-      processor.setPan(sliderThatWasMoved->getValue());
+      processor.setPan(static_cast<float>(sliderThatWasMoved->getValue()));
         //[/UserSliderCode_panSlider]
     }
     else if (sliderThatWasMoved == drywetSlider)
     {
         //[UserSliderCode_drywetSlider] -- add your slider handling code here..
-      processor.setDrywet(sliderThatWasMoved->getValue());
+      processor.setDrywet(static_cast<float>(sliderThatWasMoved->getValue()));
         //[/UserSliderCode_drywetSlider]
     }
 
@@ -231,11 +231,11 @@ void DelayAudioProcessorEditor::timerCallback()
       juce::String("4: "       + juce::String(value / 16.f))
     + juce::String("\n2: "     + juce::String(value / 8.f))
     + juce::String("\n1: "     + juce::String(value / 4.f))
-    + juce::String("\n1\/2:"   + juce::String(value / 2.f))
-    + juce::String("\n1\/4: "  + juce::String(value))
-    + juce::String("\n1\/8: "  + juce::String(value *2.f))
-    + juce::String("\n1\/16: " + juce::String(value*4.f))
-    + juce::String("\n1\/32: " + juce::String(value*8.f))
+    + juce::String("\n1/2:"   + juce::String(value / 2.f))
+    + juce::String("\n1/4: "  + juce::String(value))
+    + juce::String("\n1/8: "  + juce::String(value *2.f))
+    + juce::String("\n1/16: " + juce::String(value*4.f))
+    + juce::String("\n1/32: " + juce::String(value*8.f))
     , juce::dontSendNotification);
 
   // Do not worry about a thing and let this neat function

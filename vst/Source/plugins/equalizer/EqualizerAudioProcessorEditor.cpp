@@ -180,31 +180,31 @@ void EqualizerAudioProcessorEditor::sliderValueChanged (Slider* sliderThatWasMov
     if (sliderThatWasMoved == lowSlider)
     {
         //[UserSliderCode_lowSlider] -- add your slider handling code here..
-      processor.setLow(sliderThatWasMoved->getValue());
+      processor.setLow(static_cast<float>(sliderThatWasMoved->getValue()));
         //[/UserSliderCode_lowSlider]
     }
     else if (sliderThatWasMoved == midSlider)
     {
         //[UserSliderCode_midSlider] -- add your slider handling code here..
-      processor.setMid(sliderThatWasMoved->getValue());
+      processor.setMid(static_cast<float>(sliderThatWasMoved->getValue()));
         //[/UserSliderCode_midSlider]
     }
     else if (sliderThatWasMoved == highFreqSlider)
     {
         //[UserSliderCode_highFreqSlider] -- add your slider handling code here..
-      processor.setHighFreq(sliderThatWasMoved->getValue());
+      processor.setHighFreq(static_cast<float>(sliderThatWasMoved->getValue()));
         //[/UserSliderCode_highFreqSlider]
     }
     else if (sliderThatWasMoved == lowFreqSlider)
     {
         //[UserSliderCode_lowFreqSlider] -- add your slider handling code here..
-      processor.setLowFreq(sliderThatWasMoved->getValue());
+      processor.setLowFreq(static_cast<float>(sliderThatWasMoved->getValue()));
         //[/UserSliderCode_lowFreqSlider]
     }
     else if (sliderThatWasMoved == highSlider)
     {
         //[UserSliderCode_highSlider] -- add your slider handling code here..
-      processor.setHigh(sliderThatWasMoved->getValue());
+      processor.setHigh(static_cast<float>(sliderThatWasMoved->getValue()));
         //[/UserSliderCode_highSlider]
     }
 

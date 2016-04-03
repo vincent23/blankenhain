@@ -18,7 +18,7 @@ namespace aux
     float db;
 
     if (linear != 0.0f)
-      db = 20.0f * log10(linear);
+      db = 20.0f * static_cast<float>(log10(linear));
     else
       db = -144.0f;  // effectively minus infinity
 
@@ -32,7 +32,7 @@ namespace aux
     if (db < -144.0f)
       linear = 0.f;
     else
-      linear = pow(10.f, db / 20.f);
+      linear = static_cast<float>(pow(10.f, db / 20.f));
 
     return linear;
   }

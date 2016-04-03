@@ -104,7 +104,7 @@ template <typename T>
 T CircularBuffer<T>::get(int iterator)
 {
   if (iterator < 0) return buffer[currentPosition];
-  else if (iterator < numberOfSamples)
+  else if (iterator < static_cast<int>(numberOfSamples))
   {
     return buffer[iterator];
   }

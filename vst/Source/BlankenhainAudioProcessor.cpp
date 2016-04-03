@@ -13,26 +13,6 @@ const String BlankenhainAudioProcessor::getName() const
 	return JucePlugin_Name;
 }
 
-const String BlankenhainAudioProcessor::getInputChannelName(int channelIndex) const
-{
-	return String(channelIndex + 1);
-}
-
-const String BlankenhainAudioProcessor::getOutputChannelName(int channelIndex) const
-{
-	return String(channelIndex + 1);
-}
-
-bool BlankenhainAudioProcessor::isInputChannelStereoPair(int index) const
-{
-	return true;
-}
-
-bool BlankenhainAudioProcessor::isOutputChannelStereoPair(int index) const
-{
-	return true;
-}
-
 bool BlankenhainAudioProcessor::acceptsMidi() const
 {
 #if JucePlugin_WantsMidiInput
@@ -144,14 +124,14 @@ void BlankenhainAudioProcessor::initializing(AudioSampleBuffer& buffer)
 
 	// In case we have more outputs than inputs, this code clears any output
 	// channels that didn't contain input data.
-	for (int i = getNumInputChannels(); i < getNumOutputChannels(); ++i) {
+	for (int i = getTotalNumInputChannels(); i < getTotalNumOutputChannels(); ++i) {
 		buffer.clear(i, 0, buffer.getNumSamples());
 	}
   // Ingain
   if (!this->getBypass())
   {
     for (int i = 0; i < buffer.getNumSamples(); i++) {
-      for (int channel = 0; channel < getNumInputChannels(); channel++) {
+      for (int channel = 0; channel < getTotalNumInputChannels(); channel++) {
         float* channelData = buffer.getWritePointer(channel);
         channelData[i] *= aux::decibelToLinear(this->getIngain());
       }
@@ -165,7 +145,7 @@ void BlankenhainAudioProcessor::finalizing(AudioSampleBuffer& buffer)
   if (!this->getBypass())
   {
     for (int i = 0; i < buffer.getNumSamples(); i++) {
-      for (int channel = 0; channel < getNumInputChannels(); channel++) {
+      for (int channel = 0; channel < getTotalNumInputChannels(); channel++) {
         float* channelData = buffer.getWritePointer(channel);
         channelData[i] *= aux::decibelToLinear(this->getOutgain());
       }

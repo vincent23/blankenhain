@@ -59,10 +59,10 @@ void EqualizerAudioProcessor::processBlock(AudioSampleBuffer& buffer, MidiBuffer
 
     for (int i = 0; i < buffer.getNumSamples(); i++)
     {
-      for (int channel = 0; channel < getNumInputChannels(); channel++)
+      for (int channel = 0; channel < getTotalNumInputChannels(); channel++)
       {
         float* channelData = buffer.getWritePointer(channel);
-        channelData[i] = do_3band(channelData[i]);
+        channelData[i] = static_cast<float>(do_3band(channelData[i]));
       }
     }
   }
@@ -146,7 +146,7 @@ var EqualizerAudioProcessor::getState()
   properties->setProperty("high", high->getValue());
   properties->setProperty("lowFreq", lowFreq->getValue());
   properties->setProperty("highFreq", highFreq->getValue());
-  return var(&properties);
+  return var(properties);
 }
 
 void EqualizerAudioProcessor::setState(const var & state)

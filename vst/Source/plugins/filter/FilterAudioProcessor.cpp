@@ -91,7 +91,7 @@ var FilterAudioProcessor::getState()
 	properties->setProperty("frequency", frequency->getValue());
 	properties->setProperty("resonance", resonance->getValue());
 	properties->setProperty("filterType", filterType);
-	return var(&properties);
+	return var(properties);
 }
 
 void FilterAudioProcessor::setState(const var & state)

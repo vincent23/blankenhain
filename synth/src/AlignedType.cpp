@@ -11,6 +11,8 @@ If _MSC_VER is defined, use the Windows stuff.
 If all else fails, just use malloc / free and disable SSE / AVX code.*/
 //return _mm_malloc(size, 16);
 
+#pragma warning (push)
+#pragma warning (disable : 4702)
 void* AlignedType::operator new (unsigned int size)
 {
 	//Handle size == 0, required by cpp reference
@@ -31,6 +33,7 @@ void* AlignedType::operator new (unsigned int size)
 	//Use std::new in case something goes wrong
 	return ::operator new(size);
 }
+#pragma warning (pop)
 
 void* AlignedType::operator new[](unsigned int size)
 {

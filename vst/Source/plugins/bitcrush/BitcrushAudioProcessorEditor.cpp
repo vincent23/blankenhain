@@ -143,19 +143,19 @@ void BitcrushAudioProcessorEditor::sliderValueChanged (Slider* sliderThatWasMove
     if (sliderThatWasMoved == bitcrushSlider)
     {
         //[UserSliderCode_bitcrushSlider] -- add your slider handling code here..
-		processor.setBitcrush(bitcrushSlider->getValue());
+		processor.setBitcrush(static_cast<float>(bitcrushSlider->getValue()));
         //[/UserSliderCode_bitcrushSlider]
     }
     else if (sliderThatWasMoved == downsampleSlider)
     {
         //[UserSliderCode_downsampleSlider] -- add your slider handling code here..
-		processor.setDownsample(downsampleSlider->getValue());
+		processor.setDownsample(static_cast<float>(downsampleSlider->getValue()));
         //[/UserSliderCode_downsampleSlider]
     }
     else if (sliderThatWasMoved == wetSlider)
     {
         //[UserSliderCode_wetSlider] -- add your slider handling code here..
-		processor.setWet(wetSlider->getValue());
+		processor.setWet(static_cast<float>(wetSlider->getValue()));
         //[/UserSliderCode_wetSlider]
     }
 

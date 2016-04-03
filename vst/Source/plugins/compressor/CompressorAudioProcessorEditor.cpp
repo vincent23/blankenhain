@@ -37,7 +37,7 @@ CompressorAudioProcessorEditor::CompressorAudioProcessorEditor (CompressorAudioP
     addAndMakeVisible (meterChild = new MeterComponent (p));
     addAndMakeVisible (attackSlider = new Slider ("attackSlider"));
     attackSlider->setTooltip (TRANS("in ms"));
-    attackSlider->setRange (0, 1000, 0);
+    attackSlider->setRange (0, 100, 0);
     attackSlider->setSliderStyle (Slider::RotaryVerticalDrag);
     attackSlider->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
     attackSlider->addListener (this);
@@ -52,7 +52,7 @@ CompressorAudioProcessorEditor::CompressorAudioProcessorEditor (CompressorAudioP
 
     addAndMakeVisible (releaseSlider = new Slider ("releaseSlider"));
     releaseSlider->setTooltip (TRANS("in ms"));
-    releaseSlider->setRange (0, 1000, 0);
+    releaseSlider->setRange (0, 100, 0);
     releaseSlider->setSliderStyle (Slider::RotaryVerticalDrag);
     releaseSlider->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
     releaseSlider->addListener (this);
@@ -67,7 +67,7 @@ CompressorAudioProcessorEditor::CompressorAudioProcessorEditor (CompressorAudioP
 
     addAndMakeVisible (thresholdSlider = new Slider ("thresholdSlider"));
     thresholdSlider->setTooltip (TRANS("in dB"));
-    thresholdSlider->setRange (-36, 0, 0);
+    thresholdSlider->setRange (-48, 0, 0);
     thresholdSlider->setSliderStyle (Slider::RotaryVerticalDrag);
     thresholdSlider->setTextBoxStyle (Slider::TextBoxBelow, false, 80, 20);
     thresholdSlider->addListener (this);
@@ -170,26 +170,26 @@ void CompressorAudioProcessorEditor::sliderValueChanged (Slider* sliderThatWasMo
     if (sliderThatWasMoved == attackSlider)
     {
         //[UserSliderCode_attackSlider] -- add your slider handling code here..
-      processor.setAttack(sliderThatWasMoved->getValue());
+      processor.setAttack(static_cast<float>(sliderThatWasMoved->getValue()));
         //[/UserSliderCode_attackSlider]
     }
     else if (sliderThatWasMoved == releaseSlider)
     {
         //[UserSliderCode_releaseSlider] -- add your slider handling code here..
-      processor.setRelease(sliderThatWasMoved->getValue());
+      processor.setRelease(static_cast<float>(sliderThatWasMoved->getValue()));
 
         //[/UserSliderCode_releaseSlider]
     }
     else if (sliderThatWasMoved == thresholdSlider)
     {
         //[UserSliderCode_thresholdSlider] -- add your slider handling code here..
-      processor.setThreshold(sliderThatWasMoved->getValue());
+      processor.setThreshold(static_cast<float>(sliderThatWasMoved->getValue()));
         //[/UserSliderCode_thresholdSlider]
     }
     else if (sliderThatWasMoved == ratioSlider)
     {
         //[UserSliderCode_ratioSlider] -- add your slider handling code here..
-      processor.setRatio(sliderThatWasMoved->getValue());
+      processor.setRatio(static_cast<float>(sliderThatWasMoved->getValue()));
 
         //[/UserSliderCode_ratioSlider]
     }
@@ -252,7 +252,7 @@ BEGIN_JUCER_METADATA
              constructorParams="p"/>
   <SLIDER name="attackSlider" id="bc4747722abe5c6" memberName="attackSlider"
           virtualName="" explicitFocusOrder="0" pos="8 16 96 88" tooltip="in ms"
-          min="0" max="1000" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
+          min="0" max="100" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <LABEL name="attackText" id="9e80b85aebab9868" memberName="attackText"
          virtualName="" explicitFocusOrder="0" pos="16 107 79 24" edTextCol="ff000000"
@@ -261,7 +261,7 @@ BEGIN_JUCER_METADATA
          bold="0" italic="0" justification="36"/>
   <SLIDER name="releaseSlider" id="61df89e44cdfef81" memberName="releaseSlider"
           virtualName="" explicitFocusOrder="0" pos="120 16 96 88" tooltip="in ms"
-          min="0" max="1000" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
+          min="0" max="100" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <LABEL name="releaseText" id="ccf625701324a5a1" memberName="releaseText"
          virtualName="" explicitFocusOrder="0" pos="128 107 79 24" edTextCol="ff000000"
@@ -270,7 +270,7 @@ BEGIN_JUCER_METADATA
          bold="0" italic="0" justification="36"/>
   <SLIDER name="thresholdSlider" id="df8a56a098604715" memberName="thresholdSlider"
           virtualName="" explicitFocusOrder="0" pos="120 136 96 88" tooltip="in dB"
-          min="-36" max="0" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
+          min="-48" max="0" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <LABEL name="thresholdText" id="d8ec008ec365bd94" memberName="thresholdText"
          virtualName="" explicitFocusOrder="0" pos="128 227 79 24" edTextCol="ff000000"

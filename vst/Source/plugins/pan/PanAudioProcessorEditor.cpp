@@ -110,7 +110,7 @@ void PanAudioProcessorEditor::sliderValueChanged (Slider* sliderThatWasMoved)
     if (sliderThatWasMoved == panningSlider)
     {
         //[UserSliderCode_panningSlider] -- add your slider handling code here..
-		processor.setPanning(sliderThatWasMoved->getValue());
+		processor.setPanning(static_cast<float>(sliderThatWasMoved->getValue()));
         //[/UserSliderCode_panningSlider]
     }
 

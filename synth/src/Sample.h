@@ -1,5 +1,5 @@
 #pragma once
-
+#pragma warning(disable: 4324)
 #include <emmintrin.h>
 #include "AlignedType.h"
 

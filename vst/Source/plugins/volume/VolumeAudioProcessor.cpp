@@ -31,7 +31,7 @@ void VolumeAudioProcessor::processBlock(AudioSampleBuffer& buffer, MidiBuffer& m
   if (!this->getBypass())
   {
     float currentVolumeL, currentVolumeR, bufferValue, oldVolumeL, oldVolumeR;
-    unsigned int maxInterpolation;
+    size_t maxInterpolation;
 
     if (stereoCoupling->getBoolValue())
     {
@@ -53,7 +53,11 @@ void VolumeAudioProcessor::processBlock(AudioSampleBuffer& buffer, MidiBuffer& m
             / maxInterpolation)));
 
       }
-      for (size_t bufferIteration = maxInterpolation; bufferIteration < buffer.getNumSamples(); bufferIteration++)
+      for (
+        size_t bufferIteration = maxInterpolation; 
+        static_cast<int>(bufferIteration) < buffer.getNumSamples(); 
+        bufferIteration++
+        )
       {
         bufferValue = buffer.getSample(/*channel*/ 0, bufferIteration);
         buffer.setSample(/*channel*/ 0, bufferIteration, bufferValue * currentVolumeL);
@@ -85,7 +89,7 @@ void VolumeAudioProcessor::processBlock(AudioSampleBuffer& buffer, MidiBuffer& m
 
 
       }
-      for (size_t bufferIteration = maxInterpolation; bufferIteration < buffer.getNumSamples(); bufferIteration++)
+      for (size_t bufferIteration = maxInterpolation; static_cast<int>(bufferIteration) < buffer.getNumSamples(); bufferIteration++)
       {
         bufferValue = buffer.getSample(/*channel*/ 0, bufferIteration);
         buffer.setSample(/*channel*/ 0, bufferIteration, bufferValue * currentVolumeL);
@@ -138,7 +142,7 @@ var VolumeAudioProcessor::getState()
 	properties->setProperty("volumeL", volumeL->getValue());
 	properties->setProperty("volumeR", volumeR->getValue());
 	properties->setProperty("stereoCoupling", stereoCoupling->getBoolValue());
-	return var(&properties);
+	return var(properties);
 }
 
 void VolumeAudioProcessor::setState(const var & state)

@@ -46,21 +46,20 @@ void DelayAudioProcessor::processBlock(AudioSampleBuffer& buffer, MidiBuffer& mi
   {
     AudioPlayHead::CurrentPositionInfo info;
     this->getPlayHead()->getCurrentPosition(info);
-    this->bpm = info.bpm;
+    this->bpm = static_cast<float>(info.bpm);
   }
   if (!this->getBypass())
   {
-    delayline.setSize(aux::millisecToSamples(length->getUnnormalizedValue()));
-    float feedback_ = feedback->getUnnormalizedValue();
+    delayline.setSize( static_cast<size_t>( aux::millisecToSamples(length->getUnnormalizedValue()) ) );
     for (int i = 0; i < buffer.getNumSamples(); i++)
     {
       float avg = 0.f;
-      for (int channel = 0; channel < getNumInputChannels(); channel++)
+      for (int channel = 0; channel < getTotalNumInputChannels(); channel++)
       {
         float* channelData = buffer.getWritePointer(channel);
         avg += channelData[i];
       }
-      avg /= static_cast<float>(getNumInputChannels());
+      avg /= static_cast<float>(getTotalNumInputChannels());
 
       float original0 = buffer.getWritePointer(0)[i];
       float original1 = buffer.getWritePointer(1)[i];
@@ -101,7 +100,7 @@ var DelayAudioProcessor::getState()
   properties->setProperty("pan", pan->getValue());
   properties->setProperty("feedback", feedback->getValue());
   properties->setProperty("drywet", drywet->getValue());
-  return var(&properties);
+  return var(properties);
 }
 
 void DelayAudioProcessor::setState(const var & state)
