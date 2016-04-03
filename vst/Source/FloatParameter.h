@@ -1,7 +1,6 @@
 #pragma once
 
 #include <juce>
-#include <functional>
 
 // Internally all floats should be normalized, since 
 // this is necessary for communication with DAW-Host.
