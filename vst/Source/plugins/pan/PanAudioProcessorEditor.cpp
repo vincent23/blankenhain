@@ -52,6 +52,10 @@ PanAudioProcessorEditor::PanAudioProcessorEditor (PanAudioProcessor& p)
     label->setColour (TextEditor::textColourId, Colours::black);
     label->setColour (TextEditor::backgroundColourId, Colour (0x00000000));
 
+    addAndMakeVisible (monoButton = new ToggleButton ("monoButton"));
+    monoButton->setButtonText (TRANS("mono"));
+    monoButton->addListener (this);
+
 
     //[UserPreSize]
     //[/UserPreSize]
@@ -72,6 +76,7 @@ PanAudioProcessorEditor::~PanAudioProcessorEditor()
     meterChild = nullptr;
     panningSlider = nullptr;
     label = nullptr;
+    monoButton = nullptr;
 
 
     //[Destructor]. You can add your own custom destruction code here..
@@ -97,7 +102,8 @@ void PanAudioProcessorEditor::resized()
 
     meterChild->setBounds (200, 0, 232, 304);
     panningSlider->setBounds (proportionOfWidth (0.0381f), 24, 168, proportionOfHeight (0.6400f));
-    label->setBounds (proportionOfWidth (-0.0381f), proportionOfHeight (0.7733f), proportionOfWidth (0.5405f), proportionOfHeight (0.1500f));
+    label->setBounds (proportionOfWidth (-0.0381f), proportionOfHeight (0.7200f), proportionOfWidth (0.5405f), proportionOfHeight (0.1500f));
+    monoButton->setBounds (72, 256, 64, 24);
     //[UserResized] Add your own custom resize handling here..
     //[/UserResized]
 }
@@ -118,12 +124,29 @@ void PanAudioProcessorEditor::sliderValueChanged (Slider* sliderThatWasMoved)
     //[/UsersliderValueChanged_Post]
 }
 
+void PanAudioProcessorEditor::buttonClicked (Button* buttonThatWasClicked)
+{
+    //[UserbuttonClicked_Pre]
+    //[/UserbuttonClicked_Pre]
+
+    if (buttonThatWasClicked == monoButton)
+    {
+        //[UserButtonCode_monoButton] -- add your button handler code here..
+      processor.setMono(!processor.getMono());
+        //[/UserButtonCode_monoButton]
+    }
+
+    //[UserbuttonClicked_Post]
+    //[/UserbuttonClicked_Post]
+}
+
 
 
 //[MiscUserCode] You can add your own definitions of your custom methods or any other code here...
 void PanAudioProcessorEditor::timerCallback()
 {
 	panningSlider->setValue(processor.getPanning(), juce::dontSendNotification);
+  //monoButton->setToggleState(processor.getMono());
 
 	// Do not worry about a thing and let this neat function
 	// do all the paint/repaint stuff regarding metering.
@@ -157,10 +180,13 @@ BEGIN_JUCER_METADATA
           min="-50" max="50" int="1" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
           textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
   <LABEL name="new label" id="2889253ab4f709e" memberName="label" virtualName=""
-         explicitFocusOrder="0" pos="-3.81% 77.333% 54.048% 15%" edTextCol="ff000000"
+         explicitFocusOrder="0" pos="-3.81% 72% 54.048% 15%" edTextCol="ff000000"
          edBkgCol="0" labelText="panning" editableSingleClick="0" editableDoubleClick="0"
          focusDiscardsChanges="0" fontname="Default font" fontsize="26.300000000000000711"
          bold="0" italic="0" justification="36"/>
+  <TOGGLEBUTTON name="monoButton" id="31fafbfa9c1ce92d" memberName="monoButton"
+                virtualName="" explicitFocusOrder="0" pos="72 256 64 24" buttonText="mono"
+                connectedEdges="0" needsCallback="1" radioGroupId="0" state="0"/>
 </JUCER_COMPONENT>
 
 END_JUCER_METADATA

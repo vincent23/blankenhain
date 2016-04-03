@@ -18,6 +18,8 @@ public:
 	AudioProcessorEditor* createEditor() override;
 
 	void setPanning(float);
+  void setMono(bool);
+  bool getMono();
 	float getPanning();
 
 protected:
@@ -26,6 +28,7 @@ protected:
 
 private:
 	FloatParameter *panning;
+  BoolParameter *mono;
 
 	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(PanAudioProcessor)
 };

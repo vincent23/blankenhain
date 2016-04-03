@@ -6,7 +6,9 @@
 PanAudioProcessor::PanAudioProcessor()
 {
 	panning = new FloatParameter(0.0f, "panning", 0.5f, NormalizedRange(-50.f, 50.f));
-	addParameter(panning);
+  mono = new BoolParameter("mono", false);
+  addParameter(panning);
+  addParameter(mono);
 }
 
 void PanAudioProcessor::prepareToPlay(double sampleRate, int samplesPerBlock)
@@ -40,7 +42,7 @@ void PanAudioProcessor::processBlock(AudioSampleBuffer& buffer, MidiBuffer& midi
     oldPanning = panning->getNormalizedOldValue();
     maxInterpolation = int(buffer.getNumSamples() * panning->getBufferScalingValue());
 
-    if (getNumInputChannels() == 1)
+    if (getMono())
     {
       for (size_t interpolationIteration = 0; interpolationIteration < maxInterpolation; interpolationIteration++)
       {
@@ -97,6 +99,10 @@ void PanAudioProcessor::setPanning(float value) {
   panning->endChangeGesture();
 }
 
+void PanAudioProcessor::setMono(bool value)
+{
+  mono->setBoolValue(value);
+}
 
 var PanAudioProcessor::getState()
 {
@@ -112,6 +118,11 @@ void PanAudioProcessor::setState(const var & state)
 
 float PanAudioProcessor::getPanning() {
 	return panning->getUnnormalizedValue();
+}
+
+bool PanAudioProcessor::getMono()
+{
+  return mono->getBoolValue();
 }
 
 #endif
