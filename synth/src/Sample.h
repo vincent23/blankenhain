@@ -57,10 +57,10 @@ struct alignas(16) Sample : public AlignedType
 	 * @return The values as a Sample.
 	 */
 	//static
-	Sample load_aligned(const double* ptr)
-	{
-		return Sample(_mm_load_pd(ptr));
-	}
+  void load_aligned(const double* ptr)
+  {
+    v = _mm_load_pd(ptr);
+  }
 
 	/**
 	 * Write the sample values as two doubles to the given address.
@@ -87,4 +87,9 @@ inline Sample operator*(const Sample& a, const Sample& b) {
 
 inline Sample operator/(const Sample& a, const Sample& b) {
 	return Sample(_mm_div_pd(a.v, b.v));
+}
+
+Sample load_aligned(const double* ptr)
+{
+  return Sample(_mm_load_pd(ptr));
 }
