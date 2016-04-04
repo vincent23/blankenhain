@@ -111,6 +111,13 @@ Sample abs(Sample const& in)
   return load_aligned(lr);
 }
 
+double avg(Sample const& in)
+{
+  alignas(16) double lr[2];
+  in.store_aligned(lr);
+  return (lr[0] + lr[1]) / 2.;
+}
+
 double max(Sample const& in)
 {
   alignas(16) double lr[2];

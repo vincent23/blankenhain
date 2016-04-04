@@ -48,14 +48,16 @@ private:
   FloatParameter* pan;
   FloatParameter* feedback;
   FloatParameter* drywet;
-  CircularBuffer<float> delayline;
+  CircularBuffer<Sample> delayline;
   float bpm = 120.f;
 
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(DelayAudioProcessor)
 };
 
 
-
+void processDelay(Sample* data, size_t numberOfSamples,
+  float pan, float length, float feedback, float drywet,
+  CircularBuffer<Sample>& delayline);
 
 
 #endif  // DELAYAUDIOPROCESSOR_H_INCLUDED

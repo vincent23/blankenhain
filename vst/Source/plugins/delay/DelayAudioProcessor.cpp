@@ -50,39 +50,15 @@ void DelayAudioProcessor::processBlock(AudioSampleBuffer& buffer, MidiBuffer& mi
   }
   if (!this->getBypass())
   {
-    delayline.setSize( static_cast<size_t>( aux::millisecToSamples(length->getUnnormalizedValue()) ) );
-    for (int i = 0; i < buffer.getNumSamples(); i++)
-    {
-      float avg = 0.f;
-      for (int channel = 0; channel < getTotalNumInputChannels(); channel++)
+    processBlockwise<FilterConstants::blockSize>(
+      buffer, internalBuffer, 
+      [this](size_t samples, size_t offset)
       {
-        float* channelData = buffer.getWritePointer(channel);
-        avg += channelData[i];
+        processDelay(internalBuffer, samples,
+          getPan(), getLength(), getFeedback(), getDrywet(),
+          delayline);
       }
-      avg /= static_cast<float>(getTotalNumInputChannels());
-
-      float original0 = buffer.getWritePointer(0)[i];
-      float original1 = buffer.getWritePointer(1)[i];
-      if (drywet->getUnnormalizedValue() > 0.5)
-      {
-        original0 *= (1 - drywet->getUnnormalizedValue()) * 2.f;
-        original1 *= (1 - drywet->getUnnormalizedValue()) * 2.f;
-      }
-      float line = delayline.get();
-      if (drywet->getUnnormalizedValue() < 0.5) line *= drywet->getUnnormalizedValue() * 2.f;
-
-      if(pan->getUnnormalizedValue() <= 0.)
-      {
-        buffer.getWritePointer(0)[i] = original0 +  line;
-        buffer.getWritePointer(1)[i] = original1 + (line * (1.f + pan->getUnnormalizedValue()));
-      }
-      else if (pan->getUnnormalizedValue() >= 0.)
-      {
-        buffer.getWritePointer(0)[i] = original0 + (line * (1.f - pan->getUnnormalizedValue()));
-        buffer.getWritePointer(1)[i] = original1 + line;
-      }
-      delayline.push((delayline.get()) * feedback->getUnnormalizedValue() + avg);
-    }
+    );
   }
   this->finalizing(buffer);
   this->meteringBuffer(buffer);
@@ -162,6 +138,37 @@ float DelayAudioProcessor::getBPM() const
 float DelayAudioProcessor::getFeedback() const
 {
   return feedback->getUnnormalizedValue();
+}
+
+// Pan between -1 and 1
+void processDelay(Sample* data, size_t numberOfSamples,
+  float pan, float length, float feedback, float drywet,
+  CircularBuffer<Sample>& delayline)
+{
+  delayline.setSize(static_cast<size_t>(aux::millisecToSamples(length)));
+  for (size_t i = 0; i < numberOfSamples; i++)
+  {
+    double avg_ = avg(data[i]);
+    Sample original = data[i];
+    Sample line = delayline.get();
+
+    if (drywet > 0.5)
+    {
+      original *= Sample((1 - drywet) * 2.f);
+    }
+    else line *= Sample(drywet * 2.f);
+
+    // Pan
+    alignas(16) double lr[2];
+    line.store_aligned(lr);
+    lr[0] = lr[0] * (1.f - std::max(0.0f, pan));
+    lr[1] = lr[1] * (1.f + std::min(0.0f, pan));
+    line = load_aligned(lr);
+
+    data[i] = original + line;
+
+    delayline.push((delayline.get()) * Sample(feedback) + Sample(avg_));
+  }
 }
 
 #endif
