@@ -11,7 +11,7 @@ struct alignas(16) Sample : public AlignedType
 	/**
 	 * Left and right volume two doubles packed in a SSE register.
 	 */
-	Sample() {}
+	Sample() : v(_mm_set1_pd(0.) ) {}
 	explicit Sample(const double singleSample) {v = _mm_set1_pd(singleSample);}
 	Sample(__m128d in) { v = in; }
 	Sample(const Sample& x) { v = x.v; }
@@ -67,7 +67,7 @@ struct alignas(16) Sample : public AlignedType
 	 * Note that the address must be aligned to 16-byte boundaries.
 	 * @param The location to which the values should be written.
 	 */
-	void store_aligned(double* ptr)
+	void store_aligned(double* ptr) const
 	{
 		_mm_store_pd(ptr, v);
 	}
