@@ -35,3 +35,12 @@ protected:
 private:
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(BitcrushAudioProcessor)
 };
+
+// Channel number is expected to be == 2
+// All parameter values between 0 and 1
+void processBitcrush(Sample* data, size_t numberOfSamples, float bitcrush, float downsample,
+  float wet);
+
+// Casts value of sample to int (discretization)
+// and back to double
+Sample discretize(Sample const& sample);

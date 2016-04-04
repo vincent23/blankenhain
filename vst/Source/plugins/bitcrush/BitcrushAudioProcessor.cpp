@@ -34,44 +34,9 @@ void BitcrushAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuffer
 	}
   if (!this->getBypass())
   {
-    float crush = bitcrush->getUnnormalizedValue();
-    float wet_ = wet->getUnnormalizedValue();
-    int groupedSamples = static_cast<int>(std::max(1.f, downsample->getUnnormalizedValue() * 100.f));
-    float bitdepth = 12.f * (1.f - crush) + 1.f * crush;
-    int steps = static_cast<int>(exp2(bitdepth));
-
-    // This is the place where you'd normally do the guts of your plugin's
-    // audio processing...
-    for (int channel = 0; channel < getTotalNumInputChannels(); channel++)
-    {
-      for (int sample = 0; sample < buffer.getNumSamples() - groupedSamples; sample += groupedSamples) {
-        float averagedSample = 0.;
-        for (int i = 0; i < groupedSamples; i++) {
-          averagedSample += buffer.getSample(channel, i + sample) / groupedSamples;
-        }
-
-        int discretizedSample = static_cast<int>(averagedSample) * steps;
-        float crushed = float(discretizedSample) / steps;
-
-        for (int i = 0; i < groupedSamples; i++) {
-          float sampleValue = buffer.getSample(channel, i + sample);
-          buffer.setSample(channel, i + sample, sampleValue * (1.f - wet_) + crushed * wet_);
-        }
-      }
-
-      float averagedSample = 0.;
-      for (int i = (buffer.getNumSamples() / groupedSamples) * groupedSamples; i < buffer.getNumSamples(); i++) {
-        averagedSample += buffer.getSample(channel, i) / (buffer.getNumSamples() % groupedSamples);
-      }
-
-      int discretizedSample = static_cast<int>(averagedSample) * steps;
-      float crushed = float(discretizedSample) / static_cast<float>(steps);
-
-      for (int i = (buffer.getNumSamples() / groupedSamples) * groupedSamples; i < buffer.getNumSamples(); i++) {
-        float sampleValue = buffer.getSample(channel, i);
-        buffer.setSample(channel, i, sampleValue * (1.f - wet_) + crushed * wet_);
-      }
-    }
+    processBlockwise<FilterConstants::blockSize>(buffer, internalBuffer, [this](size_t samples, size_t offset) {
+      processBitcrush(internalBuffer, samples, getBitcrush(), getDownsample(), getWet());
+    });
   }
   this->finalizing(buffer);
 	this->meteringBuffer(buffer);
@@ -132,7 +97,60 @@ float BitcrushAudioProcessor::getDownsample() const
 
 float BitcrushAudioProcessor::getWet() const
 {
-	return wet->getUnnormalizedValue();
+  return wet->getUnnormalizedValue();
+}
+
+// Casts value of sample to int (discretization)
+// and back to double
+Sample discretize(Sample const& sample)
+{
+  alignas(16) double lr[2];
+  sample.store_aligned(lr);
+  lr[0] = static_cast<double>(static_cast<int>(lr[0]));
+  lr[1] = static_cast<double>(static_cast<int>(lr[1]));
+  return load_aligned(lr);
+}
+
+// Channel number is expected to be == 2
+// All parameter values between 0 and 1
+void processBitcrush(Sample* data, size_t numberOfSamples, float crush, float downsample,
+  float wet)
+{
+  int groupedSamples = static_cast<int>(std::max(1.f, downsample * 100.f));
+  float bitdepth = 12.f * (1.f - crush) + 1.f * crush;
+  int steps = static_cast<int>(exp2(bitdepth));
+
+  for (size_t sample = 0; sample < numberOfSamples - groupedSamples; sample += groupedSamples)
+  {
+    Sample averagedSample(0., 0.);
+    for (int i = 0; i < groupedSamples; i++) 
+    {
+      averagedSample += data[i + sample] / Sample((double)groupedSamples);
+    }
+
+    Sample discretizedSample = discretize(averagedSample * Sample(static_cast<double>(steps)));
+    discretizedSample /= Sample(static_cast<double>(steps));
+
+    for (int i = 0; i < groupedSamples; i++) {
+      Sample sampleValue = data[i + sample];
+      data[i + sample] =  sampleValue * Sample((1. - wet) + crush * wet);
+    }
+  }
+
+  Sample averagedSample(0., 0.);
+  for (size_t i = (numberOfSamples / groupedSamples) * groupedSamples; i < numberOfSamples; i++)
+  {
+    averagedSample += data[i] / Sample(static_cast<double>((numberOfSamples % groupedSamples)));
+  }
+
+  Sample discretizedSample = discretize(averagedSample * Sample(static_cast<double>(steps)));
+  discretizedSample /= Sample(static_cast<double>(steps));
+
+  for (size_t i = (numberOfSamples / groupedSamples) * groupedSamples; i < numberOfSamples; i++)
+  {
+    Sample sampleValue = data[i];
+    data[i] = sampleValue * Sample((1. - wet) + crush * wet);
+  }
 }
 
 #endif
