@@ -181,30 +181,6 @@
     </GROUP>
   </MAINGROUP>
   <EXPORTFORMATS>
-    <LINUX_MAKE targetFolder="Builds/ExamplePlugin/LinuxMakefile" vstFolder=""
-                extraDefs="PLUGIN_EXAMPLE&#10;JucePlugin_Name=\&quot;Blankenhain\\ Example\&quot;&#10;JucePlugin_Desc=\&quot;Example\\ plugin\\ as\\ a\\ template\\ for\\ new\\ ones.\&quot;&#10;JucePlugin_PluginCode='BhEX'"
-                extraCompilerFlags="-I../../../Source">
-      <CONFIGURATIONS>
-        <CONFIGURATION name="Debug" libraryPath="/usr/X11R6/lib/" isDebug="1" optimisation="1"
-                       targetName="bh_example" binaryPath="..\builtPlugins"/>
-        <CONFIGURATION name="Release" libraryPath="/usr/X11R6/lib/" isDebug="0" optimisation="3"
-                       targetName="bh_example" binaryPath="..\builtPlugins"/>
-      </CONFIGURATIONS>
-      <MODULEPATHS>
-        <MODULEPATH id="juce_core" path="juce_modules"/>
-        <MODULEPATH id="juce_events" path="juce_modules"/>
-        <MODULEPATH id="juce_graphics" path="juce_modules"/>
-        <MODULEPATH id="juce_data_structures" path="juce_modules"/>
-        <MODULEPATH id="juce_gui_basics" path="juce_modules"/>
-        <MODULEPATH id="juce_gui_extra" path="juce_modules"/>
-        <MODULEPATH id="juce_audio_basics" path="juce_modules"/>
-        <MODULEPATH id="juce_audio_devices" path="juce_modules"/>
-        <MODULEPATH id="juce_audio_formats" path="juce_modules"/>
-        <MODULEPATH id="juce_audio_plugin_client" path="juce_modules"/>
-        <MODULEPATH id="juce_audio_processors" path="juce_modules"/>
-        <MODULEPATH id="synth" path="../../blankenhain"/>
-      </MODULEPATHS>
-    </LINUX_MAKE>
     <VS2015 targetFolder="Builds/ExamplePlugin/VisualStudio2015" vstFolder=""
             extraDefs="PLUGIN_EXAMPLE&#10;JucePlugin_Name=&quot;Blankenhain\ Example&quot;&#10;JucePlugin_Desc=&quot;Example\ plugin\ as\ a\ template\ for\ new\ ones.&quot;&#10;JucePlugin_PluginCode='BhEX'"
             extraCompilerFlags="/I..\..\..\Source" vst3Folder="" extraLinkerFlags="">
@@ -229,29 +205,6 @@
         <MODULEPATH id="synth" path="../../blankenhain"/>
       </MODULEPATHS>
     </VS2015>
-    <LINUX_MAKE targetFolder="Builds/Filter/LinuxMakefile" extraDefs="PLUGIN_FILTER&#10;JucePlugin_Name=\&quot;Blankenhain\\ Filter\&quot;&#10;JucePlugin_Desc=\&quot;Filter\\ plugin.\&quot;&#10;JucePlugin_PluginCode='BhFI'"
-                extraCompilerFlags="-I../../../Source" vstFolder="">
-      <CONFIGURATIONS>
-        <CONFIGURATION name="Debug" libraryPath="/usr/X11R6/lib/" isDebug="1" optimisation="1"
-                       targetName="bh_example" binaryPath="..\builtPlugins"/>
-        <CONFIGURATION name="Release" libraryPath="/usr/X11R6/lib/" isDebug="0" optimisation="3"
-                       targetName="bh_example" binaryPath="..\builtPlugins"/>
-      </CONFIGURATIONS>
-      <MODULEPATHS>
-        <MODULEPATH id="juce_gui_extra" path="juce_modules"/>
-        <MODULEPATH id="juce_gui_basics" path="juce_modules"/>
-        <MODULEPATH id="juce_graphics" path="juce_modules"/>
-        <MODULEPATH id="juce_events" path="juce_modules"/>
-        <MODULEPATH id="juce_data_structures" path="juce_modules"/>
-        <MODULEPATH id="juce_core" path="juce_modules"/>
-        <MODULEPATH id="juce_audio_processors" path="juce_modules"/>
-        <MODULEPATH id="juce_audio_plugin_client" path="juce_modules"/>
-        <MODULEPATH id="juce_audio_formats" path="juce_modules"/>
-        <MODULEPATH id="juce_audio_devices" path="juce_modules"/>
-        <MODULEPATH id="juce_audio_basics" path="juce_modules"/>
-        <MODULEPATH id="synth" path="../../blankenhain"/>
-      </MODULEPATHS>
-    </LINUX_MAKE>
     <VS2015 targetFolder="Builds/Filter/VisualStudio2015" extraDefs="PLUGIN_FILTER&#10;JucePlugin_Name=&quot;Blankenhain\ Filter&quot;&#10;JucePlugin_Desc=&quot;Filter\ Plugin.&quot;&#10;JucePlugin_PluginCode='BhFI'"
             extraCompilerFlags="/I..\..\..\Source" vstFolder="" vst3Folder=""
             extraLinkerFlags="">
