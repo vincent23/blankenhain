@@ -54,7 +54,7 @@ AudioProcessorEditor* KickAudioProcessor::createEditor()
 var KickAudioProcessor::getState()
 {
 	DynamicObject* properties = new DynamicObject;
-	return var(&properties);
+	return var(properties);
 }
 
 void KickAudioProcessor::setState(const var & state)
