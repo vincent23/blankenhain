@@ -71,6 +71,14 @@ struct alignas(16) Sample : public AlignedType
 	{
 		_mm_store_pd(ptr, v);
 	}
+
+  bool areBothSmaller(Sample const& in)
+  {
+    alignas(16) double in_[2], this_[2];
+    in.store_aligned(in_);
+    in.store_aligned(this_);
+    return this_[0] < in_[0] && this_[1] < in_[1];
+  }
 };
 
 inline Sample operator+(const Sample& a, const Sample& b) {
@@ -92,4 +100,20 @@ inline Sample operator/(const Sample& a, const Sample& b) {
 Sample load_aligned(const double* ptr)
 {
   return Sample(_mm_load_pd(ptr));
+}
+
+Sample abs(Sample const& in)
+{
+  alignas(16) double lr[2];
+  in.store_aligned(lr);
+  if (lr[0] < 0.) lr[0] *= -1.;
+  if (lr[1] < 0.) lr[1] *= -1.;
+  return load_aligned(lr);
+}
+
+double max(Sample const& in)
+{
+  alignas(16) double lr[2];
+  in.store_aligned(lr);
+  return lr[0] < lr[1] ? lr[1] : lr[0];
 }
