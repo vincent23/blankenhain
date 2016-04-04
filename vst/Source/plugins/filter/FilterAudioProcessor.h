@@ -37,7 +37,6 @@ private:
 		Notch,
 	} filterType;
 
-	Sample* internalBuffer = new Sample[FilterConstants::blockSize];
 	Filter* filter = new Filter;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(FilterAudioProcessor)

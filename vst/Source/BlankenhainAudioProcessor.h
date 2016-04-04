@@ -61,6 +61,8 @@ protected:
 	template<size_t BlockSize, typename ProcessFunction>
 	void processBlockwise(AudioSampleBuffer& audioBuffer, Sample* processBuffer, ProcessFunction processFunction);
 
+  Sample* internalBuffer = new Sample[FilterConstants::blockSize];
+
 	double lastKnownSampleRate = 44100;
 	int lastKnownBlockSize = 512;
 
