@@ -8,7 +8,6 @@
 #include "plugins/bitcrush/BitcrushAudioProcessor.h"
 #include "plugins/kick/KickAudioProcessor.h"
 #include "plugins/compressor/CompressorAudioProcessor.h"
-#include "plugins/limiter/LimiterAudioProcessor.h"
 #include "plugins/equalizer/EqualizerAudioProcessor.h"
 #include "plugins/delay/DelayAudioProcessor.h"
 
@@ -32,8 +31,6 @@ AudioProcessor* JUCE_CALLTYPE createPluginFilter()
 	return new KickAudioProcessor();
 #elif PLUGIN_COMPRESSOR
 	return new CompressorAudioProcessor();
-#elif PLUGIN_LIMITER
-  return new LimiterAudioProcessor();
 #elif PLUGIN_EQUALIZER
   return new EqualizerAudioProcessor();
 #elif PLUGIN_DELAY
