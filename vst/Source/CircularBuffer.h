@@ -11,6 +11,9 @@
 #ifndef CIRCULARBUFFER_H_INCLUDED
 #define CIRCULARBUFFER_H_INCLUDED
 
+#pragma once
+#include <juce>
+
 template <typename T>
 class CircularBuffer
 {

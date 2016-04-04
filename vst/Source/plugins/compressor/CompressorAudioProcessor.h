@@ -34,13 +34,18 @@ protected:
 	void setState(const var& state) override;
 
 private:
-	float envelope[2] = {};
+	Sample* envelope;
   FloatParameter *release;
   FloatParameter *attack;
   FloatParameter *ratio;
   FloatParameter *threshold;
   BoolParameter *limiterOn;
-  CircularBuffer<float> delayLine;
+  CircularBuffer<Sample> delayLine;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(CompressorAudioProcessor)
 };
+
+void processCompressor(Sample* data, size_t numberOfSamples,
+  float release, float attack, float ratio, float threshold,
+  bool limiterOn,
+  CircularBuffer<Sample>& delayLine, Sample& envelope);

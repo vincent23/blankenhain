@@ -116,4 +116,5 @@ T CircularBuffer<T>::get(int iterator)
 
 // instance float circular buffer
 template CircularBuffer<float>;
+template CircularBuffer<Sample>;
 #endif
