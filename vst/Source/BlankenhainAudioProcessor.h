@@ -103,17 +103,20 @@ void BlankenhainAudioProcessor::processBlockwise(AudioSampleBuffer& audioBuffer,
 
   // Take care of the remaining samples
 	const size_t remainingSamples = audioBuffer.getNumSamples() - offset;
-	for (size_t i = 0; i < remainingSamples; i++) {
-		int sampleIndex = offset + i;
-		processBuffer[i] = Sample(audioBuffer.getSample(0, sampleIndex), audioBuffer.getSample(1, sampleIndex));
-	}
-	processFunction(remainingSamples, offset);
-	for (size_t i = 0; i < remainingSamples; i++) {
-		int sampleIndex = offset + i;
-		alignas(16) double sampleValues[2];
-		processBuffer[i].store_aligned(sampleValues);
-		audioBuffer.setSample(0, sampleIndex, static_cast<float>(sampleValues[0]));
-		audioBuffer.setSample(1, sampleIndex, static_cast<float>(sampleValues[1]));
-	}
+  if (remainingSamples != 0u)
+  {
+    for (size_t i = 0; i < remainingSamples; i++) {
+      int sampleIndex = offset + i;
+      processBuffer[i] = Sample(audioBuffer.getSample(0, sampleIndex), audioBuffer.getSample(1, sampleIndex));
+    }
+    processFunction(remainingSamples, offset);
+    for (size_t i = 0; i < remainingSamples; i++) {
+      int sampleIndex = offset + i;
+      alignas(16) double sampleValues[2];
+      processBuffer[i].store_aligned(sampleValues);
+      audioBuffer.setSample(0, sampleIndex, static_cast<float>(sampleValues[0]));
+      audioBuffer.setSample(1, sampleIndex, static_cast<float>(sampleValues[1]));
+    }
+  }
 }
 
