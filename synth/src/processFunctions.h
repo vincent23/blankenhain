@@ -153,4 +153,9 @@ namespace effects
     void processEqualizer(Sample* data, size_t numberOfSamples, Sample_EQSTATE* es,
       float low, float mid, float high, float lowfreq, float highfreq);
   }
+
+  namespace distortion
+  {
+    void processNonlinDistortion(Sample *data, size_t numberOfSamples, size_t algorithm, float inGain, size_t iterations);
+  }
 }

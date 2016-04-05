@@ -42,6 +42,16 @@
               resource="0" file="Source/components/WaveVerschwurbelungComponent.h"/>
       </GROUP>
       <GROUP id="{19EF4637-6B84-4B6A-69FF-029D7E3D590C}" name="plugins">
+        <GROUP id="{DFE253B1-F444-6430-27A0-5BEFDF82BEE0}" name="nonlindistortion">
+          <FILE id="NOhvNR" name="NonlinDistortionAudioProcessor.cpp" compile="1"
+                resource="0" file="Source/plugins/nonlindistortion/NonlinDistortionAudioProcessor.cpp"/>
+          <FILE id="j3CWC1" name="NonlinDistortionAudioProcessor.h" compile="0"
+                resource="0" file="Source/plugins/nonlindistortion/NonlinDistortionAudioProcessor.h"/>
+          <FILE id="iF7q00" name="NonlinDistortionAudioProcessorEditor.cpp" compile="1"
+                resource="0" file="Source/plugins/nonlindistortion/NonlinDistortionAudioProcessorEditor.cpp"/>
+          <FILE id="AhMDFA" name="NonlinDistortionAudioProcessorEditor.h" compile="0"
+                resource="0" file="Source/plugins/nonlindistortion/NonlinDistortionAudioProcessorEditor.h"/>
+        </GROUP>
         <GROUP id="{6F861561-BCD1-987F-F4EF-F948FF59D028}" name="delay">
           <FILE id="X6yOq4" name="DelayAudioProcessor.cpp" compile="1" resource="0"
                 file="Source/plugins/delay/DelayAudioProcessor.cpp"/>
@@ -387,6 +397,31 @@
       <CONFIGURATIONS>
         <CONFIGURATION name="Debug" winWarningLevel="4" generateManifest="1" winArchitecture="32-bit"
                        isDebug="1" optimisation="1" targetName="bh_delay" binaryPath="..\builtPlugins"/>
+        <CONFIGURATION name="Release" winWarningLevel="4" generateManifest="1" winArchitecture="32-bit"
+                       isDebug="0" optimisation="3" targetName="Blankenhain"/>
+      </CONFIGURATIONS>
+      <MODULEPATHS>
+        <MODULEPATH id="synth" path="../../blankenhain"/>
+        <MODULEPATH id="juce_gui_extra" path="juce_modules"/>
+        <MODULEPATH id="juce_gui_basics" path="juce_modules"/>
+        <MODULEPATH id="juce_graphics" path="juce_modules"/>
+        <MODULEPATH id="juce_events" path="juce_modules"/>
+        <MODULEPATH id="juce_data_structures" path="juce_modules"/>
+        <MODULEPATH id="juce_core" path="juce_modules"/>
+        <MODULEPATH id="juce_audio_processors" path="juce_modules"/>
+        <MODULEPATH id="juce_audio_plugin_client" path="juce_modules"/>
+        <MODULEPATH id="juce_audio_formats" path="juce_modules"/>
+        <MODULEPATH id="juce_audio_devices" path="juce_modules"/>
+        <MODULEPATH id="juce_audio_basics" path="juce_modules"/>
+      </MODULEPATHS>
+    </VS2015>
+    <VS2015 targetFolder="Builds/Distortion/VisualStudio2015" vstFolder=""
+            extraDefs="PLUGIN_NONLIN_DISTORTION&#10;JucePlugin_Name=&quot;Blankenhain\ Nonlin_Dist&quot;&#10;JucePlugin_Desc=&quot;Nonlin_Distortion&quot;&#10;JucePlugin_PluginCode='BhND'&#10;BLANKENHAIN_CHECKS"
+            extraCompilerFlags="/I..\..\..\Source">
+      <CONFIGURATIONS>
+        <CONFIGURATION name="Debug" winWarningLevel="4" generateManifest="1" winArchitecture="32-bit"
+                       isDebug="1" optimisation="1" targetName="bh_nonlin_distortion"
+                       binaryPath="..\builtPlugins"/>
         <CONFIGURATION name="Release" winWarningLevel="4" generateManifest="1" winArchitecture="32-bit"
                        isDebug="0" optimisation="3" targetName="Blankenhain"/>
       </CONFIGURATIONS>

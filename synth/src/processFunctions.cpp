@@ -300,4 +300,98 @@ namespace effects
       }
     }
   }
+
+  namespace distortion
+  {
+    void processNonlinDistortion(Sample* data, size_t numberOfSamples, size_t algorithm, float ingain, size_t iterations)
+    {
+      if (algorithm == 0) return;
+      else
+      {
+        // InGain
+        for (size_t i = 0; i < numberOfSamples; i++) data[i] *= Sample(aux::decibelToLinear(ingain));
+
+        //Upsample
+        Sample* upsampledBuffer = upsampleZeros(data, numberOfSamples, 8u);
+         
+        // DISTORTION STARTS //
+        // Take care, that all values are between -1´and 1
+        // Values beyond this (so >0db) will fuck up the nonlinearity function
+        // All linearities via http://www.mitpressjournals.org/doi/pdf/10.1162/comj.2009.33.2.85
+
+        //Iterations through nonlinear scaling
+        for (size_t j = 0; j < iterations; j++)
+        {
+          // Araya and Suyama
+          if (algorithm == 1u)
+          {
+            for (size_t i = 0; i < 8 * numberOfSamples; i++)
+            {
+              upsampledBuffer[i] = upsampledBuffer[i] * Sample(1.5) \
+                * (Sample(1.) - upsampledBuffer[i] * upsampledBuffer[i] / Sample(3.));
+            }
+          }
+          // Doidic et al. symmetric
+          else if (algorithm == 2u)
+          {
+            for (size_t i = 0; i < 8 * numberOfSamples; i++)
+            {
+              upsampledBuffer[i] =
+                (abs(Sample(2.) *  upsampledBuffer[i]) \
+                - upsampledBuffer[i] * upsampledBuffer[i]) \
+                * sign(upsampledBuffer[i]);
+            }
+          }
+          // Doidic et al. asymmetric
+          else if (algorithm == 3u)
+          {
+            for (size_t i = 0; i < 8 * numberOfSamples; i++)
+            {
+              alignas(16) double lr[2];
+              upsampledBuffer[i].store_aligned(lr);
+              // Treat both channels (l / r) seperately
+              for (size_t k = 0; k < 2u; k++)
+              {
+                if (lr[k] < -0.08905)
+                {
+                  lr[k] = -0.75 * (1. - std::pow(1. - (std::abs(lr[k]) - 0.032847), 12) \
+                    + (1. / 3.) * (std::abs(lr[k]) - 0.032847)) + 0.01;
+                }
+                else if (lr[k] < 0.320018)
+                {
+                  lr[k] = -6.153 * lr[k] * lr[k] + 3.9375 * lr[k];
+                }
+                else
+                {
+                  lr[k] = 0.630035;
+                }
+              }
+              upsampledBuffer[i].load_aligned(lr);
+            }
+          }
+        }
+
+        // Lowpass
+        // This is very confusing, the lowpass seems to make the sound only worse.
+        // However, without lowPassing the whole Upsampling
+        // procedure is useless. might es well let it be.
+        //
+        // effects::filter::Filter filter;
+        // filter.processLow(upsampledBuffer, 8 * numberOfSamples, 40000., 0.1, 8*44100);
+
+        // Downsample
+        Sample *newData = simpleDownsample(upsampledBuffer, 8 * numberOfSamples, 8u);
+        
+        // Copy (note: maybe we could also handle **Sample, then copying would not be neccessary)
+        for (size_t i = 0; i < numberOfSamples; i++)
+        {
+          data[i] = newData[i];
+        }
+
+        // Cleanup
+        delete[] upsampledBuffer; 
+        delete[] newData;
+      }
+    }
+  }
 }
