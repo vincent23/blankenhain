@@ -4,4 +4,5 @@
 #include "src/processFunctions.cpp"
 #include "src/AlignedType.cpp"
 #include "src/NormalizedRange.cpp"
-#include "src/KickSynth.cpp"#include "src/CircularBuffer.cpp"
+#include "src/CircularBuffer.cpp"
+//#include "src/KickSynth.cpp"

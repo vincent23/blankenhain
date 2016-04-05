@@ -158,10 +158,6 @@
       <FILE id="xPcAH0" name="BoolParameter.cpp" compile="1" resource="0"
             file="Source/BoolParameter.cpp"/>
       <FILE id="ebWRQC" name="BoolParameter.h" compile="0" resource="0" file="Source/BoolParameter.h"/>
-      <FILE id="cSfnwc" name="CircularBuffer.cpp" compile="1" resource="0"
-            file="Source/CircularBuffer.cpp"/>
-      <FILE id="QIirbj" name="CircularBuffer.h" compile="0" resource="0"
-            file="Source/CircularBuffer.h"/>
       <FILE id="XIbJK1" name="CreateFilter.cpp" compile="1" resource="0"
             file="Source/CreateFilter.cpp"/>
       <FILE id="muIzok" name="FloatParameter.cpp" compile="1" resource="0"
