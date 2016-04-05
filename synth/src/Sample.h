@@ -111,6 +111,20 @@ Sample abs(Sample const& in)
   return load_aligned(lr);
 }
 
+Sample sign(Sample const& in)
+{
+  alignas(16) double lr[2];
+  in.store_aligned(lr);
+
+  if (lr[0] < 0.) lr[0] = -1.;
+  else lr[0] = 1.;
+
+  if (lr[1] < 0.) lr[1] *= -1.;
+  else lr[1] = 1.;
+
+  return load_aligned(lr);
+}
+
 double avgValue(Sample const& in)
 {
   alignas(16) double lr[2];
