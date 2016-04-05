@@ -23,9 +23,32 @@ void SamplePlayerAudioProcessor::processBlock(AudioSampleBuffer& buffer, MidiBuf
 {
 	this->initializing(buffer);
 
+	MidiBuffer::Iterator midiIterator(midiMessages);
+	MidiMessage message;
+	int messagePosition;
+	if (midiIterator.getNextEvent(message, messagePosition)) {
+		{
+			if (message.isNoteOn()) {
+				position = 0;
+			}
+		}
+	}
+
+	if (sampleBuffer.getNumSamples() > 0 && position < sampleBuffer.getNumSamples()) {
+		int remaining = sampleBuffer.getNumSamples() - position;
+		int numberOfSamples = std::min(remaining, buffer.getNumSamples());
+		buffer.copyFrom(0, 0, sampleBuffer, 0, position, numberOfSamples);
+		buffer.copyFrom(1, 0, sampleBuffer, 1, position, numberOfSamples);
+		position += numberOfSamples;
+	}
 
 	this->meteringBuffer(buffer);
 	this->finalizing(buffer);
+}
+
+AudioBuffer<float>& SamplePlayerAudioProcessor::getSampleBuffer()
+{
+	return sampleBuffer;
 }
 
 AudioProcessorEditor* SamplePlayerAudioProcessor::createEditor()

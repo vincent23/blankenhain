@@ -14,6 +14,8 @@ public:
 
 	void processBlock(AudioSampleBuffer&, MidiBuffer&) override;
 
+	AudioBuffer<float>& getSampleBuffer();
+
 	AudioProcessorEditor* createEditor() override;
 
 protected:
@@ -21,5 +23,8 @@ protected:
 	void setState(const var& state) override;
 
 private:
+	AudioBuffer<float> sampleBuffer;
+	int position = 0;
+
 	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(SamplePlayerAudioProcessor)
 };

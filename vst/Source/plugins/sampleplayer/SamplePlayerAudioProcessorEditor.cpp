@@ -46,6 +46,7 @@ SamplePlayerAudioProcessorEditor::SamplePlayerAudioProcessorEditor (SamplePlayer
 
 
     //[Constructor] You can add your own custom stuff here..
+	startTimer(100);
     //[/Constructor]
 }
 
@@ -93,6 +94,19 @@ void SamplePlayerAudioProcessorEditor::buttonClicked (Button* buttonThatWasClick
     if (buttonThatWasClicked == textButton)
     {
         //[UserButtonCode_textButton] -- add your button handler code here..
+		FileChooser sampleFileChooser("Select a sample to load");
+		if (sampleFileChooser.browseForFileToOpen()) {
+			AudioFormatManager formatManager;
+			formatManager.registerBasicFormats();
+			AudioFormatReader* reader = formatManager.createReaderFor(sampleFileChooser.getResult());
+			if (reader != nullptr) {
+				AudioFormatReaderSource source(reader, true);
+				source.prepareToPlay(source.getTotalLength(), 44100);
+				AudioBuffer<float> sample(2, source.getTotalLength());
+				source.getNextAudioBlock(AudioSourceChannelInfo(&sample, 0, source.getTotalLength()));
+				processor.getSampleBuffer() = sample;
+			}
+		}
         //[/UserButtonCode_textButton]
     }
 
