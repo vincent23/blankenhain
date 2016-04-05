@@ -97,12 +97,12 @@ inline Sample operator/(const Sample& a, const Sample& b) {
 	return Sample(_mm_div_pd(a.v, b.v));
 }
 
-Sample load_aligned(const double* ptr)
+inline Sample load_aligned(const double* ptr)
 {
   return Sample(_mm_load_pd(ptr));
 }
 
-Sample abs(Sample const& in)
+inline Sample abs(Sample const& in)
 {
   alignas(16) double lr[2];
   in.store_aligned(lr);
@@ -111,7 +111,7 @@ Sample abs(Sample const& in)
   return load_aligned(lr);
 }
 
-Sample sign(Sample const& in)
+inline Sample sign(Sample const& in)
 {
   alignas(16) double lr[2];
   in.store_aligned(lr);
@@ -125,14 +125,14 @@ Sample sign(Sample const& in)
   return load_aligned(lr);
 }
 
-double avgValue(Sample const& in)
+inline double avgValue(Sample const& in)
 {
   alignas(16) double lr[2];
   in.store_aligned(lr);
   return (lr[0] + lr[1]) / 2.;
 }
 
-double maxValue(Sample const& in)
+inline double maxValue(Sample const& in)
 {
   alignas(16) double lr[2];
   in.store_aligned(lr);
