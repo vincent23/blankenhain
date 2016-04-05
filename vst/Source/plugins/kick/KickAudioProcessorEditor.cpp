@@ -24,6 +24,7 @@
 
 
 //[MiscUserDefs] You can add your own user definitions and misc code here...
+#ifdef PLUGIN_KICK
 //[/MiscUserDefs]
 
 //==============================================================================
@@ -116,4 +117,5 @@ END_JUCER_METADATA
 
 
 //[EndFile] You can add extra defines here...
+#endif
 //[/EndFile]

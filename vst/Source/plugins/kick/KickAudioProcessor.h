@@ -1,3 +1,4 @@
+#ifdef PLUGIN_KICK
 #pragma once
 
 #include <juce>
@@ -28,3 +29,4 @@ private:
 
 	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(KickAudioProcessor)
 };
+#endif

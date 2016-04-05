@@ -21,6 +21,7 @@
 #define __JUCE_HEADER_B1EBD55EE2E96BAE__
 
 //[Headers]     -- You can add your own extra header files here --
+#ifdef PLUGIN_KICK
 #include "JuceHeader.h"
 #include "KickAudioProcessor.h"
 //[/Headers]
@@ -68,6 +69,7 @@ private:
 };
 
 //[EndFile] You can add extra defines here...
+#endif
 //[/EndFile]
 
 #endif   // __JUCE_HEADER_B1EBD55EE2E96BAE__
