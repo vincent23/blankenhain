@@ -178,7 +178,8 @@ BEGIN_JUCER_METADATA
           virtualName="" explicitFocusOrder="0" pos="3.81% 24 168 64%"
           thumbcol="ff000000" rotarysliderfill="7f000000" textboxhighlight="40000000"
           min="-50" max="50" int="1" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
-          textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
+          textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"
+          needsCallback="1"/>
   <LABEL name="new label" id="2889253ab4f709e" memberName="label" virtualName=""
          explicitFocusOrder="0" pos="-3.81% 72% 54.048% 15%" edTextCol="ff000000"
          edBkgCol="0" labelText="panning" editableSingleClick="0" editableDoubleClick="0"

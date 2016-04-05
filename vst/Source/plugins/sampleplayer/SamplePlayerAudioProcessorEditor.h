@@ -17,12 +17,12 @@
   ==============================================================================
 */
 
-#ifndef __JUCE_HEADER_4E02674C1E53CFBC__
-#define __JUCE_HEADER_4E02674C1E53CFBC__
+#ifndef __JUCE_HEADER_507D99CEA7D5C190__
+#define __JUCE_HEADER_507D99CEA7D5C190__
 
 //[Headers]     -- You can add your own extra header files here --
 #include "JuceHeader.h"
-#include "CompressorAudioProcessor.h"
+#include "SamplePlayerAudioProcessor.h"
 //[/Headers]
 
 #include "../../components/MeterComponent.h"
@@ -36,15 +36,14 @@
     Describe your class and how it works here!
                                                                     //[/Comments]
 */
-class CompressorAudioProcessorEditor  : public AudioProcessorEditor,
-                                        public Timer,
-                                        public SliderListener,
-                                        public ButtonListener
+class SamplePlayerAudioProcessorEditor  : public AudioProcessorEditor,
+                                          public Timer,
+                                          public ButtonListener
 {
 public:
     //==============================================================================
-    CompressorAudioProcessorEditor (CompressorAudioProcessor& p);
-    ~CompressorAudioProcessorEditor();
+    SamplePlayerAudioProcessorEditor (SamplePlayerAudioProcessor& p);
+    ~SamplePlayerAudioProcessorEditor();
 
     //==============================================================================
     //[UserMethods]     -- You can add your own custom methods in this section.
@@ -53,34 +52,25 @@ public:
 
     void paint (Graphics& g) override;
     void resized() override;
-    void sliderValueChanged (Slider* sliderThatWasMoved) override;
     void buttonClicked (Button* buttonThatWasClicked) override;
 
 
 
 private:
     //[UserVariables]   -- You can add your own custom variables in this section.
-	CompressorAudioProcessor& processor;
+	SamplePlayerAudioProcessor& processor;
     //[/UserVariables]
 
     //==============================================================================
     ScopedPointer<MeterComponent> meterChild;
-    ScopedPointer<Slider> attackSlider;
-    ScopedPointer<Label> attackText;
-    ScopedPointer<Slider> releaseSlider;
-    ScopedPointer<Label> releaseText;
-    ScopedPointer<Slider> thresholdSlider;
-    ScopedPointer<Label> thresholdText;
-    ScopedPointer<Slider> ratioSlider;
-    ScopedPointer<Label> ratioText;
-    ScopedPointer<ToggleButton> limiterButton;
+    ScopedPointer<TextButton> textButton;
 
 
     //==============================================================================
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (CompressorAudioProcessorEditor)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SamplePlayerAudioProcessorEditor)
 };
 
 //[EndFile] You can add extra defines here...
 //[/EndFile]
 
-#endif   // __JUCE_HEADER_4E02674C1E53CFBC__
+#endif   // __JUCE_HEADER_507D99CEA7D5C190__

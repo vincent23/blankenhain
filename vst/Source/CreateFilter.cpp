@@ -11,6 +11,7 @@
 #include "plugins/equalizer/EqualizerAudioProcessor.h"
 #include "plugins/delay/DelayAudioProcessor.h"
 #include "plugins/nonlindistortion/NonlinDistortionAudioProcessor.h"
+#include "plugins/sampleplayer/SamplePlayerAudioProcessor.h"
 
 // this creates the correct plugin based on preprocessor flags
 AudioProcessor* JUCE_CALLTYPE createPluginFilter()
@@ -37,7 +38,9 @@ AudioProcessor* JUCE_CALLTYPE createPluginFilter()
 #elif PLUGIN_DELAY
   return new DelayAudioProcessor();
 #elif PLUGIN_NONLIN_DISTORTION
-  return new NonlinDistortionAudioProcessor();
+	return new NonlinDistortionAudioProcessor();
+#elif PLUGIN_SAMPLE_PLAYER
+	return new SamplePlayerAudioProcessor();
 #else
 	static_assert(false, "The build config of your plugin is broken. "
 		"Please see README for instructions on how to add new plugins.");

@@ -570,11 +570,12 @@ BEGIN_JUCER_METADATA
   <SLIDER name="inSlider" id="7b7c7fed83036044" memberName="inSlider" virtualName=""
           explicitFocusOrder="0" pos="168 8 48 104" min="-12" max="12"
           int="0" style="LinearVertical" textBoxPos="TextBoxBelow" textBoxEditable="1"
-          textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
+          textBoxWidth="80" textBoxHeight="20" skewFactor="1" needsCallback="1"/>
   <SLIDER name="outSlider" id="1a9cecb548ca24d6" memberName="outSlider"
           virtualName="" explicitFocusOrder="0" pos="168 120 48 104" min="-12"
           max="12" int="0" style="LinearVertical" textBoxPos="TextBoxBelow"
-          textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
+          textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"
+          needsCallback="1"/>
   <LABEL name="Inlabel" id="7368dae04b28cd61" memberName="Inlabel" virtualName=""
          explicitFocusOrder="0" pos="160 8 23 24" textCol="ffffffff" edTextCol="ff000000"
          edBkgCol="0" labelText="In" editableSingleClick="0" editableDoubleClick="0"

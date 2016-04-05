@@ -253,7 +253,8 @@ BEGIN_JUCER_METADATA
   <SLIDER name="attackSlider" id="bc4747722abe5c6" memberName="attackSlider"
           virtualName="" explicitFocusOrder="0" pos="8 16 96 88" tooltip="in ms"
           min="0" max="100" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
-          textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
+          textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"
+          needsCallback="1"/>
   <LABEL name="attackText" id="9e80b85aebab9868" memberName="attackText"
          virtualName="" explicitFocusOrder="0" pos="16 107 79 24" edTextCol="ff000000"
          edBkgCol="0" labelText="Attack" editableSingleClick="0" editableDoubleClick="0"
@@ -262,7 +263,8 @@ BEGIN_JUCER_METADATA
   <SLIDER name="releaseSlider" id="61df89e44cdfef81" memberName="releaseSlider"
           virtualName="" explicitFocusOrder="0" pos="120 16 96 88" tooltip="in ms"
           min="0" max="100" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
-          textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
+          textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"
+          needsCallback="1"/>
   <LABEL name="releaseText" id="ccf625701324a5a1" memberName="releaseText"
          virtualName="" explicitFocusOrder="0" pos="128 107 79 24" edTextCol="ff000000"
          edBkgCol="0" labelText="Release" editableSingleClick="0" editableDoubleClick="0"
@@ -271,7 +273,8 @@ BEGIN_JUCER_METADATA
   <SLIDER name="thresholdSlider" id="df8a56a098604715" memberName="thresholdSlider"
           virtualName="" explicitFocusOrder="0" pos="120 136 96 88" tooltip="in dB"
           min="-48" max="0" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
-          textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
+          textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"
+          needsCallback="1"/>
   <LABEL name="thresholdText" id="d8ec008ec365bd94" memberName="thresholdText"
          virtualName="" explicitFocusOrder="0" pos="128 227 79 24" edTextCol="ff000000"
          edBkgCol="0" labelText="Threshold" editableSingleClick="0" editableDoubleClick="0"
@@ -280,7 +283,8 @@ BEGIN_JUCER_METADATA
   <SLIDER name="ratioSlider" id="4939e3fba015c9af" memberName="ratioSlider"
           virtualName="" explicitFocusOrder="0" pos="8 136 96 88" min="0"
           max="12" int="0" style="RotaryVerticalDrag" textBoxPos="TextBoxBelow"
-          textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"/>
+          textBoxEditable="1" textBoxWidth="80" textBoxHeight="20" skewFactor="1"
+          needsCallback="1"/>
   <LABEL name="ratioText" id="8bb6cc62e2932c59" memberName="ratioText"
          virtualName="" explicitFocusOrder="0" pos="16 224 79 24" edTextCol="ff000000"
          edBkgCol="0" labelText="Ratio" editableSingleClick="0" editableDoubleClick="0"
