@@ -6,4 +6,5 @@
 #include "src/AlignedType.h"
 #include "src/NormalizedRange.h"
 #include "src/CircularBuffer.h"
+#include "src/UpDownSampling.h"
 //#include "src/KickSynth.h"

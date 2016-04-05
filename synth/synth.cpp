@@ -5,4 +5,5 @@
 #include "src/AlignedType.cpp"
 #include "src/NormalizedRange.cpp"
 #include "src/CircularBuffer.cpp"
+#include "src/UpDownSampling.cpp"
 //#include "src/KickSynth.cpp"
