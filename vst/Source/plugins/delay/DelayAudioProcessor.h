@@ -15,7 +15,6 @@
 #include <juce>
 #include "BlankenhainAudioProcessor.h"
 #include "FloatParameter.h"
-#include "CircularBuffer.h"
 
 class DelayAudioProcessor : public BlankenhainAudioProcessor
 {
@@ -54,10 +53,6 @@ private:
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(DelayAudioProcessor)
 };
 
-
-void processDelay(Sample* data, size_t numberOfSamples,
-  float pan, float length, float feedback, float drywet,
-  CircularBuffer<Sample>& delayline);
 
 
 #endif  // DELAYAUDIOPROCESSOR_H_INCLUDED

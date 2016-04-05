@@ -4,7 +4,6 @@
 #include "BlankenhainAudioProcessor.h"
 #include "FloatParameter.h"
 #include "BoolParameter.h"
-#include "CircularBuffer.h"
 
 class CompressorAudioProcessor : public BlankenhainAudioProcessor
 {
@@ -45,7 +44,3 @@ private:
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(CompressorAudioProcessor)
 };
 
-void processCompressor(Sample* data, size_t numberOfSamples,
-  float release, float attack, float ratio, float threshold,
-  bool limiterOn,
-  CircularBuffer<Sample>& delayLine, Sample& envelope);

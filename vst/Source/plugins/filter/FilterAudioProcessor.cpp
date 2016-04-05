@@ -30,7 +30,9 @@ void FilterAudioProcessor::processBlock(AudioSampleBuffer& buffer, MidiBuffer& m
 	this->initializing(buffer);
   if (!this->getBypass())
   {
-    processBlockwise<FilterConstants::blockSize>(buffer, internalBuffer, [this](size_t samples, size_t offset) {
+    using namespace effects;
+    using namespace filter;
+    processBlockwise<constants::blockSize>(buffer, internalBuffer, [this](size_t samples, size_t offset) {
       switch (filterType) {
       case High:
         filter->processHigh(internalBuffer, samples, getFrequency(), getResonance());

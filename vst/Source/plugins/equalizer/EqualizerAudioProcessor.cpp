@@ -21,7 +21,7 @@ EqualizerAudioProcessor::EqualizerAudioProcessor()
   high = new FloatParameter(0.f, "High", 1.f, NormalizedRange(-12.f, 12.f));
   lowFreq = new FloatParameter(100.f, "LowFreq", 1.f, NormalizedRange(40.f, 20000.f));
   highFreq = new FloatParameter(5000.f, "HighFreq", 1.f, NormalizedRange(40.f, 20000.f));
-  es = new Sample_EQSTATE();
+  es = new effects::equalizer::Sample_EQSTATE();
   es->init(100., 44100., 5000.);
 
   addParameter(low);
@@ -48,10 +48,10 @@ void EqualizerAudioProcessor::processBlock(AudioSampleBuffer& buffer, MidiBuffer
   this->initializing(buffer);
   if (!this->getBypass())
   {
-    processBlockwise<FilterConstants::blockSize>(
+    processBlockwise<constants::blockSize>(
       buffer, internalBuffer, [this](size_t samples, size_t offset)
     {
-      processCompressor(internalBuffer, samples, es,
+      processEqualizer(internalBuffer, samples, es,
         getLow(), getMid(), getHigh(), getLowFreq(), getHighFreq());
     });
   }
@@ -144,19 +144,5 @@ float EqualizerAudioProcessor::getHighFreq()
   return highFreq->getUnnormalizedValue();
 }
 
-void processCompressor(Sample* data, size_t numberOfSamples, Sample_EQSTATE* es,
-  float low, float mid, float high, float lowfreq, float highfreq)
-{
-  const double mixfreq = 44100;
-  es->lf = Sample(2 * sin(3.14159265359 * ((double)lowfreq  / mixfreq)));
-  es->hf = Sample(2 * sin(3.14159265359 * ((double)highfreq / mixfreq)));
-  es->lg = Sample(aux::decibelToLinear(low));
-  es->mg = Sample(aux::decibelToLinear(mid));
-  es->hg = Sample(aux::decibelToLinear(high));
 
-  for (int i = 0; i < numberOfSamples; i++)
-  {
-      data[i] = es->doThreeBand(data[i]);
-  }
-}
 #endif

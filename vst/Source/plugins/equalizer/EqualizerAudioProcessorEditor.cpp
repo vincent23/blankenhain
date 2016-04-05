@@ -25,6 +25,7 @@
 
 
 //[MiscUserDefs] You can add your own user definitions and misc code here...
+using namespace effects::equalizer;
 //[/MiscUserDefs]
 
 //==============================================================================

@@ -37,7 +37,7 @@ private:
 		Notch,
 	} filterType;
 
-	Filter* filter = new Filter;
+	effects::filter::Filter* filter = new effects::filter::Filter;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(FilterAudioProcessor)
 };

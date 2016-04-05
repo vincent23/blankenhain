@@ -39,10 +39,10 @@ void CompressorAudioProcessor::processBlock (AudioSampleBuffer& buffer, MidiBuff
   this->initializing(buffer);
   if (!this->getBypass())
   {
-    processBlockwise<FilterConstants::blockSize>(
+    processBlockwise<constants::blockSize>(
       buffer, internalBuffer, [this](size_t samples, size_t offset) 
       {
-        processCompressor(internalBuffer, samples,
+        effects::compressor::processCompressor(internalBuffer, samples,
           getRelease(), getAttack(), getRatio(), getThreshold(),
           getLimiter(), delayLine, *envelope);
       }
@@ -127,47 +127,5 @@ bool CompressorAudioProcessor::getLimiter()
   return limiterOn->getBoolValue();
 }
 
-// Channel number is expected to be == 2
-// All parameter values between 0 and 1
-void processCompressor(Sample* data, size_t numberOfSamples, 
-  float release, float attack, float ratio, float threshold,
-  bool limiterOn,
-  CircularBuffer<Sample>& delayLine, Sample& envelope)
-{
-  attack = attack / 1000.f;
-  size_t attackTimeInSamples = static_cast<size_t>(attack * 44100);
-  delayLine.setSize(attackTimeInSamples);
-  release = release / 1000.f;
-  float attackGain = exp(-1 / (attack * 44100));
-  float releaseGain = exp(-1 / (release * 44100));
-  float slope = 1 - (1 / ratio);
-  for (size_t i = 0; i < numberOfSamples; i++) 
-  {
-    Sample input = abs(data[i]);
-    if (envelope.areBothSmaller(input))
-    {
-      envelope = input + Sample(static_cast<double>(attackGain)) * (envelope - input);
-    }
-    else 
-    {
-      envelope = input + Sample(static_cast<double>(releaseGain)) * (envelope - input);
-    }
-    double envelopeValue = max(envelope);
-    float envelopeDb = aux::linearToDecibel(static_cast<float>(abs(envelopeValue)));
-    if (envelopeDb < threshold)
-    {
-      envelopeDb = 0.f;
-    }
-    else
-    {
-      if (limiterOn)
-      {
-        envelopeDb = (threshold - envelopeDb);
-      }
-      else envelopeDb = slope * (threshold - envelopeDb);
-    }
-    data[i] = delayLine.pushpop(data[i]);
-    data[i] *= Sample(static_cast<double>(aux::decibelToLinear(envelopeDb)));
-  }
-}
+
 #endif

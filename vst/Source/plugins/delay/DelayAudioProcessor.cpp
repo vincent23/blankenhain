@@ -50,11 +50,11 @@ void DelayAudioProcessor::processBlock(AudioSampleBuffer& buffer, MidiBuffer& mi
   }
   if (!this->getBypass())
   {
-    processBlockwise<FilterConstants::blockSize>(
+    processBlockwise<constants::blockSize>(
       buffer, internalBuffer, 
       [this](size_t samples, size_t offset)
       {
-        processDelay(internalBuffer, samples,
+        effects::delay::processDelay(internalBuffer, samples,
           getPan(), getLength(), getFeedback(), getDrywet(),
           delayline);
       }
@@ -138,37 +138,6 @@ float DelayAudioProcessor::getBPM() const
 float DelayAudioProcessor::getFeedback() const
 {
   return feedback->getUnnormalizedValue();
-}
-
-// Pan between -1 and 1
-void processDelay(Sample* data, size_t numberOfSamples,
-  float pan, float length, float feedback, float drywet,
-  CircularBuffer<Sample>& delayline)
-{
-  delayline.setSize(static_cast<size_t>(aux::millisecToSamples(length)));
-  for (size_t i = 0; i < numberOfSamples; i++)
-  {
-    double avg_ = avg(data[i]);
-    Sample original = data[i];
-    Sample line = delayline.get();
-
-    if (drywet > 0.5)
-    {
-      original *= Sample((1 - drywet) * 2.f);
-    }
-    else line *= Sample(drywet * 2.f);
-
-    // Pan
-    alignas(16) double lr[2];
-    line.store_aligned(lr);
-    lr[0] = lr[0] * (1.f - std::max(0.0f, pan));
-    lr[1] = lr[1] * (1.f + std::min(0.0f, pan));
-    line = load_aligned(lr);
-
-    data[i] = original + line;
-
-    delayline.push((delayline.get()) * Sample(feedback) + Sample(avg_));
-  }
 }
 
 #endif

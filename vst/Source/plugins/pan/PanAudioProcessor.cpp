@@ -28,8 +28,8 @@ void PanAudioProcessor::processBlock(AudioSampleBuffer& buffer, MidiBuffer& midi
 	this->initializing(buffer);
   if (!this->getBypass())
   {
-    processBlockwise<FilterConstants::blockSize>(buffer, internalBuffer, [this](size_t samples, size_t offset) {
-      processPanning(internalBuffer, samples, getPanning(), getMono());
+    processBlockwise<constants::blockSize>(buffer, internalBuffer, [this](size_t samples, size_t offset) {
+      effects::pan::processPanning(internalBuffer, samples, getPanning(), getMono());
     });
   }
 	this->finalizing(buffer);
@@ -71,34 +71,6 @@ float PanAudioProcessor::getPanning() {
 bool PanAudioProcessor::getMono()
 {
   return mono->getBoolValue();
-}
-
-// Channel number is expected to be == 2
-// CurrentPanning between -50 and 50
-void processPanning(Sample* data, size_t numberOfSamples, float panningValue, bool mono)
-{
-  if (mono)
-  {
-    for (size_t bufferIteration = 0u; bufferIteration < numberOfSamples; bufferIteration++)
-    {
-      alignas(16) double lr[2];
-      data[bufferIteration].store_aligned(lr);
-      lr[1] = lr[0] * (1.f + std::min(0.0f, panningValue) * 0.02f);
-      lr[0] = lr[0] * (1.f - std::max(0.0f, panningValue) * 0.02f);
-      data[bufferIteration] = load_aligned(lr);
-    }
-  }
-  else
-  {
-    for (size_t bufferIteration = 0u; bufferIteration < numberOfSamples; bufferIteration++)
-    {
-      alignas(16) double lr[2];
-      data[bufferIteration].store_aligned(lr);
-      lr[0] = lr[0] * (1.f - std::max(0.0f, panningValue) * 0.02f);
-      lr[1] = lr[1] * (1.f + std::min(0.0f, panningValue) * 0.02f);
-      data[bufferIteration] = load_aligned(lr);
-    }
-  }
 }
 
 #endif

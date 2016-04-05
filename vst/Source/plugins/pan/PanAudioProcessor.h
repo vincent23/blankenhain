@@ -33,4 +33,3 @@ private:
 	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(PanAudioProcessor)
 };
 
-void processPanning(Sample* data, size_t numberOfSamples, float panningValue, bool mono);
