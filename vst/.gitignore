@@ -2,10 +2,7 @@
 juce_modules
 
 # ignore build output directories
-Builds/**/build
-Builds/**/Debug
-Builds/**/Release
-Builds/**/.vs
+Builds/
 *.sdf
 *.opensdf
 *.user
