@@ -12,9 +12,8 @@ namespace effects
       reset();
     }
 
-    void Filter::processHigh(Sample* data, size_t numberOfSamples, double frequency, double resonance) {
+    void Filter::processHigh(Sample* data, size_t numberOfSamples, double frequency, double resonance, double sampleRate) {
       // TODO sample rate
-      const double sampleRate = 44100;
       const double w0 = 2.0 * acos(-1.0) * frequency / (sampleRate * 2);
       const double cos_w0 = cos(w0);
       const double sin_w0 = sin(w0);
@@ -31,9 +30,8 @@ namespace effects
       process(data, numberOfSamples, a1, a2, b0, b1, b2);
     }
 
-    void Filter::processLow(Sample* data, size_t numberOfSamples, double frequency, double resonance) {
+    void Filter::processLow(Sample* data, size_t numberOfSamples, double frequency, double resonance, double sampleRate) {
       // TODO sample rate
-      const double sampleRate = 44100;
       const double w0 = 2.0 * acos(-1.0) * frequency / (sampleRate * 2);
       const double cos_w0 = cos(w0);
       const double sin_w0 = sin(w0);
@@ -51,9 +49,8 @@ namespace effects
       process(data, numberOfSamples, a1, a2, b0, b1, b2);
     }
 
-    void Filter::processBand(Sample* data, size_t numberOfSamples, double frequency, double resonance) {
+    void Filter::processBand(Sample* data, size_t numberOfSamples, double frequency, double resonance, double sampleRate) {
       // TODO sample rate
-      const double sampleRate = 44100;
       const double w0 = 2.0 * acos(-1.0) * frequency / (sampleRate * 2);
       const double cos_w0 = cos(w0);
       const double sin_w0 = sin(w0);
@@ -71,9 +68,8 @@ namespace effects
       process(data, numberOfSamples, a1, a2, b0, b1, b2);
     }
 
-    void Filter::processNotch(Sample* data, size_t numberOfSamples, double frequency, double resonance) {
+    void Filter::processNotch(Sample* data, size_t numberOfSamples, double frequency, double resonance, double sampleRate) {
       // TODO sample rate
-      const double sampleRate = 44100;
       const double w0 = 2.0 * acos(-1.0) * frequency / (sampleRate * 2);
       const double cos_w0 = cos(w0);
       const double sin_w0 = sin(w0);
