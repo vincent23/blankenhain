@@ -1,3 +1,7 @@
+/Projekt1/Debug/*
+/Projekt1/Projekt1/*
+/Projekt1/.vs
+
 # Windows image file caches
 Thumbs.db
 ehthumbs.db
