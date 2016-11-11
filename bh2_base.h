@@ -96,9 +96,14 @@ public:
     else return (parameterconversions)->getParameter(in)->getName();
   };
 
-  float getParameter(unsigned int const& index)
+  float getParameterNormalized(unsigned int const& index)
   {
-    return (parameterconversions)->getParameter(index)->getCurrentValueNormalized();
+    return this->vst_parameters[index];
+  }
+
+  float getParameterUnnormalized(unsigned int const& index)
+  {
+    return this->parameterconversions->getParameter(index)->fromNormalized(this->vst_parameters[index]);
   }
 
   char* getParameterUnit(unsigned int const& index)
@@ -227,27 +232,28 @@ public:
   }	///< Called when a parameter changed
 
   virtual float getParameter(VstInt32 index) {
-    return vstparameters->getParameter(index);
+    return vstparameters->getParameterNormalized(index);
   }
 
   virtual void getParameterLabel(VstInt32 index, char* label) 
   { 
-    label = vstparameters->getParameterUnit(index);
+    char* holder = vstparameters->getParameterUnit(index);
+    strncpy(label, holder, 8);
   }	///< Stuff \e label with the units in which parameter \e index is displayed (i.e. "sec", "dB", "type", etc...). Limited to #kVstMaxParamStrLen.
   
   virtual void getParameterDisplay(VstInt32 index, char* text) 
   { 
-    float temp = vstparameters->getParameter(index);
+    float temp = vstparameters->getParameterUnnormalized(index);
     std::string temp2 = std::string(std::to_string(temp));
     char* willBeReturned = new char[8u];
-    strncpy(willBeReturned, temp2.c_str(), 8);
-    text = willBeReturned;
+    strncpy(text, temp2.c_str(), 8);
 
   }	///< Stuff \e text with a string representation ("0.5", "-3", "PLATE", etc...) of the value of parameter \e index. Limited to #kVstMaxParamStrLen.
   
   virtual void getParameterName(VstInt32 index, char* text) 
   { 
-    text = vstparameters->getParameterNameCstr(index);
+    char* holder = vstparameters->getParameterNameCstr(index);
+    strncpy(text, holder, 8);
 
   }    ///< Stuff \e text with the name ("Time", "Gain", "RoomType", etc...) of parameter \e index. Limited to #kVstMaxParamStrLen.
 
