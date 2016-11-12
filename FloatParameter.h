@@ -19,14 +19,16 @@ public:
   // The values are expected to be normalized
 
 
-  float getCurrentValueNormalized() const;
+  float getTargetValueNormalized() const;
   float getOldValueNormalized() const;
-  void setCurrentValueNormalized(float const& in);
+  void setTargetValueNormalized(float const& in);
   void setOldValueNormalized(float const& in);
 
+  float getInterpolatedNormmalized(size_t currentStep, size_t maxSteps);
+
 protected:
-  float oldValue;
-  float currentValue;
+  float oldValueNormalized;
+  float targetValueNormalized;
 
 };
 
@@ -40,7 +42,9 @@ public:
   ParameterWithProperties(float defaultValueUnnormalized, 
     NormalizedRange const& range,
     String name, String unit);
-  float getBufferScalingValue() const;
+
+  float getInterpolatedUnnormmalized(size_t currentStep, size_t maxSteps) const;
+
 
   String getName(unsigned int maximumStringLength = 0u) const;
 
@@ -52,27 +56,39 @@ public:
 
   std::string getUnit() const;
 
+  float getImmediateValueAndUpdateUnnormalized();
+  float getImmediateValueAndUpdateNormalized();
+  float getImmediateValueNormalized();
+  float getImmediateValueUnnormalized();
+  void setImmediateValueNormalized(float in);
+  void setImmediateValueUnnormalized(float in);
+
 
   // Now, for the functions taking unnormalized values.
   // Checks will be performed if they are in range if
   // #BLANKENHAIN_CHECKS is enabled.
-  float getCurrentValueUnnormalized() const;
-  void  setCurrentValueUnnormalized(float unnormalized);
+  float getTargetValueUnnormalized() const;
+  void  setTargetValueUnnormalized(float unnormalized);
 
   // For sofisticated interpolation stuff, not
   // used to much right now
   float getOldValueUnnormalized() const;
   void  setOldValueUnnormalized(float unnormalizedOldValue_);
 
+  bool oldAndTargetValueMatch() const;
+
   ParameterWithProperties& operator=(const ParameterWithProperties & in) = default;
-
+  static const unsigned int interpolationMax = 100;
 private:
-
+  float incrementImmediateValueAndReturnOldValueNormalized();
   String unit;
   float normalizedDefaultValue;
   // This Value should be between 0 and 1 and specifies the end of
   // linear interpolation in terms of "percentage of whole buffer"
 
   String name;
+  float immediateValueNormalized;
+
+  unsigned int interpolationIteration;
 };
 

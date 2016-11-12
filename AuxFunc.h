@@ -8,8 +8,6 @@
   ==============================================================================
 */
 
-#ifndef AUXFUNC_H_INCLUDED
-#define AUXFUNC_H_INCLUDED
 #include <math.h>
 #pragma once
 
@@ -24,7 +22,3 @@ namespace aux
   float samplesToMillisec(float samples, float samplerate = 44100.f);
 }
 
-
-
-
-#endif  // AUXFUNC_H_INCLUDED

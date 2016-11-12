@@ -2,23 +2,34 @@
 
 FloatParameter::FloatParameter()
   :
-  oldValue(0.f), currentValue(0.f)
+  oldValueNormalized(0.f), targetValueNormalized(0.f)
 {
 };
 
-
 float ParameterWithProperties::getOldValueUnnormalized() const {
-	return fromNormalized(oldValue);
+	return fromNormalized(oldValueNormalized);
 }
 
 void FloatParameter::setOldValueNormalized(float const& in)
 {
-  oldValue = in;
+  oldValueNormalized = in;
 }
 
-void FloatParameter::setCurrentValueNormalized(float const& in)
+float FloatParameter::getInterpolatedNormmalized(size_t currentStep, size_t maxSteps)
 {
-  currentValue = in;
+  return (oldValueNormalized + (float(maxSteps - currentStep + 1) * (targetValueNormalized - oldValueNormalized) \
+    / float(maxSteps)));
+}
+
+float ParameterWithProperties::getInterpolatedUnnormmalized(size_t currentStep, size_t maxSteps) const
+{
+  return (this->getOldValueUnnormalized() + (float(maxSteps - currentStep + 1) * (this->getTargetValueUnnormalized() - this->getOldValueUnnormalized()) \
+    / float(maxSteps)));
+}
+
+void FloatParameter::setTargetValueNormalized(float const& in)
+{
+  targetValueNormalized = in;
 }
 
 ParameterWithProperties::ParameterWithProperties(float defaultValueUnnormalized, 
@@ -26,23 +37,23 @@ ParameterWithProperties::ParameterWithProperties(float defaultValueUnnormalized,
    String name_, String unit_) :
   NormalizedRange(range), FloatParameter(), 
   normalizedDefaultValue(range.toNormalized(defaultValueUnnormalized)),
-  name(name_), unit(unit_)
+  name(name_), unit(unit_), interpolationIteration(0u), immediateValueNormalized(toNormalized(defaultValueUnnormalized))
 {
   this->setToDefaultValue();
 }
 
-float ParameterWithProperties::getCurrentValueUnnormalized() const
+float ParameterWithProperties::getTargetValueUnnormalized() const
 {
-  return fromNormalized(currentValue);
+  return fromNormalized(targetValueNormalized);
 }
 
-void ParameterWithProperties::setCurrentValueUnnormalized(float unnormalized)
+void ParameterWithProperties::setTargetValueUnnormalized(float unnormalized)
 {
-  currentValue = toNormalized(unnormalized);
+  targetValueNormalized = toNormalized(unnormalized);
 }
 
 void ParameterWithProperties::setOldValueUnnormalized(float oldValue_) {
-	oldValue = toNormalized(oldValue_);
+	oldValueNormalized = toNormalized(oldValue_);
 }
 
 // Returns value between 0 and 1
@@ -64,22 +75,63 @@ std::string ParameterWithProperties::getUnit() const
   return this->unit;
 }
 
-float FloatParameter::getCurrentValueNormalized() const
+float FloatParameter::getTargetValueNormalized() const
 {
-	return currentValue;
+	return targetValueNormalized;
 }
 
 float FloatParameter::getOldValueNormalized() const
 {
-	return oldValue;
+	return oldValueNormalized;
 }
 
 void ParameterWithProperties::setToDefaultValue()
 {
-  currentValue = normalizedDefaultValue;
+  targetValueNormalized = normalizedDefaultValue;
 }
 
 float ParameterWithProperties::getDefaultValueNormalized() const
 {
 	return normalizedDefaultValue;
+}
+
+float ParameterWithProperties::getImmediateValueAndUpdateUnnormalized()
+{
+  return fromNormalized(this->incrementImmediateValueAndReturnOldValueNormalized());
+}
+
+float ParameterWithProperties::getImmediateValueUnnormalized()
+{
+  return fromNormalized(this->immediateValueNormalized);
+}
+
+bool ParameterWithProperties::oldAndTargetValueMatch() const
+{
+  return (oldValueNormalized == targetValueNormalized);
+}
+
+float ParameterWithProperties::getImmediateValueNormalized()
+{
+  return this->immediateValueNormalized;
+}
+
+
+float ParameterWithProperties::incrementImmediateValueAndReturnOldValueNormalized()
+{
+  float old = this->immediateValueNormalized;
+  immediateValueNormalized = oldValueNormalized + ((oldValueNormalized - targetValueNormalized) / (interpolationMax) ) * interpolationIteration;
+  return old;
+}
+
+float ParameterWithProperties::getImmediateValueAndUpdateNormalized()
+{
+  return this->incrementImmediateValueAndReturnOldValueNormalized();
+}
+void ParameterWithProperties::setImmediateValueNormalized(float in)
+{
+  this->immediateValueNormalized = in;
+}
+void ParameterWithProperties::setImmediateValueUnnormalized(float in)
+{
+  this->immediateValueNormalized = toNormalized(in);
 }

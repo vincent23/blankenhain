@@ -1,11 +1,18 @@
 #pragma once
+
+#ifdef _BH2_volume
+
 #include "bh2_base.h"
+#include <iostream>
+
+
 
 class bh2_volume_effect : public BH2_effect_base
 {
 public:
   bh2_volume_effect()
   {
+    this->currentParameters = new float[3];
     this->params = new ParameterBundle(3);
     (params->getParameter(0)) = new ParameterWithProperties(120.f / 132.f, NormalizedRange(-120.f, 12.f, 5.f),  "volumeL", "dB");
     (params->getParameter(1)) = new ParameterWithProperties(120.f / 132.f, NormalizedRange(-120.f, 12.f, 5.f),  "volumeR", "dB");
@@ -14,87 +21,44 @@ public:
 
   ~bh2_volume_effect()
   {
-    for (size_t i = 0u; i < this->params->getNumberOfParameters(); i++)
-      delete params->getParameter(i);
-    delete params;
+    for (size_t i = 0u; i < this->params->getNumberOfParameters(); i++) {
+      if (params->getParameter(i) != nullptr) delete params->getParameter(i);
+      params->getParameter(i) = nullptr;
+    }
+    if (params != nullptr) delete params;
+    params = nullptr;
+    if (currentParameters != nullptr) delete[] currentParameters;
+    currentParameters = nullptr;
   }
 
-  void process(float** inputs, float** outputs, unsigned int sampleFrames)
+  void process(Sample* buffer, size_t sampleFrames, size_t numberOfParameters, float* parameters)
   {
+    float& currentVolumeL = parameters[0];
+    float& currentVolumeR = parameters[1];
+    bool coupling = parameters[2] > 0.5 ? true : false;
 
-
-    //float& currentVolumeL, currentVolumeR, bufferValue, oldVolumeL, oldVolumeR;
-    float currentVolumeL = this->params->getParameter(0)->getCurrentValueNormalized();
-    float currentVolumeR = this->params->getParameter(1)->getCurrentValueNormalized();
-    float oldVolumeL = this->params->getParameter(0)->getOldValueNormalized();
-    float oldVolumeR = this->params->getParameter(1)->getOldValueNormalized();
-    bool coupling = this->params->getParameter(2)->getCurrentValueNormalized() > 0.5 ? true : false;
-
-    size_t maxInterpolation;
-
-    float *in_l = inputs[0];
-    float *in_r = inputs[1];
-    float *out_l = outputs[0];
-    float *out_r = outputs[1];
-
+    alignas(16) double currentBuffer[2];
     if (coupling)
     {
-      // Interpolation
-
-      maxInterpolation = static_cast<size_t>(sampleFrames * this->bufferScalingValue);
-      for (size_t interpolationIteration = 0; interpolationIteration < maxInterpolation; interpolationIteration++)
+      for (size_t bufferIteration = 0; bufferIteration < sampleFrames; bufferIteration++)
       {
-
-        out_l[interpolationIteration] = in_l[interpolationIteration] * \
-          (oldVolumeL + ((interpolationIteration + 1) * (currentVolumeL - oldVolumeL) \
-            / maxInterpolation));
-
-        out_r[interpolationIteration] = in_r[interpolationIteration] * \
-          (oldVolumeL + ((interpolationIteration + 1) * (currentVolumeL - oldVolumeL) \
-            / maxInterpolation));
-
-      }
-      for (
-        size_t bufferIteration = maxInterpolation;
-        static_cast<int>(bufferIteration) < sampleFrames;
-        bufferIteration++
-        )
-      {
-        out_l[bufferIteration] = in_l[bufferIteration] * currentVolumeL;
-        out_r[bufferIteration] = in_r[bufferIteration] * currentVolumeL;
+        buffer[bufferIteration] = buffer[bufferIteration] * aux::decibelToLinear(currentVolumeL);
       }
     }
     else
     {
-      // Interpolation
-
-      maxInterpolation = static_cast<size_t>(sampleFrames * this->bufferScalingValue);
-      for (size_t interpolationIteration = 0; interpolationIteration < maxInterpolation; interpolationIteration++)
-      {
-
-        out_l[interpolationIteration] = in_l[interpolationIteration] * \
-          (oldVolumeL + ((interpolationIteration + 1) * (currentVolumeL - oldVolumeL) \
-            / maxInterpolation));
-
-        out_r[interpolationIteration] = in_r[interpolationIteration] * \
-          (oldVolumeR + ((interpolationIteration + 1) * (currentVolumeR - oldVolumeR) \
-            / maxInterpolation));
-
-      }
       for (
-        size_t bufferIteration = maxInterpolation;
-        static_cast<int>(bufferIteration) < sampleFrames;
+        size_t bufferIteration = 0u;
+        bufferIteration < sampleFrames;
         bufferIteration++
         )
       {
-        out_l[bufferIteration] = in_l[bufferIteration] * currentVolumeL;
-        out_r[bufferIteration] = in_r[bufferIteration] * currentVolumeR;
+        buffer[bufferIteration].store_aligned(currentBuffer);
+        currentBuffer[0] = currentBuffer[0] * aux::decibelToLinear(currentVolumeL);
+        currentBuffer[1] = currentBuffer[1] * aux::decibelToLinear(currentVolumeR);
+        buffer[bufferIteration].load_aligned(currentBuffer);
       }
     }
-    //Set current values as old values for interpolation in next buffer iteration
-    this->params->getParameter(0u)->setOldValueUnnormalized(this->params->getParameter(0u)->getCurrentValueUnnormalized());
-    this->params->getParameter(1u)->setOldValueUnnormalized(this->params->getParameter(1u)->getCurrentValueUnnormalized());
-
   }
 
 };
@@ -112,8 +76,10 @@ public:
 
   ~BH2_volume()
   {
-    delete bh_base;
-    delete vstparameters;
+    if (bh_base != nullptr) delete bh_base;
+    bh_base = nullptr;
+    if (vstparameters != nullptr) delete vstparameters;
+    vstparameters = nullptr;
   }
 
   virtual void open()
@@ -127,3 +93,5 @@ public:
 
   }
 };
+
+#endif

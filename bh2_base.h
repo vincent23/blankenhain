@@ -2,7 +2,10 @@
 #include "audioeffectx.h"
 #include "FloatParameter.h"
 #include <atomic>
+#include "processFunctions.h"
 #include <vector>
+#include "Sample.h"
+#include "AuxFunc.h"
 #include <string>
 
 
@@ -14,6 +17,7 @@ public:
   {
     ParameterWithProperties** stuff = new ParameterWithProperties*[numberOfParameters];
     parameters = stuff;
+    bufferScalingValue = 0.f;
   }
   ~ParameterBundle()
   {
@@ -45,22 +49,180 @@ public:
   {
       return (parameters)[in];
   };
+
+  ParameterWithProperties*& getValue(unsigned int const& in) const
+  {
+    return (parameters)[in];
+  };
+
+  float bufferScalingValue;
 private:
   const unsigned int numberOfParameters;
   ParameterWithProperties** parameters;
 };
 
+
+
+template<size_t BlockSize, typename ProcessFunction>
+void processBlockwise(float** audioBufferIn, float** audioBufferOut, size_t numberOfSamples,
+  Sample* sseBuffer, size_t numberOfParameters, float* currentParameters, ProcessFunction processFunction) {
+  // Main Loop, performed till AudioBufferFloats are less than an integer multiple of Blocksize
+  size_t offset = 0;
+  for (; static_cast<int>(offset + BlockSize) <= numberOfSamples; offset += BlockSize)
+  {
+    // This fills SIMD-Sample-Array of size "Blocksize" from AudioBuffer
+    for (size_t i = 0; i < BlockSize; i++) {
+      int sampleIndex = offset + i;
+      sseBuffer[i] = Sample(audioBufferIn[0][sampleIndex], audioBufferIn[1][sampleIndex]);
+    }
+
+    //
+
+
+    // Now, audio processing is performed
+    processFunction(sseBuffer, BlockSize, offset, numberOfParameters, currentParameters);
+    alignas(16) double sampleValues[2];
+    // And data is written back from SIMD-Sample-Array to AudioBuffer
+    for (size_t i = 0; i < BlockSize; i++) {
+      int sampleIndex = offset + i;
+      sseBuffer[i].store_aligned(sampleValues);
+      audioBufferOut[0][sampleIndex] = sampleValues[0];
+      audioBufferOut[1][sampleIndex] = sampleValues[1];
+    }
+  }
+
+  // Take care of the remaining samples
+  const size_t remainingSamples = numberOfSamples - offset;
+  if (remainingSamples != 0u)
+  {
+    for (size_t i = 0; i < remainingSamples; i++) {
+      int sampleIndex = offset + i;
+      sseBuffer[i] = Sample(audioBufferIn[0][sampleIndex], audioBufferIn[1][sampleIndex]);
+    }
+    processFunction(sseBuffer, remainingSamples, offset, numberOfParameters, currentParameters);
+    alignas(16) double sampleValues[2];
+    for (size_t i = 0; i < remainingSamples; i++) {
+      int sampleIndex = offset + i;
+      sseBuffer[i].store_aligned(sampleValues);
+      audioBufferOut[0][sampleIndex] = sampleValues[0];
+      audioBufferOut[1][sampleIndex] = sampleValues[1];
+    }
+  }
+}
+
+
+
 class BH2_effect_base
 {
 public:
-  virtual void process(float** inputs, float** outputs, unsigned int sampleFrames) = 0;
+
+  BH2_effect_base() : blockSize(128), sseBuffer(nullptr), params(nullptr), currentParameters(nullptr)
+  {
+    sseBuffer = new Sample[128];
+  }
+
+  BH2_effect_base(unsigned int const& blockSize_) : blockSize(blockSize_) , sseBuffer(nullptr), params(nullptr), currentParameters(nullptr)
+  {
+    sseBuffer = new Sample[blockSize];
+  }
+
+  ~BH2_effect_base()
+  {
+    if (sseBuffer != nullptr) delete[] sseBuffer;
+    sseBuffer = nullptr;
+  }
+
+  virtual void processBlock(float** inputs, float** outputs, unsigned int sampleFrames)
+  {
+
+    bool willBeInterpolated = false;
+    
+    //for (unsigned int j = 0u; j < this->params->getNumberOfParameters(); j++)
+    //{
+    //  if (!this->params->getParameter(j)->oldAndTargetValueMatch())
+    //  {
+    //    willBeInterpolated = true; break;
+    //  }
+    //}
+
+    if (willBeInterpolated)
+    {
+
+      unsigned int interpolationDistance = this->params->getParameter(0)->interpolationMax > blockSize
+        ? this->params->getParameter(0)->interpolationMax : blockSize;
+      interpolationDistance = interpolationDistance < sampleFrames ? interpolationDistance : sampleFrames;
+
+      for (size_t i = 0; i < interpolationDistance; i++) {
+        sseBuffer[i] = Sample(inputs[0][i], inputs[1][i]);
+      }
+
+      alignas(16) double interpolationTempStorage[2];
+      for (unsigned int i = 0u; i < interpolationDistance; i++)
+      {
+        for (unsigned int j = 0u; j < this->params->getNumberOfParameters(); j++)
+        {
+          this->currentParameters[j] = this->params->getParameter(j)->getImmediateValueAndUpdateUnnormalized();
+        }
+        this->process(&sseBuffer[i], 1u, this->params->getNumberOfParameters(),
+          this->currentParameters);
+        sseBuffer[i].store_aligned(interpolationTempStorage);
+        outputs[0][i] = interpolationTempStorage[0];
+        outputs[1][i] = interpolationTempStorage[1];
+      }
+      sampleFrames -= interpolationDistance;
+      inputs[0] += interpolationDistance;
+      inputs[1] += interpolationDistance;
+      outputs[0] += interpolationDistance;
+      outputs[1] += interpolationDistance;
+
+    }
+
+    if (sampleFrames != 0u)
+    {
+      for (unsigned int j = 0u; j < this->params->getNumberOfParameters(); j++)
+      {
+        this->currentParameters[j] = this->params->getParameter(j)->getTargetValueUnnormalized();
+      }
+
+      processBlockwise<constants::blockSize>(inputs, outputs, sampleFrames, this->sseBuffer,
+        params->getNumberOfParameters(), currentParameters,
+        [this](Sample* sseBuffer_, size_t samples, size_t offset, size_t numberOfParam, float* currentParam)
+      {
+        this->process(sseBuffer_, samples, params->getNumberOfParameters(), currentParameters);
+      }
+      );
+    }
+
+    //Set current values as old values for interpolation in next buffer iteration
+    for (size_t i = 0u; i < this->params->getNumberOfParameters(); i++)
+    {
+      if (sampleFrames != 0u)
+      {
+        this->params->getParameter(i)->setOldValueUnnormalized(this->params->getParameter(i)->getTargetValueUnnormalized());
+        this->params->getParameter(i)->setImmediateValueUnnormalized(this->params->getParameter(i)->getTargetValueUnnormalized());
+      }
+      else
+      {
+        this->params->getParameter(i)->setOldValueUnnormalized(this->params->getParameter(i)->getImmediateValueUnnormalized());
+        this->params->getParameter(i)->setImmediateValueUnnormalized(this->params->getParameter(i)->getImmediateValueUnnormalized());
+      }
+    }
+  }
+  
+  virtual void process(Sample* buffer, size_t sampleFrames, size_t numberOfParameters, float* parameters) = 0;
+
   ParameterBundle* getPointerToParameterBundle() const
   {
     return (this->params);
   }
+
+
+
 protected:
+  float* currentParameters;
   ParameterBundle* params;
-  float bufferScalingValue = 0.05;
+  size_t blockSize;
+  Sample* sseBuffer;
 };
 
 class VSTParameterBundle
@@ -86,7 +248,7 @@ public:
   {
     for (unsigned int i = 0; i < vst_parameters.size(); i++)
     {
-      (parameterconversions)->getParameter(i)->setCurrentValueNormalized(vst_parameters[i]);
+      (parameterconversions)->getParameter(i)->setTargetValueNormalized(vst_parameters[i]);
     }
   };
 
@@ -146,6 +308,10 @@ public:
     //for now
     programsAreChunks(false);
 
+    speakerArr = nullptr;
+    vstparameters = nullptr;
+    bh_base = nullptr;
+
     //	virtual void setInitialDelay (VstInt32 delay);		///< Use to report the plug-in's latency (Group Delay)
 
   };
@@ -156,10 +322,6 @@ public:
   }
 
   virtual void open() = 0;
-  //{
-  //  setUniqueID(856);
-  //  isSynth(false);
-  //}
 
   virtual void close() = 0;
 
@@ -222,8 +384,8 @@ public:
 
   void processReplacing(float** inputs, float** outputs, VstInt32 sampleFrames)
   {
-    bh_base->process(inputs, outputs, sampleFrames);
     this->vstparameters->updateParameters();
+    bh_base->processBlock(inputs, outputs, sampleFrames);
   }
 
   virtual void setParameter(VstInt32 index, float value) 
