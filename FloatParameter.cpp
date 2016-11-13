@@ -1,8 +1,8 @@
 #include "FloatParameter.h"
 
-FloatParameter::FloatParameter()
+FloatParameter::FloatParameter(float defaultNormalized)
   :
-  oldValueNormalized(0.f), targetValueNormalized(0.f)
+  oldValueNormalized(defaultNormalized), targetValueNormalized(defaultNormalized), normalizedDefaultValue(defaultNormalized)
 {
 };
 
@@ -35,11 +35,10 @@ void FloatParameter::setTargetValueNormalized(float const& in)
 ParameterWithProperties::ParameterWithProperties(float defaultValueUnnormalized, 
   NormalizedRange const& range,
    String name_, String unit_) :
-  NormalizedRange(range), FloatParameter(), 
-  normalizedDefaultValue(range.toNormalized(defaultValueUnnormalized)),
-  name(name_), unit(unit_), interpolationIteration(0u), immediateValueNormalized(toNormalized(defaultValueUnnormalized))
+  NormalizedRange(range), FloatParameter(toNormalized(defaultValueUnnormalized)),
+  name(name_), unit(unit_), interpolationIteration(0u), immediateValueNormalized(normalizedDefaultValue),
+  interpolationDistance(0u)
 {
-  this->setToDefaultValue();
 }
 
 float ParameterWithProperties::getTargetValueUnnormalized() const
@@ -85,12 +84,12 @@ float FloatParameter::getOldValueNormalized() const
 	return oldValueNormalized;
 }
 
-void ParameterWithProperties::setToDefaultValue()
-{
-  targetValueNormalized = normalizedDefaultValue;
-}
+//void FloatParameter::setToDefaultValue()
+//{
+//  targetValueNormalized = normalizedDefaultValue;
+//}
 
-float ParameterWithProperties::getDefaultValueNormalized() const
+float FloatParameter::getDefaultValueNormalized() const
 {
 	return normalizedDefaultValue;
 }
@@ -119,8 +118,18 @@ float ParameterWithProperties::getImmediateValueNormalized()
 float ParameterWithProperties::incrementImmediateValueAndReturnOldValueNormalized()
 {
   float old = this->immediateValueNormalized;
-  immediateValueNormalized = oldValueNormalized + ((oldValueNormalized - targetValueNormalized) / (interpolationMax) ) * interpolationIteration;
+  interpolationIteration++;
+  immediateValueNormalized = oldValueNormalized + ((targetValueNormalized - oldValueNormalized) / (interpolationDistance) ) * interpolationIteration;
   return old;
+}
+
+void ParameterWithProperties::setInterpolationDistance(size_t const& dist)
+{
+  this->interpolationDistance = dist;
+}
+void ParameterWithProperties::resetInterpolationCounter()
+{
+  this->interpolationIteration = 0u;
 }
 
 float ParameterWithProperties::getImmediateValueAndUpdateNormalized()

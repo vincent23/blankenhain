@@ -13,7 +13,7 @@ class FloatParameter
 {
 public:
   // USE THIS CONSTRUCTOR
-  FloatParameter();
+  FloatParameter(float defaultValueUnnormalized);
 
   // These are overwritten and will be called by the DAW host
   // The values are expected to be normalized
@@ -25,10 +25,13 @@ public:
   void setOldValueNormalized(float const& in);
 
   float getInterpolatedNormmalized(size_t currentStep, size_t maxSteps);
+  float getDefaultValueNormalized() const;  
 
 protected:
   float oldValueNormalized;
   float targetValueNormalized;
+  float normalizedDefaultValue;
+
 
 };
 
@@ -39,7 +42,8 @@ class ParameterWithProperties :
   public NormalizedRange
 {
 public:
-  ParameterWithProperties(float defaultValueUnnormalized, 
+  ParameterWithProperties( 
+    float defaultValueUnnormalized,
     NormalizedRange const& range,
     String name, String unit);
 
@@ -49,10 +53,9 @@ public:
   String getName(unsigned int maximumStringLength = 0u) const;
 
 
-  float getDefaultValueNormalized() const;
+
   float getDefaultValueUnnormalized() const;
 
-  void setToDefaultValue();
 
   std::string getUnit() const;
 
@@ -75,19 +78,22 @@ public:
   float getOldValueUnnormalized() const;
   void  setOldValueUnnormalized(float unnormalizedOldValue_);
 
+  void setInterpolationDistance(size_t const& dist);
+  void resetInterpolationCounter();
+
   bool oldAndTargetValueMatch() const;
 
   ParameterWithProperties& operator=(const ParameterWithProperties & in) = default;
-  static const unsigned int interpolationMax = 100;
 private:
   float incrementImmediateValueAndReturnOldValueNormalized();
   String unit;
-  float normalizedDefaultValue;
   // This Value should be between 0 and 1 and specifies the end of
   // linear interpolation in terms of "percentage of whole buffer"
 
   String name;
   float immediateValueNormalized;
+
+  unsigned int interpolationDistance;
 
   unsigned int interpolationIteration;
 };

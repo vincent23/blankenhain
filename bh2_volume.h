@@ -10,13 +10,13 @@
 class bh2_volume_effect : public BH2_effect_base
 {
 public:
-  bh2_volume_effect()
+  bh2_volume_effect() : BH2_effect_base(512)
   {
     this->currentParameters = new float[3];
     this->params = new ParameterBundle(3);
-    (params->getParameter(0)) = new ParameterWithProperties(120.f / 132.f, NormalizedRange(-120.f, 12.f, 5.f),  "volumeL", "dB");
-    (params->getParameter(1)) = new ParameterWithProperties(120.f / 132.f, NormalizedRange(-120.f, 12.f, 5.f),  "volumeR", "dB");
-    (params->getParameter(2)) = new ParameterWithProperties(0.f, NormalizedRange(), "coupling", "bool");
+    (params->getParameter(0)) = new ParameterWithProperties(0.f, NormalizedRange(-120.f, 12.f, 5.f),  "volumeL", "dB");
+    (params->getParameter(1)) = new ParameterWithProperties(0.f, NormalizedRange(-120.f, 12.f, 5.f),  "volumeR", "dB");
+    (params->getParameter(2)) = new ParameterWithProperties(1.f, NormalizedRange(), "coupling", "bool");
   }
 
   ~bh2_volume_effect()

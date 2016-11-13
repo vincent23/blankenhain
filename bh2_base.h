@@ -65,9 +65,9 @@ private:
 
 template<size_t BlockSize, typename ProcessFunction>
 void processBlockwise(float** audioBufferIn, float** audioBufferOut, size_t numberOfSamples,
-  Sample* sseBuffer, size_t numberOfParameters, float* currentParameters, ProcessFunction processFunction) {
+  Sample* sseBuffer, size_t numberOfParameters, float* currentParameters, size_t interpolaionDistance, ProcessFunction processFunction) {
   // Main Loop, performed till AudioBufferFloats are less than an integer multiple of Blocksize
-  size_t offset = 0;
+  size_t offset = interpolaionDistance;
   for (; static_cast<int>(offset + BlockSize) <= numberOfSamples; offset += BlockSize)
   {
     // This fills SIMD-Sample-Array of size "Blocksize" from AudioBuffer
@@ -132,29 +132,34 @@ public:
     sseBuffer = nullptr;
   }
 
-  virtual void processBlock(float** inputs, float** outputs, unsigned int sampleFrames)
+  virtual void processBlock(float** inputs, float** outputs, unsigned int bufferSize)
   {
 
     bool willBeInterpolated = false;
-    
-    //for (unsigned int j = 0u; j < this->params->getNumberOfParameters(); j++)
-    //{
-    //  if (!this->params->getParameter(j)->oldAndTargetValueMatch())
-    //  {
-    //    willBeInterpolated = true; break;
-    //  }
-    //}
+    unsigned int interpolationDistance = 0u;
+
+    for (unsigned int j = 0u; j < this->params->getNumberOfParameters(); j++)
+    {
+      if (!this->params->getParameter(j)->oldAndTargetValueMatch())
+      {
+        willBeInterpolated = true; break;
+      }
+    }
 
     if (willBeInterpolated)
     {
 
-      unsigned int interpolationDistance = this->params->getParameter(0)->interpolationMax > blockSize
-        ? this->params->getParameter(0)->interpolationMax : blockSize;
-      interpolationDistance = interpolationDistance < sampleFrames ? interpolationDistance : sampleFrames;
+      interpolationDistance = blockSize < bufferSize ? blockSize : bufferSize;
 
       for (size_t i = 0; i < interpolationDistance; i++) {
         sseBuffer[i] = Sample(inputs[0][i], inputs[1][i]);
       }
+
+      for (unsigned int j = 0u; j < this->params->getNumberOfParameters(); j++)
+      {
+        this->params->getParameter(j)->setInterpolationDistance(interpolationDistance);
+      }
+
 
       alignas(16) double interpolationTempStorage[2];
       for (unsigned int i = 0u; i < interpolationDistance; i++)
@@ -163,29 +168,29 @@ public:
         {
           this->currentParameters[j] = this->params->getParameter(j)->getImmediateValueAndUpdateUnnormalized();
         }
-        this->process(&sseBuffer[i], 1u, this->params->getNumberOfParameters(),
+        this->process(sseBuffer + i, 1u, this->params->getNumberOfParameters(),
           this->currentParameters);
         sseBuffer[i].store_aligned(interpolationTempStorage);
         outputs[0][i] = interpolationTempStorage[0];
         outputs[1][i] = interpolationTempStorage[1];
       }
-      sampleFrames -= interpolationDistance;
-      inputs[0] += interpolationDistance;
-      inputs[1] += interpolationDistance;
-      outputs[0] += interpolationDistance;
-      outputs[1] += interpolationDistance;
+      //bufferSize -= interpolationDistance;
+      //inputs[0] += interpolationDistance;
+      //inputs[1] += interpolationDistance;
+      //outputs[0] += interpolationDistance;
+      //outputs[1] += interpolationDistance;
 
     }
 
-    if (sampleFrames != 0u)
+    if (bufferSize - interpolationDistance != 0u)
     {
       for (unsigned int j = 0u; j < this->params->getNumberOfParameters(); j++)
       {
         this->currentParameters[j] = this->params->getParameter(j)->getTargetValueUnnormalized();
       }
 
-      processBlockwise<constants::blockSize>(inputs, outputs, sampleFrames, this->sseBuffer,
-        params->getNumberOfParameters(), currentParameters,
+      processBlockwise<constants::blockSize>(inputs, outputs, bufferSize, this->sseBuffer,
+        params->getNumberOfParameters(), currentParameters, interpolationDistance,
         [this](Sample* sseBuffer_, size_t samples, size_t offset, size_t numberOfParam, float* currentParam)
       {
         this->process(sseBuffer_, samples, params->getNumberOfParameters(), currentParameters);
@@ -194,17 +199,21 @@ public:
     }
 
     //Set current values as old values for interpolation in next buffer iteration
-    for (size_t i = 0u; i < this->params->getNumberOfParameters(); i++)
+    if (willBeInterpolated)
     {
-      if (sampleFrames != 0u)
+      for (size_t i = 0u; i < this->params->getNumberOfParameters(); i++)
       {
-        this->params->getParameter(i)->setOldValueUnnormalized(this->params->getParameter(i)->getTargetValueUnnormalized());
-        this->params->getParameter(i)->setImmediateValueUnnormalized(this->params->getParameter(i)->getTargetValueUnnormalized());
-      }
-      else
-      {
-        this->params->getParameter(i)->setOldValueUnnormalized(this->params->getParameter(i)->getImmediateValueUnnormalized());
-        this->params->getParameter(i)->setImmediateValueUnnormalized(this->params->getParameter(i)->getImmediateValueUnnormalized());
+        ParameterWithProperties* parameter = this->params->getParameter(i);
+        if (bufferSize - interpolationDistance != 0u)
+        {
+          parameter->setOldValueNormalized(parameter->getTargetValueNormalized());
+          parameter->setImmediateValueNormalized(parameter->getTargetValueNormalized());
+        }
+        else
+        {
+          parameter->setOldValueNormalized(parameter->getImmediateValueNormalized());
+        }
+        parameter->resetInterpolationCounter();
       }
     }
   }
