@@ -35,7 +35,7 @@ void FloatParameter::setTargetValueNormalized(float const& in)
 ParameterWithProperties::ParameterWithProperties(float defaultValueUnnormalized, 
   NormalizedRange const& range,
    String name_, String unit_) :
-  NormalizedRange(range), FloatParameter(toNormalized(defaultValueUnnormalized)),
+  NormalizedRange(range), FloatParameter(range.toNormalized(defaultValueUnnormalized)),
   name(name_), unit(unit_), interpolationIteration(0u), immediateValueNormalized(normalizedDefaultValue),
   interpolationDistance(0u)
 {

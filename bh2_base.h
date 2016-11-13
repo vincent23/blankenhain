@@ -50,11 +50,6 @@ public:
       return (parameters)[in];
   };
 
-  ParameterWithProperties*& getValue(unsigned int const& in) const
-  {
-    return (parameters)[in];
-  };
-
   float bufferScalingValue;
 private:
   const unsigned int numberOfParameters;
@@ -236,9 +231,9 @@ public:
     : vst_parameters(std::vector<std::atomic<float>>(numberOfParameters))
   {
     parameterconversions = params;
-    for (auto& i : vst_parameters)
+    for (unsigned int i = 0u; i < vst_parameters.size(); i++)
     {
-      i = 0.f;
+      vst_parameters[i] = params->getParameter(i)->getDefaultValueNormalized();
     }
   };
 
