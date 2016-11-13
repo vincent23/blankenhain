@@ -221,10 +221,10 @@ public:
   }
 
 
-
 protected:
   float* currentParameters;
   ParameterBundle* params;
+private:
   size_t blockSize;
   Sample* sseBuffer;
 };
