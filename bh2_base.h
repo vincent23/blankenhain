@@ -64,7 +64,7 @@ private:
 
 
 template<size_t BlockSize, typename ProcessFunction>
-void processBlockwise(float** audioBufferIn, float** audioBufferOut, size_t numberOfSamples,
+void processBlockwise(float* const* audioBufferIn, float* const* audioBufferOut, size_t numberOfSamples,
   Sample* sseBuffer, size_t numberOfParameters, float* currentParameters, size_t interpolaionDistance, ProcessFunction processFunction) {
   // Main Loop, performed till AudioBufferFloats are less than an integer multiple of Blocksize
   size_t offset = interpolaionDistance;
@@ -132,7 +132,7 @@ public:
     sseBuffer = nullptr;
   }
 
-  virtual void processBlock(float** inputs, float** outputs, unsigned int bufferSize)
+  virtual void processBlock(float* const* inputs, float* const* outputs, unsigned int bufferSize)
   {
 
     bool willBeInterpolated = false;
@@ -157,7 +157,7 @@ public:
 
       for (unsigned int j = 0u; j < this->params->getNumberOfParameters(); j++)
       {
-        this->params->getParameter(j)->setInterpolationDistance(interpolationDistance);
+        this->params->getParameter(j)->setInterpolationDistance(blockSize);
       }
 
 
@@ -174,11 +174,6 @@ public:
         outputs[0][i] = interpolationTempStorage[0];
         outputs[1][i] = interpolationTempStorage[1];
       }
-      //bufferSize -= interpolationDistance;
-      //inputs[0] += interpolationDistance;
-      //inputs[1] += interpolationDistance;
-      //outputs[0] += interpolationDistance;
-      //outputs[1] += interpolationDistance;
 
     }
 
@@ -393,8 +388,11 @@ public:
 
   void processReplacing(float** inputs, float** outputs, VstInt32 sampleFrames)
   {
+    float *const * c_inputs = inputs;
+    float *const * c_outputs = inputs;
+
     this->vstparameters->updateParameters();
-    bh_base->processBlock(inputs, outputs, sampleFrames);
+    bh_base->processBlock(c_inputs, c_outputs, sampleFrames);
   }
 
   virtual void setParameter(VstInt32 index, float value) 
