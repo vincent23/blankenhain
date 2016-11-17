@@ -84,7 +84,7 @@ struct alignas(16) Sample : public AlignedType
   {
     alignas(16) double in_[2], this_[2];
     in.store_aligned(in_);
-    in.store_aligned(this_);
+    this->store_aligned(this_);
     return this_[0] < in_[0] && this_[1] < in_[1];
   }
 };
