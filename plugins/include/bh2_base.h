@@ -79,8 +79,8 @@ void processBlockwise(float* const* audioBufferIn, float* const* audioBufferOut,
 		for (size_t i = 0; i < BlockSize; i++) {
 			int sampleIndex = offset + i;
 			sseBuffer[i].store_aligned(sampleValues);
-			audioBufferOut[0][sampleIndex] = sampleValues[0];
-			audioBufferOut[1][sampleIndex] = sampleValues[1];
+			audioBufferOut[0][sampleIndex] = float(sampleValues[0]);
+			audioBufferOut[1][sampleIndex] = float(sampleValues[1]);
 		}
 	}
 
@@ -97,8 +97,8 @@ void processBlockwise(float* const* audioBufferIn, float* const* audioBufferOut,
 		for (size_t i = 0; i < remainingSamples; i++) {
 			int sampleIndex = offset + i;
 			sseBuffer[i].store_aligned(sampleValues);
-			audioBufferOut[0][sampleIndex] = sampleValues[0];
-			audioBufferOut[1][sampleIndex] = sampleValues[1];
+			audioBufferOut[0][sampleIndex] = float(sampleValues[0]);
+			audioBufferOut[1][sampleIndex] = float(sampleValues[1]);
 		}
 	}
 }
@@ -164,8 +164,8 @@ public:
 				this->process(sseBuffer + i, 1u, this->params->getNumberOfParameters(),
 					this->currentParameters);
 				sseBuffer[i].store_aligned(interpolationTempStorage);
-				outputs[0][i] = interpolationTempStorage[0];
-				outputs[1][i] = interpolationTempStorage[1];
+				outputs[0][i] = float(interpolationTempStorage[0]);
+				outputs[1][i] = float(interpolationTempStorage[1]);
 			}
 
 		}

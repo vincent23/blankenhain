@@ -7,7 +7,7 @@
 class bh2_delay_effect : public BH2_effect_base
 {
 public:
-	bh2_delay_effect() : BH2_effect_base(512u), delayLine(aux::millisecToSamples(2502u))
+	bh2_delay_effect() : BH2_effect_base(512u), delayLine(size_t(aux::millisecToSamples(2502u)))
 	{
 		this->currentParameters = new float[4];
 		this->params = new ParameterBundle(4);

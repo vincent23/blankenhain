@@ -12,7 +12,7 @@ protected:
 	CircularBuffer<Sample> delayLine;
 	Sample envelope;
 public:
-	bh2_compressor_effect() : BH2_effect_base(512u), delayLine(aux::millisecToSamples(2502u))
+	bh2_compressor_effect() : BH2_effect_base(512u), delayLine(size_t(aux::millisecToSamples(2502u)))
 	{
 		this->currentParameters = new float[NUMBER_OF_PARAMETERS];
 		this->params = new ParameterBundle(NUMBER_OF_PARAMETERS);
@@ -53,7 +53,7 @@ public:
 		float& threshold = parameters[2];
 		float& attack = parameters[3];
 		bool limiterIsOn = parameters[4] > 0.5 ? true : false;
-		size_t attackTimeInSamples = aux::millisecToSamples(attack);
+		size_t attackTimeInSamples = size_t(aux::millisecToSamples(attack));
 		delayLine.setSize(attackTimeInSamples);
 		release = aux::millisecToSamples(release);
 		float attackGain = exp(-1 / static_cast<float>(attackTimeInSamples));
