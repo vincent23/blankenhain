@@ -1,7 +1,5 @@
 #pragma once
 
-#ifdef _BH2_pan
-
 #include "bh2_base.h"
 
 
@@ -89,5 +87,3 @@ public:
 
   }
 };
-
-#endif

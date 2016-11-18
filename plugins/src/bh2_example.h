@@ -5,8 +5,6 @@
 // Here, enter the number of GUI parameters you want to have
 #define NUMBER_OF_PARAMETERS 5
 
-// Change this from _BH2_example to _BH2_yourPluginName
-#ifdef _BH2_example
 // Don't change this
 #include "bh2_base.h"
 
@@ -108,5 +106,3 @@ public:
 
   }
 };
-
-#endif

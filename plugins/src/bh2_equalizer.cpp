@@ -1,12 +1,10 @@
 #pragma once
-#ifdef _BH2_volume
 
 #include "bh2_base.h"
-#include "bh2_volume.h"
+#include "bh2_equalizer.h"
 
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster)
 {
-  return new BH2_volume(audioMaster);
+  return new BH2_equalizer(audioMaster);
 }
-#endif

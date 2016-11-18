@@ -2,8 +2,6 @@
 
 #define NUMBER_OF_PARAMETERS 5
 
-#ifdef _BH2_compressor
-
 #include "bh2_base.h"
 #include "CircularBuffer.h"
 #include <algorithm>
@@ -127,5 +125,3 @@ public:
 
   }
 };
-
-#endif

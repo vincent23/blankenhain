@@ -1,7 +1,5 @@
 #pragma once
 
-#ifdef _BH2_distortion
-
 #include "bh2_base.h"
 #include <iostream>
 
@@ -134,5 +132,3 @@ public:
 
   }
 };
-
-#endif

@@ -1,7 +1,5 @@
 #pragma once
 
-#ifdef _BH2_bitcrush
-
 #include "bh2_base.h"
 #include <algorithm>
 #include <iostream>
@@ -116,5 +114,3 @@ public:
 
   }
 };
-
-#endif

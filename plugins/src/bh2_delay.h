@@ -1,6 +1,5 @@
 #pragma once
 
-#ifdef _BH2_delay
 
 #include "bh2_base.h"
 #include "CircularBuffer.h"
@@ -99,5 +98,3 @@ public:
 
   }
 };
-
-#endif
