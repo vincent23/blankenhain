@@ -1,17 +1,8 @@
-/*
-  ==============================================================================
+#pragma once
 
-    UpDownSampling.h
-    Created: 4 Apr 2016 9:13:32pm
-    Author:  Dustin Kaiser
-
-  ==============================================================================
-*/
-
-#include "Sample.h"
 #include <cmath>
 
-#pragma once
+struct Sample;
 
 // Upsampling using Spine Interpolation, watch the syntax (differs from upsampleZeros)
 Sample* upsampleSpline(Sample* buffer, size_t originalSamples, size_t interpolatedSamples);

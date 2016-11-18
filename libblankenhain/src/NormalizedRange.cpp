@@ -17,7 +17,7 @@ float NormalizedRange::fromNormalized(float normalizedValue) const
 float NormalizedRange::toNormalized(float unnormalizedValue) const
 {
 #ifdef BLANKENHAIN_CHECKS
-  if (unnormalizedValue < start || unnormalizedValue > end) throw "Blankenhain Range Assert: Unnormalized not in Range";
+	if (unnormalizedValue < start || unnormalizedValue > end) throw "Blankenhain Range Assert: Unnormalized not in Range";
 #endif
 
 	float normalizedValue = (unnormalizedValue - start) / (end - start);

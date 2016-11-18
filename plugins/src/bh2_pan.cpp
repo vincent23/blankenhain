@@ -1,9 +1,6 @@
-#pragma once
-
-#include "bh2_base.h"
 #include "bh2_pan.h"
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster)
 {
-  return new BH2_pan(audioMaster);
+	return new BH2_pan(audioMaster);
 }
