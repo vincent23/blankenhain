@@ -1,17 +1,20 @@
 #pragma once
 
 // Here, enter the number of GUI parameters you want to have
-#define NUMBER_OF_PARAMETERS 3
+const unsigned int NUMBER_OF_PARAMETERS = 3u;
 
 // Don't change this
-#include "bh2_base.h"
+#include "PluginBase.h"
+#include "EffectBase.h"
+#include "ParameterBundle.h"
+#include "processFunctions.h"
 
 // Include additional headers here
 #include <algorithm>
 //
 
 // Here, change the name
-class bh2_filter_effect : public BH2_effect_base
+class bh2_filter_effect : public EffectBase
 {
 	// Include optional additional stuff
 protected:
@@ -19,35 +22,16 @@ protected:
 
 public:
 	// Change the name and define parameters in constructor
-	bh2_filter_effect() : BH2_effect_base(512u)
+	bh2_filter_effect() : EffectBase(NUMBER_OF_PARAMETERS, 512u)
 	{
-		// Don't change this ////////////////////////////////////////////
-		this->currentParameters = new float[NUMBER_OF_PARAMETERS];   ////
-		this->params = new ParameterBundle(NUMBER_OF_PARAMETERS);    ////
-		/////////////////////////////////////////////////////////////////
-
+		ParameterBundle* params = getPointerToParameterBundle();
 		// Insert your stuff here
 		(params->getParameter(0)) = new ParameterWithProperties(0.f, NormalizedRange(0.00f, 5.f, 1.f), "resonance", "");
 		(params->getParameter(1)) = new ParameterWithProperties(120.f, NormalizedRange(40.f, 22000.f, 0.3f), "frequency", "hz");
 		(params->getParameter(2)) = new ParameterWithProperties(0.f, NormalizedRange(0.f, 1.f, 1.f), "style", "");
 
-
 		//resonance = new FloatParameter(0.5, "Resonance", 0.5f, NormalizedRange(0.f, 5.f));
 		//frequency = new FloatParameter((500.f), "Frequency", 0.5f, NormalizedRange(40.f, 22000.f, 0.3f));
-	}
-
-	// Change the title
-	// Don't change the code, unless you have malloced something and need to construct it
-	~bh2_filter_effect()
-	{
-		for (size_t i = 0u; i < this->params->getNumberOfParameters(); i++) {
-			if (params->getParameter(i) != nullptr) delete params->getParameter(i);
-			params->getParameter(i) = nullptr;
-		}
-		if (params != nullptr) delete params;
-		params = nullptr;
-		if (currentParameters != nullptr) delete[] currentParameters;
-		currentParameters = nullptr;
 	}
 
 	/* Here, you will perform the processing of the Buffer
@@ -75,23 +59,12 @@ public:
 };
 
 // Change the name here
-class BH2_filter : public BH2_base
+class BH2_filter : public PluginBase
 {
 public:
-	BH2_filter(audioMasterCallback audioMaster) :
-		BH2_base(audioMaster, NUMBER_OF_PARAMETERS)
-	{
-		bh_base = new bh2_filter_effect();
-		vstparameters = new VSTParameterBundle(NUMBER_OF_PARAMETERS, bh_base->getPointerToParameterBundle());
-	}
-
-	~BH2_filter()
-	{
-		if (bh_base != nullptr) delete bh_base;
-		bh_base = nullptr;
-		if (vstparameters != nullptr) delete vstparameters;
-		vstparameters = nullptr;
-	}
+	BH2_filter(audioMasterCallback audioMaster)
+		: PluginBase(audioMaster, new bh2_filter_effect)
+	{ }
 
 	virtual void open()
 	{

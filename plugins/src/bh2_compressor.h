@@ -1,22 +1,24 @@
 #pragma once
 
-#define NUMBER_OF_PARAMETERS 5
+const unsigned int NUMBER_OF_PARAMETERS = 5u;
 
-#include "bh2_base.h"
+#include "PluginBase.h"
+#include "EffectBase.h"
+#include "ParameterBundle.h"
+#include "AuxFunc.h"
+
 #include "CircularBuffer.h"
 #include <algorithm>
 
-class bh2_compressor_effect : public BH2_effect_base
+class bh2_compressor_effect : public EffectBase
 {
 protected:
 	CircularBuffer<Sample> delayLine;
 	Sample envelope;
 public:
-	bh2_compressor_effect() : BH2_effect_base(512u), delayLine(size_t(aux::millisecToSamples(2502u)))
+	bh2_compressor_effect() : EffectBase(NUMBER_OF_PARAMETERS, 512u), delayLine(size_t(aux::millisecToSamples(2502u)))
 	{
-		this->currentParameters = new float[NUMBER_OF_PARAMETERS];
-		this->params = new ParameterBundle(NUMBER_OF_PARAMETERS);
-
+		ParameterBundle* params = getPointerToParameterBundle();
 		(params->getParameter(0)) = new ParameterWithProperties(1.f, NormalizedRange(0.01f, 12.f, 1.f), "ratio", "");
 		(params->getParameter(1)) = new ParameterWithProperties(10.f, NormalizedRange(0.2f, 15.f, 0.5f), "release", "ms");
 		(params->getParameter(2)) = new ParameterWithProperties(0.f, NormalizedRange(-48.f, 0.f, 4.5f), "threshold", "dB");
@@ -30,20 +32,6 @@ public:
 		//limiterOn = new BoolParameter("limiterOn", false);
 		//envelope = new Sample();
 		envelope = Sample(0.);
-	}
-
-	~bh2_compressor_effect()
-	{
-		for (size_t i = 0u; i < this->params->getNumberOfParameters(); i++) {
-			if (params->getParameter(i) != nullptr) delete params->getParameter(i);
-			params->getParameter(i) = nullptr;
-		}
-		if (params != nullptr) delete params;
-		params = nullptr;
-		if (currentParameters != nullptr) delete[] currentParameters;
-		currentParameters = nullptr;
-
-		//
 	}
 
 	void process(Sample* buffer, size_t numberOfSamples, size_t numberOfParameters, float* parameters)
@@ -95,23 +83,12 @@ public:
 };
 
 
-class BH2_compressor : public BH2_base
+class BH2_compressor : public PluginBase
 {
 public:
-	BH2_compressor(audioMasterCallback audioMaster) :
-		BH2_base(audioMaster, NUMBER_OF_PARAMETERS)
-	{
-		bh_base = new bh2_compressor_effect();
-		vstparameters = new VSTParameterBundle(NUMBER_OF_PARAMETERS, bh_base->getPointerToParameterBundle());
-	}
-
-	~BH2_compressor()
-	{
-		if (bh_base != nullptr) delete bh_base;
-		bh_base = nullptr;
-		if (vstparameters != nullptr) delete vstparameters;
-		vstparameters = nullptr;
-	}
+	BH2_compressor(audioMasterCallback audioMaster)
+		: PluginBase(audioMaster, new bh2_compressor_effect)
+	{ }
 
 	virtual void open()
 	{

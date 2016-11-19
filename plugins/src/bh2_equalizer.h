@@ -1,45 +1,34 @@
 #pragma once
 
-#include "bh2_base.h"
+#include "PluginBase.h"
+#include "EffectBase.h"
+#include "ParameterBundle.h"
+#include "AuxFunc.h"
+#include "processFunctions.h"
 #include <iostream>
 
-class bh2_equalizer_effect : public BH2_effect_base
+class bh2_equalizer_effect : public EffectBase
 {
 private:
 	effects::equalizer::Sample_EQSTATE* es;
 	const double vsa = (1.0 / 4294967295.0); // Very small amount (Denormal Fix)
 public:
-	bh2_equalizer_effect() : BH2_effect_base(512)
+	bh2_equalizer_effect() : EffectBase(5, 512)
 	{
-		this->currentParameters = new float[5];
-		this->params = new ParameterBundle(5);
+		ParameterBundle* params = getPointerToParameterBundle();
 		(params->getParameter(0)) = new ParameterWithProperties(0.f, NormalizedRange(-36.f, 12.f, 1.f), "low", "dB");
 		(params->getParameter(1)) = new ParameterWithProperties(0.f, NormalizedRange(-36.f, 12.f, 1.f), "mid", "dB");
 		(params->getParameter(2)) = new ParameterWithProperties(0.f, NormalizedRange(-36.f, 12.f, 1.f), "high", "dB");
 		(params->getParameter(3)) = new ParameterWithProperties(530.f, NormalizedRange(40.f, 20000.f), "LowFreq", "1/s");
 		(params->getParameter(4)) = new ParameterWithProperties(5700.f, NormalizedRange(40.f, 20000.f), "HighFreq", "1/s");
-
-
-		for (unsigned int i = 0u; i < this->params->getNumberOfParameters(); i++)
-			this->currentParameters[i] = this->params->getParameter(i)->getDefaultValueUnnormalized();
-
+		
 		es = new effects::equalizer::Sample_EQSTATE();
 		es->init(100., 44100., 5000.);
-
 	}
 
 	~bh2_equalizer_effect()
 	{
 		delete es;
-
-		for (size_t i = 0u; i < this->params->getNumberOfParameters(); i++) {
-			if (params->getParameter(i) != nullptr) delete params->getParameter(i);
-			params->getParameter(i) = nullptr;
-		}
-		if (params != nullptr) delete params;
-		params = nullptr;
-		if (currentParameters != nullptr) delete[] currentParameters;
-		currentParameters = nullptr;
 	}
 
 	void process(Sample* buffer, size_t sampleFrames, size_t numberOfParameters, float* parameters)
@@ -68,23 +57,12 @@ public:
 };
 
 
-class BH2_equalizer : public BH2_base
+class BH2_equalizer : public PluginBase
 {
 public:
-	BH2_equalizer(audioMasterCallback audioMaster) :
-		BH2_base(audioMaster, 5)
-	{
-		bh_base = new bh2_equalizer_effect();
-		vstparameters = new VSTParameterBundle(5u, bh_base->getPointerToParameterBundle());
-	}
-
-	~BH2_equalizer()
-	{
-		if (bh_base != nullptr) delete bh_base;
-		bh_base = nullptr;
-		if (vstparameters != nullptr) delete vstparameters;
-		vstparameters = nullptr;
-	}
+	BH2_equalizer(audioMasterCallback audioMaster)
+		: PluginBase(audioMaster, new bh2_equalizer_effect)
+	{ }
 
 	virtual void open()
 	{

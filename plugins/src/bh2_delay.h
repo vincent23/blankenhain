@@ -1,32 +1,22 @@
 #pragma once
 
-#include "bh2_base.h"
+#include "PluginBase.h"
+#include "EffectBase.h"
+#include "ParameterBundle.h"
+#include "AuxFunc.h"
 #include "CircularBuffer.h"
 #include <algorithm>
 
-class bh2_delay_effect : public BH2_effect_base
+class bh2_delay_effect : public EffectBase
 {
 public:
-	bh2_delay_effect() : BH2_effect_base(512u), delayLine(size_t(aux::millisecToSamples(2502u)))
+	bh2_delay_effect() : EffectBase(4, 512u), delayLine(size_t(aux::millisecToSamples(2502u)))
 	{
-		this->currentParameters = new float[4];
-		this->params = new ParameterBundle(4);
+		ParameterBundle* params = getPointerToParameterBundle();
 		(params->getParameter(0)) = new ParameterWithProperties(0.f, NormalizedRange(-50.f, 50.f), "pan", "");
 		(params->getParameter(1)) = new ParameterWithProperties(100.f, NormalizedRange(1.f, 2500.f), "length", "ms");
 		(params->getParameter(2)) = new ParameterWithProperties(0.f, NormalizedRange(0.f, 1.5f), "feedback", "");
 		(params->getParameter(3)) = new ParameterWithProperties(1.f, NormalizedRange(), "drywet", "");
-	}
-
-	~bh2_delay_effect()
-	{
-		for (size_t i = 0u; i < this->params->getNumberOfParameters(); i++) {
-			if (params->getParameter(i) != nullptr) delete params->getParameter(i);
-			params->getParameter(i) = nullptr;
-		}
-		if (params != nullptr) delete params;
-		params = nullptr;
-		if (currentParameters != nullptr) delete[] currentParameters;
-		currentParameters = nullptr;
 	}
 
 	void process(Sample* buffer, size_t numberOfSamples, size_t numberOfParameters, float* parameters)
@@ -67,23 +57,12 @@ protected:
 };
 
 
-class BH2_delay : public BH2_base
+class BH2_delay : public PluginBase
 {
 public:
-	BH2_delay(audioMasterCallback audioMaster) :
-		BH2_base(audioMaster, 4)
-	{
-		bh_base = new bh2_delay_effect();
-		vstparameters = new VSTParameterBundle(4u, bh_base->getPointerToParameterBundle());
-	}
-
-	~BH2_delay()
-	{
-		if (bh_base != nullptr) delete bh_base;
-		bh_base = nullptr;
-		if (vstparameters != nullptr) delete vstparameters;
-		vstparameters = nullptr;
-	}
+	BH2_delay(audioMasterCallback audioMaster)
+		: PluginBase(audioMaster, new bh2_delay_effect)
+	{ }
 
 	virtual void open()
 	{

@@ -1,31 +1,21 @@
 #pragma once
 
-#include "bh2_base.h"
+#include "PluginBase.h"
+#include "EffectBase.h"
+#include "ParameterBundle.h"
+
 #include <algorithm>
 #include <iostream>
 
-class bh2_bitcrush_effect : public BH2_effect_base
+class bh2_bitcrush_effect : public EffectBase
 {
 public:
-	bh2_bitcrush_effect() : BH2_effect_base(512)
+	bh2_bitcrush_effect() : EffectBase(3, 512)
 	{
-		this->currentParameters = new float[3];
-		this->params = new ParameterBundle(3);
+		ParameterBundle* params = getPointerToParameterBundle();
 		(params->getParameter(0)) = new ParameterWithProperties(0.5f, NormalizedRange(), "Bitcrush", "");
 		(params->getParameter(1)) = new ParameterWithProperties(0.f, NormalizedRange(), "Downsample", "");
 		(params->getParameter(2)) = new ParameterWithProperties(100.f, NormalizedRange(0.f, 100.f), "Dry/Wet", "%");
-	}
-
-	~bh2_bitcrush_effect()
-	{
-		for (size_t i = 0u; i < this->params->getNumberOfParameters(); i++) {
-			if (params->getParameter(i) != nullptr) delete params->getParameter(i);
-			params->getParameter(i) = nullptr;
-		}
-		if (params != nullptr) delete params;
-		params = nullptr;
-		if (currentParameters != nullptr) delete[] currentParameters;
-		currentParameters = nullptr;
 	}
 
 	void process(Sample* buffer, size_t numberOfSamples, size_t numberOfParameters, float* parameters)
@@ -83,23 +73,12 @@ public:
 };
 
 
-class BH2_bitcrush : public BH2_base
+class BH2_bitcrush : public PluginBase
 {
 public:
-	BH2_bitcrush(audioMasterCallback audioMaster) :
-		BH2_base(audioMaster, 3)
-	{
-		bh_base = new bh2_bitcrush_effect();
-		vstparameters = new VSTParameterBundle(3u, bh_base->getPointerToParameterBundle());
-	}
-
-	~BH2_bitcrush()
-	{
-		if (bh_base != nullptr) delete bh_base;
-		bh_base = nullptr;
-		if (vstparameters != nullptr) delete vstparameters;
-		vstparameters = nullptr;
-	}
+	BH2_bitcrush(audioMasterCallback audioMaster)
+		: PluginBase(audioMaster, new bh2_bitcrush_effect)
+	{ }
 
 	virtual void open()
 	{

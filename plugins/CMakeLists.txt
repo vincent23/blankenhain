@@ -11,10 +11,13 @@ function(prepend var prefix)
 endfunction(prepend)
 
 prepend(HEADERS "include/"
-	"bh2_base.h"
+	"PluginBase.h"
+	"PluginParameterBundle.h"
 )
 
 prepend(SOURCES "src/"
+	"PluginBase.cpp"
+	"PluginParameterBundle.cpp"
 )
 
 # VST

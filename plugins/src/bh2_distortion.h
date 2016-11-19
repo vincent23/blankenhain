@@ -1,30 +1,20 @@
 #pragma once
 
-#include "bh2_base.h"
+#include "PluginBase.h"
+#include "EffectBase.h"
+#include "ParameterBundle.h"
+#include "AuxFunc.h"
 #include <iostream>
 
-class bh2_distortion_effect : public BH2_effect_base
+class bh2_distortion_effect : public EffectBase
 {
 public:
-	bh2_distortion_effect() : BH2_effect_base(265)
+	bh2_distortion_effect() : EffectBase(3, 265)
 	{
-		this->currentParameters = new float[3];
-		this->params = new ParameterBundle(3);
+		ParameterBundle* params = getPointerToParameterBundle();
 		(params->getParameter(0)) = new ParameterWithProperties(0.f, NormalizedRange(-12.f, 12.f, 1.f), "inGain", "dB");
 		(params->getParameter(1)) = new ParameterWithProperties(0.f, NormalizedRange(0.f, 10.f, 1.f), "iterations", "");
 		(params->getParameter(2)) = new ParameterWithProperties(1.f, NormalizedRange(), "algorithm", "");
-	}
-
-	~bh2_distortion_effect()
-	{
-		for (size_t i = 0u; i < this->params->getNumberOfParameters(); i++) {
-			if (params->getParameter(i) != nullptr) delete params->getParameter(i);
-			params->getParameter(i) = nullptr;
-		}
-		if (params != nullptr) delete params;
-		params = nullptr;
-		if (currentParameters != nullptr) delete[] currentParameters;
-		currentParameters = nullptr;
 	}
 
 	enum distortionAlgorithms
@@ -101,23 +91,12 @@ public:
 };
 
 
-class BH2_distortion : public BH2_base
+class BH2_distortion : public PluginBase
 {
 public:
-	BH2_distortion(audioMasterCallback audioMaster) :
-		BH2_base(audioMaster, 3)
-	{
-		bh_base = new bh2_distortion_effect();
-		vstparameters = new VSTParameterBundle(3u, bh_base->getPointerToParameterBundle());
-	}
-
-	~BH2_distortion()
-	{
-		if (bh_base != nullptr) delete bh_base;
-		bh_base = nullptr;
-		if (vstparameters != nullptr) delete vstparameters;
-		vstparameters = nullptr;
-	}
+	BH2_distortion(audioMasterCallback audioMaster)
+		: PluginBase(audioMaster, new bh2_distortion_effect)
+	{ }
 
 	virtual void open()
 	{
