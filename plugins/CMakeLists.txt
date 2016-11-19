@@ -28,12 +28,13 @@ prepend(VST_SOURCES "deps/vst2/"
 	"audioeffectx.h"
 	"vstfxstore.h"
 )
-set(SOURCES ${SOURCES} ${VST_SOURCES})
 include_directories("deps/vst2")
+add_library(vst2 STATIC ${VST_SOURCES})
 
 include_directories("include")
 include_directories("../libblankenhain/include")
 add_library(bh_plugins_common STATIC ${HEADERS} ${SOURCES})
+target_link_libraries(bh_plugins_common vst2)
 
 set(PLUGIN_PATH "" CACHE PATH "Path to VST plugin install location")
 
