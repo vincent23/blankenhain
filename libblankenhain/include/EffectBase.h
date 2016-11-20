@@ -14,6 +14,12 @@ public:
 	ParameterBundle* getPointerToParameterBundle() const;
 	unsigned int getNumberOfParameters() const;
 
+	/* Here, you will perform the processing of the Buffer
+	* @param buffer: Samples to be processed
+	* @param numberOfSamples: Size of the buffer
+	* @param parameters: Parameters for the effect, defined in constructor
+	* @param numberOfParameters: Number of Parameters
+	*/
 	virtual void process(Sample* buffer, size_t sampleFrames, size_t numberOfParameters, float* parameters) = 0;
 
 private:

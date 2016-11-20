@@ -54,46 +54,46 @@ function(add_plugin name)
 endfunction(add_plugin)
 
 add_plugin("bh_bitcrush"
-	"bh2_bitcrush.cpp"
-	"bh2_bitcrush.h"
+	"BitcrushPlugin.cpp"
+	"BitcrushPlugin.h"
 )
 
 add_plugin("bh_compressor"
-	"bh2_compressor.cpp"
-	"bh2_compressor.h"
+	"CompressorPlugin.cpp"
+	"CompressorPlugin.h"
 )
 
 add_plugin("bh_delay"
-	"bh2_delay.cpp"
-	"bh2_delay.h"
+	"DelayPlugin.cpp"
+	"DelayPlugin.h"
 )
 
 add_plugin("bh_distortion"
-	"bh2_distortion.cpp"
-	"bh2_distortion.h"
+	"DistortionPlugin.cpp"
+	"DistortionPlugin.h"
 )
 
 add_plugin("bh_equalizer"
-	"bh2_equalizer.cpp"
-	"bh2_equalizer.h"
+	"EqualizerPlugin.cpp"
+	"EqualizerPlugin.h"
 )
 
 add_plugin("bh_example"
-	"bh2_example.cpp"
-	"bh2_example.h"
+	"ExamplePlugin.cpp"
+	"ExamplePlugin.h"
 )
 
 add_plugin("bh_filter"
-	"bh2_filter.cpp"
-	"bh2_filter.h"
+	"FilterPlugin.cpp"
+	"FilterPlugin.h"
 )
 
 add_plugin("bh_pan"
-	"bh2_pan.cpp"
-	"bh2_pan.h"
+	"PanPlugin.cpp"
+	"PanPlugin.h"
 )
 
 add_plugin("bh_volume"
-	"bh2_volume.cpp"
-	"bh2_volume.h"
+	"VolumePlugin.cpp"
+	"VolumePlugin.h"
 )
