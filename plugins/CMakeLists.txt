@@ -11,11 +11,15 @@ function(prepend var prefix)
 endfunction(prepend)
 
 prepend(HEADERS "include/"
+	"InstrumentPluginBase.h"
+	"MidiEvent.h"
 	"PluginBase.h"
 	"PluginParameterBundle.h"
 )
 
 prepend(SOURCES "src/"
+	"InstrumentPluginBase.cpp"
+	"MidiEvent.cpp"
 	"PluginBase.cpp"
 	"PluginParameterBundle.cpp"
 )
@@ -96,4 +100,9 @@ add_plugin("bh_pan"
 add_plugin("bh_volume"
 	"VolumePlugin.cpp"
 	"VolumePlugin.h"
+)
+
+add_plugin("bh_example_synth"
+	"ExampleInstrumentPlugin.cpp"
+	"ExampleInstrumentPlugin.h"
 )

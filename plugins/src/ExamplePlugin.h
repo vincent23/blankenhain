@@ -9,7 +9,4 @@ class ExamplePlugin : public PluginBase
 {
 public:
 	ExamplePlugin(audioMasterCallback audioMaster);
-
-	void open() override;
-	void close() override;
 };

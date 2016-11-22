@@ -11,9 +11,6 @@ public:
 	PluginBase(audioMasterCallback const& audioMaster, EffectBase* effect);
 	virtual ~PluginBase();
 
-	virtual void open() = 0;
-	virtual void close() = 0;
-
 	VstInt32 processEvents(VstEvents* events) override;
 	bool canParameterBeAutomated(VstInt32 index) override;
 	bool string2parameter(VstInt32 index, char* text) override;
@@ -62,6 +59,9 @@ public:
 	//  //
 	//  return false; 
 	//} ///< Return parameter properties
+
+protected:
+	virtual void onBeforeBlock(unsigned int blockOffset);
 
 private:
 	VstSpeakerArrangement* speakerArr;

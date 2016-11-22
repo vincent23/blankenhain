@@ -4,16 +4,8 @@
 
 DistortionPlugin::DistortionPlugin(audioMasterCallback audioMaster)
 	: PluginBase(audioMaster, new DistortionEffect)
-{ }
-
-void DistortionPlugin::open()
 {
-	setUniqueID(189);
-	isSynth(false);
-}
-
-void DistortionPlugin::close()
-{
+	setUniqueID('bhDi');
 }
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster)

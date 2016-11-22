@@ -2,16 +2,8 @@
 
 VolumePlugin::VolumePlugin(audioMasterCallback audioMaster)
 	: PluginBase(audioMaster, new VolumeEffect)
-{ }
-
-void VolumePlugin::open()
 {
-	setUniqueID(189);
-	isSynth(false);
-}
-
-void VolumePlugin::close()
-{
+	setUniqueID('bhVo');
 }
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster)

@@ -4,16 +4,8 @@
 
 CompressorPlugin::CompressorPlugin(audioMasterCallback audioMaster)
 	: PluginBase(audioMaster, new CompressorEffect)
-{ }
-
-void CompressorPlugin::open()
 {
-	setUniqueID(1993);
-	isSynth(false);
-}
-
-void CompressorPlugin::close()
-{
+	setUniqueID('bhCo');
 }
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster)

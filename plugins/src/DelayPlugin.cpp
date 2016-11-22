@@ -4,16 +4,8 @@
 
 DelayPlugin::DelayPlugin(audioMasterCallback audioMaster)
 	: PluginBase(audioMaster, new DelayEffect)
-{ }
-
-void DelayPlugin::open()
 {
-	setUniqueID(1991);
-	isSynth(false);
-}
-
-void DelayPlugin::close()
-{
+	setUniqueID('bhDe');
 }
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster)

@@ -4,16 +4,8 @@
 
 FilterPlugin::FilterPlugin(audioMasterCallback audioMaster)
 	: PluginBase(audioMaster, new FilterEffect)
-{ }
-
-void FilterPlugin::open()
 {
-	setUniqueID(1993);
-	isSynth(false);
-}
-
-void FilterPlugin::close()
-{
+	setUniqueID('bhFi');
 }
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster)

@@ -5,16 +5,8 @@
 
 ExamplePlugin::ExamplePlugin(audioMasterCallback audioMaster)
 	: PluginBase(audioMaster, new ExampleEffect)
-{ }
-
-void ExamplePlugin::open()
 {
-	setUniqueID(1993);
-	isSynth(false);
-}
-
-void ExamplePlugin::close()
-{
+	setUniqueID('bhEx');
 }
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster)

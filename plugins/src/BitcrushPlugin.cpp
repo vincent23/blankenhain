@@ -4,17 +4,8 @@
 
 BitcrushPlugin::BitcrushPlugin(audioMasterCallback audioMaster)
 	: PluginBase(audioMaster, new BitcrushEffect)
-{ }
-
-void BitcrushPlugin::open()
 {
-	setUniqueID(189);
-	isSynth(false);
-}
-
-void BitcrushPlugin::close()
-{
-
+	setUniqueID('bhBC');
 }
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster)

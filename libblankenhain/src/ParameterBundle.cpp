@@ -5,7 +5,6 @@ ParameterBundle::ParameterBundle(unsigned int numberOfParameters_) : numberOfPar
 {
 	FloatParameter** stuff = new FloatParameter*[numberOfParameters];
 	parameters = stuff;
-	bufferScalingValue = 0.f;
 }
 
 ParameterBundle::ParameterBundle(const ParameterBundle& other)

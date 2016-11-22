@@ -22,6 +22,7 @@ PluginBase::PluginBase(audioMasterCallback const& audioMaster, EffectBase* effec
 	speakerArr->numChannels = 2;
 	canProcessReplacing();
 	noTail(false);
+	isSynth(false);
 
 	//for now
 	programsAreChunks(false);
@@ -97,6 +98,8 @@ void PluginBase::processReplacing(float** inputs, float** outputs, VstInt32 samp
 	unsigned int sampleFrames = static_cast<unsigned int>(sampleFrames_);
 	for (unsigned int blockOffset = 0; blockOffset < sampleFrames; blockOffset += constants::blockSize) {
 		unsigned int blockLength = sampleFrames - blockOffset;
+		// the last block of the buffer may be smaller than blockSize
+		// we process it anyway, which might be source of jittering
 		if (blockLength > constants::blockSize) {
 			blockLength = constants::blockSize;
 		}
@@ -104,6 +107,7 @@ void PluginBase::processReplacing(float** inputs, float** outputs, VstInt32 samp
 			unsigned int samplePosition = blockOffset + sampleOffset;
 			processBuffer[sampleOffset] = Sample(inputs[0][samplePosition], inputs[1][samplePosition]);
 		}
+		onBeforeBlock(blockOffset);
 		effect->processBlock(processBuffer, blockLength);
 		for (unsigned sampleOffset = 0; sampleOffset < blockLength; sampleOffset++) {
 			unsigned int samplePosition = blockOffset + sampleOffset;
@@ -162,3 +166,6 @@ bool PluginBase::getProductString(char* text) {
 VstInt32 PluginBase::getVendorVersion() {
 	return 1000;
 }
+
+void PluginBase::onBeforeBlock(unsigned int blockOffset)
+{ }

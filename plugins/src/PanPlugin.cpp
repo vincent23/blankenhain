@@ -4,16 +4,8 @@
 
 PanPlugin::PanPlugin(audioMasterCallback audioMaster)
 	: PluginBase(audioMaster, new PanEffect)
-{ }
-
-void PanPlugin::open()
 {
-	setUniqueID(1991);
-	isSynth(false);
-}
-
-void PanPlugin::close()
-{
+	setUniqueID('bhPa');
 }
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster)

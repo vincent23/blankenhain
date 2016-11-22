@@ -13,8 +13,6 @@ public:
 	unsigned int getNumberOfParameters() const;
 
 	FloatParameter*& getParameter(unsigned int const& in) const;
-
-	float bufferScalingValue;
 private:
 	const unsigned int numberOfParameters;
 	FloatParameter** parameters;
