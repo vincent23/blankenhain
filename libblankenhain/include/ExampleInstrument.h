@@ -2,10 +2,12 @@
 
 #include "InstrumentBase.h"
 
+struct VoiceState;
+
 class ExampleInstrument : public InstrumentBase
 {
 public:
 	ExampleInstrument();
 
-	void process(Sample* buffer, unsigned int numberOfSamples) override;
+	void processVoice(VoiceState& voice, unsigned int timeInSamples, Sample* buffer, unsigned int numberOfSamples);
 };

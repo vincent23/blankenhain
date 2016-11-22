@@ -17,6 +17,11 @@ VstInt32 InstrumentPluginBase::getNumMidiInputChannels()
 	return 1;
 }
 
+VstInt32 InstrumentPluginBase::getNumMidiOutputChannels()
+{
+	return 1;
+}
+
 VstInt32 InstrumentPluginBase::processEvents(VstEvents* events)
 {
 	size_t remaining = midiEvents.size() - midiEventPosition;
@@ -24,6 +29,9 @@ VstInt32 InstrumentPluginBase::processEvents(VstEvents* events)
 	// because we do not have a default constructor we have to supply a dummy element.
 	// since we always shrink the vector, this won't be used.
 	midiEvents.resize(remaining, MidiEvent(0, 0, 0));
+	for (unsigned int i = 0; i < remaining; i++) {
+		midiEvents[i].sampleOffset = 0;
+	}
 	midiEventPosition = 0;
 
 	// assume events arrive in the correct order
@@ -36,8 +44,7 @@ VstInt32 InstrumentPluginBase::processEvents(VstEvents* events)
 		VstMidiEvent& midiEvent = *reinterpret_cast<VstMidiEvent*>(vstEvent);
 		unsigned int key = midiEvent.midiData[1];
 		unsigned int velocity = midiEvent.midiData[2];
-		// we only want to process note on and note off
-		switch(midiEvent.midiData[0]) {
+		switch(static_cast<unsigned char>(midiEvent.midiData[0])) {
 		case 0b10000000:
 			// set velocity to 0 to indicate a note off event
 			velocity = 0;
@@ -49,6 +56,15 @@ VstInt32 InstrumentPluginBase::processEvents(VstEvents* events)
 	}
 
 	return 0;
+}
+
+VstInt32 InstrumentPluginBase::canDo(char* text)
+{
+	if (!strcmp(text, "receiveVstEvents"))
+		return 1;
+	if (!strcmp(text, "receiveVstMidiEvent"))
+		return 1;
+	return -1;
 }
 
 void InstrumentPluginBase::onBeforeBlock(unsigned int blockOffset)

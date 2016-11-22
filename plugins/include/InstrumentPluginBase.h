@@ -13,7 +13,9 @@ public:
 	InstrumentPluginBase(audioMasterCallback const& audioMaster, InstrumentBase* instrument);
 
 	VstInt32 getNumMidiInputChannels() override;
+	VstInt32 getNumMidiOutputChannels() override;
 	VstInt32 processEvents(VstEvents* events) override;
+	VstInt32 canDo(char* text) override;
 
 private:
 	void onBeforeBlock(unsigned int blockOffset) override;

@@ -33,6 +33,7 @@ prepend(HEADERS "include/"
 	"processFunctions.h"
 	"Sample.h"
 	"UpDownSampling.h"
+	"VoiceState.h"
 	"VolumeEffect.h"
 )
 
@@ -57,6 +58,7 @@ prepend(SOURCES "src/"
 	"ParameterBundle.cpp"
 	"processFunctions.cpp"
 	"UpDownSampling.cpp"
+	"VoiceState.cpp"
 	"VolumeEffect.cpp"
 )
 
