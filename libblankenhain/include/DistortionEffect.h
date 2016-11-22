@@ -13,5 +13,5 @@ public:
 		DoidicAsymmetric
 	};
 
-	void process(Sample* buffer, size_t numberOfSamples, size_t numberOfParameters, float* parameters);
+	void process(Sample* buffer, size_t numberOfSamples);
 };

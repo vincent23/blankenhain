@@ -3,7 +3,7 @@
 
 ParameterBundle::ParameterBundle(unsigned int numberOfParameters_) : numberOfParameters(numberOfParameters_)
 {
-	ParameterWithProperties** stuff = new ParameterWithProperties*[numberOfParameters];
+	FloatParameter** stuff = new FloatParameter*[numberOfParameters];
 	parameters = stuff;
 	bufferScalingValue = 0.f;
 }
@@ -32,7 +32,7 @@ unsigned int ParameterBundle::getNumberOfParameters() const
 	return numberOfParameters;
 }
 
-ParameterWithProperties*& ParameterBundle::getParameter(unsigned int const& in) const
+FloatParameter*& ParameterBundle::getParameter(unsigned int const& in) const
 {
 	return (parameters)[in];
 };

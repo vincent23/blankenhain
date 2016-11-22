@@ -4,6 +4,7 @@
 
 class PluginParameterBundle;
 class EffectBase;
+struct Sample;
 
 class PluginBase : public AudioEffectX {
 public:
@@ -66,4 +67,5 @@ private:
 	VstSpeakerArrangement* speakerArr;
 	PluginParameterBundle* pluginParameters;
 	EffectBase* effect;
+	Sample* processBuffer;
 };

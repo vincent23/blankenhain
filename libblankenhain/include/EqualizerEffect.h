@@ -10,7 +10,7 @@ public:
 	EqualizerEffect();
 	~EqualizerEffect();
 
-	void process(Sample* buffer, size_t sampleFrames, size_t numberOfParameters, float* parameters) override;
+	void process(Sample* buffer, size_t numberOfSamples) override;
 
 private:
 	effects::equalizer::Sample_EQSTATE* es;

@@ -1,31 +1,31 @@
 #include "DistortionEffect.h"
 
-
 #include "ParameterBundle.h"
+#include "InterpolatedValue.h"
 #include "AuxFunc.h"
 #include <cmath>
 
-DistortionEffect::DistortionEffect() : EffectBase(3, 265)
+DistortionEffect::DistortionEffect() : EffectBase(3)
 {
 	ParameterBundle* params = getPointerToParameterBundle();
-	(params->getParameter(0)) = new ParameterWithProperties(0.f, NormalizedRange(-12.f, 12.f, 1.f), "inGain", "dB");
-	(params->getParameter(1)) = new ParameterWithProperties(0.f, NormalizedRange(0.f, 10.f, 1.f), "iterations", "");
-	(params->getParameter(2)) = new ParameterWithProperties(1.f, NormalizedRange(), "algorithm", "");
+	(params->getParameter(0)) = new FloatParameter(0.f, NormalizedRange(-12.f, 12.f, 1.f), "inGain", "dB");
+	(params->getParameter(1)) = new FloatParameter(0.f, NormalizedRange(0.f, 10.f, 1.f), "iterations", "");
+	(params->getParameter(2)) = new FloatParameter(1.f, NormalizedRange(), "algorithm", "");
 }
 
-void DistortionEffect::process(Sample* buffer, size_t numberOfSamples, size_t numberOfParameters, float* parameters)
+void DistortionEffect::process(Sample* buffer, size_t numberOfSamples)
 {
-	float& inGain = parameters[0];
-	size_t iterations = static_cast<size_t>(parameters[1]);
+	InterpolatedValue& inGain = getParameterValue(0);
+	size_t iterations = static_cast<size_t>(getParameterValue(1).get());
 
 	distortionAlgorithms algo;
-	if (parameters[2] < 0.3333) algo = distortionAlgorithms::ArayaAndSuyama;
-	else if (parameters[2] < 0.66666) algo = distortionAlgorithms::DoidicSymmetric;
+	if (getParameterValue(2).get() < 0.3333) algo = distortionAlgorithms::ArayaAndSuyama;
+	else if (getParameterValue(2).get() < 0.66666) algo = distortionAlgorithms::DoidicSymmetric;
 	else algo = distortionAlgorithms::DoidicAsymmetric;
 
 
 	// InGain
-	for (size_t i = 0; i < numberOfSamples; i++) buffer[i] *= Sample(aux::decibelToLinear(inGain));
+	for (size_t i = 0; i < numberOfSamples; i++) buffer[i] *= Sample(aux::decibelToLinear(inGain.get(i)));
 
 	alignas(16) double currentBuffer[2];
 	double*const & lr = currentBuffer;
@@ -76,4 +76,5 @@ void DistortionEffect::process(Sample* buffer, size_t numberOfSamples, size_t nu
 			}
 		}
 	}
+	nextSample(numberOfSamples);
 }

@@ -26,7 +26,7 @@ void PluginParameterBundle::updateParameters()
 	}
 };
 
-std::string PluginParameterBundle::getPluginParameterName(unsigned int const& in)
+std::string PluginParameterBundle::getParameterName(unsigned int const& in)
 {
 	if (in > pluginParameters.size()) return "error argument too big";
 	else return (parameterConversions)->getParameter(in)->getName();
@@ -42,18 +42,7 @@ float PluginParameterBundle::getParameterUnnormalized(unsigned int const& index)
 	return this->parameterConversions->getParameter(index)->fromNormalized(this->pluginParameters[index]);
 }
 
-char* PluginParameterBundle::getParameterUnit(unsigned int const& index)
+std::string PluginParameterBundle::getParameterUnit(unsigned int const& index)
 {
-	std::string unit = (parameterConversions)->getParameter(index)->getUnit();
-	char* willBeReturned = new char[8u];
-	strncpy(willBeReturned, unit.c_str(), 8);
-	return willBeReturned;
-}
-
-char* PluginParameterBundle::getParameterNameCstr(unsigned int const& index)
-{
-	std::string unit = (parameterConversions)->getParameter(index)->getName(8);
-	char* willBeReturned = new char[8u];
-	strncpy(willBeReturned, unit.c_str(), 8);
-	return willBeReturned;
+	return (parameterConversions)->getParameter(index)->getUnit();
 }

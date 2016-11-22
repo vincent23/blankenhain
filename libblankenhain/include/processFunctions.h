@@ -4,10 +4,6 @@
 #include "UpDownSampling.h"
 #include <cmath>
 
-namespace constants {
-	constexpr size_t blockSize = 128;
-}
-
 namespace effects
 {
 	namespace filter

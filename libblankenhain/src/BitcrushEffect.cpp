@@ -1,25 +1,27 @@
 #include "BitcrushEffect.h"
 
 #include "ParameterBundle.h"
+#include "InterpolatedValue.h"
 
 #include <algorithm>
 
-BitcrushEffect::BitcrushEffect() : EffectBase(3, 512)
+BitcrushEffect::BitcrushEffect() : EffectBase(3)
 {
 	ParameterBundle* params = getPointerToParameterBundle();
-	(params->getParameter(0)) = new ParameterWithProperties(0.5f, NormalizedRange(), "Bitcrush", "");
-	(params->getParameter(1)) = new ParameterWithProperties(0.f, NormalizedRange(), "Downsample", "");
-	(params->getParameter(2)) = new ParameterWithProperties(100.f, NormalizedRange(0.f, 100.f), "Dry/Wet", "%");
+	(params->getParameter(0)) = new FloatParameter(0.5f, NormalizedRange(), "Bitcrush", "");
+	(params->getParameter(1)) = new FloatParameter(0.f, NormalizedRange(), "Downsample", "");
+	(params->getParameter(2)) = new FloatParameter(100.f, NormalizedRange(0.f, 100.f), "Dry/Wet", "%");
 }
 
-void BitcrushEffect::process(Sample* buffer, size_t numberOfSamples, size_t numberOfParameters, float* parameters)
+void BitcrushEffect::process(Sample* buffer, size_t numberOfSamples)
 {
-	float& bitcrush = parameters[0];
-	float& downsample = parameters[1];
-	float& drywet = parameters[2];
 
-	int groupedSamples = std::min(static_cast<int>(std::max(1.f, downsample * 100.f)), static_cast<int>(numberOfSamples));
-	float bitdepth = 12.f * (1.f - bitcrush) + 1.f * bitcrush;
+	InterpolatedValue& bitcrush = getParameterValue(0);
+	InterpolatedValue& downsample = getParameterValue(1);
+	InterpolatedValue& drywet = getParameterValue(2);
+
+	int groupedSamples = std::min(static_cast<int>(std::max(1.f, downsample.get() * 100.f)), static_cast<int>(numberOfSamples));
+	float bitdepth = 12.f * (1.f - bitcrush.get()) + 1.f * bitcrush.get();
 	int steps = static_cast<int>(exp2(bitdepth));
 
 	for (size_t sample = 0; sample < numberOfSamples - groupedSamples; sample += groupedSamples)
@@ -35,7 +37,7 @@ void BitcrushEffect::process(Sample* buffer, size_t numberOfSamples, size_t numb
 
 		for (int i = 0; i < groupedSamples; i++) {
 			Sample sampleValue = buffer[i + sample];
-			buffer[i + sample] = sampleValue * Sample(1. - drywet) + discretizedSample * Sample(drywet);
+			buffer[i + sample] = sampleValue * Sample(1. - drywet.get(sample)) + discretizedSample * Sample(drywet.get(sample));
 		}
 	}
 
@@ -51,8 +53,10 @@ void BitcrushEffect::process(Sample* buffer, size_t numberOfSamples, size_t numb
 	for (size_t i = static_cast<size_t>(numberOfSamples / groupedSamples) * groupedSamples; i < numberOfSamples; i++)
 	{
 		Sample sampleValue = buffer[i];
-		buffer[i] = sampleValue * Sample(1. - drywet) + discretizedSample * Sample(drywet);
+		buffer[i] = sampleValue * Sample(1. - drywet.get(i)) + discretizedSample * Sample(drywet.get(i));
 	}
+
+	nextSample(numberOfSamples);
 }
 
 Sample BitcrushEffect::discretize(Sample const& sample)

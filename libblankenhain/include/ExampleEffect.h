@@ -9,7 +9,7 @@ public:
 	// Change the name and define parameters in constructor
 	ExampleEffect();
 
-	void process(Sample* buffer, size_t numberOfSamples, size_t numberOfParameters, float* parameters) override;
+	void process(Sample* buffer, size_t numberOfSamples) override;
 
 protected:
 	// Include optional additional stuff
