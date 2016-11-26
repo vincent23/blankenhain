@@ -6,6 +6,12 @@ NormalizedRange::NormalizedRange(float start_, float end_, float skew_)
 {
 }
 
+NormalizedRange::NormalizedRange(bool itReallyDoesNotMatterIfThisIsTrueOrFalse)
+  : start(0.), end(0.), skew(1.)
+{
+}
+
+
 float NormalizedRange::fromNormalized(float normalizedValue) const
 {
 	if (skew != 1.f && normalizedValue > 0.f) {

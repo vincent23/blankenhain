@@ -12,10 +12,28 @@ protected:
 public:
 	CircularBuffer(size_t numberOfSamples);
 	~CircularBuffer(void);
-	void push(T const& in);
-	T pushpop(T const& in);
+	virtual void push(T const& in);
+	virtual T pushpop(T const& in);
 	size_t getSize();
 	void setSize(size_t size_);
-	T get(int iterator = -1);
+	virtual T get(int iterator = -1);
 };
 
+template <typename T>
+class OnePoleFilter
+{
+protected:
+  T param_b0;
+  T param_a1;
+  T gain;
+  T inputValue, outputValue0;//, outputValue1;
+public:
+  OnePoleFilter(T const& polePosition);
+  ~OnePoleFilter(void);
+  T tick(T const& in);
+  void setParams(T const& b0, T const&a1);
+  void setGain(T const& gain);
+  T getGain() const;
+  void getParams(T & b0, T& a1) const;
+  void setPole(T const& polePosition);
+};

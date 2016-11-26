@@ -106,3 +106,8 @@ add_plugin("bh_example_synth"
 	"ExampleInstrumentPlugin.cpp"
 	"ExampleInstrumentPlugin.h"
 )
+
+add_plugin("bh_mverb"
+	"mverbPlugin.cpp"
+	"mverbPlugin.h"
+)
