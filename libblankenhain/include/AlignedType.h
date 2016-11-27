@@ -3,7 +3,7 @@
 class AlignedType
 {
 protected:
-	const unsigned int alignment = 16;
+	//const unsigned int alignment = 16;
 public:
 	AlignedType() {};
 	void *operator new (unsigned int size);

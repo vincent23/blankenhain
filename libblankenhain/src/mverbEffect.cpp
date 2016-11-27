@@ -114,7 +114,7 @@ void mverbEffect::process(Sample* buffer, size_t numberOfSamples)
     }
 
     // Mix output
-    out = out * wet.get() + buffer[i] * dry.get();
+    out = out * aux::decibelToLinear(wet.get()) + buffer[i] * aux::decibelToLinear(dry.get());
 
     buffer[i] = out;
     nextSample();

@@ -7,7 +7,7 @@ NormalizedRange::NormalizedRange(float start_, float end_, float skew_)
 }
 
 NormalizedRange::NormalizedRange(bool itReallyDoesNotMatterIfThisIsTrueOrFalse)
-  : start(0.), end(0.), skew(1.)
+  : start(0.), end(1.), skew(1.)
 {
 }
 

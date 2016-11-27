@@ -20,7 +20,7 @@ public:
 };
 
 template <typename T>
-class OnePoleFilter
+class OnePoleFilter : public AlignedType
 {
 protected:
   T param_b0;

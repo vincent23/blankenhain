@@ -81,7 +81,8 @@ void AlignedType::operator delete[](void *p) throw()
 
 unsigned int AlignedType::getAlignment(void)
 {
-	return alignment;
+	//return alignment;
+	return 16;
 }
 
 
