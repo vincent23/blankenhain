@@ -1,0 +1,6 @@
+[submodule "plugins/deps/imgui"]
+	path = plugins/deps/imgui
+	url = https://github.com/ocornut/imgui.git
+[submodule "plugins/vstgui"]
+	path = plugins/deps/vstgui
+	url = https://github.com/steinbergmedia/vstgui.git

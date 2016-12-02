@@ -3,6 +3,7 @@
 #include "PluginParameterBundle.h"
 #include "Sample.h"
 #include "Constants.h"
+#include "ImguiEffectEditor.h"
 
 #include <string>
 #include <algorithm>
