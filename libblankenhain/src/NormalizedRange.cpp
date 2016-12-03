@@ -7,15 +7,21 @@ NormalizedRange::NormalizedRange(float start_, float end_, float skew_)
 }
 
 NormalizedRange::NormalizedRange(bool itReallyDoesNotMatterIfThisIsTrueOrFalse)
-  : start(0.), end(1.), skew(1.)
+	: start(0.), end(1.), skew(1.)
 {
+}
+
+NormalizedRange NormalizedRange::fromMidpoint(float start, float mid, float end)
+{
+	float skew = 1.f / std::log2((end - start) / (mid - start));
+	return NormalizedRange(start, end, skew);
 }
 
 
 float NormalizedRange::fromNormalized(float normalizedValue) const
 {
 	if (skew != 1.f && normalizedValue > 0.f) {
-		normalizedValue = std::exp(std::log(normalizedValue) / skew);
+		normalizedValue = std::pow(normalizedValue, 1.f / skew);
 	}
 	return start + (end - start) * normalizedValue;
 }

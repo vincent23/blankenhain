@@ -9,8 +9,8 @@ FilterEffect::FilterEffect() : EffectBase(NUMBER_OF_PARAMETERS)
 {
 	ParameterBundle* params = getPointerToParameterBundle();
 	// Insert your stuff here
-	(params->getParameter(0)) = new FloatParameter(0.f, NormalizedRange(0.00f, 5.f, 1.f), "resonance", "");
-	(params->getParameter(1)) = new FloatParameter(120.f, NormalizedRange(40.f, 22000.f, 0.3f), "frequency", "hz");
+	(params->getParameter(0)) = new FloatParameter(0.7f, NormalizedRange::fromMidpoint(0.1f, 0.7f, 5.f), "resonance", "");
+	(params->getParameter(1)) = new FloatParameter(120.f, NormalizedRange::fromMidpoint(20.f, 1000.f, 22000.f), "frequency", "hz");
 	(params->getParameter(2)) = new FloatParameter(0.f, NormalizedRange(0.f, 1.f, 1.f), "style", "");
 
 	//resonance = new FloatParameter(0.5, "Resonance", 0.5f, NormalizedRange(0.f, 5.f));
