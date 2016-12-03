@@ -6,21 +6,6 @@
 
 namespace effects
 {
-	namespace filter
-	{
-		struct Filter : public AlignedType {
-			Filter();
-
-			void processHigh(Sample* data, size_t numberOfSamples, double frequency, double resonance, double sampleRate = 44100.);
-			void processLow(Sample* data, size_t numberOfSamples, double frequency, double resonance, double sampleRate = 44100.);
-			void processBand(Sample* data, size_t numberOfSamples, double frequency, double resonance, double sampleRate = 44100.);
-			void processNotch(Sample* data, size_t numberOfSamples, double frequency, double resonance, double sampleRate = 44100.);
-			void process(Sample* data, size_t numberOfSamples, double a1, double a2, double b0, double b1, double b2);
-			void reset();
-
-			Sample x_1, y_1, y_2;
-		};
-	}
 
 	namespace pan
 	{

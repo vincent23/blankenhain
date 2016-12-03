@@ -101,19 +101,9 @@ inline Sample operator*(const Sample& a, const Sample& b) {
 	return Sample(_mm_mul_pd(a.v, b.v));
 }
 
-inline Sample operator*(const Sample& a, const float& b)
+inline Sample operator*(const Sample& a, const double& b)
 {
-
-	alignas(16) double tmp[2];
-	tmp[0] = b;
-	tmp[1] = b;
-
-	Sample temp;
-	temp.load_aligned(tmp);
-
-	Sample toBeReturned = a * temp;
-	return toBeReturned;
-
+	return a * Sample(b);
 }
 
 inline Sample operator/(const Sample& a, const float& b)

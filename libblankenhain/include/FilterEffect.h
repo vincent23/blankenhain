@@ -2,7 +2,7 @@
 
 #include "EffectBase.h"
 
-#include "processFunctions.h"
+#include "Filter.h"
 
 class FilterEffect : public EffectBase
 {
@@ -12,5 +12,5 @@ public:
 	void process(Sample* buffer, size_t numberOfSamples) override;
 
 protected:
-	effects::filter::Filter filter;
+	Filter filters[4];
 };
