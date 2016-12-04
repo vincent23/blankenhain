@@ -17,6 +17,10 @@ public:
 	float fromNormalized(float normalizedValue) const;
 	float toNormalized(float unnormalizedValue) const;
 
+	float getStart() const;
+	float getEnd() const;
+	float getSkew() const;
+
 private:
 	float start, end, skew;
 };

@@ -168,5 +168,10 @@ VstInt32 PluginBase::getVendorVersion() {
 	return 1000;
 }
 
+const PluginParameterBundle& PluginBase::getParameters() const
+{
+	return *pluginParameters;
+}
+
 void PluginBase::onBeforeBlock(unsigned int blockOffset)
 { }

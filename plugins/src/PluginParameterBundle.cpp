@@ -32,17 +32,22 @@ std::string PluginParameterBundle::getParameterName(unsigned int const& in)
 	else return (parameterConversions)->getParameter(in)->getName();
 };
 
-float PluginParameterBundle::getParameterNormalized(unsigned int const& index)
+float PluginParameterBundle::getParameterNormalized(unsigned int const& index) const
 {
 	return this->pluginParameters[index];
 }
 
-float PluginParameterBundle::getParameterUnnormalized(unsigned int const& index)
+float PluginParameterBundle::getParameterUnnormalized(unsigned int const& index) const
 {
 	return this->parameterConversions->getParameter(index)->fromNormalized(this->pluginParameters[index]);
 }
 
-std::string PluginParameterBundle::getParameterUnit(unsigned int const& index)
+std::string PluginParameterBundle::getParameterUnit(unsigned int const& index) const
 {
 	return (parameterConversions)->getParameter(index)->getUnit();
+}
+
+const ParameterBundle& PluginParameterBundle::getConversions() const
+{
+	return *parameterConversions;
 }

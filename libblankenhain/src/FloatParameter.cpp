@@ -2,7 +2,7 @@
 
 #include "Constants.h"
 
-FloatParameter::FloatParameter(float defaultValueUnnormalized, const NormalizedRange& range, String name_, String unit_)
+FloatParameter::FloatParameter(float defaultValueUnnormalized, const NormalizedRange& range, BhString name_, BhString unit_)
 	: NormalizedRange(range)
 	, defaultValueNormalized(range.toNormalized(defaultValueUnnormalized))
 	, currentValueNormalized(defaultValueNormalized)
@@ -24,7 +24,7 @@ float FloatParameter::getValueUnnormalized() const
 	return fromNormalized(getValueNormalized());
 }
 
-String FloatParameter::getName(unsigned int maximumStringLength) const
+BhString FloatParameter::getName(unsigned int maximumStringLength) const
 {
 	if (maximumStringLength == 0u || name.length() <= maximumStringLength) {
 		return name;
@@ -34,7 +34,7 @@ String FloatParameter::getName(unsigned int maximumStringLength) const
 	}
 }
 
-String FloatParameter::getUnit() const
+BhString FloatParameter::getUnit() const
 {
 	return unit;
 }

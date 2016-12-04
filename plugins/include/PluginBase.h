@@ -27,6 +27,8 @@ public:
 	bool getProductString(char* text) override;
 	VstInt32 getVendorVersion() override;
 
+	const PluginParameterBundle& getParameters() const;
+
 	// TODO
 	//virtual VstInt32 getChunk(void** data, bool isPreset = false) 
 	//virtual VstInt32 setChunk(void* data, VstInt32 byteSize, bool isPreset = false)

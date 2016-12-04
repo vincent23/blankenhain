@@ -38,3 +38,18 @@ float NormalizedRange::toNormalized(float unnormalizedValue) const
 	}
 	return normalizedValue;
 }
+
+float NormalizedRange::getStart() const
+{
+	return start;
+}
+
+float NormalizedRange::getEnd() const
+{
+	return end;
+}
+
+float NormalizedRange::getSkew() const
+{
+	return skew;
+}

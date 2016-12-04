@@ -121,6 +121,8 @@ add_plugin("bh_distortion"
 add_plugin("bh_equalizer"
 	"EqualizerPlugin.cpp"
 	"EqualizerPlugin.h"
+	"EqualizerPluginEditor.cpp"
+	"EqualizerPluginEditor.h"
 )
 
 add_plugin("bh_example"

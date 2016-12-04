@@ -13,4 +13,7 @@ public:
 	void close() override;
 
 	void imguiFrame() override;
+
+protected:
+	PluginBase& plugin;
 };

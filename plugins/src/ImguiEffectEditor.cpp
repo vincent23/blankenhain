@@ -3,8 +3,9 @@
 #include "PluginBase.h"
 #include "ImguiVstguiView.h"
 
-ImguiEffectEditor::ImguiEffectEditor(PluginBase* plugin, int width, int height)
-	: AEffGUIEditor(plugin)
+ImguiEffectEditor::ImguiEffectEditor(PluginBase* plugin_, int width, int height)
+	: AEffGUIEditor(plugin_)
+	, plugin(*plugin_)
 {
 	rect.left = 0;
 	rect.top = 0;
