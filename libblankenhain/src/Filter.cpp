@@ -59,16 +59,19 @@ Sample Filter::tickNotch(const Sample& in)
 
 Sample Filter::tickBell(const Sample& in)
 {
+	tick(in);
 	return in + m1 * v1;
 }
 
 Sample Filter::tickLowShelf(const Sample& in)
 {
+	tick(in);
 	return in + m1 * v1 + m2 * v2;
 }
 
 Sample Filter::tickHighShelf(const Sample& in)
 {
+	tick(in);
 	return m0 * in + m1 * v1 + m2 * v2;
 }
 
