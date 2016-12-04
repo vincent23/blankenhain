@@ -42,41 +42,26 @@ void EqualizerEffect::process(Sample* buffer, size_t numberOfSamples)
 		Filter& filter = filters[filterIndex];
 		switch (type) {
 		case 0:
-		case 3:
-		case 5:
-			filter.recomputeCoefficients(frequency, Q);
+			filter.setHighPass(frequency, Q);
 			break;
 		case 1:
-			filter.recomputeCoefficientsLowShelf(frequency, Q, gain);
+			filter.setLowShelf(frequency, Q, gain);
 			break;
 		case 2:
-			filter.recomputeCoefficientsBell(frequency, Q, gain);
+			filter.setBell(frequency, Q, gain);
+			break;
+		case 3:
+			filter.setNotch(frequency, Q);
 			break;
 		case 4:
-			filter.recomputeCoefficientsHighShelf(frequency, Q, gain);
+			filter.setHighShelf(frequency, Q, gain);
+			break;
+		case 5:
+			filter.setLowPass(frequency, Q);
 			break;
 		}
 		for (unsigned int sampleIndex = 0; sampleIndex < numberOfSamples; sampleIndex++) {
-			switch (type) {
-			case 0:
-				buffer[sampleIndex] = filter.tickHigh(buffer[sampleIndex]);
-				break;
-			case 1:
-				buffer[sampleIndex] = filter.tickLowShelf(buffer[sampleIndex]);
-				break;
-			case 2:
-				buffer[sampleIndex] = filter.tickBell(buffer[sampleIndex]);
-				break;
-			case 3:
-				buffer[sampleIndex] = filter.tickNotch(buffer[sampleIndex]);
-				break;
-			case 4:
-				buffer[sampleIndex] = filter.tickHighShelf(buffer[sampleIndex]);
-				break;
-			case 5:
-				buffer[sampleIndex] = filter.tickLow(buffer[sampleIndex]);
-				break;
-			}
+			buffer[sampleIndex] = filter.tick(buffer[sampleIndex]);
 		}
 	}
 	nextSample(numberOfSamples);

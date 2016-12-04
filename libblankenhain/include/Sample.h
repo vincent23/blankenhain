@@ -106,13 +106,18 @@ inline Sample operator*(const Sample& a, const double& b)
 	return a * Sample(b);
 }
 
-inline Sample operator/(const Sample& a, const float& b)
-{
-	return a * (1.f / b);
-}
-
 inline Sample operator/(const Sample& a, const Sample& b) {
 	return Sample(_mm_div_pd(a.v, b.v));
+}
+
+inline Sample operator/(const Sample& a, const double& b)
+{
+	return a / Sample(b);
+}
+
+inline Sample operator-(const Sample& a)
+{
+	return Sample(0) - a;
 }
 
 inline Sample load_aligned(const double* ptr)

@@ -8,25 +8,20 @@
 class Filter : AlignedType
 {
 public:
-	void recomputeCoefficients(double frequency, double Q);
-	void recomputeCoefficientsBell(double frequency, double Q, double gainInDb);
-	void recomputeCoefficientsLowShelf(double frequency, double Q, double gainInDb);
-	void recomputeCoefficientsHighShelf(double frequency, double Q, double gainInDb);
-	Sample tickLow(const Sample& in);
-	Sample tickHigh(const Sample& in);
-	Sample tickBand(const Sample& in);
-	Sample tickNotch(const Sample& in);
-	Sample tickBell(const Sample& in);
-	Sample tickLowShelf(const Sample& in);
-	Sample tickHighShelf(const Sample& in);
-
+	void setLowPass(double frequency, double Q);
+	void setHighPass(double frequency, double Q);
+	void setBandPass(double frequency, double Q);
+	void setNotch(double frequency, double Q);
+	void setBell(double frequency, double Q, double gainInDb);
+	void setLowShelf(double frequency, double Q, double gainInDb);
+	void setHighShelf(double frequency, double Q, double gainInDb);
 	// TODO do we need these?
-	Sample tickPeak(const Sample& in);
-	Sample tickAll(const Sample& in);
+	void setPeak(double frequency, double Q);
+	void setAll(double frequency, double Q);
 
+	Sample tick(const Sample& v0);
 private:
-	void tick(const Sample& v0);
-	void recomputeCoefficientsInternal(double frequency, double Q, double gFactor);
+	void recomputeCoefficients(double frequency, double Q, double gFactor);
 
 	Sample g, k, a1, a2, a3;
 	Sample m0, m1, m2;

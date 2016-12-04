@@ -33,20 +33,20 @@ void FilterEffect::process(Sample* buffer, size_t numberOfSamples)
 
 	for (unsigned int filterIndex = 0; filterIndex < numberOfFilters; filterIndex++) {
 		Filter& filter = filters[filterIndex];
-		filter.recomputeCoefficients(frequency, Q);
+		if (style < 0.25) {
+			filter.setHighPass(frequency, Q);
+		}
+		else if (style < 0.5) {
+			filter.setLowPass(frequency, Q);
+		}
+		else if (style < 0.75) {
+			filter.setBandPass(frequency, Q);
+		}
+		else {
+			filter.setNotch(frequency, Q);
+		}
 		for (unsigned int i = 0; i < numberOfSamples; i++) {
-			if (style < 0.25) {
-				buffer[i] = filter.tickHigh(buffer[i]);
-			}
-			else if (style < 0.5) {
-				buffer[i] = filter.tickLow(buffer[i]);
-			}
-			else if (style < 0.75) {
-				buffer[i] = filter.tickBand(buffer[i]);
-			}
-			else {
-				buffer[i] = filter.tickNotch(buffer[i]);
-			}
+			buffer[i] = filter.tick(buffer[i]);
 		}
 	}
 	nextSample(numberOfSamples);
