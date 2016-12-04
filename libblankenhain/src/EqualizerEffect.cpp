@@ -4,43 +4,80 @@
 #include "InterpolatedValue.h"
 #include "AuxFunc.h"
 
-EqualizerEffect::EqualizerEffect() : EffectBase(5)
+#include <string>
+
+EqualizerEffect::EqualizerEffect() : EffectBase(1 + 5 * numberOfFilters)
 {
 	ParameterBundle* params = getPointerToParameterBundle();
-	(params->getParameter(0)) = new FloatParameter(0.f, NormalizedRange(-36.f, 12.f, 1.f), "low", "dB");
-	(params->getParameter(1)) = new FloatParameter(0.f, NormalizedRange(-36.f, 12.f, 1.f), "mid", "dB");
-	(params->getParameter(2)) = new FloatParameter(0.f, NormalizedRange(-36.f, 12.f, 1.f), "high", "dB");
-	(params->getParameter(3)) = new FloatParameter(530.f, NormalizedRange(40.f, 20000.f), "LowFreq", "1/s");
-	(params->getParameter(4)) = new FloatParameter(5700.f, NormalizedRange(40.f, 20000.f), "HighFreq", "1/s");
-
-	es = new effects::equalizer::Sample_EQSTATE();
-	es->init(100., 44100., 5000.);
-}
-
-EqualizerEffect::~EqualizerEffect()
-{
-	delete es;
+	(params->getParameter(0)) = new FloatParameter(100.f, NormalizedRange(0.f, 200.f), "scale", "%");
+	for (unsigned int filterIndex = 0; filterIndex < numberOfFilters; filterIndex++) {
+		std::string indexStr = std::to_string(filterIndex + 1);
+		(params->getParameter(filterIndex * 5 + 1)) = new FloatParameter(0.f, NormalizedRange(0.f, 1.f), "on" + indexStr, "");
+		(params->getParameter(filterIndex * 5 + 2)) = new FloatParameter(850.f, NormalizedRange::fromMidpoint(20.f, 850.f, 22000.f), "freq" + indexStr, "Hz");
+		(params->getParameter(filterIndex * 5 + 3)) = new FloatParameter(0.f, NormalizedRange(-15.f, 15.f), "gain" + indexStr, "dB");
+		(params->getParameter(filterIndex * 5 + 4)) = new FloatParameter(0.71f, NormalizedRange::fromMidpoint(.1f, 1.34f, 18.f), "Q" + indexStr, "");
+		// types:
+		// 0: highpass
+		// 1: low shelf
+		// 2: bell
+		// 3: notch
+		// 4: high shelf
+		// 5: lowpass
+		(params->getParameter(filterIndex * 5 + 5)) = new FloatParameter(0.f, NormalizedRange(0.f, 5.99f), "type" + indexStr, "");
+	}
 }
 
 void EqualizerEffect::process(Sample* buffer, size_t numberOfSamples)
 {
-	float low = getParameterValue(0).get();
-	float mid = getParameterValue(1).get();
-	float high = getParameterValue(2).get();
-	float lowfreq = getParameterValue(3).get();
-	float highfreq = getParameterValue(4).get();
-
-
-	const double mixfreq = 44100;
-	es->lf = Sample(2 * sin(3.14159265359 * ((double)lowfreq / mixfreq)));
-	es->hf = Sample(2 * sin(3.14159265359 * ((double)highfreq / mixfreq)));
-	es->lg = Sample(aux::decibelToLinear(low));
-	es->mg = Sample(aux::decibelToLinear(mid));
-	es->hg = Sample(aux::decibelToLinear(high));
-
-	for (size_t i = 0; i < numberOfSamples; i++)
-	{
-		buffer[i] = es->doThreeBand(buffer[i]);
+	float scale = getParameterValue(0).get() / 100.;
+	for (unsigned int filterIndex = 0; filterIndex < numberOfFilters; filterIndex++) {
+		if (getParameterValue(filterIndex * 5 + 1).get() < .5f) {
+			// filter is off
+			continue;
+		}
+		float frequency = getParameterValue(filterIndex * 5 + 2).get();
+		float gain = getParameterValue(filterIndex * 5 + 3).get() * scale;
+		float Q = getParameterValue(filterIndex * 5 + 4).get();
+		int type = (int)getParameterValue(filterIndex * 5 + 5).get();
+		Filter& filter = filters[filterIndex];
+		switch (type) {
+		case 0:
+		case 3:
+		case 5:
+			filter.recomputeCoefficients(frequency, Q);
+			break;
+		case 1:
+			filter.recomputeCoefficientsLowShelf(frequency, Q, gain);
+			break;
+		case 2:
+			filter.recomputeCoefficientsBell(frequency, Q, gain);
+			break;
+		case 4:
+			filter.recomputeCoefficientsHighShelf(frequency, Q, gain);
+			break;
+		}
+		for (unsigned int sampleIndex = 0; sampleIndex < numberOfSamples; sampleIndex++) {
+			switch (type) {
+			case 0:
+				buffer[sampleIndex] = filter.tickHigh(buffer[sampleIndex]);
+				break;
+			case 1:
+				buffer[sampleIndex] = filter.tickLowShelf(buffer[sampleIndex]);
+				break;
+			case 2:
+				buffer[sampleIndex] = filter.tickBell(buffer[sampleIndex]);
+				break;
+			case 3:
+				buffer[sampleIndex] = filter.tickNotch(buffer[sampleIndex]);
+				break;
+			case 4:
+				buffer[sampleIndex] = filter.tickHighShelf(buffer[sampleIndex]);
+				break;
+			case 5:
+				buffer[sampleIndex] = filter.tickLow(buffer[sampleIndex]);
+				break;
+			}
+		}
 	}
-	nextSample();
+	nextSample(numberOfSamples);
 }

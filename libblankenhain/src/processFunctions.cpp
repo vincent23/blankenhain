@@ -173,25 +173,6 @@ namespace effects
 		}
 	}
 
-	namespace equalizer
-	{
-		void processEqualizer(Sample* data, size_t numberOfSamples, Sample_EQSTATE* es,
-			float low, float mid, float high, float lowfreq, float highfreq)
-		{
-			const double mixfreq = 44100;
-			es->lf = Sample(2 * sin(3.14159265359 * ((double)lowfreq / mixfreq)));
-			es->hf = Sample(2 * sin(3.14159265359 * ((double)highfreq / mixfreq)));
-			es->lg = Sample(aux::decibelToLinear(low));
-			es->mg = Sample(aux::decibelToLinear(mid));
-			es->hg = Sample(aux::decibelToLinear(high));
-
-			for (size_t i = 0; i < numberOfSamples; i++)
-			{
-				data[i] = es->doThreeBand(data[i]);
-			}
-		}
-	}
-
 	namespace distortion
 	{
 		void processNonlinDistortion(Sample* data, size_t numberOfSamples, size_t algorithm, float ingain, size_t iterations)
