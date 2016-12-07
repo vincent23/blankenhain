@@ -45,7 +45,7 @@ float CompressorPluginEditor::compressorMap(float threshold, float ratio, float 
 		return dbIn;
 	}
 	else if (dbIn < kneeEnd) {
-		// cubic bezier for knee
+		// quadratic bezier for knee
 		//float t = (dbIn - kneeStart) / kneeWidth;
 		//float a = kneeStart;
 		//float b = threshold;
@@ -63,6 +63,10 @@ float CompressorPluginEditor::compressorMap(float threshold, float ratio, float 
 }
 
 float CompressorPluginEditor::compressorMapWithMakeup(float threshold, float ratio, float knee, float dbIn) const {
-	float makeup = -compressorMap(threshold, ratio, knee, 0.f) * .75f;
+	// make threshold / 3 a fixpoint
+	// TODO find something better for this
+	// TODO does not work for positive thresholds
+	float fixpoint = threshold / 3.f;
+	float makeup = fixpoint - compressorMap(threshold, ratio, knee, fixpoint);
 	return compressorMap(threshold, ratio, knee, dbIn) + makeup;
 }
