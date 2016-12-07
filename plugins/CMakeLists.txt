@@ -106,6 +106,8 @@ add_plugin("bh_bitcrush"
 add_plugin("bh_compressor"
 	"CompressorPlugin.cpp"
 	"CompressorPlugin.h"
+	"CompressorPluginEditor.cpp"
+	"CompressorPluginEditor.h"
 )
 
 add_plugin("bh_delay"
