@@ -2,6 +2,7 @@
 #include "PluginParameterBundle.h"
 #include "PluginBase.h"
 #include "AuxFunc.h"
+#include "CompressorPlugin.h"
 
 #include <algorithm>
 #include <imgui.h>
@@ -17,6 +18,8 @@ void CompressorPluginEditor::imguiFrame()
 	ImGui::SetNextWindowPos(ImVec2(0, 0));
 	ImGui::SetNextWindowSize(io.DisplaySize);
 	ImGui::Begin("test", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize);
+	float envelopeDb = static_cast<CompressorPlugin*>(&plugin)->getEnvelope();
+	ImGui::DragFloat("envDb", &envelopeDb);
 	const PluginParameterBundle& bundle = plugin.getParameters();
 	const unsigned int nPoints = 250;
 	float points[nPoints];

@@ -64,10 +64,12 @@ public:
 
 protected:
 	virtual void onBeforeBlock(unsigned int blockOffset);
+	virtual void onAfterProcess();
+
+	EffectBase* effect;
 
 private:
 	VstSpeakerArrangement* speakerArr;
 	PluginParameterBundle* pluginParameters;
-	EffectBase* effect;
 	Sample* processBuffer;
 };

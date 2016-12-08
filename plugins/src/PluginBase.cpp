@@ -118,6 +118,7 @@ void PluginBase::processReplacing(float** inputs, float** outputs, VstInt32 samp
 			outputs[1][samplePosition] = float(outputSample[1]);
 		}
 	}
+	onAfterProcess();
 }
 
 void PluginBase::setParameter(VstInt32 index, float value)
@@ -174,4 +175,7 @@ const PluginParameterBundle& PluginBase::getParameters() const
 }
 
 void PluginBase::onBeforeBlock(unsigned int blockOffset)
+{ }
+
+void PluginBase::onAfterProcess()
 { }

@@ -15,11 +15,23 @@ CompressorEffect::CompressorEffect() : EffectBase(8u)
 	(params->getParameter(3)) = new FloatParameter(2.f, NormalizedRange::fromMidpoint(1.f, 2.f, 64.f), "ratio", "");
 	(params->getParameter(4)) = new FloatParameter(0.f, NormalizedRange::fromMidpoint(0.f, 9.f, 18.f), "knee", "dB");
 	(params->getParameter(5)) = new FloatParameter(1.f, NormalizedRange::fromMidpoint(0.f, 1.f, 10.f), "lookahead", "ms");
-	(params->getParameter(6)) = new FloatParameter(1.f, NormalizedRange(0.f, 1.f), "makeup", "");
+	(params->getParameter(6)) = new FloatParameter(0.f, NormalizedRange(0.f, 1.f), "makeup", "");
 	(params->getParameter(7)) = new FloatParameter(1.f, NormalizedRange(0.f, 1.f), "envelope", "peak/rms");
 }
 
 void CompressorEffect::process(Sample* buffer, size_t numberOfSamples)
 {
+	float attack = getParameterValue(0).get();
+	float release = getParameterValue(1).get();
+	bool rms = getParameterValue(7).get() >= .5f;
+	envelope.setTimes(attack, release);
+	for (unsigned int i = 0; i < numberOfSamples; i++) {
+		if (rms) {
+			envelope.getRmsEnvelope(buffer[i]);
+		}
+		else {
+			envelope.getPeakEnvelope(buffer[i]);
+		}
+	}
 	nextSample(numberOfSamples);
 }

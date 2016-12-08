@@ -3,6 +3,8 @@
 #include <emmintrin.h>
 #include "AlignedType.h"
 
+#include <cmath>
+
 /**
  * A stereo sample.
  */
@@ -160,4 +162,13 @@ inline double maxValue(Sample const& in)
 	alignas(16) double lr[2];
 	in.store_aligned(lr);
 	return lr[0] < lr[1] ? lr[1] : lr[0];
+}
+
+inline Sample sqrt(const Sample& in)
+{
+	alignas(16) double lr[2];
+	in.store_aligned(lr);
+	lr[0] = std::sqrt(lr[0]);
+	lr[1] = std::sqrt(lr[1]);
+	return load_aligned(lr);
 }
