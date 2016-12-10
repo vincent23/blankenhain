@@ -11,5 +11,5 @@ public:
 	void process(Sample* buffer, size_t numberOfSamples) override;
 
 protected:
-	CircularBuffer<Sample> delayLine;
+	LinearInterpolatedCircularBuffer<Sample> delayLine;
 };

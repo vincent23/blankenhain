@@ -1,5 +1,11 @@
 #pragma once
 
+/*
+ * Namespace for common conversions 
+ * of units and such
+ *
+ * Such as linearToDecibel or millisecToSample
+ */
 namespace aux
 {
 	float linearToDecibel(float linear);

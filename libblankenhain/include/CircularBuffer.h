@@ -15,8 +15,19 @@ public:
 	virtual void push(T const& in);
 	virtual T pushpop(T const& in);
 	size_t getSize();
-	void setSize(size_t size_);
+	virtual void setSize(size_t size_);
 	virtual T get(int iterator = -1);
+};
+
+template <typename T>
+class LinearInterpolatedCircularBuffer
+	: public CircularBuffer<T>
+{
+public:
+	LinearInterpolatedCircularBuffer(size_t numberOfSamples) : CircularBuffer(numberOfSamples) {};
+	void setSize(size_t size_) override;
+private:
+	T interpolate(T& valueBegin, T& valueEnd, float ratio);
 };
 
 template <typename T>
@@ -26,7 +37,7 @@ protected:
   T param_b0;
   T param_a1;
   T gain;
-  T inputValue, outputValue0;//, outputValue1;
+  T inputValue, outputValue0;
 public:
   OnePoleFilter(T const& polePosition);
   ~OnePoleFilter(void);

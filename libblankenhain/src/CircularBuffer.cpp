@@ -1,10 +1,12 @@
 #include "CircularBuffer.h"
+
 // instance float circular buffer
 //template CircularBuffer<float>;
 
 #include "Sample.h"
 template CircularBuffer<Sample>;
 template OnePoleFilter<Sample>;
+template LinearInterpolatedCircularBuffer<Sample>;
 
 template <typename T>
 CircularBuffer<T>::CircularBuffer(size_t numberOfSamples_)
@@ -111,8 +113,53 @@ T CircularBuffer<T>::get(int iterator)
 	}
 };
 
+////////////////////////////////////////////////////////////////////////////////////////
 
+template <typename T>
+T LinearInterpolatedCircularBuffer<T>::interpolate(T& valueBegin, T& valueEnd, float ratio)
+{
+	return valueBegin + (valueEnd - valueBegin) * ratio;
+}
 
+template <typename T>
+void LinearInterpolatedCircularBuffer<T>::setSize(size_t size_)
+{
+	if (size_ == numberOfSamples) return;
+	currentPosition = static_cast<size_t>(static_cast<float>(currentPosition) * static_cast<float>(size_) / static_cast<float>(numberOfSamples));
+	if (size_ > numberOfSamples)
+	{
+		T* temp = new T[size_];
+
+		for (size_t i = 0; i < size_; i++)
+		{
+			float multiplier = static_cast<float>(i) * (static_cast<float>(numberOfSamples) / static_cast<float>(size_));
+			size_t baseValueMatch = static_cast<size_t>(multiplier);
+			float ratio = multiplier - static_cast<float>(baseValueMatch);
+			temp[i] = this->interpolate(buffer[baseValueMatch], buffer[baseValueMatch + 1], ratio);
+		}
+		
+		delete[] buffer;
+		buffer = temp;
+		temp = nullptr;
+		numberOfSamples = size_;
+		if(maxNumberOfSamples < size_)
+			maxNumberOfSamples = size_;
+	}
+	else
+	{
+		for (size_t i = 0; i < size_; i++)
+		{
+			float multiplier = static_cast<float>(i) * (static_cast<float>(numberOfSamples) / static_cast<float>(size_));
+			size_t baseValueMatch = static_cast<size_t>(multiplier);
+			float inBetweenStepsRatio = multiplier - static_cast<float>(baseValueMatch);
+			buffer[i] = this->interpolate(buffer[baseValueMatch], buffer[baseValueMatch + 1], inBetweenStepsRatio);
+		}
+
+		numberOfSamples = size_;
+	}
+}
+
+////////////////////////////////////////////////////////////////////////////////////////
 
 template <typename T>
 OnePoleFilter<T>::OnePoleFilter<T>(T const& polePosition)
@@ -150,13 +197,8 @@ T OnePoleFilter<T>::getGain() const
 template <typename T>
 void OnePoleFilter<T>::setParams(T const& b0, T const& a1)
 {
-  //if (std::abs(a1) >= 1.0) {
-  //  oStream_ << "OnePole::setCoefficients: a1 argument (" << a1 << ") should be less than 1.0!";
-  //  handleError(StkError::WARNING); return;
-  //}
   this->param_b0 = b0;
   this->param_a1 = a1;
-  //if (clearState) this->clear();
 }
 
 template <typename T>
@@ -169,16 +211,6 @@ void OnePoleFilter<T>::getParams(T & b0, T& a1) const
 template <typename T>
 void OnePoleFilter<T>::setPole(T const& polePosition)
 {
-  //(if (std::abs(thePole) >= 1.0) {
-  //(  oStream_ << "OnePole::setPole: argument (" << thePole << ") should be less than 1.0!";
-  //(  handleError(StkError::WARNING); return;
-  //(}
-
-  // Normalize coefficients for peak unity gain.
-  //if (polePosition > T(0.0))
-    param_b0 = (T(1.0) - polePosition);
-  //else
-    //param_b0 = (T(1.0) + polePosition);
-
+  param_b0 = (T(1.0) - polePosition);
   param_a1 = T(-1.) * polePosition;
 }
