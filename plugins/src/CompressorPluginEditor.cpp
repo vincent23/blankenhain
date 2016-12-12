@@ -25,16 +25,10 @@ void CompressorPluginEditor::imguiFrame()
 	float points[nPoints];
 	float threshold = bundle.getParameterUnnormalized(2);
 	float ratio = bundle.getParameterUnnormalized(3);
-	bool makeup = bundle.getParameterUnnormalized(6) >= .5;
 	float knee = bundle.getParameterUnnormalized(4);
 	for (unsigned int i = 0; i < nPoints; i++) {
 		float dbIn = -42.f + 48.f * ((float)i / (nPoints - 1));
-		if (makeup) {
-			points[i] = compressorMapWithMakeup(threshold, ratio, knee, dbIn);
-		}
-		else {
-			points[i] = compressorMap(threshold, ratio, knee, dbIn);
-		}
+		points[i] = compressorMap(threshold, ratio, knee, dbIn);
 	}
 	ImGui::PlotLines("##freqresponse", points, nPoints, 0, 0, -42.f, 6.f, ImGui::GetContentRegionAvail());
 	ImGui::End();
@@ -63,13 +57,4 @@ float CompressorPluginEditor::compressorMap(float threshold, float ratio, float 
 	else {
 		return threshold + (dbIn - threshold) / ratio;
 	}
-}
-
-float CompressorPluginEditor::compressorMapWithMakeup(float threshold, float ratio, float knee, float dbIn) const {
-	// make threshold / 3 a fixpoint
-	// TODO find something better for this
-	// TODO does not work for positive thresholds
-	float fixpoint = threshold / 3.f;
-	float makeup = fixpoint - compressorMap(threshold, ratio, knee, fixpoint);
-	return compressorMap(threshold, ratio, knee, dbIn) + makeup;
 }
