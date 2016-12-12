@@ -9,7 +9,7 @@ public:
 	void setTimes(double attack, double release);
 	Sample getPeakEnvelope(const Sample& in);
 	Sample getRmsEnvelope(const Sample& in);
-	Sample getCurrentEnvelope();
+	Sample getCurrentEnvelope() const;
 
 private:
 	Sample getEnvelope(const Sample& envelopeSample);

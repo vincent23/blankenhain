@@ -168,7 +168,8 @@ inline Sample sqrt(const Sample& in)
 {
 	alignas(16) double lr[2];
 	in.store_aligned(lr);
-	lr[0] = std::sqrt(lr[0]);
-	lr[1] = std::sqrt(lr[1]);
+	// handle small negative values as zero
+	lr[0] = std::sqrt(lr[0] < 0 && lr[0] > -1e-6 ? 0 : lr[0]);
+	lr[1] = std::sqrt(lr[1] < 0 && lr[1] > -1e-6 ? 0 : lr[1]);
 	return load_aligned(lr);
 }

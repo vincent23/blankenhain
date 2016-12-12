@@ -20,9 +20,8 @@ float CompressorPlugin::getEnvelope()
 
 void CompressorPlugin::onAfterProcess()
 {
-	alignas(16) double lr[2];
-	static_cast<CompressorEffect*>(effect)->envelope.getCurrentEnvelope().store_aligned(lr);
-	currentEnvelope = (float)aux::linearToDecibel(std::max(lr[0], lr[1]));
+	Sample envelope = static_cast<CompressorEffect*>(effect)->getCurrentEnvelope();
+	currentEnvelope = (float)aux::linearToDecibel(maxValue(envelope));
 }
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster)

@@ -3,10 +3,13 @@
 #include "ParameterBundle.h"
 #include "InterpolatedValue.h"
 #include "AuxFunc.h"
+#include "Constants.h"
 
 #include <algorithm>
 
-CompressorEffect::CompressorEffect() : EffectBase(8u)
+CompressorEffect::CompressorEffect()
+	: EffectBase(8u)
+	, lookaheadDelay(constants::sampleRate * 1e-3) // constant lookahead of 1 ms
 {
 	ParameterBundle* params = getPointerToParameterBundle();
 	(params->getParameter(0)) = new FloatParameter(1.f, NormalizedRange::fromMidpoint(0.01f, 3.f, 1000.f), "attack", "ms");
@@ -24,7 +27,11 @@ void CompressorEffect::process(Sample* buffer, size_t numberOfSamples)
 	float attack = getParameterValue(0).get();
 	float release = getParameterValue(1).get();
 	bool rms = getParameterValue(7).get() >= .5f;
+	InterpolatedValue& threshold = getParameterValue(2);
+	InterpolatedValue& ratio = getParameterValue(3);
+	InterpolatedValue& knee = getParameterValue(4);
 	InterpolatedValue& makeupGain = getParameterValue(6);
+	// TODO set lookahead
 	envelope.setTimes(attack, release);
 	for (unsigned int i = 0; i < numberOfSamples; i++) {
 		if (rms) {
@@ -33,7 +40,43 @@ void CompressorEffect::process(Sample* buffer, size_t numberOfSamples)
 		else {
 			envelope.getPeakEnvelope(buffer[i]);
 		}
-		buffer[i] *= Sample(aux::decibelToLinear(makeupGain.get()));
+		double dbIn = maxValue(envelope.getCurrentEnvelope());
+		double dbGain = makeupGain.get() + compressorGain(threshold.get(), ratio.get(), knee.get(), dbIn);
+		Sample delayed = lookaheadDelay.pushpop(buffer[i]);
+		delayed *= Sample(aux::decibelToLinear(dbGain));;
+		buffer[i] = delayed;
 		nextSample();
+	}
+}
+
+Sample CompressorEffect::getCurrentEnvelope() const
+{
+	return envelope.getCurrentEnvelope();
+}
+
+double CompressorEffect::compressorGain(double threshold, double ratio, double knee, double dbIn)
+{
+	// probably this can be done in a smarter (branchless) way
+	float kneeStart = (threshold - knee);
+	float kneeEnd = threshold + knee;
+	if (dbIn < kneeStart) {
+		return 0;
+	}
+	else if (dbIn < kneeEnd) {
+		// quadratic bezier for knee
+		//float t = (dbIn - kneeStart) / kneeWidth;
+		//float a = kneeStart;
+		//float b = threshold;
+		//float c = threshold + knee / ratio;
+		//float ab = a * (1.f - t) + b * t;
+		//float bc = b * (1.f - t) + c * t;
+		//dbOut = ab * (1.f - t) + bc * t - dbIn;
+		// simplified version of the above:
+		// TODO maybe this can be simplified even more due to the subtracted dbIn
+		float t = (dbIn - kneeStart) / knee * .5f;
+		return threshold + knee * (t * t * (1. / ratio - 1.f) + 2.f * t - 1.f) - dbIn;
+	}
+	else {
+		return (threshold - dbIn) * (1. - 1. / ratio);
 	}
 }

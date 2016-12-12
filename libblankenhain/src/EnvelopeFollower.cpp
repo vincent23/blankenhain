@@ -24,7 +24,7 @@ Sample EnvelopeFollower::getRmsEnvelope(const Sample& in)
 	return getEnvelope(getRmsSample(in));
 }
 
-Sample EnvelopeFollower::getCurrentEnvelope()
+Sample EnvelopeFollower::getCurrentEnvelope() const
 {
 	return envelope;
 }
