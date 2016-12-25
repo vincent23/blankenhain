@@ -154,6 +154,13 @@ add_plugin("bh_example_synth"
 	"ExampleInstrumentPlugin.h"
 )
 
+add_plugin("bh_gm_synth"
+	"gmsynthInstrumentPlugin.cpp"
+	"gmsynthInstrumentPlugin.h"
+	"gmsynthInstrumentPluginEditor.h"
+	"gmsynthInstrumentPluginEditor.cpp"
+)
+
 add_plugin("bh_mverb"
 	"mverbPlugin.cpp"
 	"mverbPlugin.h"
