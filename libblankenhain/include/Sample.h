@@ -164,6 +164,13 @@ inline double maxValue(Sample const& in)
 	return lr[0] < lr[1] ? lr[1] : lr[0];
 }
 
+inline double minValue(Sample const& in)
+{
+	alignas(16) double lr[2];
+	in.store_aligned(lr);
+	return lr[0] < lr[1] ? lr[0] : lr[1];
+}
+
 inline Sample sqrt(const Sample& in)
 {
 	alignas(16) double lr[2];

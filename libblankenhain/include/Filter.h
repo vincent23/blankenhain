@@ -5,6 +5,10 @@
 // algorithm from https://cytomic.com/files/dsp/SvfLinearTrapOptimised2.pdf
 // TODO we use the bounded version and could compare performance of the unbounded
 
+/**
+ * Base class to perform filtering (lowpass / Highpass etc.)
+ * Very old code, back from bh1
+ */
 class Filter : AlignedType
 {
 public:

@@ -16,10 +16,10 @@ DelayEffect::DelayEffect() : EffectBase(4), delayLine(size_t(aux::millisecToSamp
 
 void DelayEffect::process(Sample* buffer, size_t numberOfSamples)
 {
-	InterpolatedValue& pan = getParameterValue(0);
-	InterpolatedValue& length = getParameterValue(1);
-	InterpolatedValue& feedback = getParameterValue(2);
-	InterpolatedValue& drywet = getParameterValue(3);
+	InterpolatedValue<float>& pan = getInterpolatedParameter(0);
+	InterpolatedValue<float>& length = getInterpolatedParameter(1);
+	InterpolatedValue<float>& feedback = getInterpolatedParameter(2);
+	InterpolatedValue<float>& drywet = getInterpolatedParameter(3);
 
 	delayLine.setSize(static_cast<size_t>(aux::millisecToSamples(length.get())));
 	for (size_t i = 0; i < numberOfSamples; i++)

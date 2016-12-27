@@ -5,7 +5,7 @@
 FloatParameter::FloatParameter(float defaultValueUnnormalized, const NormalizedRange& range, BhString name_, BhString unit_)
 	: NormalizedRange(range)
 	, defaultValueNormalized(range.toNormalized(defaultValueUnnormalized))
-	, currentValueNormalized(defaultValueNormalized)
+	, valueNormalized(defaultValueNormalized)
 	, name(name_)
 	, unit(unit_)
 { }
@@ -16,13 +16,24 @@ float FloatParameter::getDefaultValueNormalized() const {
 
 float FloatParameter::getValueNormalized() const
 {
-	return currentValueNormalized;
+	return valueNormalized.get();
+}
+
+float FloatParameter::getValueNormalized()
+{
+	return valueNormalized.get();
 }
 
 float FloatParameter::getValueUnnormalized() const
 {
 	return fromNormalized(getValueNormalized());
 }
+
+float FloatParameter::getValueUnnormalized()
+{
+	return fromNormalized(getValueNormalized());
+}
+
 
 BhString FloatParameter::getName(unsigned int maximumStringLength) const
 {
@@ -41,8 +52,8 @@ BhString FloatParameter::getUnit() const
 
 void FloatParameter::setTargetValueNormalized(float normalizedValue)
 {
-	interpolationCounter = constants::parameterInterpolationLength;
-	interpolationStepSize = (normalizedValue - currentValueNormalized) / interpolationCounter;
+	unsigned int interpolationLength = constants::parameterInterpolationLength;
+	valueNormalized = InterpolatedValue<float>(this->getValueNormalized(), normalizedValue, interpolationLength);
 }
 
 void FloatParameter::setTargetValueUnnormalized(float unnormalizedValue)
@@ -52,9 +63,5 @@ void FloatParameter::setTargetValueUnnormalized(float unnormalizedValue)
 
 void FloatParameter::next(unsigned int numberOfSamples)
 {
-	if (interpolationCounter < numberOfSamples) {
-		numberOfSamples = interpolationCounter;
-	}
-	currentValueNormalized += numberOfSamples * interpolationStepSize;
-	interpolationCounter -= numberOfSamples;
+	valueNormalized.next(numberOfSamples);
 }

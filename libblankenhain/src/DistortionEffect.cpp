@@ -15,12 +15,12 @@ DistortionEffect::DistortionEffect() : EffectBase(3)
 
 void DistortionEffect::process(Sample* buffer, size_t numberOfSamples)
 {
-	InterpolatedValue& inGain = getParameterValue(0);
-	size_t iterations = static_cast<size_t>(getParameterValue(1).get());
+	InterpolatedValue<float>& inGain = getInterpolatedParameter(0);
+	size_t iterations = static_cast<size_t>(getInterpolatedParameter(1).get());
 
 	distortionAlgorithms algo;
-	if (getParameterValue(2).get() < 0.3333) algo = distortionAlgorithms::ArayaAndSuyama;
-	else if (getParameterValue(2).get() < 0.66666) algo = distortionAlgorithms::DoidicSymmetric;
+	if (getInterpolatedParameter(2).get() < 0.3333) algo = distortionAlgorithms::ArayaAndSuyama;
+	else if (getInterpolatedParameter(2).get() < 0.66666) algo = distortionAlgorithms::DoidicSymmetric;
 	else algo = distortionAlgorithms::DoidicAsymmetric;
 
 

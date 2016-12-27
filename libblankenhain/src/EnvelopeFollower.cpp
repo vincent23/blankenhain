@@ -6,6 +6,10 @@ EnvelopeFollower::EnvelopeFollower()
 	: rmsWindow(128u)
 {}
 
+EnvelopeFollower::EnvelopeFollower(unsigned int bufferSize)
+	: rmsWindow(bufferSize)
+{}
+
 void EnvelopeFollower::setTimes(double attack, double release) {
 	// times are in ms
 	attack /= 1000.;

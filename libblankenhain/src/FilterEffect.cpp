@@ -20,10 +20,10 @@ FilterEffect::FilterEffect() : EffectBase(NUMBER_OF_PARAMETERS)
 
 void FilterEffect::process(Sample* buffer, size_t numberOfSamples)
 {
-	float Q = getParameterValue(0).get();
-	float frequency = getParameterValue(1).get();
-	float style = getParameterValue(2).get();
-	int numberOfFilters = getParameterValue(3).get() + 1;
+	float Q = getInterpolatedParameter(0).get();
+	float frequency = getInterpolatedParameter(1).get();
+	float style = getInterpolatedParameter(2).get();
+	int numberOfFilters = getInterpolatedParameter(3).get() + 1;
 	if (numberOfFilters == 3) {
 		// 3 means 4
 		numberOfFilters = 4;

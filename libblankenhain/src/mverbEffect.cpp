@@ -1,8 +1,6 @@
+#pragma once
 #include "mverbEffect.h"
 
-#include "ParameterBundle.h"
-#include "AuxFunc.h"
-#include "InterpolatedValue.h"
 
 #include <algorithm>
 
@@ -63,20 +61,20 @@ mverbEffect::~mverbEffect()
 
 void mverbEffect::process(Sample* buffer, size_t numberOfSamples)
 {
-  InterpolatedValue& roomSize = getParameterValue(0);
+  InterpolatedValue<float>& roomSize = getInterpolatedParameter(0);
 
 
 
-  InterpolatedValue& width = getParameterValue(2);
+  InterpolatedValue<float>& width = getInterpolatedParameter(2);
 
-  const bool mode = getParameterValue(3).get() > 0.5 ? true : false;
+  const bool mode = getInterpolatedParameter(3).get() > 0.5 ? true : false;
 
-  float damping = getParameterValue(1).get();
+  float damping = getInterpolatedParameter(1).get();
   damping = mode ? 0.f : damping * scaleDamp;
 
-  InterpolatedValue& dry = getParameterValue(4);
+  InterpolatedValue<float>& dry = getInterpolatedParameter(4);
 
-  InterpolatedValue& wet = getParameterValue(5);
+  InterpolatedValue<float>& wet = getInterpolatedParameter(5);
 
 
   // set low pass filter for delay output

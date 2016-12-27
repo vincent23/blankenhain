@@ -15432,25 +15432,19 @@ gmsynthInstrument::gmsynthInstrument()
 	}
 }
 
-
 void gmsynthInstrument::processVoice(VoiceState& voice, unsigned int timeInSamples, Sample* buffer, unsigned int numberOfSamples)
 {
 
-	float attack = getParameterValue(0).get();
-	float hold = getParameterValue(1).get();
-	float holdLevel = getParameterValue(2).get();
-	float decay = getParameterValue(3).get();
-	bool sustainOn = getParameterValue(4).get() > 0.5 ? true : false;
-	float sustainLevel = getParameterValue(6).get();
-	float sustain = getParameterValue(5).get();
-	float release = getParameterValue(7).get();
-	unsigned int instrument = static_cast<unsigned int>(getParameterValue(8).get());
+	float attack = getInterpolatedParameter(0).get();
+	float hold = getInterpolatedParameter(1).get();
+	float holdLevel = getInterpolatedParameter(2).get();
+	float decay = getInterpolatedParameter(3).get();
+	bool sustainOn = getInterpolatedParameter(4).get() > 0.5 ? true : false;
+	float sustainLevel = getInterpolatedParameter(6).get();
+	float sustain = getInterpolatedParameter(5).get();
+	float release = getInterpolatedParameter(7).get();
+	unsigned int instrument = static_cast<unsigned int>(getInterpolatedParameter(8).get());
 	bool looping = false;
-
-	// assume sample rate = 44100
-	float f_base = 440.f / 44100;
-	float f = exp2((float(voice.key) - 69)/ 12) * f_base;
-	float tau = 2.f * acos(-1.f);
 
 	for (unsigned int sampleIndex = 0; sampleIndex < numberOfSamples; sampleIndex++) {
 		unsigned int deltaT = (timeInSamples + sampleIndex) - voice.onTime;
@@ -15488,6 +15482,7 @@ gmInstrument::gmInstrument(unsigned int numberOfRegions_, gmSoundRegion* regions
 		interpolatedSounds[i] = new gmSound(findTargetRegion(i), h, i);
 	}
 }
+
 gmInstrument::~gmInstrument()
 {
 	if (regions != nullptr)
@@ -15513,7 +15508,6 @@ bool gmInstrument::isLoopable() const
 {
 	return mIsLoopable;
 }
-
 
 gmSoundRegion gmInstrument::findTargetRegion(unsigned int rootNote) const
 {
@@ -15546,7 +15540,7 @@ void gmsynthInstrument::destroyHandle()
 
 gmSound::gmSound(gmSoundRegion& region, HANDLE* h, unsigned int targetNote)
 	: interpolatedBufferSize(0u), interpolatedBuffer(nullptr), isLoopable(region.isLoopable), rootBuffer(nullptr),
-	loopStart(0u), loopStop(0u)
+	loopStart(0u), loopStop(0u), mRegion(region)
 {
 
 	rootBuffer = new Sample[region.sampleLength / 2u];

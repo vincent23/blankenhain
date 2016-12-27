@@ -25,17 +25,16 @@ ExampleInstrument::ExampleInstrument()
 void ExampleInstrument::processVoice(VoiceState& voice, unsigned int timeInSamples, Sample* buffer, unsigned int numberOfSamples)
 {
 
-	float attack = getParameterValue(0).get();
-	float hold = getParameterValue(1).get();
-	float holdLevel = getParameterValue(2).get();
-	float decay = getParameterValue(3).get();
-	bool sustainOn = getParameterValue(4).get() > 0.5 ? true : false;
-	float sustainLevel = getParameterValue(6).get();
-	float sustain = getParameterValue(5).get();
-	float release = getParameterValue(7).get();
+	float attack = getInterpolatedParameter(0).get();
+	float hold = getInterpolatedParameter(1).get();
+	float holdLevel = getInterpolatedParameter(2).get();
+	float decay = getInterpolatedParameter(3).get();
+	bool sustainOn = getInterpolatedParameter(4).get() > 0.5 ? true : false;
+	float sustainLevel = getInterpolatedParameter(6).get();
+	float sustain = getInterpolatedParameter(5).get();
+	float release = getInterpolatedParameter(7).get();
 	
-	// assume sample rate = 44100
-	float f_base = 440.f / 44100;
+	float f_base = 440.f / constants::sampleRate;
 	float f = exp2((float(voice.key) - 69)/ 12) * f_base;
 	float tau = 2.f * acos(-1.f);
 	for (unsigned int sampleIndex = 0; sampleIndex < numberOfSamples; sampleIndex++) {

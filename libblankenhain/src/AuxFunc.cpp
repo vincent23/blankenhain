@@ -5,6 +5,13 @@
 // Auxiliary helper functions
 namespace aux
 {
+
+	float noteToFrequency(unsigned int note)
+	{
+		// via http://stackoverflow.com/questions/5779127/convert-frequency-to-keyboard-note
+		return 440 * exp((static_cast<int>(note) - 69)*log(2) / 12);
+	}
+
 	float linearToDecibel(float linear)
 	{
 		float db;

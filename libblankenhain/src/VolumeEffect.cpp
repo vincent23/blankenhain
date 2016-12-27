@@ -14,9 +14,9 @@ VolumeEffect::VolumeEffect() : EffectBase(3u)
 
 void VolumeEffect::process(Sample* buffer, size_t numberOfSamples)
 {
-	InterpolatedValue& currentVolumeL = getParameterValue(0);
-	InterpolatedValue& currentVolumeR = getParameterValue(1);
-	bool coupling = getParameterValue(2).get() > 0.5 ? true : false;
+	InterpolatedValue<float>& currentVolumeL = getInterpolatedParameter(0);
+	InterpolatedValue<float>& currentVolumeR = getInterpolatedParameter(1);
+	bool coupling = getInterpolatedParameter(2).get() > 0.5 ? true : false;
 
 	alignas(16) double currentBuffer[2];
 	if (coupling)

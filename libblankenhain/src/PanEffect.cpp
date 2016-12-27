@@ -12,8 +12,8 @@ PanEffect::PanEffect() : EffectBase(2u)
 
 void PanEffect::process(Sample* buffer, size_t numberOfSamples)
 {
-	InterpolatedValue& panningValue = getParameterValue(0);
-	bool mono = getParameterValue(1).get() > 0.5 ? true : false;
+	InterpolatedValue<float>& panningValue = getInterpolatedParameter(0);
+	bool mono = getInterpolatedParameter(1).get() > 0.5 ? true : false;
 
 	if (mono)
 	{

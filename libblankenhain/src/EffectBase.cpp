@@ -6,19 +6,19 @@
 #include <utility>
 
 EffectBase::EffectBase(unsigned int numberOfParameters)
-	: params(new ParameterBundle(numberOfParameters))
-	, parameterValues(new InterpolatedValue[numberOfParameters])
+	: paramBundle(new ParameterBundle(numberOfParameters))
+	, parameterValues(new InterpolatedValue<float>[numberOfParameters])
 	, nextModulation(new float[numberOfParameters])
 { }
 
 EffectBase::~EffectBase()
 {
-	for (size_t i = 0u; i < params->getNumberOfParameters(); i++) {
-		if (params->getParameter(i) != nullptr) delete params->getParameter(i);
-		params->getParameter(i) = nullptr;
+	for (size_t i = 0u; i < paramBundle->getNumberOfParameters(); i++) {
+		if (paramBundle->getParameter(i) != nullptr) delete paramBundle->getParameter(i);
+		paramBundle->getParameter(i) = nullptr;
 	}
-	if (params != nullptr) delete params;
-	params = nullptr;
+	if (paramBundle != nullptr) delete paramBundle;
+	paramBundle = nullptr;
 	if (parameterValues != nullptr) delete[] parameterValues;
 	parameterValues = nullptr;
 	if (nextModulation != nullptr) delete[] nextModulation;
@@ -30,9 +30,9 @@ void EffectBase::processBlock(Sample* buffer, size_t numberOfSamples)
 	// TODO find a better way to do initalization
 	if (!initializedParameters) {
 		for (unsigned int parameterIndex = 0; parameterIndex < getNumberOfParameters(); parameterIndex++) {
-			float value = params->getParameter(parameterIndex)->getValueUnnormalized();
+			float value = paramBundle->getParameter(parameterIndex)->getValueUnnormalized();
 			// this emulates the previous block end, which we set to the unmodulated current parameter value
-			parameterValues[parameterIndex] = InterpolatedValue(value, value, 1);
+			parameterValues[parameterIndex] = InterpolatedValue<float>(value, value, 1);
 		}
 		initializedParameters = true;
 	}
@@ -45,7 +45,7 @@ void EffectBase::processBlock(Sample* buffer, size_t numberOfSamples)
 	getModulation(nextModulation, numberOfSamples);
 
 	for (unsigned int parameterIndex = 0; parameterIndex < getNumberOfParameters(); parameterIndex++) {
-		FloatParameter* parameter = params->getParameter(parameterIndex);
+		FloatParameter* parameter = paramBundle->getParameter(parameterIndex);
 
 		// get normalized value at start of next block
 		parameter->next(numberOfSamples);
@@ -55,26 +55,26 @@ void EffectBase::processBlock(Sample* buffer, size_t numberOfSamples)
 		float normalizedNextValueModulated = normalizedNextValue + nextModulation[parameterIndex];
 		float previousValue = parameterValues[parameterIndex].get();
 		float nextValue = parameter->fromNormalized(normalizedNextValueModulated);
-		parameterValues[parameterIndex] = InterpolatedValue(previousValue, nextValue, numberOfSamples);
+		parameterValues[parameterIndex] = InterpolatedValue<float>(previousValue, nextValue, numberOfSamples);
 	}
-
 	process(buffer, numberOfSamples);
 }
 
 ParameterBundle* EffectBase::getPointerToParameterBundle() const
 {
-	return (this->params);
+	return (this->paramBundle);
 }
 
 unsigned int EffectBase::getNumberOfParameters() const
 {
-	return this->params->getNumberOfParameters();
+	return this->paramBundle->getNumberOfParameters();
 }
 
+// TODO write this function!!!
 void EffectBase::getModulation(float* modulationValues, size_t sampleOffset)
 { }
 
-InterpolatedValue& EffectBase::getParameterValue(unsigned int parameterIndex) const
+InterpolatedValue<float>& EffectBase::getInterpolatedParameter(unsigned int parameterIndex) const
 {
 	return parameterValues[parameterIndex];
 }
@@ -82,6 +82,6 @@ InterpolatedValue& EffectBase::getParameterValue(unsigned int parameterIndex) co
 void EffectBase::nextSample(unsigned int steps) const
 {
 	for (unsigned int parameterIndex = 0; parameterIndex < getNumberOfParameters(); parameterIndex++) {
-		getParameterValue(parameterIndex).next(steps);
+		getInterpolatedParameter(parameterIndex).next(steps);
 	}
 }

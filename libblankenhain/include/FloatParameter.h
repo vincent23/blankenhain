@@ -2,9 +2,14 @@
 
 #include <string>
 #include "NormalizedRange.h"
+#include "InterpolatedValue.h"
 
 using BhString = std::string;
 
+
+/// Stores a float value, maps to a normalized range (between 0.f and 1.f) from
+/// an arbitrary range given during construction. Is also able to perform interpolation
+/// via setTargetValue() and next() functions. Stores name and unit of the parameter.
 class FloatParameter : public NormalizedRange
 {
 public:
@@ -12,7 +17,11 @@ public:
 
 	float getDefaultValueNormalized() const;
 	float getValueNormalized() const;
+	float getValueNormalized();
+
 	float getValueUnnormalized() const;
+	float getValueUnnormalized();
+
 	BhString getName(unsigned int maximumStringLength = 0u) const;
 	BhString getUnit() const;
 
@@ -22,12 +31,7 @@ public:
 
 private:
 	float defaultValueNormalized;
-	// currentValue has to come after defaultValue because of initalization order
-	float currentValueNormalized;
-
-	float interpolationStepSize = 0;
-	unsigned int interpolationCounter = 0;
-
 	BhString unit;
 	BhString name;
+	InterpolatedValue<float> valueNormalized;
 };

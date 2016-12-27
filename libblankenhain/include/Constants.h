@@ -2,7 +2,14 @@
 
 #include <cmath>
 
-namespace constants {
+/**
+ * Constants for the blankenhain2 environment
+ * 
+ * blockSize = bh2 processes incomming buffers in chunks. This integer values defines the maximum
+ * chunk size that will be processed.
+
+ **/
+ namespace constants {
 	constexpr unsigned int blockSize = 16;
 
 	constexpr unsigned int parameterInterpolationLength = 256;

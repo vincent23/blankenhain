@@ -16,9 +16,9 @@ BitcrushEffect::BitcrushEffect() : EffectBase(3)
 void BitcrushEffect::process(Sample* buffer, size_t numberOfSamples)
 {
 
-	InterpolatedValue& bitcrush = getParameterValue(0);
-	InterpolatedValue& downsample = getParameterValue(1);
-	InterpolatedValue& drywet = getParameterValue(2);
+	InterpolatedValue<float>& bitcrush = getInterpolatedParameter(0);
+	InterpolatedValue<float>& downsample = getInterpolatedParameter(1);
+	InterpolatedValue<float>& drywet = getInterpolatedParameter(2);
 
 	int groupedSamples = std::min(static_cast<int>(std::max(1.f, downsample.get() * 100.f)), static_cast<int>(numberOfSamples));
 	float bitdepth = 12.f * (1.f - bitcrush.get()) + 1.f * bitcrush.get();

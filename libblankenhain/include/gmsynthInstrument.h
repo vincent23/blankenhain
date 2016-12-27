@@ -6,7 +6,9 @@
 struct VoiceState;
 class gmSound;
 
-
+/**
+* Region data via dlParser. Only stores information, no processing here.
+*/
 class gmSoundRegion
 {
 public:
@@ -23,6 +25,11 @@ public:
 		: rootNote(0u), lowest(0u), highest(0u), startByte(0u), sampleLength(0u), loopStart(0u), loopLength(0u), isLoopable(false) {};
 };
 
+
+/**
+ * Stores interpolated sounds of one gmInstrument in a gmSound array.
+ * Access via function getNote().
+ */
 class gmInstrument
 {
 private:
@@ -44,6 +51,9 @@ public:
 	void getNote(unsigned int targetNote, Sample*& returnedBuffer, unsigned int& returnedBufferSize) const;
 };
 
+/**
+ * Main gmsynthInstrument. Contains array of gmInstruments, where the soudns are stored for each note and sounds.
+ */
 class gmsynthInstrument : public InstrumentBase
 {
 public:
@@ -57,6 +67,11 @@ private:
 	void destroyHandle();
 };
 
+/**
+ * Contains a note of a gmInstrument as a Sample array.
+ * The constructor performs interpolation of the sample found based
+ * on the gmSoundRegion handed over during construction.
+ */
 class gmSound
 {
 public:
@@ -69,4 +84,7 @@ public:
 	unsigned int loopStart;
 	unsigned int loopStop;
 	Sample* rootBuffer;
+	gmSoundRegion mRegion;
+private:
+
 };

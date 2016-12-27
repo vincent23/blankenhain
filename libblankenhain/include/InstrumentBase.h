@@ -16,9 +16,11 @@ public:
 
 	virtual void processVoice(VoiceState& voice, unsigned int timeInSamples, Sample* buffer, size_t numberOfSamples) = 0;
 
+protected:
+	unsigned int numberOfVoices;
+
 private:
 	Sample voiceBuffer[constants::blockSize];
-	unsigned int numberOfVoices;
 	VoiceState* voices;
 	unsigned int timeInSamples = 0;
 };

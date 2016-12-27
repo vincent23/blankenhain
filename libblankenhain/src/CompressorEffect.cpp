@@ -24,13 +24,13 @@ CompressorEffect::CompressorEffect()
 
 void CompressorEffect::process(Sample* buffer, size_t numberOfSamples)
 {
-	float attack = getParameterValue(0).get();
-	float release = getParameterValue(1).get();
-	bool rms = getParameterValue(7).get() >= .5f;
-	InterpolatedValue& threshold = getParameterValue(2);
-	InterpolatedValue& ratio = getParameterValue(3);
-	InterpolatedValue& knee = getParameterValue(4);
-	InterpolatedValue& makeupGain = getParameterValue(6);
+	float attack = getInterpolatedParameter(0).get();
+	float release = getInterpolatedParameter(1).get();
+	bool rms = getInterpolatedParameter(7).get() >= .5f;
+	InterpolatedValue<float>& threshold = getInterpolatedParameter(2);
+	InterpolatedValue<float>& ratio = getInterpolatedParameter(3);
+	InterpolatedValue<float>& knee = getInterpolatedParameter(4);
+	InterpolatedValue<float>& makeupGain = getInterpolatedParameter(6);
 	// TODO set lookahead
 	envelope.setTimes(attack, release);
 	for (unsigned int i = 0; i < numberOfSamples; i++) {

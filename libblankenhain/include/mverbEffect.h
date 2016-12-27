@@ -1,5 +1,8 @@
 #pragma once
-
+#include "ParameterBundle.h"
+#include "AuxFunc.h"
+#include "InterpolatedValue.h"
+#include "OnePoleFilter.h"
 #include "EffectBase.h"
 #include "CircularBuffer.h"
 
