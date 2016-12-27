@@ -154,6 +154,11 @@ add_plugin("bh_example_synth"
 	"ExampleInstrumentPlugin.h"
 )
 
+add_plugin("bh_polyblep_synth"
+	"polyblepInstrumentPlugin.cpp"
+	"polyblepInstrumentPlugin.h"
+)
+
 add_plugin("bh_gm_synth"
 	"gmsynthInstrumentPlugin.cpp"
 	"gmsynthInstrumentPlugin.h"
