@@ -71,9 +71,7 @@ float PolyBLEPOscillator::getSample(unsigned int time)
 	float value = 0.0;
 
 	mPhase = static_cast<float>(time) * mPhaseIncrement;
-	while (mPhase >= (2. * constants::pi)) {
-		mPhase -= (2. * constants::pi);
-	}
+	mPhase = fmod(mPhase, 2 * constants::pi);
 
 	float t = mPhase / (2.f * constants::pi);
 

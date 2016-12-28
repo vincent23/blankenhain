@@ -18,7 +18,7 @@ void VolumeEffect::process(Sample* buffer, size_t numberOfSamples)
 	InterpolatedValue<float>& currentVolumeR = getInterpolatedParameter(1);
 	bool coupling = getInterpolatedParameter(2).get() > 0.5 ? true : false;
 
-	alignas(16) double currentBuffer[2];
+
 	if (coupling)
 	{
 		for (size_t bufferIteration = 0; bufferIteration < numberOfSamples; bufferIteration++)
@@ -29,6 +29,7 @@ void VolumeEffect::process(Sample* buffer, size_t numberOfSamples)
 	}
 	else
 	{
+		alignas(16) double currentBuffer[2];
 		for (
 			size_t bufferIteration = 0u;
 			bufferIteration < numberOfSamples;

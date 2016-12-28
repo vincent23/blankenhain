@@ -11,7 +11,7 @@ class PluginParameterBundle
 public:
 	PluginParameterBundle(ParameterBundle* params);
 
-	void setPluginParameter(unsigned int const& in, float const& unnormalizedValue);
+	void setPluginParameter(unsigned int const& in, float const& normalizedValue);
 	void updateParameters();
 	std::string getParameterName(unsigned int const& in);
 	float getParameterNormalized(unsigned int const& index) const;
@@ -20,6 +20,8 @@ public:
 	const ParameterBundle& getConversions() const;
 
 private:
+	/// Stores normalized parameters
 	std::vector<std::atomic<float>> pluginParameters;
+
 	ParameterBundle* parameterConversions;
 };

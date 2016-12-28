@@ -34,7 +34,7 @@ mverbEffect::mverbEffect() : EffectBase(NUMBER_OF_PARAMETERS)
     combDelay_[i] = new CircularBuffer<Sample>(cDelayLengths[i]);
     combLP_[i] = new OnePoleFilter<Sample>(Sample(0.5));
   }
-  for (size_t i = 0u; i < this->nAllpasses; i++)
+  for (size_t i = 0u; i < static_cast<size_t>(this->nAllpasses); i++)
   {
     allPassDelay_[i] = new CircularBuffer<Sample>(aDelayLengths[i]);
   }
@@ -48,7 +48,7 @@ mverbEffect::~mverbEffect()
     delete combDelay_[i];
     delete combLP_[i];
   }
-  for (size_t i = 0u; i < this->nAllpasses; i++)
+  for (size_t i = 0u; i < static_cast<size_t>(this->nAllpasses); i++)
   {
     delete allPassDelay_[i];
   }

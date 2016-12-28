@@ -12,10 +12,10 @@ PluginParameterBundle::PluginParameterBundle(ParameterBundle* params)
 	}
 };
 
-void PluginParameterBundle::setPluginParameter(unsigned int const& in, float const& unnormalizedValue)
+void PluginParameterBundle::setPluginParameter(unsigned int const& in, float const& normalizedValue)
 {
 	if (in >= pluginParameters.size()) return;
-	pluginParameters[in] = unnormalizedValue;
+	pluginParameters[in] = normalizedValue;
 }
 
 void PluginParameterBundle::updateParameters()

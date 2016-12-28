@@ -17,11 +17,7 @@ public:
 	InterpolatedValue(T singularValue);
 	InterpolatedValue() = default;
 
-	/// gets next interpolated value
-	T get(unsigned int offset = 0);
-
-	/// gets next interpolated value,
-	/// less efficient but const
+	/// gets current interpolated value,
 	T get(unsigned int offset = 0) const;
 
 	/// Skips a number of interpolation steps
@@ -30,5 +26,6 @@ public:
 private:
 	T current;
 	T step;
-	unsigned int targetNumSteps;
+	/*const*/ unsigned int targetNumSteps;
+	unsigned int currentStep;
 };
