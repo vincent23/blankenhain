@@ -7,7 +7,9 @@
 #include <cmath>
 
 polyblepInstrument::polyblepInstrument()
-	: InstrumentBase(9, 4)
+	: InstrumentBase(9, 4), 
+	tri_osc(AdditiveTriangleWaveOscillator()),
+	sq_osc(AdditiveSquareWaveOscillator())
 {
 	ParameterBundle* params = getPointerToParameterBundle();
 
@@ -19,7 +21,7 @@ polyblepInstrument::polyblepInstrument()
 	params->getParameter(5) = new FloatParameter(100.f, NormalizedRange(1.f, 1700.f, 0.3f), "sustain", "ms");
 	params->getParameter(6) = new FloatParameter(1.0f, NormalizedRange(), "sustainLevel", "ratio");
 	params->getParameter(7) = new FloatParameter(100.f, NormalizedRange(1.f, 1700.f, 0.3f), "release", "ms");
-	params->getParameter(8) = new FloatParameter(0.f, NormalizedRange(0.f, 6.f), "osc", "");
+	params->getParameter(8) = new FloatParameter(0.f, NormalizedRange(0.f, 7.f), "osc", "");
 
 }
 
@@ -47,7 +49,7 @@ void polyblepInstrument::processVoice(VoiceState& voice, unsigned int timeInSamp
 	this->sq_osc.setFrequency(aux::noteToFrequency(voice.key));
 	this->tri_osc.setFrequency(aux::noteToFrequency(voice.key));
 	this->osc.setFrequency(aux::noteToFrequency(voice.key));
-	if (oscMode > 1u)
+	if (oscMode > 2u)
 		this->osc.setMode(NaiveOscillator::NaiveOscillatorMode(oscMode - 2u));
 
 	for (unsigned int sampleIndex = 0; sampleIndex < numberOfSamples; sampleIndex++) {
@@ -58,6 +60,10 @@ void polyblepInstrument::processVoice(VoiceState& voice, unsigned int timeInSamp
 		else if (oscMode == 1u)
 		{
 			buffer[sampleIndex] = Sample(this->tri_osc.getSample(deltaT));
+		}
+		else if (oscMode == 2u)
+		{
+			buffer[sampleIndex] = Sample(this->noise_osc.getSample(deltaT));
 		}
 		else
 		{

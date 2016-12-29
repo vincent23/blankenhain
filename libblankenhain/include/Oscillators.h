@@ -11,6 +11,7 @@
 #include <math.h>
 #include "Constants.h"
 #include "Sample.h"
+#include <stdint.h>
 
 /**
  * Interface class for sound generators, processVoice Function will 
@@ -192,59 +193,34 @@ public:
 };
 
 /**
-* Writes additive, low frequency triangle wave to wavetable.
-* This provides very good performance with almost no aliasing
-*/
-class WavetableAdditiveTriangleWaveOscillator : public BaseOscillator
-{
-private:
-	AdditiveTriangleWaveOscillator osc;
-	float* wavetable;
-	unsigned int size;
-public:
-	WavetableAdditiveTriangleWaveOscillator()
-		: wavetable(nullptr), size(0u)
-	{
-		osc.renderToWavetable(&wavetable, size, 8.5f);
-	}
-
-	~WavetableAdditiveTriangleWaveOscillator()
-	{
-		if (wavetable != nullptr)
-			delete[] wavetable;
-		wavetable = nullptr;
-	}
-
-	virtual float getSample(unsigned int time) final
-	{
-		mPhase.set(static_cast<float>(time) * mPhaseIncrement);
-		const float positionInWavetable = mPhase.getValue() * static_cast<float>(size) / (2.f * constants::pi);
-		return wavetable[static_cast<unsigned int>(positionInWavetable)];
-	}
-};
-
-/**
- * Writes additive, low frequency square wave to wavetable.
+ * Writes a Base Oscillator period to wavetable.
  * This provides very good performance with almost no aliasing
+ * Provides good performance with no audible artifacts when base frequency (provided druing construction)
+ * is small enough.
  */
-class WavetableAdditiveSquareWaveOscillator : public BaseOscillator
+class WaveTableOscillator : public BaseOscillator
 {
 private:
-	AdditiveSquareWaveOscillator osc;
 	float* wavetable;
 	unsigned int size;
 public:
-	WavetableAdditiveSquareWaveOscillator()
-		: wavetable(nullptr), size(0u)
+	WaveTableOscillator() = delete;
+	WaveTableOscillator(BaseOscillator& base, float waveTableBaseFrequency = 8.5f)
+		: size(0u), wavetable(nullptr)
 	{
-		osc.renderToWavetable(&wavetable, size, 8.5f);
+		if (wavetable == nullptr)
+		{
+			base.renderToWavetable(&wavetable, size, waveTableBaseFrequency);
+		}
 	}
 
-	~WavetableAdditiveSquareWaveOscillator()
+	~WaveTableOscillator()
 	{
 		if (wavetable != nullptr)
+		{
 			delete[] wavetable;
-		wavetable = nullptr;
+			wavetable = nullptr;
+		}
 	}
 
 	virtual float getSample(unsigned int time) final
@@ -256,17 +232,59 @@ public:
 };
 
 /**
- * adapted from http://www.martin-finke.de/blog/articles/audio-plugins-018-polyblep-oscillator/
- * PolyBLEP by Tale
- * (slightly modified)
- * 2 sample polynomal for BLEP, from
- * http://www.kvraudio.com/forum/viewtopic.php?t=375517
+ * Creates white noise, is not an oscillator to be honest
+ * since random values are calculated upon every call to
+ * getSample. So it is not 100% periodical.
  *
- * polyBLEP Oscillator using two samples to smoothen and first order integrated polynomial
- * better polynamials (for the future) can be found in:  http://lib.tkk.fi/Dipl/2007/urn009585.pdf
- * as well as
- * http://www.kvraudio.com/forum/viewtopic.php?f=33&t=398553
+ * via http://stackoverflow.com/questions/13213395/adjusting-xorshift-generator-to-return-a-number-within-a-maximum
+ * and https://en.wikipedia.org/wiki/Xorshift
  */
+class NoiseOscillator : public BaseOscillator
+{
+private:
+	uint32_t state;
+	uint32_t xorshift32(void)
+	{
+		uint32_t x = state;
+		x ^= x << 13;
+		x ^= x >> 17;
+		x ^= x << 5;
+		state = x;
+		return x;
+	}
+public:
+	NoiseOscillator()
+	{
+		state = 12334u;
+		for (unsigned int i = 0u; i < 5078; i++)
+			this->xorshift32();
+		state = 634u;
+		for (unsigned int i = 0u; i < 578; i++)
+			this->xorshift32();
+	}
+
+	virtual float getSample(unsigned int time) final
+	{
+		this->xorshift32();
+		while (state > 4000000001 || state == 0u)
+			this->xorshift32();
+		return (static_cast<float>(state) - 1.f) / 4000000000.f;
+	}
+};
+
+
+/**
+* adapted from http://www.martin-finke.de/blog/articles/audio-plugins-018-polyblep-oscillator/
+* PolyBLEP by Tale
+* (slightly modified)
+* 2 sample polynomal for BLEP, from
+* http://www.kvraudio.com/forum/viewtopic.php?t=375517
+*
+* polyBLEP Oscillator using two samples to smoothen and first order integrated polynomial
+* better polynamials (for the future) can be found in:  http://lib.tkk.fi/Dipl/2007/urn009585.pdf
+* as well as
+* http://www.kvraudio.com/forum/viewtopic.php?f=33&t=398553
+*/
 class PolyBLEPOscillator : public NaiveOscillator {
 public:
 	PolyBLEPOscillator() : NaiveOscillator(), lastOutput(0.0)
