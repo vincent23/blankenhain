@@ -19,7 +19,7 @@ polyblepInstrument::polyblepInstrument()
 	params->getParameter(5) = new FloatParameter(100.f, NormalizedRange(1.f, 1700.f, 0.3f), "sustain", "ms");
 	params->getParameter(6) = new FloatParameter(1.0f, NormalizedRange(), "sustainLevel", "ratio");
 	params->getParameter(7) = new FloatParameter(100.f, NormalizedRange(1.f, 1700.f, 0.3f), "release", "ms");
-	params->getParameter(8) = new FloatParameter(0.f, NormalizedRange(0.f, 5.f), "osc", "");
+	params->getParameter(8) = new FloatParameter(0.f, NormalizedRange(0.f, 6.f), "osc", "");
 
 }
 
@@ -41,18 +41,24 @@ void polyblepInstrument::processVoice(VoiceState& voice, unsigned int timeInSamp
 	unsigned int oscMode = static_cast<unsigned int>(getInterpolatedParameter(8).get());
 
 	// oscMode 0: WaveTable Square
-	// oscMode 1-4: polyBLEP
+	// oscMode 1: WaveTable Triangle
+	// oscMode 2-5: polyBLEP
 
-	this->wav_osc.setFrequency(aux::noteToFrequency(voice.key));
+	this->sq_osc.setFrequency(aux::noteToFrequency(voice.key));
+	this->tri_osc.setFrequency(aux::noteToFrequency(voice.key));
 	this->osc.setFrequency(aux::noteToFrequency(voice.key));
-	if (oscMode != 0u)
-		this->osc.setMode(NaiveOscillator::NaiveOscillatorMode(oscMode - 1u));
+	if (oscMode > 1u)
+		this->osc.setMode(NaiveOscillator::NaiveOscillatorMode(oscMode - 2u));
 
 	for (unsigned int sampleIndex = 0; sampleIndex < numberOfSamples; sampleIndex++) {
 		unsigned int deltaT = (timeInSamples + sampleIndex) - voice.onTime;
 
 		if (oscMode == 0u)
-			buffer[sampleIndex] = Sample(this->wav_osc.getSample(deltaT));
+			buffer[sampleIndex] = Sample(this->sq_osc.getSample(deltaT));
+		else if (oscMode == 1u)
+		{
+			buffer[sampleIndex] = Sample(this->tri_osc.getSample(deltaT));
+		}
 		else
 		{
 			buffer[sampleIndex] = Sample(this->osc.getSample(deltaT));

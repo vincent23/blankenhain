@@ -162,6 +162,67 @@ public:
 	}
 };
 
+// via https://www.music.mcgill.ca/~gary/307/week5/bandlimited.html
+/**
+* An additive triangle wave oscilaltor
+* as it is additive, there is no aliasing.
+* very slow, you should only use this to render to a wavetable
+*/
+class AdditiveTriangleWaveOscillator : public BaseOscillator
+{
+public:
+	virtual float getSample(unsigned int time) final
+	{
+		mPhase.set(static_cast<float>(time) * mPhaseIncrement);
+		float value = 0.f;
+		unsigned int k = 1u;
+		float currentHarmonic = 0.f;
+		NaiveOscillator osc;
+		osc.setMode(NaiveOscillator::NaiveOscillatorMode::OSCILLATOR_MODE_SINE);
+		while (currentHarmonic < constants::sampleRate / 2.f)
+		{
+			currentHarmonic = static_cast<float>(k) * mFrequency;
+			osc.setFrequency(currentHarmonic);
+
+			value += osc.getSample(time) * (pow(-1.f, (k - 1u) / 2u) / (static_cast<float>(k)* static_cast<float>(k)));
+			k += 2;
+		}
+		return value * 8.f / (constants::pi * constants::pi);
+	}
+};
+
+/**
+* Writes additive, low frequency triangle wave to wavetable.
+* This provides very good performance with almost no aliasing
+*/
+class WavetableAdditiveTriangleWaveOscillator : public BaseOscillator
+{
+private:
+	AdditiveTriangleWaveOscillator osc;
+	float* wavetable;
+	unsigned int size;
+public:
+	WavetableAdditiveTriangleWaveOscillator()
+		: wavetable(nullptr), size(0u)
+	{
+		osc.renderToWavetable(&wavetable, size, 8.5f);
+	}
+
+	~WavetableAdditiveTriangleWaveOscillator()
+	{
+		if (wavetable != nullptr)
+			delete[] wavetable;
+		wavetable = nullptr;
+	}
+
+	virtual float getSample(unsigned int time) final
+	{
+		mPhase.set(static_cast<float>(time) * mPhaseIncrement);
+		const float positionInWavetable = mPhase.getValue() * static_cast<float>(size) / (2.f * constants::pi);
+		return wavetable[static_cast<unsigned int>(positionInWavetable)];
+	}
+};
+
 /**
  * Writes additive, low frequency square wave to wavetable.
  * This provides very good performance with almost no aliasing

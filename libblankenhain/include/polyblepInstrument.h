@@ -13,6 +13,7 @@ public:
 
 	void processVoice(VoiceState& voice, unsigned int timeInSamples, Sample* buffer, unsigned int numberOfSamples);
 private:
-	WavetableAdditiveSquareWaveOscillator wav_osc;
+	WavetableAdditiveTriangleWaveOscillator tri_osc;
+	WavetableAdditiveSquareWaveOscillator sq_osc;
 	PolyBLEPOscillator osc;
 };
