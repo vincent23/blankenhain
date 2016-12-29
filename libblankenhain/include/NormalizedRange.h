@@ -1,5 +1,12 @@
 #pragma once
 
+/**
+ * Maps numbers from an arbitrary range to [0.f, 1.f]
+ * By giving a skew parameter, the range can be adjusted:
+ * Skew = 1.f : Linear Mapping:
+ * Skew > 1.f : Values at END of unnormalized range can be adjusted more precisely
+ * 0.f < Skew < 1.f: Values at BEGINNING of unnormalized range can be adjusted more precisely
+ */
 class NormalizedRange
 {
 public:

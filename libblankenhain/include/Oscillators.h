@@ -176,7 +176,7 @@ public:
 	WavetableAdditiveSquareWaveOscillator()
 		: wavetable(nullptr), size(0u)
 	{
-		osc.renderToWavetable(&wavetable, size, 2.f);
+		osc.renderToWavetable(&wavetable, size, 8.5f);
 	}
 
 	~WavetableAdditiveSquareWaveOscillator()
