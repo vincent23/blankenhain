@@ -1,7 +1,7 @@
 #pragma once
 
 #include "InstrumentBase.h"
-#include "PolyBLEPOscillator.h"
+#include "Oscillators.h"
 
 struct VoiceState;
 
@@ -13,5 +13,6 @@ public:
 
 	void processVoice(VoiceState& voice, unsigned int timeInSamples, Sample* buffer, unsigned int numberOfSamples);
 private:
+	WavetableAdditiveSquareWaveOscillator wav_osc;
 	PolyBLEPOscillator osc;
 };

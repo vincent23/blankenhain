@@ -19,7 +19,7 @@ polyblepInstrument::polyblepInstrument()
 	params->getParameter(5) = new FloatParameter(100.f, NormalizedRange(1.f, 1700.f, 0.3f), "sustain", "ms");
 	params->getParameter(6) = new FloatParameter(1.0f, NormalizedRange(), "sustainLevel", "ratio");
 	params->getParameter(7) = new FloatParameter(100.f, NormalizedRange(1.f, 1700.f, 0.3f), "release", "ms");
-	params->getParameter(8) = new FloatParameter(0.f, NormalizedRange(0.f, 4.f), "osc", "");
+	params->getParameter(8) = new FloatParameter(0.f, NormalizedRange(0.f, 5.f), "osc", "");
 
 }
 
@@ -40,20 +40,23 @@ void polyblepInstrument::processVoice(VoiceState& voice, unsigned int timeInSamp
 	float release = getInterpolatedParameter(7).get();
 	unsigned int oscMode = static_cast<unsigned int>(getInterpolatedParameter(8).get());
 
-	// assume sample rate = 44100
+	// oscMode 0: WaveTable Square
+	// oscMode 1-4: polyBLEP
 
-	this->osc.reset();
+	this->wav_osc.setFrequency(aux::noteToFrequency(voice.key));
 	this->osc.setFrequency(aux::noteToFrequency(voice.key));
-	//this->osc.setFrequency(440.f);
-	//this->osc.setPitchMod(69 - voice.key);
-	this->osc.setMode(Oscillator::OscillatorMode(oscMode));
+	if (oscMode != 0u)
+		this->osc.setMode(NaiveOscillator::NaiveOscillatorMode(oscMode - 1u));
 
 	for (unsigned int sampleIndex = 0; sampleIndex < numberOfSamples; sampleIndex++) {
 		unsigned int deltaT = (timeInSamples + sampleIndex) - voice.onTime;
 
-		buffer[sampleIndex] = Sample(this->osc.getSample(deltaT));
-
-		//buffer[sampleIndex] = this->osc.
+		if (oscMode == 0u)
+			buffer[sampleIndex] = Sample(this->wav_osc.getSample(deltaT));
+		else
+		{
+			buffer[sampleIndex] = Sample(this->osc.getSample(deltaT));
+		}
 		performAHDSR<Sample>(buffer, voice, timeInSamples, sampleIndex, attack, release, hold, decay, sustain, sustainOn, sustainLevel, holdLevel);
 	}
 }
