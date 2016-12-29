@@ -5,13 +5,15 @@
 #include "AuxFunc.h"
 #include <algorithm>
 
-DelayEffect::DelayEffect() : EffectBase(4), delayLine(size_t(aux::millisecToSamples(2502u)))
+DelayEffect::DelayEffect() : EffectBase(5), delayLine(size_t(aux::millisecToSamples(2502u)))
 {
+	wasPaniced = false;
 	ParameterBundle* params = getPointerToParameterBundle();
 	(params->getParameter(0)) = new FloatParameter(0.f, NormalizedRange(-50.f, 50.f), "pan", "");
 	(params->getParameter(1)) = new FloatParameter(100.f, NormalizedRange(1.f, 2500.f), "length", "ms");
 	(params->getParameter(2)) = new FloatParameter(0.f, NormalizedRange(0.f, 1.5f), "feedback", "");
 	(params->getParameter(3)) = new FloatParameter(1.f, NormalizedRange(), "drywet", "");
+	(params->getParameter(4)) = new FloatParameter(0.f, NormalizedRange(), "PANIC!", "");
 }
 
 void DelayEffect::process(Sample* buffer, size_t numberOfSamples)
@@ -20,8 +22,20 @@ void DelayEffect::process(Sample* buffer, size_t numberOfSamples)
 	InterpolatedValue<float>& length = getInterpolatedParameter(1);
 	InterpolatedValue<float>& feedback = getInterpolatedParameter(2);
 	InterpolatedValue<float>& drywet = getInterpolatedParameter(3);
+	unsigned int panicButton = static_cast<unsigned int>(getInterpolatedParameter(4).get());
 
 	delayLine.setSize(static_cast<size_t>(aux::millisecToSamples(length.get())));
+
+	if (panicButton && !wasPaniced)
+	{
+		wasPaniced = true;
+		delayLine.reset();
+	}
+	else if (wasPaniced && !panicButton)
+	{
+		wasPaniced = false;
+	}
+
 	for (size_t i = 0; i < numberOfSamples; i++)
 	{
 		double avg_ = avgValue(buffer[i]);

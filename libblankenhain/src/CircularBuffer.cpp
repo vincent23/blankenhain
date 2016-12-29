@@ -112,6 +112,15 @@ T CircularBuffer<T>::get(int iterator)
 	}
 };
 
+template <typename T>
+void CircularBuffer<T>::reset(void)
+{
+	for (unsigned int i = 0u; i < this->numberOfSamples; i++)
+	{
+		buffer[i] = T();
+	}
+}
+
 ////////////////////////////////////////////////////////////////////////////////////////
 
 template <typename T>

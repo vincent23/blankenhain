@@ -17,6 +17,7 @@ public:
 	size_t getSize() const;
 	virtual void setSize(size_t size_);
 	virtual T get(int iterator = -1);
+	void reset();
 };
 
 template <typename T>

@@ -11,5 +11,6 @@ public:
 	void process(Sample* buffer, size_t numberOfSamples) override;
 
 protected:
+	bool wasPaniced;
 	LinearInterpolatedCircularBuffer<Sample> delayLine;
 };
