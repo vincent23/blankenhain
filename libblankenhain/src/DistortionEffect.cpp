@@ -5,18 +5,21 @@
 #include "AuxFunc.h"
 #include <cmath>
 
-DistortionEffect::DistortionEffect() : EffectBase(3)
+DistortionEffect::DistortionEffect() : EffectBase(4)
 {
 	ParameterBundle* params = getPointerToParameterBundle();
 	(params->getParameter(0)) = new FloatParameter(0.f, NormalizedRange(-12.f, 12.f, 1.f), "inGain", "dB");
 	(params->getParameter(1)) = new FloatParameter(0.f, NormalizedRange(0.f, 10.f, 1.f), "iterations", "");
 	(params->getParameter(2)) = new FloatParameter(1.f, NormalizedRange(), "algorithm", "");
+	(params->getParameter(3)) = new FloatParameter(0.f, NormalizedRange(0.f, 1.f, 0.3f), "dry/wet", "skewed");
 }
 
 void DistortionEffect::process(Sample* buffer, size_t numberOfSamples)
 {
 	InterpolatedValue<float>& inGain = getInterpolatedParameter(0);
+	InterpolatedValue<float>& drywet = getInterpolatedParameter(3);
 	size_t iterations = static_cast<size_t>(getInterpolatedParameter(1).get());
+
 
 	distortionAlgorithms algo;
 	if (getInterpolatedParameter(2).get() < 0.3333) algo = distortionAlgorithms::ArayaAndSuyama;
@@ -24,37 +27,30 @@ void DistortionEffect::process(Sample* buffer, size_t numberOfSamples)
 	else algo = distortionAlgorithms::DoidicAsymmetric;
 
 
-	// InGain
-	for (size_t i = 0; i < numberOfSamples; i++) buffer[i] *= Sample(aux::decibelToLinear(inGain.get(i)));
-
 	alignas(16) double currentBuffer[2];
 	double*const & lr = currentBuffer;
 	//Iterations through nonlinear scaling
-	for (size_t j = 0; j < iterations; j++)
+	for (size_t bufferIteration = 0; bufferIteration < numberOfSamples; bufferIteration++)
 	{
-		if (algo == distortionAlgorithms::ArayaAndSuyama)
-		{
-			for (size_t bufferIteration = 0; bufferIteration < numberOfSamples; bufferIteration++)
-			{
-				buffer[bufferIteration] = buffer[bufferIteration] * Sample(1.5) * (Sample(1.) - buffer[bufferIteration] * buffer[bufferIteration] / Sample(3.));
-			}
-		}
-		else if (algo == distortionAlgorithms::DoidicSymmetric)
-		{
-			for (size_t bufferIteration = 0; bufferIteration < numberOfSamples; bufferIteration++)
-			{
-				buffer[bufferIteration] =
-					(abs(Sample(2.) *  buffer[bufferIteration]) \
-						- buffer[bufferIteration] * buffer[bufferIteration]) \
-					* sign(buffer[bufferIteration]);
-			}
-		}
-		else
-		{
-			for (size_t i = 0; i < numberOfSamples; i++)
-			{
 
-				buffer[i].store_aligned(lr);
+		Sample processed(buffer[bufferIteration]), original(buffer[bufferIteration]);
+		processed *= Sample(aux::decibelToLinear(inGain.get(bufferIteration)));
+		for (size_t j = 0; j < iterations; j++)
+		{
+			if (algo == distortionAlgorithms::ArayaAndSuyama)
+			{
+				processed = processed * Sample(1.5) * (Sample(1.) - processed * processed / Sample(3.));
+			}
+			else if (algo == distortionAlgorithms::DoidicSymmetric)
+			{
+				processed =
+					(abs(Sample(2.) *  processed) \
+						- processed * processed) \
+					* sign(processed);
+			}
+			else
+			{
+				processed.store_aligned(lr);
 				// Treat both channels (l / r) seperately
 				for (size_t k = 0; k < 2u; k++)
 				{
@@ -72,9 +68,16 @@ void DistortionEffect::process(Sample* buffer, size_t numberOfSamples)
 						lr[k] = 0.630035;
 					}
 				}
-				buffer[i].load_aligned(lr);
+				processed.load_aligned(lr);
 			}
 		}
+		if (drywet.get() > 0.5)
+		{
+			original *= Sample((1 - drywet.get()) * 2.f);
+		}
+		else 
+			processed *= Sample(drywet.get() * 2.f);
+		buffer[bufferIteration] = original + processed;
 	}
 	nextSample(numberOfSamples);
 }
