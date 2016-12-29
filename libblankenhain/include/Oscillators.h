@@ -192,6 +192,35 @@ public:
 	}
 };
 
+// via https://www.music.mcgill.ca/~gary/307/week5/bandlimited.html
+/**
+* An additive triangle wave oscilaltor
+* as it is additive, there is no aliasing.
+* very slow, you should only use this to render to a wavetable
+*/
+class AdditiveSawtoothWaveOscillator : public BaseOscillator
+{
+public:
+	virtual float getSample(unsigned int time) final
+	{
+		mPhase.set(static_cast<float>(time) * mPhaseIncrement);
+		float value = 0.f;
+		unsigned int k = 1u;
+		float currentHarmonic = 0.f;
+		NaiveOscillator osc;
+		osc.setMode(NaiveOscillator::NaiveOscillatorMode::OSCILLATOR_MODE_SINE);
+		while (currentHarmonic < constants::sampleRate / 2.f)
+		{
+			currentHarmonic = static_cast<float>(k) * mFrequency;
+			osc.setFrequency(currentHarmonic);
+
+			value += osc.getSample(time)  / (static_cast<float>(k));
+			k += 1;
+		}
+		return 0.5f - value * ( 1.f / (constants::pi));
+	}
+};
+
 /**
  * Writes a Base Oscillator period to wavetable.
  * This provides very good performance with almost no aliasing
@@ -238,6 +267,7 @@ public:
  *
  * via http://stackoverflow.com/questions/13213395/adjusting-xorshift-generator-to-return-a-number-within-a-maximum
  * and https://en.wikipedia.org/wiki/Xorshift
+ * and http://stackoverflow.com/questions/1640258/need-a-fast-random-generator-for-c
  */
 class NoiseOscillator : public BaseOscillator
 {

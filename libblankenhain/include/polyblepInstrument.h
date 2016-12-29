@@ -15,6 +15,7 @@ public:
 private:
 	WaveTableOscillator tri_osc;
 	WaveTableOscillator sq_osc;
+	WaveTableOscillator sawt_osc;
 	NoiseOscillator noise_osc;
 	PolyBLEPOscillator osc;
 };
