@@ -12,6 +12,7 @@
 #include "Constants.h"
 #include "Sample.h"
 #include <stdint.h>
+#include "AuxFunc.h"
 
 /**
  * Interface class for sound generators, processVoice Function will 
@@ -22,7 +23,7 @@
 class I_SoundGenerator
 {
 public:
-	virtual void setFrequency(double frequency) = 0;
+	virtual void setFrequency(float frequency, float detune = 0.f) = 0;
 	virtual float getSample(unsigned int time) = 0;
 };
 
@@ -72,8 +73,12 @@ class BaseOscillator : public I_SoundGenerator
 public:
 	BaseOscillator();
 
-	virtual void setFrequency(double frequency) final;
-
+	/// Freq in Hertz, Detune is Value between -1.f and 1.f, where 0.f means no detune
+	virtual void setFrequency(float frequency, float detune = 0.f) final;
+	float getFrequency() const
+	{
+		return mFrequency;
+	}
 	void renderToWavetable(float** wavetable_, unsigned int& size, float frequency)
 	{
 		if (*wavetable_ != nullptr)
@@ -113,17 +118,22 @@ private:
 class NaiveOscillator : public BaseOscillator
 {
 public:
+	enum NaiveOscillatorMode
+	{
+		OSCILLATOR_MODE_SINE = 0,
+		OSCILLATOR_MODE_SAW,
+		OSCILLATOR_MODE_SQUARE,
+		OSCILLATOR_MODE_TRIANGLE,
+		kNumOscillatorModes
+	};
 
 	NaiveOscillator();
 
-    enum NaiveOscillatorMode
+	NaiveOscillator(NaiveOscillatorMode mode, float frequency)
 	{
-        OSCILLATOR_MODE_SINE = 0,
-        OSCILLATOR_MODE_SAW,
-        OSCILLATOR_MODE_SQUARE,
-        OSCILLATOR_MODE_TRIANGLE,
-        kNumOscillatorModes
-    };
+		this->setMode(mode);
+		this->setFrequency(frequency);
+	}
 
     void setMode(NaiveOscillatorMode mode);
 
@@ -326,3 +336,19 @@ private:
 	float poly_blep(float& t) const;
 	float lastOutput;
 };
+
+class PulseSound : public I_SoundGenerator
+{
+public:
+	PulseSound() : pulseLengthInSamples(1u) {}
+	PulseSound(unsigned int pulseLengthInSamples_) : pulseLengthInSamples(pulseLengthInSamples_) {}
+	unsigned int pulseLengthInSamples;
+	virtual void setFrequency(float frequency, float detune) final {};
+	virtual float getSample(unsigned int time) final
+	{
+		if (time <= pulseLengthInSamples)
+			return 1.f;
+		else return 0.f;
+	}
+};
+

@@ -1,11 +1,15 @@
 #pragma once
 
 #include "InstrumentBase.h"
-
+#include "Oscillators.h"
 struct VoiceState;
 
 class ExampleInstrument : public InstrumentBase
 {
+private:
+	NaiveOscillator osc;
+	NoiseOscillator nosc;
+	I_SoundGenerator* currentSound;
 public:
 	ExampleInstrument();
 

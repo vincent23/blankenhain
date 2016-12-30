@@ -12,5 +12,5 @@ public:
 	void process(Sample* buffer, size_t numberOfSamples) override;
 
 protected:
-	Filter filters[4];
+	Filter<Sample> filters[4];
 };

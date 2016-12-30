@@ -9,6 +9,7 @@
  * Base class to perform filtering (lowpass / Highpass etc.)
  * Very old code, back from bh1
  */
+template <typename T>
 class Filter : AlignedType
 {
 public:
@@ -23,12 +24,12 @@ public:
 	void setPeak(double frequency, double Q);
 	void setAll(double frequency, double Q);
 
-	Sample tick(const Sample& v0);
+	T tick(const T& v0);
 private:
 	void recomputeCoefficients(double frequency, double Q, double gFactor);
 
-	Sample g, k, a1, a2, a3;
-	Sample m0, m1, m2;
-	Sample ic1eq, ic2eq;
-	Sample v1, v2, v3;
+	T g, k, a1, a2, a3;
+	T m0, m1, m2;
+	T ic1eq, ic2eq;
+	T v1, v2, v3;
 };

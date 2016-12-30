@@ -1,6 +1,16 @@
 #include "NormalizedRange.h"
 #include <cmath>
 
+/**
+* Maps numbers from an arbitrary range to [0.f, 1.f]
+* By giving a skew parameter, the range can be adjusted:
+* Skew = 1.f : Linear Mapping:
+* Skew > 1.f : Values at END of unnormalized range can be adjusted more precisely
+* 0.f < Skew < 1.f: Values at BEGINNING of unnormalized range can be adjusted more precisely
+*
+* You are also able to let the skew-parameter be determined by a desired "midpoint" through
+* the fromMidpoint() function.
+*/
 NormalizedRange::NormalizedRange(float start_, float end_, float skew_)
 	: start(start_), end(end_), skew(skew_)
 {

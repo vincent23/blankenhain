@@ -32,7 +32,7 @@ void FilterEffect::process(Sample* buffer, size_t numberOfSamples)
 	Q = std::pow(Q, 1./ numberOfFilters);
 
 	for (unsigned int filterIndex = 0; filterIndex < numberOfFilters; filterIndex++) {
-		Filter& filter = filters[filterIndex];
+		Filter<Sample>& filter = filters[filterIndex];
 		if (style < 0.25) {
 			filter.setHighPass(frequency, Q);
 		}

@@ -7,7 +7,7 @@
 #include <cmath>
 
 ExampleInstrument::ExampleInstrument()
-	: InstrumentBase(8, 4)
+	: InstrumentBase(9, 4), currentSound(nullptr)
 {
 	ParameterBundle* params = getPointerToParameterBundle();
 
@@ -19,7 +19,8 @@ ExampleInstrument::ExampleInstrument()
 	params->getParameter(5) = new FloatParameter(100.f, NormalizedRange(1.f, 1700.f, 0.3f), "sustain", "ms");
 	params->getParameter(6) = new FloatParameter(1.0f, NormalizedRange(), "sustainLevel", "ratio");
 	params->getParameter(7) = new FloatParameter(100.f, NormalizedRange(1.f, 1700.f, 0.3f), "release", "ms");
-
+	params->getParameter(8) = new FloatParameter(0.f, NormalizedRange(), "mode", "");
+	osc.setMode(NaiveOscillator::NaiveOscillatorMode::OSCILLATOR_MODE_SINE);
 }
 
 void ExampleInstrument::processVoice(VoiceState& voice, unsigned int timeInSamples, Sample* buffer, unsigned int numberOfSamples)
@@ -33,13 +34,19 @@ void ExampleInstrument::processVoice(VoiceState& voice, unsigned int timeInSampl
 	float sustainLevel = getInterpolatedParameter(6).get();
 	float sustain = getInterpolatedParameter(5).get();
 	float release = getInterpolatedParameter(7).get();
+	unsigned int mode = getInterpolatedParameter(8).get();
 	
-	float f_base = 440.f / constants::sampleRate;
-	float f = exp2((float(voice.key) - 69)/ 12) * f_base;
-	float tau = 2.f * acos(-1.f);
-	for (unsigned int sampleIndex = 0; sampleIndex < numberOfSamples; sampleIndex++) {
+	this->osc.setFrequency(aux::noteToFrequency(voice.key));
+
+	if (mode == 0u)
+		currentSound = &osc;
+	else
+		currentSound = &nosc;
+
+	for (unsigned int sampleIndex = 0; sampleIndex < numberOfSamples; sampleIndex++)
+	{
 		unsigned int deltaT = (timeInSamples + sampleIndex) - voice.onTime;
-		buffer[sampleIndex] = Sample(sin(tau * f * float(deltaT)));
+		buffer[sampleIndex] = Sample(this->currentSound->getSample(deltaT));
 		performAHDSR<Sample>(buffer, voice, timeInSamples, sampleIndex, attack, release, hold, decay, sustain, sustainOn, sustainLevel, holdLevel);
 	}
 }

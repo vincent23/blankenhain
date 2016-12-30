@@ -14,5 +14,5 @@ public:
 	static const unsigned int numberOfFilters = 8;
 
 private:
-	Filter filters[8];
+	Filter<Sample> filters[8];
 };

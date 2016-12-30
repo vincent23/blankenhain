@@ -15,6 +15,6 @@ namespace aux
 	float samplesToMillisec(float samples, float samplerate = constants::sampleRate);
 
 	float noteToFrequency(unsigned int note);
-	unsigned int frequencyToNearestNote(float frequency);
+	unsigned int frequencyToNearestLowerNote(float frequency);
 }
 

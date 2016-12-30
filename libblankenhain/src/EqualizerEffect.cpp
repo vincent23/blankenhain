@@ -39,7 +39,7 @@ void EqualizerEffect::process(Sample* buffer, size_t numberOfSamples)
 		float gain = getInterpolatedParameter(filterIndex * 5 + 3).get() * scale;
 		float Q = getInterpolatedParameter(filterIndex * 5 + 4).get();
 		int type = (int)getInterpolatedParameter(filterIndex * 5 + 5).get();
-		Filter& filter = filters[filterIndex];
+		Filter<Sample>& filter = filters[filterIndex];
 		switch (type) {
 		case 0:
 			filter.setHighPass(frequency, Q);

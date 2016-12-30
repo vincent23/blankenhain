@@ -15580,6 +15580,9 @@ gmSound::gmSound(gmSoundRegion& region, HANDLE* h, unsigned int targetNote)
 		interpolatedBuffer[i] = rootBuffer[static_cast<unsigned int>(static_cast<float>(i) * multiplciationLengthFactor)];
 	}
 
+	delete[] rootBuffer;
+	rootBuffer = nullptr;
+
 }
 
 gmSound::~gmSound()

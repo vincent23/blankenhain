@@ -170,3 +170,14 @@ add_plugin("bh_mverb"
 	"mverbPlugin.cpp"
 	"mverbPlugin.h"
 )
+
+add_plugin("bh_wavetable_synth"
+	"wavetableInstrumentPlugin.cpp"
+	"wavetableInstrumentPlugin.h"
+)
+
+add_plugin("bh_basedrum1_synth"
+	"basedrum1InstrumentPlugin.cpp"
+	"basedrum1InstrumentPlugin.h"
+)
+
