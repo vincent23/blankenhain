@@ -5,14 +5,14 @@
 template OnePoleFilter<Sample>;
 
 template <typename T>
-OnePoleFilter<T>::OnePoleFilter<T>(T const& polePosition)
+OnePoleFilter<T>::OnePoleFilter(T const& polePosition)
 {
   gain = Sample(1.);
   this->setPole(polePosition);
 }
 
 template <typename T>
-OnePoleFilter<T>::~OnePoleFilter<T>(void) {};
+OnePoleFilter<T>::~OnePoleFilter(void) {};
 
 
 template <typename T>

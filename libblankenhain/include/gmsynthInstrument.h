@@ -3,7 +3,7 @@
 #include "InstrumentBase.h"
 #include <windows.h>
 
-struct VoiceState;
+class VoiceState;
 class gmSound;
 
 /**

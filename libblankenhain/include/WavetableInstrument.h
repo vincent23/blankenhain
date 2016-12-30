@@ -4,7 +4,7 @@
 #include "Oscillators.h"
 #include "SoundFonts.h"
 
-struct VoiceState;
+class VoiceState;
 
 class wavetableInstrument : public InstrumentBase
 {

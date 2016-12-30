@@ -30,10 +30,10 @@ protected:
   unsigned int aDelayLengths[4] = { 225, 556, 441, 341 };
 
   // Set static delay line lengths
-  const float fixedGain = 0.015;
-  const float scaleDamp = 0.4;
-  const float scaleRoom = 0.28;
-  const float offsetRoom = 0.7;
+  const float fixedGain = 0.015f;
+  const float scaleDamp = 0.4f;
+  const float scaleRoom = 0.28f;
+  const float offsetRoom = 0.7f;
 
 
 

@@ -1,6 +1,6 @@
 #pragma once
 
-struct VoiceState
+class VoiceState
 {
 public:
 	void on(unsigned int time, unsigned int key, unsigned int velocity);

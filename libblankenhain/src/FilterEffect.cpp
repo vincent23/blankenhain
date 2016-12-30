@@ -23,7 +23,7 @@ void FilterEffect::process(Sample* buffer, size_t numberOfSamples)
 	float Q = getInterpolatedParameter(0).get();
 	float frequency = getInterpolatedParameter(1).get();
 	float style = getInterpolatedParameter(2).get();
-	int numberOfFilters = getInterpolatedParameter(3).get() + 1;
+	int numberOfFilters = static_cast<int>(getInterpolatedParameter(3).get() + 1);
 	if (numberOfFilters == 3) {
 		// 3 means 4
 		numberOfFilters = 4;
@@ -31,7 +31,7 @@ void FilterEffect::process(Sample* buffer, size_t numberOfSamples)
 	// remap Q
 	Q = std::pow(Q, 1./ numberOfFilters);
 
-	for (unsigned int filterIndex = 0; filterIndex < numberOfFilters; filterIndex++) {
+	for (unsigned int filterIndex = 0; static_cast<int>(filterIndex) < numberOfFilters; filterIndex++) {
 		Filter<Sample>& filter = filters[filterIndex];
 		if (style < 0.25) {
 			filter.setHighPass(frequency, Q);

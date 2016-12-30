@@ -28,7 +28,7 @@ void gmsynthPluginEditor::imguiFrame()
 	ImGui::Begin("test", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize);
 	const unsigned int nPoints = 250;
 	float points[nPoints];
-	double nyquist = constants::sampleRate * .5;
+	//double nyquistFrequency = constants::sampleRate * .5f;
 	const PluginParameterBundle& bundle = plugin.getParameters();
 	static int item = 0;
 	ImGui::Combo("filter", &item, " 1st\0 2nd\0 3rd\0 4th\0 5th\0 6th\0 7th\0 8th\0\0");

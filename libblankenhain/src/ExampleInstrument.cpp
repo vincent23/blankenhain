@@ -34,7 +34,7 @@ void ExampleInstrument::processVoice(VoiceState& voice, unsigned int timeInSampl
 	float sustainLevel = getInterpolatedParameter(6).get();
 	float sustain = getInterpolatedParameter(5).get();
 	float release = getInterpolatedParameter(7).get();
-	unsigned int mode = getInterpolatedParameter(8).get();
+	unsigned int mode = static_cast<unsigned int>(getInterpolatedParameter(8).get());
 	
 	this->osc.setFrequency(aux::noteToFrequency(voice.key));
 

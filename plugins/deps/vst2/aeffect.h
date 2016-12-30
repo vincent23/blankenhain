@@ -34,7 +34,9 @@
 
 #ifndef __aeffect__
 #define __aeffect__
+#ifndef _CRT_SECURE_NO_WARNINGS
 #define _CRT_SECURE_NO_WARNINGS
+#endif
 
 //-------------------------------------------------------------------------------------------------------
 // gcc based compiler, or CodeWarrior on Mac OS X

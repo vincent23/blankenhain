@@ -14,7 +14,7 @@ private:
 	Filter<float> filter;
 public:
 	BassDrumSound1(float lowPassFreq = 58.f, float lowPassQ = 5., float pulseTimeInMS = 1.f) : 
-		pulse(aux::millisecToSamples(pulseTimeInMS)), filter()
+		pulse(static_cast<unsigned int>(aux::millisecToSamples(pulseTimeInMS))), filter()
 	{
 		filter.setLowPass(lowPassFreq, lowPassQ);
 	}
@@ -32,7 +32,7 @@ public:
 	}
 	void setPuleLength(float inMs)
 	{
-		pulse = PulseSound(aux::millisecToSamples(inMs));
+		pulse = PulseSound(static_cast<unsigned int>(aux::millisecToSamples(inMs)));
 	}
 };
 

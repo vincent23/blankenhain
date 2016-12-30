@@ -2,7 +2,7 @@
 
 #include "InstrumentBase.h"
 #include "Oscillators.h"
-struct VoiceState;
+class VoiceState;
 
 class ExampleInstrument : public InstrumentBase
 {

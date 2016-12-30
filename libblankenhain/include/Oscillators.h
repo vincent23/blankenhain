@@ -172,7 +172,7 @@ public:
 			value += osc.getSample(time) * (1.f / static_cast<float>(k));
 			k += 2;
 		}
-		return value * 4.f / constants::pi;
+		return value * 4.f / static_cast<float>(constants::pi);
 	}
 };
 
@@ -230,7 +230,7 @@ public:
 			value += osc.getSample(time)  / (static_cast<float>(k));
 			k += 1;
 		}
-		return 0.5f - value * ( 1.f / (constants::pi));
+		return 0.5f - value * ( 1.f / static_cast<float>(constants::pi));
 	}
 };
 
@@ -268,7 +268,7 @@ public:
 	virtual float getSample(unsigned int time) final
 	{
 		mPhase.set(static_cast<float>(time) * mPhaseIncrement);
-		const float positionInWavetable = mPhase.getValue() * static_cast<float>(size) / (2.f * constants::pi);
+		const float positionInWavetable = mPhase.getValue() * static_cast<float>(size) / static_cast<float>(2.f * constants::pi);
 		return wavetable[static_cast<unsigned int>(positionInWavetable)];
 	}
 };

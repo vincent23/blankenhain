@@ -9,7 +9,7 @@
 
 CompressorEffect::CompressorEffect()
 	: EffectBase(8u)
-	, lookaheadDelay(constants::sampleRate * 1e-3) // constant lookahead of 1 ms
+	, lookaheadDelay(static_cast<unsigned int>(constants::sampleRate * 1e-3)) // constant lookahead of 1 ms
 {
 	ParameterBundle* params = getPointerToParameterBundle();
 	(params->getParameter(0)) = new FloatParameter(1.f, NormalizedRange::fromMidpoint(0.01f, 3.f, 1000.f), "attack", "ms");
