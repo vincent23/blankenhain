@@ -36,6 +36,10 @@ public:
 	}
 };
 
+/** 
+ * Primitive Bass drum 
+ * via https://www.reddit.com/r/edmproduction/comments/1qbt1g/synthesize_your_own_drums_today/
+ */
 class BassDrumSound2 : public I_SoundGenerator
 {
 private:
@@ -92,14 +96,14 @@ public:
 //
 // I didnt finish this one yet
 //
-//class BassDrumSound2 : public I_SoundGenerator
+//class BassDrumSound3 : public I_SoundGenerator
 //{
 //private:
 //	PulseSound pulse;
 //	NaiveOscillator sineA, sineE;
 //	WaveTableOscillator sawtooth;
 //public:
-//	BassDrumSound2() :
+//	BassDrumSound3() :
 //		sawtooth(AdditiveSawtoothWaveOscillator()),
 //		pulse(aux::millisecToSamples(1.f)), 
 //		sineA(NaiveOscillator::NaiveOscillatorMode::OSCILLATOR_MODE_SINE, 49.f),

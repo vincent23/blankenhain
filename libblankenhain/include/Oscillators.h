@@ -6,6 +6,9 @@
 //
 //
 // Heavily modified
+//
+//
+// Resources: http://lib.tkk.fi/Dipl/2007/urn009585.pdf
 
 #pragma once
 #include <math.h>
@@ -337,6 +340,15 @@ private:
 	float lastOutput;
 };
 
+/**
+ * Creates a Pulse of defined length:
+ *
+ * _______*******______
+ *
+* (Sounds like shit)
+ *
+ * Useful for drum synthesis and control logic.
+ */
 class PulseSound : public I_SoundGenerator
 {
 public:
