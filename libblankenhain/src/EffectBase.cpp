@@ -51,8 +51,14 @@ void EffectBase::processBlock(Sample* buffer, size_t numberOfSamples)
 		parameter->next(numberOfSamples);
 		float normalizedNextValue = parameter->getValueNormalized();
 
-		// TODO probably we should clamp the normalized value somewhere
+		// we clamp the normalized value after modulation
 		float normalizedNextValueModulated = normalizedNextValue + nextModulation[parameterIndex];
+    if (normalizedNextValueModulated < 0.f)
+      normalizedNextValueModulated = 0.f;
+    else if(normalizedNextValueModulated > 1.f)
+      normalizedNextValueModulated = 1.f;
+
+
 		float previousValue = parameterValues[parameterIndex].get();
 		float nextValue = parameter->fromNormalized(normalizedNextValueModulated);
 		parameterValues[parameterIndex] = InterpolatedValue<float>(previousValue, nextValue, numberOfSamples);
@@ -70,7 +76,8 @@ unsigned int EffectBase::getNumberOfParameters() const
 	return this->paramBundle->getNumberOfParameters();
 }
 
-// TODO write this function!!!
+// This function is empty as not all effects have modulation
+// (virtual void would be overkill)
 void EffectBase::getModulation(float* modulationValues, size_t sampleOffset)
 { }
 
