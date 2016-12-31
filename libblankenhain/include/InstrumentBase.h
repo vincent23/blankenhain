@@ -12,13 +12,13 @@ public:
 	InstrumentBase(unsigned int numberOfParameters, unsigned int numberOfVoices);
 
 	void handleNoteEvent(bool isNoteOn, unsigned int key, unsigned int velocity);
-	void process(Sample* buffer, size_t numberOfSamples) final;
+
 
 	virtual void processVoice(VoiceState& voice, unsigned int timeInSamples, Sample* buffer, size_t numberOfSamples) = 0;
 
 protected:
 	unsigned int numberOfVoices;
-
+	virtual void process(Sample* buffer, size_t numberOfSamples) final;
 private:
 	Sample voiceBuffer[constants::blockSize];
 	VoiceState* voices;

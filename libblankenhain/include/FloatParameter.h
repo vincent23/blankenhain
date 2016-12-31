@@ -29,9 +29,22 @@ public:
 	void setTargetValueUnnormalized(float unnormalizedValue);
 	void next(unsigned int numberOfSamples = 1);
 
+	virtual bool isBoolean() const
+	{
+		return false;
+	}
+
 private:
 	float defaultValueNormalized;
 	BhString unit;
 	BhString name;
 	InterpolatedValue<float> valueNormalized;
+};
+
+class BoolParameter : public FloatParameter
+{
+public:
+	BoolParameter(bool defaultValue, BhString name)
+		: FloatParameter(static_cast<float>(defaultValue), NormalizedRange(), name, "") {};
+	virtual bool isBoolean() const final { return true; }
 };

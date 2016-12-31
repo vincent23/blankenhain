@@ -1,19 +1,61 @@
 #pragma once
 
 #include "audioeffectx.h"
+#include "PluginParameterBundle.h"
+#include "..\..\libblankenhain\include\ParameterBundle.h"
 
 class PluginParameterBundle;
 class EffectBase;
 struct Sample;
 
+
+/**
+ * Our VST(i) plugin base class
+ *
+ * Every plug-in, wether its an instrument or effect or whatever derives from this
+ * We already provide some of the functions and handle some of the vst-calls in
+ * a nice blankenhain fashion!
+ *
+ * List of functions a plugin MUST call itself:
+ * - isSynth(bool)
+ * - noTail(bool)
+ *
+ * List of functions a plugin MUST provide itself:
+ * - VstInt32 processEvents(VstEvents* events) override;
+ *    (only if Plugin handles MIDI-Events)
+ *
+ * - void setInitialDelay (VstInt32 delay)
+ *    (only if your Plugin has delay due to CircularBuffers and such)
+ *
+ * - VstInt32 getTailSize()
+ *
+ *
+ * List of functions a plugin may still provide itself:
+ *
+ */
+
 class PluginBase : public AudioEffectX {
 public:
-	PluginBase(audioMasterCallback const& audioMaster, EffectBase* effect);
+	/*
+	 * @param audioMaster: handed through by host
+	 * @param effect: pointer to actuall bh2 effect from libblankenhain
+	 * @param producesTailOutput: Set false if you are sure that this effect is silent when silence if passed through 
+	 * (ie no delay line or release time and so on).
+	 */
+	PluginBase(audioMasterCallback const& audioMaster, EffectBase* effect, bool producesTailOutput = true);
 	virtual ~PluginBase();
 
-	VstInt32 processEvents(VstEvents* events) override;
+	/*
+	 * Always true, all bh2 parameters can be automated
+	 */
 	bool canParameterBeAutomated(VstInt32 index) override;
+
+	/*
+	 * Tries to convert a string representation of a unnormalized parameter value
+	 * and then sets parameter to this value.
+	 */
 	bool string2parameter(VstInt32 index, char* text) override;
+
 	bool setSpeakerArrangement(VstSpeakerArrangement* pluginInput, VstSpeakerArrangement* pluginOutput) override;
 	bool getSpeakerArrangement(VstSpeakerArrangement** pluginInput, VstSpeakerArrangement** pluginOutput) override;
 	void processReplacing(float** inputs, float** outputs, VstInt32 sampleFrames) override;
@@ -26,6 +68,13 @@ public:
 	bool getVendorString(char* text) override;
 	bool getProductString(char* text) override;
 	VstInt32 getVendorVersion() override;
+	bool getParameterProperties(VstInt32 index, VstParameterProperties* p);
+	float getSampleRate() override;
+	virtual VstPlugCategory getPlugCategory() 
+	{
+		return VstPlugCategory::kPlugCategEffect;
+	}
+
 
 	const PluginParameterBundle& getParameters() const;
 
@@ -39,37 +88,16 @@ public:
 	//virtual void getProgramName(char* name) { *name = 0; }	///< Stuff \e name with the name of the current program. Limited to #kVstMaxProgNameLen.
 	//
 
-	//bool getParameterProperties(VstInt32 index, VstParameterProperties* p) 
-	//{ 
-	//  //VstParameterProperties prop;
-	//  //prop.stepFloat = 0.f;
-	//  //prop.smallStepFloat = 0.f;
-	//  //prop.largeStepFloat = 0.f;
-	//  //std::string name = vstparameters->getVSTParameterName(index);
-	//  //const char* cname = name.c_str();
-	//  //if (name.length() < 64)
-	//  //{
-	//  //  delete[] prop.label;
-	//  //  prop.label = new char[name.length];
-	//  //
-	//  //}
-	//  //else
-	//  //{
-	//  //  char* tempcname = new char[64];
-	//  //  strncpy(tempcname, cname, 64);
-	//  //}
-	//  //
-	//  return false; 
-	//} ///< Return parameter properties
+
 
 protected:
 	virtual void onBeforeBlock(unsigned int blockOffset);
 	virtual void onAfterProcess();
-
+	PluginParameterBundle* pluginParameters;
 	EffectBase* effect;
 
 private:
 	VstSpeakerArrangement* speakerArr;
-	PluginParameterBundle* pluginParameters;
+
 	Sample* processBuffer;
 };

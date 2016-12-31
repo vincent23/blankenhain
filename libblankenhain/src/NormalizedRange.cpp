@@ -27,6 +27,10 @@ NormalizedRange NormalizedRange::fromMidpoint(float start, float mid, float end)
 	return NormalizedRange(start, end, skew);
 }
 
+bool NormalizedRange::isInRange(float unnormalizedValue) const
+{
+	return unnormalizedValue >= start && unnormalizedValue <= end;
+}
 
 float NormalizedRange::fromNormalized(float normalizedValue) const
 {

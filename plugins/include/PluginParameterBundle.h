@@ -6,6 +6,21 @@
 
 class ParameterBundle;
 
+/**
+ * Class that handles parameters for the VST plugin.
+ * In libblankenhain Parameters are handled as @see FloatParameter
+ * wrapped in a @see ParameterBundle.
+ *
+ * As VST plugin calls are very random (in regards to when they are called by the host)
+ * we build a "Chinese Wall" between parameter values the host can access and values
+ * the effect code actually uses for processing.
+ *
+ * We have an array of atomic float values in this class. If a user changes a parameter
+ * in the host DAW, this is the first place they will be updated (hence atomic).
+ * Every so often, the updateParameters() function is called to write the current parameters
+ * stored in the float vector to the ParameterBundle. Once the ParameterBundle is updated,
+ * those values will be used for actual processing.
+ */
 class PluginParameterBundle
 {
 public:
@@ -17,11 +32,11 @@ public:
 	float getParameterNormalized(unsigned int const& index) const;
 	float getParameterUnnormalized(unsigned int const& index) const;
 	std::string getParameterUnit(unsigned int const& index) const;
-	const ParameterBundle& getConversions() const;
+	const ParameterBundle& getParameterBundle() const;
+	unsigned int getNumberOfParameters() const;
 
 private:
-	/// Stores normalized parameters
-	std::vector<std::atomic<float>> pluginParameters;
+	std::vector<std::atomic<float>> currentParametersFromHost;
 
-	ParameterBundle* parameterConversions;
+	ParameterBundle* parameterBundle;
 };

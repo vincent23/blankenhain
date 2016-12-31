@@ -31,6 +31,8 @@ public:
 	float getEnd() const;
 	float getSkew() const;
 
+	bool isInRange(float unnormalizedValue) const;
+
 private:
 	float start, end, skew;
 };

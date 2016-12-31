@@ -8,7 +8,7 @@
 #include <string>
 #include <algorithm>
 
-PluginBase::PluginBase(audioMasterCallback const& audioMaster, EffectBase* effect_)
+PluginBase::PluginBase(audioMasterCallback const& audioMaster, EffectBase* effect_, bool producesTailOutput)
 	: AudioEffectX(audioMaster, 1, effect_->getNumberOfParameters())
 	, speakerArr(nullptr)
 	, effect(effect_)
@@ -22,7 +22,7 @@ PluginBase::PluginBase(audioMasterCallback const& audioMaster, EffectBase* effec
 	speakerArr->type = kSpeakerArrStereo;
 	speakerArr->numChannels = 2;
 	canProcessReplacing();
-	noTail(false);
+	noTail(!producesTailOutput);
 	isSynth(false);
 
 	//for now
@@ -43,15 +43,34 @@ PluginBase::~PluginBase()
 	pluginParameters = nullptr;
 }
 
-VstInt32 PluginBase::processEvents(VstEvents* events)
-{
-	return -5;
-};
+
 
 bool PluginBase::canParameterBeAutomated(VstInt32 index)
 {
 	return true;
 }
+
+bool PluginBase::getParameterProperties(VstInt32 index, VstParameterProperties* p)
+{
+	if (index < this->getParameters().getNumberOfParameters())
+	{
+		VstParameterProperties& prop = *p;
+		prop.flags = kVstParameterSupportsDisplayIndex + kVstParameterSupportsDisplayCategory;
+
+		if (this->getParameters().getParameterBundle().getParameter(index)->isBoolean())
+			prop.flags += kVstParameterIsSwitch;
+
+		prop.displayIndex = index;
+		prop.category = index;
+
+		std::string text = pluginParameters->getParameterName(index);
+		vst_strncpy(prop.categoryLabel, text.c_str(), std::min(text.length(), size_t(kVstMaxCategLabelLen)));
+		vst_strncpy(prop.label, text.c_str(), std::min(text.length(), size_t(kVstMaxLabelLen)));
+		vst_strncpy(prop.shortLabel, text.c_str(), std::min(text.length(), size_t(kVstMaxShortLabelLen)));
+		return true;
+	}
+	return false;
+} ///< Return parameter properties
 
 bool PluginBase::string2parameter(VstInt32 index, char* text)
 {
@@ -67,7 +86,17 @@ bool PluginBase::string2parameter(VstInt32 index, char* text)
 	//  Note :
 	//Implies setParameter().text == 0 is to be expected to check the capability(returns true)
 
-	// not implemented
+	if (index < this->getParameters().getNumberOfParameters())
+	{
+		float floatValueUnnormalized = atof(text);
+		if (pluginParameters->getParameterBundle().getParameter(index)->isInRange(floatValueUnnormalized))
+		{
+			float floatValueNormalized = pluginParameters->getParameterBundle().getParameter(index)->toNormalized(floatValueUnnormalized);
+			this->pluginParameters->setPluginParameter(static_cast<unsigned int>(index), floatValueNormalized);
+
+			return true;
+		}
+	}
 	return false;
 }
 
@@ -85,6 +114,11 @@ bool PluginBase::setSpeakerArrangement(VstSpeakerArrangement* pluginInput, VstSp
 	else return false;
 
 } ///< Set the plug-in's speaker arrangements
+
+float PluginBase::getSampleRate()
+{
+	return constants::sampleRate;
+}
 
 bool PluginBase::getSpeakerArrangement(VstSpeakerArrangement** pluginInput, VstSpeakerArrangement** pluginOutput)
 {
@@ -156,12 +190,12 @@ bool PluginBase::getEffectName(char* name)
 }
 
 bool PluginBase::getVendorString(char* text) {
-	vst_strncpy(text, "Dustin Software", kVstMaxVendorStrLen);
+	vst_strncpy(text, "rtificial", kVstMaxVendorStrLen);
 	return true;
 }
 
 bool PluginBase::getProductString(char* text) {
-	vst_strncpy(text, "BH2_base", kVstMaxProductStrLen);
+	vst_strncpy(text, "blankenhain2", kVstMaxProductStrLen);
 	return true;
 }
 

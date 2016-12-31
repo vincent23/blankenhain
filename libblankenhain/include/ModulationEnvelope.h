@@ -41,15 +41,10 @@ public:
 	}
 	float get(unsigned int time)
 	{
-		//if (time < length)
-		//{
-			buffer[0] = 1.f;
-			performAHDSR<float>(buffer, dummy, time, 0u, attackInMs,
-				releaseInMs, holdInMs, decayInMs, sustainInMs, true);
-			return buffer[0];
-		//}
-		//else
-		//	return 0.f;
+		buffer[0] = 1.f;
+		performAHDSR<float>(buffer, dummy, time, 0u, attackInMs,
+			releaseInMs, holdInMs, decayInMs, sustainInMs, true);
+		return buffer[0];
 	};
 	float attackInMs;
 	float holdInMs;
