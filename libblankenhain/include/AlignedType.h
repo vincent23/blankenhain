@@ -1,4 +1,5 @@
 #pragma once
+#include "warnings.h"
 
 /*
  * Interface class to yield aligned data on the heap

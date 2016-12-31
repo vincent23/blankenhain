@@ -8,7 +8,12 @@ FloatParameter::FloatParameter(float defaultValueUnnormalized, const NormalizedR
 	, valueNormalized(defaultValueNormalized)
 	, name(name_)
 	, unit(unit_)
-{ }
+{ 
+#ifdef _LIBBLANKENHAIN_ENABLE_WARNINGS
+	if (! range.isInRange(defaultValueUnnormalized))
+		throw std::runtime_error("default value not in range\n");
+#endif
+}
 
 float FloatParameter::getDefaultValueNormalized() const {
 	return defaultValueNormalized;

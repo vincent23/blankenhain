@@ -1,4 +1,5 @@
 #pragma once
+#include "warnings.h"
 
 template <typename T>
 class CircularBuffer

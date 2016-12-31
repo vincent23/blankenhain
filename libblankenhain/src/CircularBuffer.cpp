@@ -23,11 +23,12 @@ CircularBuffer<T>::CircularBuffer(size_t numberOfSamples_)
 template <typename T>
 CircularBuffer<T>::~CircularBuffer(void)
 {
-	if (this->buffer != nullptr)
-	{
-		delete[] buffer;
-		buffer = nullptr;
-	}
+#ifdef _LIBBLANKENHAIN_ENABLE_WARNINGS
+	if (this->buffer == nullptr)
+		throw ("buffer is already nullptr\n");
+#endif
+	delete[] buffer;
+	buffer = nullptr;
 }
 
 template <typename T>
@@ -90,7 +91,6 @@ void CircularBuffer<T>::setSize(size_t size_)
 		oldNumberOfSamples = numberOfSamples;
 		numberOfSamples = size_;
 	}
-
 	else
 	{
 		numberOfSamples = size_;
@@ -102,14 +102,19 @@ template <typename T>
 T CircularBuffer<T>::get(int iterator)
 {
 	if (iterator == -1) return buffer[currentPosition];
+#ifndef _LIBBLANKENHAIN_ENABLE_WARNINGS
+	else
+	{
+		return buffer[iterator];
+	}
+#else
 	else if (iterator < static_cast<int>(numberOfSamples))
 	{
 		return buffer[iterator];
 	}
 	else
-	{
-		return T();
-	}
+		throw ("circular buffer access out of bounds\n");
+#endif
 };
 
 template <typename T>

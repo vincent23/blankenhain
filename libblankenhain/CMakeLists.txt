@@ -44,6 +44,7 @@ prepend(HEADERS "include/"
 	"UpDownSampling.h"
 	"VoiceState.h"
 	"VolumeEffect.h"
+	"warnings.h"
 	"WavetableInstrument.h"
 )
 

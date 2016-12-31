@@ -1,5 +1,6 @@
 #pragma once
 #include "Constants.h"
+#include "warnings.h"
 /*
  * Namespace for common conversions 
  * of units and such
