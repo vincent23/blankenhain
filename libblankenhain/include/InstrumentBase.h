@@ -3,6 +3,7 @@
 #include "EffectBase.h"
 #include "Constants.h"
 #include "AuxFunc.h"
+#include "MidiEvent.h"
 
 class VoiceState;
 
@@ -23,6 +24,16 @@ private:
 	Sample voiceBuffer[constants::blockSize];
 	VoiceState* voices;
 	unsigned int timeInSamples = 0;
+};
+
+class MidiBase : public EffectBase
+{
+public:
+	MidiBase(unsigned int numberOfParameters) : EffectBase(numberOfParameters) {};
+	virtual void processMidiEvents(MidiEvent*& events, unsigned int numberOfMidiEvents) = 0;
+protected:
+	unsigned int timeInSamples = 0;
+	virtual void process(Sample* buffer, size_t numberOfSamples) final {};
 };
 
 

@@ -17,4 +17,6 @@
 	const double pi = std::acos(-1.);
 
 	const double sampleRate = 44100;
+
+	const unsigned int maxMidiEventsPerVSTEventBlock = 265u;
 }

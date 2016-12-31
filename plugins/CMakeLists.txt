@@ -181,3 +181,8 @@ add_plugin("bh_basedrum1_synth"
 	"basedrum1InstrumentPlugin.h"
 )
 
+add_plugin("bh_pitchshift_midi"
+	"pitchshiftMidiPlugin.cpp"
+	"pitchshiftMidiPlugin.h"
+)
+
