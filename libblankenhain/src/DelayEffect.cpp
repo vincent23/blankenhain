@@ -22,7 +22,7 @@ void DelayEffect::process(Sample* buffer, size_t numberOfSamples)
 	InterpolatedValue<float>& length = getInterpolatedParameter(1);
 	InterpolatedValue<float>& feedback = getInterpolatedParameter(2);
 	InterpolatedValue<float>& drywet = getInterpolatedParameter(3);
-	bool panicButton = static_cast<unsigned int>(getInterpolatedParameter(4).get());
+	bool panicButton = static_cast<bool>(getInterpolatedParameter(4).get());
 
 	delayLine.setSize(static_cast<size_t>(aux::millisecToSamples(length.get())));
 

@@ -57,12 +57,14 @@ void* AlignedType::operator new[](unsigned int size)
 
 void AlignedType::operator delete (void *p) throw()
 {
-
 	if (p == nullptr)
+	{
 #ifdef _LIBBLANKENHAIN_ENABLE_WARNINGS
-		if (p == nullptr)
-			throw ("Tried to delete nullptr\n");
+		throw ("Tried to delete nullptr\n");
 #endif
+		return;
+	}
+
 #ifdef _MSC_VER
 	_aligned_free(p);
 #endif
@@ -71,10 +73,15 @@ void AlignedType::operator delete (void *p) throw()
 
 void AlignedType::operator delete[](void *p) throw()
 {
-#ifdef _LIBBLANKENHAIN_ENABLE_WARNINGS
+
 	if (p == nullptr)
+	{
+#ifdef _LIBBLANKENHAIN_ENABLE_WARNINGS
 		throw ("Tried to delete nullptr\n");
 #endif
+		return;
+	}
+
 #ifdef _MSC_VER
 	_aligned_free(p);
 #endif

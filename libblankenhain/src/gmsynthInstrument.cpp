@@ -15565,7 +15565,7 @@ gmSound::gmSound(gmSoundRegion& region, HANDLE* h, unsigned int targetNote)
 	// playback speed via
 	// http://math.stackexchange.com/questions/1205881/what-is-the-equation-for-figuring-out-the-change-in-pitch-from-changes-in-tempo
 
-	float multiplciationLengthFactor = 1. / std::pow(2., (static_cast<double>(region.rootNote - targetNote) / -12.));
+	float multiplciationLengthFactor = 1. / std::powf(2.f, (static_cast<double>(region.rootNote - targetNote) / -12.f));
 	interpolatedBufferSize = static_cast<unsigned int>(region.sampleLength / (2 * multiplciationLengthFactor));
 
 	interpolatedBuffer = new Sample[interpolatedBufferSize];

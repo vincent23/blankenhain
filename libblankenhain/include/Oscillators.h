@@ -198,10 +198,10 @@ public:
 			currentHarmonic = static_cast<float>(k) * mFrequency;
 			osc.setFrequency(currentHarmonic);
 
-			value += osc.getSample(time) * (pow(-1.f, (k - 1u) / 2u) / (static_cast<float>(k)* static_cast<float>(k)));
+			value += osc.getSample(time) * (powf(-1.f, (k - 1u) / 2u) / (static_cast<float>(k)* static_cast<float>(k)));
 			k += 2;
 		}
-		return value * 8.f / (constants::pi * constants::pi);
+		return value * 8.f / static_cast<float>(constants::pi * constants::pi);
 	}
 };
 

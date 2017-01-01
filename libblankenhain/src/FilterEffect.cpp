@@ -29,7 +29,7 @@ void FilterEffect::process(Sample* buffer, size_t numberOfSamples)
 		numberOfFilters = 4;
 	}
 	// remap Q
-	Q = std::pow(Q, 1./ numberOfFilters);
+	Q = std::powf(Q, 1.f/ static_cast<float>(numberOfFilters));
 
 	for (unsigned int filterIndex = 0; static_cast<int>(filterIndex) < numberOfFilters; filterIndex++) {
 		Filter<Sample>& filter = filters[filterIndex];
