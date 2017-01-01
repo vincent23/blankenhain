@@ -6,6 +6,7 @@
 #include "PluginParameterBundle.h"
 #include <vector>
 #include "warnings.h"
+#include "Constants.h"
 
 class InstrumentBase;
 
@@ -30,6 +31,21 @@ private:
 	InstrumentBase& instrument;
 };
 
+// via https://www.kvraudio.com/forum/viewtopic.php?t=214049
+struct VSTEventBlock
+{
+	int numEvents;
+	int reserved;
+	VstEvent* events[constants::maxMidiEventsPerVSTEventBlock];
+};
+
+
+/**
+ * We can't generate MIDI Plugins to be placed before VSTi Plugins in ableton
+ * as the itnernal ableton plugins do. So we have to handle rerouting.
+ *
+ * via: https://www.kvraudio.com/forum/viewtopic.php?t=298368 
+ */
 class MidiPluginBase : public PluginBase
 {
 public:
@@ -46,18 +62,32 @@ public:
 
 private:
 	void onAfterProcess() override;
-	VstEvents getMidiEventsAsVstEvents() const;
+
+	VstEvents* getMidiEventsAsVstEvents();
+	VstEvents* vstevents;
+	VSTEventBlock eventBlock;
 
 	std::vector<MidiEvent> midiEvents;
 	size_t midiEventPosition;
 	MidiBase& effect;
+	void initializeAllEventsAsNull(VSTEventBlock& in)
+	{
+		in.numEvents = 0u;
+		for (unsigned int i = 0u; i < constants::maxMidiEventsPerVSTEventBlock; i++)
+		{
+			in.events[i] = nullptr;
+		}
+	}
+	void deleteEventsInVSTEventsBlock(VSTEventBlock& in)
+	{
+		for (unsigned int i = 0u; i < constants::maxMidiEventsPerVSTEventBlock; i++)
+		{
+			if (in.events[i] != nullptr)
+				delete reinterpret_cast<VstMidiEvent*>(in.events[i]);
+		}
+	};
 };
 
-// via https://www.kvraudio.com/forum/viewtopic.php?t=214049
-template <int N>
-struct VSTEventBlock
-{
-	int numEvents;
-	int reserved;
-	VstEvent* events[N];
-};
+
+
+

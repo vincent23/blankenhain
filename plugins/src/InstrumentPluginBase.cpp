@@ -3,6 +3,7 @@
 #include "InstrumentBase.h"
 #include "Constants.h"
 
+
 InstrumentPluginBase::InstrumentPluginBase(audioMasterCallback const& audioMaster, InstrumentBase* instrument_)
 	: PluginBase(audioMaster, instrument_)
 	, instrument(*instrument_)
@@ -18,7 +19,8 @@ MidiPluginBase::MidiPluginBase(audioMasterCallback const& audioMaster, MidiBase*
 {
 	isSynth();
 	// reserve space for 2048 midi events per vst process block
-	midiEvents.reserve(2048);
+	midiEvents.reserve(constants::maxMidiEventsPerVSTEventBlock);
+	initializeAllEventsAsNull(this->eventBlock);
 }
 
 VstInt32 MidiPluginBase::getNumMidiInputChannels()
@@ -146,10 +148,14 @@ void InstrumentPluginBase::onBeforeBlock(unsigned int blockOffset)
 
 void MidiPluginBase::onAfterProcess()
 {
-	this->sendVstEventsToHost(& this->getMidiEventsAsVstEvents());
+	if (this->midiEvents.size() > 0u)
+	{
+		this->vstevents = this->getMidiEventsAsVstEvents();
+		this->sendVstEventsToHost(this->vstevents);
+	}
 }
 
-VstEvents MidiPluginBase::getMidiEventsAsVstEvents() const
+VstEvents* MidiPluginBase::getMidiEventsAsVstEvents()
 {
 	// some hacky shit to allocate VstEvents via
 	// https://www.kvraudio.com/forum/viewtopic.php?t=214049
@@ -158,25 +164,27 @@ VstEvents MidiPluginBase::getMidiEventsAsVstEvents() const
 	if (constants::maxMidiEventsPerVSTEventBlock < midiEvents.size())
 		throw std::runtime_error("Number of midiEvents in midiEvents vector bigger than constants::maxMidiEventsPerVSTEventBlock!\n");
 #endif
-	VSTEventBlock<constants::maxMidiEventsPerVSTEventBlock> block;
+	// Delete old events
 
-	block.numEvents = midiEvents.size();
+	deleteEventsInVSTEventsBlock(this->eventBlock);
+
+	this->eventBlock.numEvents = midiEvents.size();
 	
-	for (int i = 0; i < midiEvents.size(); i++) 
+	for (unsigned int i = 0; i < midiEvents.size(); i++) 
 	{
 		VstMidiEvent thisEvent;
 		thisEvent.type = kVstMidiType;
 		thisEvent.midiData[1] = midiEvents[i].key;
 		thisEvent.midiData[2] = midiEvents[i].velocity;
 		if (midiEvents[i].velocity == 0u)
-			thisEvent.midiData[0] = static_cast<char>(0b10000000);
+			thisEvent.midiData[0] = static_cast<unsigned char>(0b10000000);
 		else
-			thisEvent.midiData[0] = static_cast<char>(0b10010000);
-		block.events[i] = reinterpret_cast<VstEvent*>(new VstMidiEvent(thisEvent));
+			thisEvent.midiData[0] = static_cast<unsigned char>(0b10010000);
+		eventBlock.events[i] = reinterpret_cast<VstEvent*>(new VstMidiEvent(thisEvent));
 	}
-	VstEvents* send = (VstEvents *)&block;
+	//VstEvents* send = (VstEvents *)&eventBlock;
 
-	return *send;
+	return (VstEvents *)&eventBlock;
 }
 
 void MidiPluginBase::processReplacing(float** inputs, float** outputs, VstInt32 sampleFrames_)
@@ -185,6 +193,9 @@ void MidiPluginBase::processReplacing(float** inputs, float** outputs, VstInt32 
 	
 	onBeforeBlock(sampleFrames_);
 
+	// Call this to get parameter values straight. Yes this is necessary.
+	effect.processBlock(nullptr, sampleFrames_);
+
 	// Just copy audio, if there is any
 	unsigned int sampleFrames = static_cast<unsigned int>(sampleFrames_);
 	for (unsigned int i = 0; i < sampleFrames; i++) 
@@ -192,7 +203,10 @@ void MidiPluginBase::processReplacing(float** inputs, float** outputs, VstInt32 
 		outputs[0][i] = inputs[0][i];
 		outputs[1][i] = inputs[1][i];
 	}
-	MidiEvent* a = &midiEvents[0];
+	
+	MidiEvent* a = nullptr;
+	if (midiEvents.size() != 0u)
+		a = &midiEvents[0];
 
 	effect.processMidiEvents(a, midiEvents.size());
 
