@@ -129,6 +129,16 @@ bool PluginBase::getSpeakerArrangement(VstSpeakerArrangement** pluginInput, VstS
 
 void PluginBase::processReplacing(float** inputs, float** outputs, VstInt32 sampleFrames_)
 {
+	if (effect->effectUsesTempoData())
+	{
+		float bpm(0.f);
+		unsigned int position(0u);
+		if (this->getBPMandPosition(bpm, position))
+		{
+			effect->setTempoData(bpm, position);
+		}
+	}
+
 	this->pluginParameters->updateParameters();
 	unsigned int sampleFrames = static_cast<unsigned int>(sampleFrames_);
 	for (unsigned int blockOffset = 0; blockOffset < sampleFrames; blockOffset += constants::blockSize) {
@@ -207,6 +217,17 @@ const PluginParameterBundle& PluginBase::getParameters() const
 {
 	return *pluginParameters;
 }
+
+bool PluginBase::getBPMandPosition(float& bpm, unsigned int& position)
+{
+	VstTimeInfo* ptr = this->getTimeInfo(kVstTempoValid);
+	if (ptr->flags | kVstTempoValid)
+		bpm = ptr->tempo;
+	else
+		return false;
+	position = static_cast<unsigned int>(ptr->samplePos);
+	return true;
+};
 
 void PluginBase::onBeforeBlock(unsigned int blockOffset)
 { }

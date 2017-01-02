@@ -5,8 +5,9 @@
 
 #include <utility>
 
-EffectBase::EffectBase(unsigned int numberOfParameters)
-	: paramBundle(new ParameterBundle(numberOfParameters))
+EffectBase::EffectBase(unsigned int numberOfParameters, bool useTempoData)
+	: tempodata(useTempoData)
+	, paramBundle(new ParameterBundle(numberOfParameters))
 	, parameterValues(new InterpolatedValue<float>[numberOfParameters])
 	, nextModulation(new float[numberOfParameters])
 { }
@@ -23,6 +24,11 @@ EffectBase::~EffectBase()
 	parameterValues = nullptr;
 	if (nextModulation != nullptr) delete[] nextModulation;
 	nextModulation = nullptr;
+}
+
+const bool EffectBase::effectUsesTempoData() const
+{
+	return tempodata.usesTempoData;
 }
 
 void EffectBase::processBlock(Sample* buffer, size_t numberOfSamples)
@@ -53,10 +59,10 @@ void EffectBase::processBlock(Sample* buffer, size_t numberOfSamples)
 
 		// we clamp the normalized value after modulation
 		float normalizedNextValueModulated = normalizedNextValue + nextModulation[parameterIndex];
-    if (normalizedNextValueModulated < 0.f)
-      normalizedNextValueModulated = 0.f;
-    else if(normalizedNextValueModulated > 1.f)
-      normalizedNextValueModulated = 1.f;
+		if (normalizedNextValueModulated < 0.f)
+			normalizedNextValueModulated = 0.f;
+		else if(normalizedNextValueModulated > 1.f)
+			normalizedNextValueModulated = 1.f;
 
 
 		float previousValue = parameterValues[parameterIndex].get();
@@ -64,6 +70,7 @@ void EffectBase::processBlock(Sample* buffer, size_t numberOfSamples)
 		parameterValues[parameterIndex] = InterpolatedValue<float>(previousValue, nextValue, numberOfSamples);
 	}
 	process(buffer, numberOfSamples);
+
 }
 
 ParameterBundle* EffectBase::getPointerToParameterBundle() const

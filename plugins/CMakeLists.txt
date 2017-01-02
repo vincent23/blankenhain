@@ -181,6 +181,13 @@ add_plugin("bh_basedrum1_synth"
 	"basedrum1InstrumentPlugin.h"
 )
 
+add_plugin("bh_rhythmgate"
+	"rhythmgatePlugin.cpp"
+	"rhythmgatePlugin.h"
+	"rhythmgatePluginEditor.cpp"
+	"rhythmgatePluginEditor.h"
+)
+
 add_plugin("bh_pitchshift_midi"
 	"pitchshiftMidiPlugin.cpp"
 	"pitchshiftMidiPlugin.h"

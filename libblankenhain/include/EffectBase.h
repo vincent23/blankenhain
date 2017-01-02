@@ -5,10 +5,19 @@
 
 class ParameterBundle;
 
+class TempoData
+{
+public:
+	TempoData(bool uses) : usesTempoData(uses), bpm(0.f), position(0u) {};
+	const bool usesTempoData;
+	float bpm;
+	unsigned int position;
+};
+
 class EffectBase : public AlignedType
 {
 public:
-	EffectBase(unsigned int numberOfParameters);
+	EffectBase(unsigned int numberOfParameters, bool usesTempoData = false);
 	virtual ~EffectBase();
 
 	/**  This function will call the process() function.
@@ -32,6 +41,13 @@ public:
 	*/
 	virtual void getModulation(float* modulationValues, size_t sampleOffset = 0);
 
+	const bool effectUsesTempoData() const;
+	void setTempoData(float bpm, unsigned int position)
+	{
+		tempodata.position = position;
+		tempodata.bpm = bpm;
+	};
+
 protected:
 	InterpolatedValue<float>& getInterpolatedParameter(unsigned int parameterIndex) const;
 
@@ -49,9 +65,12 @@ protected:
 	*/
 	virtual void process(Sample* buffer, size_t numberOfSamples) = 0;
 
+	TempoData tempodata;
+
 private:
 	ParameterBundle* paramBundle;
 	InterpolatedValue<float>* parameterValues;
 	float* nextModulation;
 	bool initializedParameters = false;
+
 };

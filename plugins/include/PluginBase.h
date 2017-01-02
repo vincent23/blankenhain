@@ -3,9 +3,9 @@
 #include "audioeffectx.h"
 #include "PluginParameterBundle.h"
 #include "..\..\libblankenhain\include\ParameterBundle.h"
+#include "..\..\libblankenhain\include\EffectBase.h"
 
 class PluginParameterBundle;
-class EffectBase;
 struct Sample;
 
 
@@ -47,6 +47,11 @@ public:
 	PluginBase(audioMasterCallback const& audioMaster, EffectBase* effect, bool producesTailOutput = true);
 	virtual ~PluginBase();
 
+	/////////////////////////////////////////////////////
+	//// OVERRIDES FOR VST SDK FUNCTIONS
+	//// WE HANDLE OUR OWN SHIT
+	/////////////////////////////////////////////////////
+
 	/*
 	 * Always true, all bh2 parameters can be automated
 	 */
@@ -70,17 +75,58 @@ public:
 	bool getVendorString(char* text) override;
 	bool getProductString(char* text) override;
 	VstInt32 getVendorVersion() override;
-	bool getParameterProperties(VstInt32 index, VstParameterProperties* p);
+	bool getParameterProperties(VstInt32 index, VstParameterProperties* p) override;
 	float getSampleRate() override;
-	virtual VstPlugCategory getPlugCategory() 
+	VstPlugCategory getPlugCategory() override
 	{
 		return VstPlugCategory::kPlugCategEffect;
 	}
 
+	void open() override
+	{
+		if (effect->effectUsesTempoData())
+		{
+			float bpm(0.f);
+			unsigned int position(0u);
+			if (this->getBPMandPosition(bpm, position))
+			{
+				effect->setTempoData(bpm, position);
+			}
+		}
+	}
+
+	void resume() override
+	{
+		if (effect->effectUsesTempoData())
+		{
+			float bpm(0.f);
+			unsigned int position(0u);
+			if (this->getBPMandPosition(bpm, position))
+			{
+				effect->setTempoData(bpm, position);
+			}
+		}
+	}
+
+
+	/////////////////////////////////////////////////////
+	//// RTIFICIAL FLAVOR
+	//// ACCESS THE EFFECT!
+	/////////////////////////////////////////////////////
+
+	/*
+	 * We don't use getTimeInfo directly because we dont need all
+	 * the information but only bpm and position in samples.
+	 *
+	 * Returns true when tempo is valid. Only use the values you get
+	 * in this function when it returns true!
+	 */
+	bool getBPMandPosition(float& bpm, unsigned int& position);
+
 
 	const PluginParameterBundle& getParameters() const;
 
-	// TODO
+	// TODO maybe
 	//virtual VstInt32 getChunk(void** data, bool isPreset = false) 
 	//virtual VstInt32 setChunk(void* data, VstInt32 byteSize, bool isPreset = false)
 	//virtual VstInt32 getProgram() { return curProgram; }					///< Return the index to the current program
@@ -93,13 +139,26 @@ public:
 
 
 protected:
+	/*
+	 * This function may be provided optionaly. It
+	 * is called pretty much right before the call to effect->process()
+	 */
 	virtual void onBeforeBlock(unsigned int blockOffset);
+
+	/*
+	 * This function may be provided optionaly. It
+	 * is called at the end of processReplacing and therefore after the call to effect->process()
+	 */
 	virtual void onAfterProcess();
-	PluginParameterBundle* pluginParameters;
+
 	EffectBase* effect;
 
-private:
-	VstSpeakerArrangement* speakerArr;
+	/// this used to be private, but since MidiEffects get their own,
+	/// lean and mean processReplacing function, they need to be able to access this
+	PluginParameterBundle* pluginParameters;
 
+private:
+
+	VstSpeakerArrangement* speakerArr;
 	Sample* processBuffer;
 };
