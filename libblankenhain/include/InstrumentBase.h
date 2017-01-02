@@ -14,9 +14,17 @@ public:
 
 	void handleNoteEvent(bool isNoteOn, unsigned int key, unsigned int velocity);
 
-
 	virtual void processVoice(VoiceState& voice, unsigned int timeInSamples, Sample* buffer, size_t numberOfSamples) = 0;
 
+#ifndef _BLANKENHAIN_RUNTIME_MODE
+	/**
+	 * Resets voices, calles when plugin is turned off
+	 * usefull since sometimes when working in a DAW, midiOff
+	 * messages can get lost and then the synth goes full retard.
+	 * Turning it on and off should now fix this :D
+	 */
+	void resetVoices();
+#endif
 protected:
 	unsigned int numberOfVoices;
 	virtual void process(Sample* buffer, size_t numberOfSamples) final;

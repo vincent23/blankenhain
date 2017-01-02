@@ -63,6 +63,16 @@ void InstrumentBase::handleNoteEvent(bool isNoteOn, unsigned int key, unsigned i
 	}
 }
 
+#ifndef _BLANKENHAIN_RUNTIME_MODE
+void InstrumentBase::resetVoices()
+{
+	for (unsigned int voiceIndex = 0; voiceIndex < numberOfVoices; voiceIndex++) 
+	{
+		voices[voiceIndex].isOn = false;
+	}
+}
+#endif
+
 void InstrumentBase::process(Sample* buffer, size_t numberOfSamples)
 {
 	for (unsigned int sampleIndex = 0; sampleIndex < numberOfSamples; sampleIndex++) {

@@ -38,6 +38,21 @@ VstInt32 InstrumentPluginBase::getNumMidiInputChannels()
 	return 1;
 }
 
+VstPlugCategory InstrumentPluginBase::getPlugCategory()
+{
+	return VstPlugCategory::kPlugCategSynth;
+}
+
+void InstrumentPluginBase::suspend()
+{
+	instrument.resetVoices();
+}
+
+void InstrumentPluginBase::close()
+{
+	instrument.resetVoices();
+}
+
 VstInt32 InstrumentPluginBase::processEvents(VstEvents* events)
 {
 	size_t remaining = midiEvents.size() - midiEventPosition;

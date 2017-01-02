@@ -18,10 +18,9 @@ public:
 	VstInt32 getNumMidiInputChannels() override;
 	VstInt32 processEvents(VstEvents* events) override;
 	VstInt32 canDo(char* text) override;
-	VstPlugCategory getPlugCategory() final
-	{
-		return VstPlugCategory::kPlugCategSynth;
-	}
+	VstPlugCategory getPlugCategory() final;
+	void suspend() override;
+	void close() override;
 
 private:
 	void onBeforeBlock(unsigned int blockOffset) override;
