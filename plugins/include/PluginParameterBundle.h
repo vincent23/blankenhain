@@ -27,6 +27,10 @@ public:
 	PluginParameterBundle(ParameterBundle* params);
 
 	void setPluginParameter(unsigned int const& in, float const& normalizedValue);
+	/**
+	 * Updates Parameters by setting their target value to the value found in the host DAW
+	 * Interpolation is performed
+	 */
 	void updateParameters();
 	std::string getParameterName(unsigned int const& in);
 	float getParameterNormalized(unsigned int const& index) const;

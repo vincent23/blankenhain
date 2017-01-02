@@ -28,8 +28,13 @@ T InterpolatedValue<T>::get(unsigned int offset) const
 template <typename T>
 T InterpolatedValue<T>::next(unsigned int steps)
 {
-	if (currentStep >= targetNumSteps)
+	if (currentStep + steps >= targetNumSteps)
 	{
+		if (currentStep < targetNumSteps)
+		{
+			current += step * (targetNumSteps - currentStep);
+			currentStep = targetNumSteps;
+		}
 		return current;
 	}
 	else

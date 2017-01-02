@@ -1,6 +1,6 @@
 #pragma once
 
-#include "InstrumentPluginBase.h"
+#include "MidiPluginBase.h"
 
 class pitchshiftMidiPlugin : public MidiPluginBase
 {

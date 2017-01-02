@@ -5,7 +5,7 @@
 FloatParameter::FloatParameter(float defaultValueUnnormalized, const NormalizedRange& range, BhString name_, BhString unit_)
 	: NormalizedRange(range)
 	, defaultValueNormalized(range.toNormalized(defaultValueUnnormalized))
-	, valueNormalized(defaultValueNormalized)
+	, valueNormalized(range.toNormalized(defaultValueUnnormalized))
 	, name(name_)
 	, unit(unit_)
 { 

@@ -34,17 +34,6 @@ private:
 	unsigned int timeInSamples = 0;
 };
 
-class MidiBase : public EffectBase
-{
-public:
-	MidiBase(unsigned int numberOfParameters) : EffectBase(numberOfParameters) {};
-	virtual void processMidiEvents(MidiEvent*& events, unsigned int numberOfMidiEvents) = 0;
-protected:
-	unsigned int timeInSamples = 0;
-	virtual void process(Sample* buffer, size_t numberOfSamples) final {};
-};
-
-
 template <typename T>
 void performAHDSR(
 	T* buffer, VoiceState& voice, unsigned int timeInSamples, unsigned int sampleIndex,
