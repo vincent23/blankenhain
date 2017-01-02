@@ -38,15 +38,17 @@ void RhythmgateEffect::process(Sample* buffer, size_t numberOfSamples)
 	// attack and release currently not used
 	for (size_t bufferIteration = 0; bufferIteration < numberOfSamples; bufferIteration++)
 	{
-		float currentSecond = tempodata.position / constants::sampleRate;
+
 		float quarterNoteLength = 60.f /*seconds in a minute*/  / tempodata.bpm;
 		float sixteenthNoteLength = quarterNoteLength / 4.f;
 		float wholeBeatLength = sixteenthNoteLength * 16.f;
+		float currentSecond = static_cast<float>(tempodata.position) / constants::sampleRate;
 		float currentPartialBeatInSecond = fmod(currentSecond, wholeBeatLength);
 		float currentPartialSixteenthInSeconds = fmod(currentSecond, sixteenthNoteLength);
 		float crelease = release.get();
 		float cattack = attack.get();
 		unsigned int whichSixteenthAreWeIn = static_cast<unsigned int>(currentPartialBeatInSecond / sixteenthNoteLength);
+		whichSixteenthAreWeIn = whichSixteenthAreWeIn == 0u ? 15u : whichSixteenthAreWeIn - 1u;
 
 		if (crelease > sixteenthNoteLength * 1000.f)
 			crelease = sixteenthNoteLength * 1000.f - 2.f;

@@ -225,7 +225,10 @@ bool PluginBase::getBPMandPosition(float& bpm, unsigned int& position)
 		bpm = ptr->tempo;
 	else
 		return false;
-	position = static_cast<unsigned int>(ptr->samplePos);
+	if (ptr->samplePos != 0.f)
+		position = static_cast<unsigned int>(ptr->samplePos);
+	else
+		return false;
 	return true;
 };
 
