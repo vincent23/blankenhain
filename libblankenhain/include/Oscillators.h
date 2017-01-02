@@ -336,7 +336,7 @@ public:
 
 	virtual float getSample(unsigned int time) final;
 private:
-	float poly_blep(float& t) const;
+	float poly_blep(float t) const;
 	float lastOutput;
 };
 
