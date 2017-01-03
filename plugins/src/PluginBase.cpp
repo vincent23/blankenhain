@@ -8,6 +8,34 @@
 #include <string>
 #include <algorithm>
 
+
+// via http://fogbugz.nuedge.net/default.asp?W159
+//
+// Archived here in case site goes offline
+//
+//Hosts
+//Ableton Live
+//
+//Versions Tested : 8.2
+//Platforms Tested : Windows x86, Mac PPC x86
+//Formats Tested : AU & VST
+//
+//Latency Compensation : can be updated dynamically with ioChanged().
+//
+//Keyboard Input : works fine with OS events(kEventRawKeyDown and WM_KEYDOWN).
+//
+//Stepped parameters : Doesn't call getParameterProperties(). If a parameter is modified quickly in succession, Live will assume it is continuous and ramp the automation. Otherwise it will make a step.
+//
+//updateDisplay() (or AU property change on kAudioUnitProperty_CurrentPreset or kAudioUnitProperty_PresentPreset) causes host to assume parameters have changed, stopping automation of the plug - in and lighting up the "back to arrangement" button.
+//
+//Removing parameters in a plug - in update will result in Live trying to set parameters with indexes out of range when loading old projects.
+//
+//getParameterDisplay() is called from audio thread.
+//
+//stops calling process if for some time silence(and no midi events) was outputted and gui is closed. (bad if you have for example a midi sequencing plugin).Workaround send CC's all the time to stay active
+//
+//Does not use setBypass().When an effect is deactivated it is "suspended" and bypassed by Live itself, not by the plug - in.
+
 PluginBase::PluginBase(audioMasterCallback const& audioMaster, EffectBase* effect_, bool producesTailOutput)
 	: AudioEffectX(audioMaster, 1, effect_->getNumberOfParameters())
 	, speakerArr(nullptr)
@@ -52,13 +80,20 @@ bool PluginBase::canParameterBeAutomated(VstInt32 index)
 
 bool PluginBase::getParameterProperties(VstInt32 index, VstParameterProperties* p)
 {
+	// see also:
+	// https://www.kvraudio.com/forum/viewtopic.php?f=33&t=375315
 	if (index < this->getParameters().getNumberOfParameters())
 	{
 		VstParameterProperties& prop = *p;
 		prop.flags = kVstParameterSupportsDisplayIndex + kVstParameterSupportsDisplayCategory;
 
-		if (this->getParameters().getParameterBundle().getParameter(index)->isBoolean())
+		BoolParameter* boolParam = dynamic_cast<BoolParameter*>(this->getParameters().getParameterBundle().getParameter(index));
+		IntegerParameter* intParam = dynamic_cast<IntegerParameter*>(this->getParameters().getParameterBundle().getParameter(index));
+		if (boolParam)
 			prop.flags += kVstParameterIsSwitch;
+		else if (intParam)
+			prop.flags += kVstParameterUsesIntStep;
+
 
 		prop.displayIndex = index;
 		prop.category = index;
