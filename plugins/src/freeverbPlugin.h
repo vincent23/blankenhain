@@ -5,8 +5,8 @@
 #include "PluginBase.h"
 
 // Change the name here
-class mverbPlugin : public PluginBase
+class freeverbPlugin : public PluginBase
 {
 public:
-  mverbPlugin(audioMasterCallback audioMaster);
+	freeverbPlugin(audioMasterCallback audioMaster);
 };

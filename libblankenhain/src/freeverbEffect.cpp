@@ -1,5 +1,5 @@
 #pragma once
-#include "mverbEffect.h"
+#include "freeverbEffect.h"
 
 
 #include <algorithm>
@@ -8,7 +8,7 @@
 const unsigned int NUMBER_OF_PARAMETERS = 6u;
 
 // Change the name and define parameters in constructor
-mverbEffect::mverbEffect() : EffectBase(NUMBER_OF_PARAMETERS)
+freeverbEffect::freeverbEffect() : EffectBase(NUMBER_OF_PARAMETERS)
 {
 	ParameterBundle* params = getPointerToParameterBundle();
 
@@ -41,7 +41,7 @@ mverbEffect::mverbEffect() : EffectBase(NUMBER_OF_PARAMETERS)
 
 }
 
-mverbEffect::~mverbEffect()
+freeverbEffect::~freeverbEffect()
 {
   for (size_t i = 0u; static_cast<int>(i) < this->nCombs; i++)
   {
@@ -59,7 +59,7 @@ mverbEffect::~mverbEffect()
 }
 
 
-void mverbEffect::process(Sample* buffer, size_t numberOfSamples)
+void freeverbEffect::process(Sample* buffer, size_t numberOfSamples)
 {
   InterpolatedValue<float>& roomSize = getInterpolatedParameter(0);
 

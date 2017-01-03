@@ -9,12 +9,12 @@
 // adapted from stk freeverb
 // https://github.com/thestk/stk/blob/master/src/FreeVerb.cpp
 // https://github.com/thestk/stk/blob/master/include/FreeVerb.h
-class mverbEffect : public EffectBase
+class freeverbEffect : public EffectBase
 {
 public:
 	// Change the name and define parameters in constructor
-  mverbEffect();
-  ~mverbEffect(void);
+	freeverbEffect();
+	~freeverbEffect(void);
 	void process(Sample* buffer, size_t numberOfSamples) override;
 
 protected:

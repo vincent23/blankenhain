@@ -237,7 +237,7 @@ public:
 /**
  * Writes a Base Oscillator period to wavetable.
  * This provides very good performance with almost no aliasing
- * Provides good performance with no audible artifacts when base frequency (provided druing construction)
+ * Provides good performance with no audible artifacts when base frequency (provided during construction)
  * is small enough.
  */
 class WaveTableOscillator : public BaseOscillator
