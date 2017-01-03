@@ -80,6 +80,7 @@ bool PluginBase::canParameterBeAutomated(VstInt32 index)
 
 bool PluginBase::getParameterProperties(VstInt32 index, VstParameterProperties* p)
 {
+	// Seems not to be used in Live 8.2
 	// see also:
 	// https://www.kvraudio.com/forum/viewtopic.php?f=33&t=375315
 	if (index < this->getParameters().getNumberOfParameters())
@@ -109,6 +110,8 @@ bool PluginBase::getParameterProperties(VstInt32 index, VstParameterProperties* 
 
 bool PluginBase::string2parameter(VstInt32 index, char* text)
 {
+	// Seems not to be used in Live 8.2
+
 	//Convert a string representation to a parameter value.
 	//
 	//  Especially useful for plug - ins without user interface.The application can then implement a text edit field for the user to set a parameter by entering text.
