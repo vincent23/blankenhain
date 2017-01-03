@@ -11,6 +11,7 @@ MidiPluginBase::MidiPluginBase(audioMasterCallback const& audioMaster, MidiBase*
 	for (unsigned int i = 0u; i < constants::maxMidiEventsPerVSTEventBlock; i++)
 		vstMidiEventInternalBuffer[i] = new VstMidiEvent;
 
+
 	isSynth();
 	// reserve space for 2048 midi events per vst process block
 	midiEvents.reserve(constants::maxMidiEventsPerVSTEventBlock);
@@ -56,7 +57,9 @@ VstInt32 MidiPluginBase::processEvents(VstEvents* events)
 			// note on event
 			// zero velocity is interpreted as note off in accordance to the midi standard
 			midiEvents.emplace_back(midiEvent.deltaFrames, key, velocity);
+		
 		}
+
 	}
 	return 0;
 }
@@ -135,12 +138,13 @@ void MidiPluginBase::processReplacing(float** inputs, float** outputs, VstInt32 
 		outputs[1][i] = inputs[1][i];
 	}
 	
-	MidiEvent* a = nullptr;
-	if (midiEvents.size() != 0u)
-		a = &midiEvents[0];
+	unsigned int midiEventNum = midiEvents.size();
+	midiEvents.resize(256, MidiEvent(0u,0u,0u));
+	MidiEvent* a = &midiEvents[0];
 
 	// Here, the magic happens
-	effect.processMidiEvents(a, midiEvents.size());
+	effect.processMidiEvents(a, midiEventNum, midiEvents.size());
+	midiEvents.resize(midiEventNum, MidiEvent(0u, 0u, 0u));
 
 	// Midi is dispatched in here
 	onAfterProcess();
