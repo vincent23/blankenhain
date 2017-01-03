@@ -195,3 +195,10 @@ add_plugin("bh_pitchshift_midi"
 	"pitchshiftMidiPlugin.h"
 )
 
+add_plugin("bh_fm_synth"
+	"fmInstrumentPlugin.cpp"
+	"fmInstrumentPlugin.h"
+	"fmInstrumentPluginEditor.cpp"
+	"fmInstrumentPluginEditor.h"
+)
+

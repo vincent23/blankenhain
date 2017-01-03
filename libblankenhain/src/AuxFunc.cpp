@@ -14,14 +14,14 @@ namespace aux
 		return static_cast<unsigned int>(12.f * log2(frequency / 440.f)) + 69u;
 	};
 
-	float noteToFrequency(unsigned int note)
+	float noteToFrequency(float note)
 	{
 #ifdef _LIBBLANKENHAIN_ENABLE_WARNINGS
 		if (note >= 128u)
 			throw ("(midi)note was bigger than 127\n");
 #endif
 		// via http://stackoverflow.com/questions/5779127/convert-frequency-to-keyboard-note
-		return 440.f * exp((static_cast<int>(note) - 69)*log(2.f) / 12.f);
+		return 440.f * exp((note - 69.f)*log(2.f) / 12.f);
 	}
 
 	float linearToDecibel(float linear)
