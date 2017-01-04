@@ -38,7 +38,9 @@ gmsynthInstrument::gmsynthInstrument()
 	gmInstrument**& list = midiinstruments;
 	gmSoundRegion* tempRegions;
 	gmSoundRegion tempRegion;
-	HANDLE* handleptr = &h;
+	//HANDLE* handleptr = &h;
+	loadToHandle();
+	HANDLE handleptr = h;
 
 	{
 
@@ -15430,6 +15432,7 @@ gmsynthInstrument::gmsynthInstrument()
 	tempRegions = nullptr;
 
 	}
+	destroyHandle();
 }
 
 void gmsynthInstrument::processVoice(VoiceState& voice, unsigned int timeInSamples, Sample* buffer, unsigned int numberOfSamples)
@@ -15457,9 +15460,13 @@ void gmsynthInstrument::processVoice(VoiceState& voice, unsigned int timeInSampl
 			unsigned int sampleSize(0u);
 			Sample* sampleBuffer = nullptr;
 			midiinstruments[instrument]->getNote(voice.key, sampleBuffer, sampleSize);
-			if (deltaT < sampleSize)
+			// TODO quick hack to "convert" the samplerate
+			if (deltaT * .5f < sampleSize)
 			{
-				buffer[sampleIndex] = sampleBuffer[sampleIndex];
+				buffer[sampleIndex] = sampleBuffer[(unsigned int) (deltaT * .5f)];
+			}
+			else {
+				buffer[sampleIndex] = Sample(0);
 			}
 		}
 
@@ -15467,8 +15474,8 @@ void gmsynthInstrument::processVoice(VoiceState& voice, unsigned int timeInSampl
 	}
 }
 
-gmInstrument::gmInstrument(unsigned int numberOfRegions_, gmSoundRegion* regions_, HANDLE* handle_)
-	: numberOfRegions(numberOfRegions_), regions(regions_), mIsLoopable(false), h(handle_), interpolatedSounds(nullptr)
+gmInstrument::gmInstrument(unsigned int numberOfRegions_, gmSoundRegion* regions_, HANDLE handle_)
+	: numberOfRegions(numberOfRegions_), regions(regions_), mIsLoopable(false), interpolatedSounds(nullptr)
 {
 	if (regions[0].isLoopable == true)
 		mIsLoopable = true;
@@ -15479,7 +15486,7 @@ gmInstrument::gmInstrument(unsigned int numberOfRegions_, gmSoundRegion* regions
 	interpolatedSounds = new gmSound*[128];
 	for (unsigned int i = 0u; i < 128; i++)
 	{
-		interpolatedSounds[i] = new gmSound(findTargetRegion(i), h, i);
+		interpolatedSounds[i] = new gmSound(findTargetRegion(i), handle_, i);
 	}
 }
 
@@ -15538,18 +15545,23 @@ void gmsynthInstrument::destroyHandle()
 	CloseHandle(h);
 }
 
-gmSound::gmSound(gmSoundRegion& region, HANDLE* h, unsigned int targetNote)
+gmSound::gmSound(gmSoundRegion& region, HANDLE h, unsigned int targetNote)
 	: interpolatedBufferSize(0u), interpolatedBuffer(nullptr), isLoopable(region.isLoopable), rootBuffer(nullptr),
 	loopStart(0u), loopStop(0u), mRegion(region)
 {
-
 	rootBuffer = new Sample[region.sampleLength / 2u];
 
 	int16_t* raw_sample = new int16_t[region.sampleLength / 2];
 	if (SetFilePointer(h, region.startByte, NULL/*32 bit*/, FILE_BEGIN) != INVALID_SET_FILE_POINTER)
 	{
 		DWORD dwBytesRead;
-		ReadFile(h, &raw_sample, region.sampleLength, &dwBytesRead, NULL);
+		bool status = ReadFile(h, raw_sample, region.sampleLength, &dwBytesRead, NULL);
+
+		int x = 0;
+	}
+	else {
+		DWORD error = GetLastError();
+		int x = 0;
 	}
 
 	for (unsigned int i = 0u; i < region.sampleLength / 2u; i++)
@@ -15565,24 +15577,27 @@ gmSound::gmSound(gmSoundRegion& region, HANDLE* h, unsigned int targetNote)
 	// playback speed via
 	// http://math.stackexchange.com/questions/1205881/what-is-the-equation-for-figuring-out-the-change-in-pitch-from-changes-in-tempo
 
-	float multiplciationLengthFactor = 1. / std::powf(2.f, (static_cast<double>(region.rootNote - targetNote) / -12.f));
+	float multiplciationLengthFactor = 1. / std::powf(2.f, (static_cast<float>(region.rootNote) - static_cast<float>(targetNote)) / -12.f);
 	interpolatedBufferSize = static_cast<unsigned int>(region.sampleLength / (2 * multiplciationLengthFactor));
+	interpolatedBufferSize = region.sampleLength / 2u;
 
 	interpolatedBuffer = new Sample[interpolatedBufferSize];
 	if (isLoopable)
 	{
-		loopStart = static_cast<unsigned int>(region.loopStart / 2.f * multiplciationLengthFactor);
-		loopStop = static_cast<unsigned int>((region.loopStart + region.loopLength) / 2.f * multiplciationLengthFactor);
+		//loopStart = static_cast<unsigned int>(region.loopStart / 2.f * multiplciationLengthFactor);
+		//loopStop = static_cast<unsigned int>((region.loopStart + region.loopLength) / 2.f * multiplciationLengthFactor);
+		loopStart = region.loopStart;
+		loopStop = region.loopStart + region.loopLength;
 	}
 
 	for (unsigned int i = 0u; i < interpolatedBufferSize; i++)
 	{
-		interpolatedBuffer[i] = rootBuffer[static_cast<unsigned int>(static_cast<float>(i) * multiplciationLengthFactor)];
+		//interpolatedBuffer[i] = rootBuffer[static_cast<unsigned int>(static_cast<float>(i) * multiplciationLengthFactor)];
+		interpolatedBuffer[i] = rootBuffer[i];
 	}
 
 	delete[] rootBuffer;
 	rootBuffer = nullptr;
-
 }
 
 gmSound::~gmSound()

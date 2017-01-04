@@ -38,14 +38,14 @@ private:
 	gmSoundRegion* regions;
 
 	bool mIsLoopable;
-	HANDLE* h;
+	//HANDLE* h;
 
 	gmSound** interpolatedSounds;
 
 	//works
 	gmSoundRegion findTargetRegion(unsigned int rootNote) const;
 public:
-	gmInstrument(unsigned int numberOfRegions, gmSoundRegion* regions, HANDLE* handle);
+	gmInstrument(unsigned int numberOfRegions, gmSoundRegion* regions, HANDLE handle);
 	~gmInstrument();
 	bool isLoopable() const;
 	void getNote(unsigned int targetNote, Sample*& returnedBuffer, unsigned int& returnedBufferSize) const;
@@ -75,7 +75,7 @@ private:
 class gmSound
 {
 public:
-	gmSound(gmSoundRegion& region, HANDLE* h, unsigned int targetNote);
+	gmSound(gmSoundRegion& region, HANDLE h, unsigned int targetNote);
 	~gmSound();
 
 	Sample* interpolatedBuffer;

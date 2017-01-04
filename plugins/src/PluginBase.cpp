@@ -259,6 +259,9 @@ const PluginParameterBundle& PluginBase::getParameters() const
 bool PluginBase::getBPMandPosition(float& bpm, unsigned int& position)
 {
 	VstTimeInfo* ptr = this->getTimeInfo(kVstTempoValid);
+	if (!ptr) {
+		return false;
+	}
 	if (ptr->flags | kVstTempoValid)
 		bpm = ptr->tempo;
 	else
