@@ -3,6 +3,7 @@
 #include "ParameterBundle.h"
 #include "FloatParameter.h"
 #include "VoiceState.h"
+#include <windows.h>
 #include <cmath>
 
 gmsynthInstrument::~gmsynthInstrument()
@@ -15474,56 +15475,6 @@ void gmsynthInstrument::processVoice(VoiceState& voice, unsigned int timeInSampl
 	}
 }
 
-gmInstrument::gmInstrument(unsigned int numberOfRegions_, gmSoundRegion* regions_, HANDLE handle_)
-	: numberOfRegions(numberOfRegions_), regions(regions_), mIsLoopable(false), interpolatedSounds(nullptr)
-{
-	if (regions[0].isLoopable == true)
-		mIsLoopable = true;
-	this->regions = new gmSoundRegion[numberOfRegions_];
-	for (unsigned int i = 0u; i < numberOfRegions_; i++)
-		this->regions[i] = regions_[i];
-
-	interpolatedSounds = new gmSound*[128];
-	for (unsigned int i = 0u; i < 128; i++)
-	{
-		interpolatedSounds[i] = new gmSound(findTargetRegion(i), handle_, i);
-	}
-}
-
-gmInstrument::~gmInstrument()
-{
-	if (regions != nullptr)
-		delete[] regions;
-	regions = nullptr;
-
-	if (interpolatedSounds != nullptr)
-		for (unsigned int i = 0u; i < 128; i++)
-		{
-			delete interpolatedSounds[i];
-			interpolatedSounds[i] = nullptr;
-		}
-	delete[] interpolatedSounds;
-}
-
-void gmInstrument::getNote(unsigned int targetNote, Sample*& returnedBuffer, unsigned int& returnedBufferSize) const
-{
-	returnedBufferSize = (this->interpolatedSounds[targetNote])->interpolatedBufferSize;
-	returnedBuffer = (this->interpolatedSounds[targetNote])->interpolatedBuffer;
-}
-
-bool gmInstrument::isLoopable() const
-{
-	return mIsLoopable;
-}
-
-gmSoundRegion gmInstrument::findTargetRegion(unsigned int rootNote) const
-{
-	for (unsigned int i = 0u; i < numberOfRegions; i++)
-		if (rootNote >= regions[i].lowest && rootNote <= regions[i].highest)
-			return regions[i];
-	return gmSoundRegion();
-}
-
 void gmsynthInstrument::loadToHandle()
 {
 	static char paths[] = "\\drivers\x0"
@@ -15543,73 +15494,4 @@ void gmsynthInstrument::loadToHandle()
 void gmsynthInstrument::destroyHandle()
 {
 	CloseHandle(h);
-}
-
-gmSound::gmSound(gmSoundRegion& region, HANDLE h, unsigned int targetNote)
-	: interpolatedBufferSize(0u), interpolatedBuffer(nullptr), isLoopable(region.isLoopable), rootBuffer(nullptr),
-	loopStart(0u), loopStop(0u), mRegion(region)
-{
-	rootBuffer = new Sample[region.sampleLength / 2u];
-
-	int16_t* raw_sample = new int16_t[region.sampleLength / 2];
-	if (SetFilePointer(h, region.startByte, NULL/*32 bit*/, FILE_BEGIN) != INVALID_SET_FILE_POINTER)
-	{
-		DWORD dwBytesRead;
-		bool status = ReadFile(h, raw_sample, region.sampleLength, &dwBytesRead, NULL);
-
-		int x = 0;
-	}
-	else {
-		DWORD error = GetLastError();
-		int x = 0;
-	}
-
-	for (unsigned int i = 0u; i < region.sampleLength / 2u; i++)
-	{
-		rootBuffer[i] = Sample((static_cast<float>(raw_sample[i]) - 0.5f) / 32767.5f);
-	}
-
-	delete raw_sample;
-
-
-	
-	// Now interpolation
-	// playback speed via
-	// http://math.stackexchange.com/questions/1205881/what-is-the-equation-for-figuring-out-the-change-in-pitch-from-changes-in-tempo
-
-	float multiplciationLengthFactor = 1. / std::powf(2.f, (static_cast<float>(region.rootNote) - static_cast<float>(targetNote)) / -12.f);
-	interpolatedBufferSize = static_cast<unsigned int>(region.sampleLength / (2 * multiplciationLengthFactor));
-	interpolatedBufferSize = region.sampleLength / 2u;
-
-	interpolatedBuffer = new Sample[interpolatedBufferSize];
-	if (isLoopable)
-	{
-		//loopStart = static_cast<unsigned int>(region.loopStart / 2.f * multiplciationLengthFactor);
-		//loopStop = static_cast<unsigned int>((region.loopStart + region.loopLength) / 2.f * multiplciationLengthFactor);
-		loopStart = region.loopStart;
-		loopStop = region.loopStart + region.loopLength;
-	}
-
-	for (unsigned int i = 0u; i < interpolatedBufferSize; i++)
-	{
-		//interpolatedBuffer[i] = rootBuffer[static_cast<unsigned int>(static_cast<float>(i) * multiplciationLengthFactor)];
-		interpolatedBuffer[i] = rootBuffer[i];
-	}
-
-	delete[] rootBuffer;
-	rootBuffer = nullptr;
-}
-
-gmSound::~gmSound()
-{
-	if (interpolatedBuffer != nullptr)
-	{
-		delete[] interpolatedBuffer;
-		interpolatedBuffer = nullptr;
-	}
-	if (rootBuffer != nullptr)
-	{
-		delete[] rootBuffer;
-		rootBuffer = nullptr;
-	}
 }
