@@ -34,7 +34,7 @@ unsigned int ParameterBundle::getNumberOfParameters() const
 FloatParameter*& ParameterBundle::getParameter(unsigned int const& in) const
 {
 #ifdef _LIBBLANKENHAIN_ENABLE_WARNINGS
-	if (!in < this->numberOfParameters)
+	if (in >= this->numberOfParameters)
 		throw ("out of range: number of parameters\n");
 #endif
 	return (parameters)[in];

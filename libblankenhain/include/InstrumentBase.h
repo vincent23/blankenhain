@@ -26,7 +26,7 @@ public:
 	void resetVoices();
 #endif
 protected:
-	unsigned int numberOfVoices;
+	const unsigned int numberOfVoices;
 	virtual void process(Sample* buffer, size_t numberOfSamples) final;
 private:
 	Sample voiceBuffer[constants::blockSize];
