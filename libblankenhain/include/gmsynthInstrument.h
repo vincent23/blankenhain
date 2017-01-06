@@ -18,9 +18,9 @@ public:
 	gmsynthInstrument();
 	~gmsynthInstrument();
 	void processVoice(VoiceState& voice, unsigned int timeInSamples, Sample* buffer, unsigned int numberOfSamples);
+
+	void loadMidiInstrument(const gmInstrument& instrument);
 private:
-	gmInstrument** midiinstruments;
-	HANDLE h;
-	void loadToHandle();
-	void destroyHandle();
+
+	gmSound* interpolatedSounds[256];
 };

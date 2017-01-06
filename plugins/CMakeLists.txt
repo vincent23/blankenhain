@@ -162,6 +162,7 @@ add_plugin("bh_polyblep_synth"
 )
 
 add_plugin("bh_gm_synth"
+	"gmDlsInfo.h"
 	"gmsynthInstrumentPlugin.cpp"
 	"gmsynthInstrumentPlugin.h"
 	"gmsynthInstrumentPluginEditor.h"

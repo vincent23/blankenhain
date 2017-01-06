@@ -13,21 +13,15 @@ struct Sample;
 */
 class gmInstrument
 {
-private:
-	// used
+public:
+	// TODO remove last argument to constructor
+	gmInstrument(unsigned int numberOfRegions, gmSoundRegion* regions, void* _);
+	~gmInstrument();
+
 	unsigned int numberOfRegions;
 	gmSoundRegion* regions;
 
-	bool mIsLoopable;
-	//HANDLE* h;
+	bool isLoopable;
 
-	gmSound** interpolatedSounds;
-
-	//works
-	gmSoundRegion findTargetRegion(unsigned int rootNote) const;
-public:
-	gmInstrument(unsigned int numberOfRegions, gmSoundRegion* regions, HANDLE handle);
-	~gmInstrument();
-	bool isLoopable() const;
-	void getNote(unsigned int targetNote, Sample*& returnedBuffer, unsigned int& returnedBufferSize) const;
+	gmSoundRegion* findTargetRegion(unsigned int rootNote) const;
 };
