@@ -34,9 +34,11 @@ bool NormalizedRange::isInRange(float unnormalizedValue) const
 
 float NormalizedRange::fromNormalized(float normalizedValue) const
 {
-#ifdef _LIBBLANKENHAIN_ENABLE_WARNINGS
-	if (normalizedValue < 0.f || normalizedValue > 1.f)
-		throw ("normalized value out of range\n");
+#ifndef _BLANKENHAIN_RUNTIME_MODE
+  if (normalizedValue < 0.f)
+    normalizedValue = 0.f;
+  else if (normalizedValue > 1.f)
+    normalizedValue = 1.f;
 #endif
 	if (skew != 1.f && normalizedValue > 0.f) {
 		normalizedValue = std::pow(normalizedValue, 1.f / skew);
@@ -46,9 +48,11 @@ float NormalizedRange::fromNormalized(float normalizedValue) const
 
 float NormalizedRange::toNormalized(float unnormalizedValue) const
 {
-#ifdef _LIBBLANKENHAIN_ENABLE_WARNINGS
-	if (unnormalizedValue < start || unnormalizedValue > end) 
-		throw ("Blankenhain Range Assert: Unnormalized not in Range");
+#ifndef _BLANKENHAIN_RUNTIME_MODE
+  if (unnormalizedValue < start)
+    unnormalizedValue = start;
+  else if (unnormalizedValue > end)
+    unnormalizedValue = end;
 #endif
 
 	float normalizedValue = (unnormalizedValue - start) / (end - start);
