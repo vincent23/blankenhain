@@ -14,7 +14,8 @@ private:
 	//unsigned int length;
 	VoiceState dummy;
 public:
-	ModulationEnvelope(float attackInMs_, float releaseInMs_, float holdInMs_ = 1.f, float decayInMs_ = 1.f, float sustainInMs_ = 1.f)
+	ModulationEnvelope(float attackInMs_, float releaseInMs_, float holdInMs_ = 1.f, float decayInMs_ = 1.f, float sustainInMs_ = 1.f,
+    float holdlevelInPercentage = 1.f, float sustainLevelInPercentage = 1.f)
 		: buffer(nullptr)
 	{
 		attackInMs = attackInMs_;
@@ -22,6 +23,8 @@ public:
 		decayInMs = decayInMs_;
 		sustainInMs = sustainInMs_;
 		releaseInMs = releaseInMs_;
+    holdLvlInPercentage = holdlevelInPercentage;
+    sustainLvlInPercentage = sustainLevelInPercentage;
 		//length = aux::millisecToSamples(attackInMs);
 		//length += aux::millisecToSamples(holdInMs);
 		//length += aux::millisecToSamples(decayInMs);
@@ -43,7 +46,7 @@ public:
 	{
 		buffer[0] = 1.f;
 		performAHDSR<float>(buffer, dummy, time, 0u, attackInMs,
-			releaseInMs, holdInMs, decayInMs, sustainInMs, true);
+			releaseInMs, holdInMs, decayInMs, sustainInMs, true, sustainLvlInPercentage, holdLvlInPercentage);
 		return buffer[0];
 	};
 	float attackInMs;
@@ -51,4 +54,6 @@ public:
 	float decayInMs;
 	float sustainInMs;
 	float releaseInMs;
+  float holdLvlInPercentage;
+  float sustainLvlInPercentage;
 };

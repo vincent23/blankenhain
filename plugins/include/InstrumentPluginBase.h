@@ -22,10 +22,12 @@ public:
 	void suspend() override;
 	void close() override;
 
+protected:
+  InstrumentBase& instrument;
 private:
 	void onBeforeBlock(unsigned int blockOffset) override;
 
 	std::vector<MidiEvent> midiEvents;
 	size_t midiEventPosition = 0;
-	InstrumentBase& instrument;
+
 };

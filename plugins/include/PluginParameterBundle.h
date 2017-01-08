@@ -32,7 +32,7 @@ public:
 	 * Interpolation is performed
 	 */
 	void updateParameters();
-	std::string getParameterName(unsigned int const& in);
+	std::string getParameterName(unsigned int const& in) const;
 	float getParameterNormalized(unsigned int const& index) const;
 	float getParameterUnnormalized(unsigned int const& index) const;
 	std::string getParameterUnit(unsigned int const& index) const;

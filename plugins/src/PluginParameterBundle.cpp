@@ -31,7 +31,7 @@ unsigned int PluginParameterBundle::getNumberOfParameters() const
 	return this->currentParametersFromHost.size();
 }
 
-std::string PluginParameterBundle::getParameterName(unsigned int const& in)
+std::string PluginParameterBundle::getParameterName(unsigned int const& in) const
 {
 	if (in > currentParametersFromHost.size()) return "error argument too big";
 	else return (parameterBundle)->getParameter(in)->getName();

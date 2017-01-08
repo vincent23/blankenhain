@@ -1,8 +1,8 @@
 #include "InstrumentBase.h"
 #include "VoiceState.h"
 
-InstrumentBase::InstrumentBase(unsigned int numberOfParameters, unsigned int numberOfVoices_)
-	: EffectBase(numberOfParameters)
+InstrumentBase::InstrumentBase(unsigned int numberOfParameters, unsigned int numberOfVoices_, bool usesTempoData)
+	: EffectBase(numberOfParameters, usesTempoData)
 	, numberOfVoices(numberOfVoices_)
 	, voices(new VoiceState[numberOfVoices_])
 { }

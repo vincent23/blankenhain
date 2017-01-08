@@ -10,7 +10,7 @@ class VoiceState;
 class InstrumentBase : public EffectBase
 {
 public:
-	InstrumentBase(unsigned int numberOfParameters, unsigned int numberOfVoices);
+	InstrumentBase(unsigned int numberOfParameters, unsigned int numberOfVoices, bool usesTempoData = false);
 
 	void handleNoteEvent(bool isNoteOn, unsigned int key, unsigned int velocity);
 

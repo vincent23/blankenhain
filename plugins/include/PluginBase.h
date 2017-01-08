@@ -31,7 +31,7 @@ struct Sample;
  *
  *
  * List of functions a plugin may still provide itself:
- * - onBeforeBlock(unsigned int blockOffset);
+ * - onBeforeBlock(unsigned int blockOffset) -> only if plugin is not an instrument;
  * - onAfterProcess();
  *
  */

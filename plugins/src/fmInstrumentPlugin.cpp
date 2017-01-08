@@ -6,6 +6,7 @@ FmInstrumentPlugin::FmInstrumentPlugin(audioMasterCallback audioMaster)
 	: InstrumentPluginBase(audioMaster, new FmInstrument)
 {
 	setUniqueID('bhFm');
+  isSynth(true);
 	setEditor(new FmInstrumentPluginEditor(this));
 }
 

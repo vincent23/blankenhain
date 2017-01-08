@@ -29,7 +29,7 @@ public:
 class FmInstrument : public InstrumentBase
 {
 private:
-	static const unsigned int numOsc = 10u;
+	static const unsigned int numOsc = 9u;
 	PolyBLEPOscillator osc[numOsc];
 	FmModulation mod[numOsc];
 	float lastValue[numOsc];
