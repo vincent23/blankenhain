@@ -17,6 +17,7 @@ prepend(HEADERS "include/"
 	"MidiPluginBase.h"
 	"PluginBase.h"
 	"PluginParameterBundle.h"
+	"ImguiCustomFunctions.h"
 )
 
 prepend(SOURCES "src/"

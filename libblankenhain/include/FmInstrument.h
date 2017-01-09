@@ -4,7 +4,9 @@
 #include "Oscillators.h"
 class VoiceState;
 
-
+/**
+ * Class that stores information on modulation for one target osc.
+ */
 class FmModulation
 {
 public:
@@ -30,9 +32,13 @@ class FmInstrument : public InstrumentBase
 {
 private:
 	static const unsigned int numOsc = 9u;
+
+	// oscillators
 	PolyBLEPOscillator osc[numOsc];
+
+	// modulation information for each osc
 	FmModulation mod[numOsc];
-	float lastValue[numOsc];
+
 	I_SoundGenerator* currentSound;
 public:
 	FmInstrument();

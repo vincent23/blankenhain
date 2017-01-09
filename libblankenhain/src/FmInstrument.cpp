@@ -12,6 +12,7 @@ FmInstrument::FmInstrument()
 	: InstrumentBase(99, 1, true), currentSound(nullptr)
 {
 	ParameterBundle* params = getPointerToParameterBundle();
+
 	// envelope global
 	params->getParameter(0) = new FloatParameter(50.f, NormalizedRange(1.f, 1700.f, 0.3f), "attack", "ms");
 	params->getParameter(1) = new FloatParameter(100.f, NormalizedRange(1.f, 1700.f, 0.3f), "hold", "ms");
@@ -22,6 +23,8 @@ FmInstrument::FmInstrument()
 	params->getParameter(6) = new FloatParameter(1.0f, NormalizedRange(), "sustainLevel", "ratio");
 	params->getParameter(7) = new FloatParameter(100.f, NormalizedRange(1.f, 1700.f, 0.3f), "release", "ms");
 
+
+	// Modulation Oscillators, selfmod not yet implemented TODO
 	for (unsigned int i = 8u; i < 8 * 11 + 8; i += 11)
 	{
 		params->getParameter(i + 0) = new FloatParameter(440.f, NormalizedRange(33.f, 16000.f, 0.25), "freq", "hz");
@@ -31,24 +34,21 @@ FmInstrument::FmInstrument()
 		params->getParameter(i + 4) = new FloatParameter(0.f, NormalizedRange(), "selfmodAmount", "amount");
 		params->getParameter(i + 5) = new FloatParameter(0.f, NormalizedRange(), "selfmodType", "type");
 		params->getParameter(i + 6) = new FloatParameter(0.f, NormalizedRange(), "waveform", "type");
-
-    params->getParameter(i + 7) = new FloatParameter(0.f, NormalizedRange(), "isOn", "");
-    params->getParameter(i + 8) = new FloatParameter(0.f, NormalizedRange(), "isLFO", "");
-    params->getParameter(i + 9) = new FloatParameter(0.f, NormalizedRange(), "tempoSyncOn", "");
-    params->getParameter(i + 10) = new FloatParameter( 1.f, NormalizedRange(0.0625f, 2.f, 0.23f), "tempoSyncMultiplier", "");
-
-
+		params->getParameter(i + 7) = new FloatParameter(0.f, NormalizedRange(), "isOn", "");
+		params->getParameter(i + 8) = new FloatParameter(0.f, NormalizedRange(), "isLFO", "");
+		params->getParameter(i + 9) = new FloatParameter(0.f, NormalizedRange(), "tempoSyncOn", "");
+		params->getParameter(i + 10) = new FloatParameter( 1.f, NormalizedRange(0.0625f, 2.f, 0.23f), "tempoSyncMultiplier", "");
 	}
 
-  params->getParameter(96) = new FloatParameter(0.f, NormalizedRange(), "selfmodAmount", "amount");
-  params->getParameter(97) = new FloatParameter(0.f, NormalizedRange(), "selfmodType", "type");
-  params->getParameter(98) = new FloatParameter(0.f, NormalizedRange(), "waveform", "type");
+	//Carrier
+	params->getParameter(96) = new FloatParameter(0.f, NormalizedRange(), "selfmodAmount", "amount");
+	params->getParameter(97) = new FloatParameter(0.f, NormalizedRange(), "selfmodType", "type");
+	params->getParameter(98) = new FloatParameter(0.f, NormalizedRange(), "waveform", "type");
 
 
 	for (unsigned int i = 0u; i < numOsc; i++)
 	{
 		osc[i].setMode(NaiveOscillator::NaiveOscillatorMode::OSCILLATOR_MODE_SINE);
-		lastValue[i] = 0.f;
 	}
 	currentSound = &osc[numOsc-1];
 }
@@ -64,12 +64,11 @@ void FmInstrument::processVoice(VoiceState& voice, unsigned int timeInSamples, S
 	float sustain = getInterpolatedParameter(5).get();
 	float release = getInterpolatedParameter(7).get();
 	
-  // reset mod
-  for (unsigned int i = 0u; i < numOsc; i++)
-    this->mod[i] = FmModulation();
+	// reset modulation matrix
+	for (unsigned int i = 0u; i < numOsc; i++)
+		this->mod[i] = FmModulation();
 
-	// last osc is always carrier
-
+	// Modulation Oscs are now evaluated
 	for (unsigned int sampleIndex = 0; sampleIndex < numberOfSamples; sampleIndex++)
 	{
 		unsigned int deltaT = (timeInSamples + sampleIndex) - voice.onTime;
@@ -78,7 +77,7 @@ void FmInstrument::processVoice(VoiceState& voice, unsigned int timeInSamples, S
 		for (unsigned int i = 0u; i < numOsc - 1u; i++)
 		{
 			float amount = getInterpolatedParameter(8 + i * 11 + 2).get();
-      bool isOn = getInterpolatedParameter(8 + i * 11 + 7).get();
+			bool isOn = getInterpolatedParameter(8 + i * 11 + 7).get();
 			if (isOn && amount != 0.f)
 			{
 				float freq = getInterpolatedParameter(8 + i * 11 + 0).get();
@@ -88,55 +87,55 @@ void FmInstrument::processVoice(VoiceState& voice, unsigned int timeInSamples, S
 				//params->getParameter(i + 4) = new FloatParameter(0.f, NormalizedRange(), "selfmod", "amount");
 				//params->getParameter(i + 5) = new FloatParameter(0.f, NormalizedRange(), "selfmod", "type");
 				float waveFormType = getInterpolatedParameter(8 + i * 11 + 6).get() * 4.f;
-        bool isLFO = getInterpolatedParameter(8 + i * 11 + 8).get();
-        bool tempoSync = getInterpolatedParameter(8 + i * 11 + 9).get();
-        float tempoSyncVal = getInterpolatedParameter(8 + i * 11 + 10).get();
+				bool isLFO = getInterpolatedParameter(8 + i * 11 + 8).get();
+				bool tempoSync = getInterpolatedParameter(8 + i * 11 + 9).get();
+				float tempoSyncVal = getInterpolatedParameter(8 + i * 11 + 10).get();
 
-        if (!tempoSync && isLFO)
-          freq /= 1000.f;
-        else if (tempoSync && isLFO)
-        {
-          if (tempoSyncVal < 0.125f)
-            tempoSyncVal = 0.0625;
-          else if (tempoSyncVal < 0.25)
-            tempoSyncVal = 0.125f;
-          else if (tempoSyncVal < 0.5)
-            tempoSyncVal = 0.25;
-          else if (tempoSyncVal < 1.f)
-            tempoSyncVal = 0.5;
-          else if (tempoSyncVal < 1.5f)
-            tempoSyncVal = 1.f;
-          else if (tempoSyncVal >= 1.5)
-            tempoSyncVal = 2.f;
+				if (!tempoSync && isLFO)
+					freq /= 1000.f;
+				else if (tempoSync && isLFO)
+				{
+					if (tempoSyncVal < 0.125f)
+						tempoSyncVal = 0.0625;
+					else if (tempoSyncVal < 0.25)
+						tempoSyncVal = 0.125f;
+					else if (tempoSyncVal < 0.5)
+						tempoSyncVal = 0.25;
+					else if (tempoSyncVal < 1.f)
+						tempoSyncVal = 0.5;
+					else if (tempoSyncVal < 1.5f)
+						tempoSyncVal = 1.f;
+					else if (tempoSyncVal >= 1.5)
+						tempoSyncVal = 2.f;
 
-          float quarterNoteLength = (60.f /*seconds in a minute*/ * tempoSyncVal) / tempodata.bpm;
-          float sixteenthNoteLength = quarterNoteLength / 4.f;
-          float wholeBeatLength = sixteenthNoteLength * 16.f;
-          freq = 1.f / wholeBeatLength;
-        }
-        else if (tempoSync && !isLFO)
-        {
-          if (tempoSyncVal < 0.125f)
-            tempoSyncVal = 0.0625;
-          else if (tempoSyncVal < 0.25)
-            tempoSyncVal = 0.125f;
-          else if (tempoSyncVal < 0.5)
-            tempoSyncVal = 0.25;
-          else if (tempoSyncVal < 1.f)
-            tempoSyncVal = 0.5;
-          else if (tempoSyncVal < 1.5f)
-            tempoSyncVal = 1.f;
-          else if (tempoSyncVal >= 1.5)
-            tempoSyncVal = 2.f;
+					float quarterNoteLength = (60.f /*seconds in a minute*/ * tempoSyncVal) / tempodata.bpm;
+					float sixteenthNoteLength = quarterNoteLength / 4.f;
+					float wholeBeatLength = sixteenthNoteLength * 16.f;
+					freq = 1.f / wholeBeatLength;
+				}
+				else if (tempoSync && !isLFO)
+				{
+					if (tempoSyncVal < 0.125f)
+					  tempoSyncVal = 0.0625;
+					else if (tempoSyncVal < 0.25)
+					  tempoSyncVal = 0.125f;
+					else if (tempoSyncVal < 0.5)
+					  tempoSyncVal = 0.25;
+					else if (tempoSyncVal < 1.f)
+					  tempoSyncVal = 0.5;
+					else if (tempoSyncVal < 1.5f)
+					  tempoSyncVal = 1.f;
+					else if (tempoSyncVal >= 1.5)
+					  tempoSyncVal = 2.f;
 
-          freq = aux::noteToFrequency(static_cast<float>(voice.key) + 12.f * tempoSyncVal);
-        }
+					freq = aux::noteToFrequency(static_cast<float>(voice.key) + 12.f * tempoSyncVal);
+				}
 
 				osc[i].setMode(NaiveOscillator::NaiveOscillatorMode(static_cast<int>(waveFormType)));
 
 				if (mod[i].fm)
 				{
-          float cFmVal = mod[i].fmVal + 1.f;
+					float cFmVal = mod[i].fmVal + 1.f;
 					osc[i].setFrequency(freq * (cFmVal * mod[i].fmAmount));
 				}
 				else if (mod[i].pm)
@@ -171,11 +170,11 @@ void FmInstrument::processVoice(VoiceState& voice, unsigned int timeInSamples, S
 					mod[unsigned int(target)].amVal = val;
 					mod[unsigned int(target)].amAmount = amount;
 					mod[unsigned int(target)].am = true;
-				}
-				
+				}	
 			}
 		}
 
+		// Carrier now
 
 		float freq = aux::noteToFrequency(voice.key);
 		//params->getParameter(i + 4) = new FloatParameter(0.f, NormalizedRange(), "selfmod", "amount");
