@@ -7,8 +7,8 @@ gmsynthInstrumentPlugin::gmsynthInstrumentPlugin(audioMasterCallback audioMaster
 	: InstrumentPluginBase(audioMaster, new gmsynthInstrument)
 {
 	setUniqueID('bhGM');
-	setEditor(new gmsynthPluginEditor(this));
 	instruments = getInstrumentInfo();
+	setEditor(new gmsynthPluginEditor(this));
 }
 
 gmsynthInstrumentPlugin::~gmsynthInstrumentPlugin()

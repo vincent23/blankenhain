@@ -131,7 +131,7 @@ gmsynthInstrument::gmsynthInstrument()
 	tempRegion.sampleLength = 9684;
 	tempRegion.startByte = 2045128;
 	tempRegions[9] = tempRegion;
-	gmInstrument instrument(10, tempRegions, nullptr);
+	gmInstrument instrument("", 10, tempRegions);
 	delete[] tempRegions;
 	loadMidiInstrument(instrument);
 }

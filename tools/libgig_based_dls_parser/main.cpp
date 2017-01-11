@@ -81,7 +81,7 @@ int main()
 
 			}
 
-			std::cout << "list[" << counter << "] = new gmInstrument(" << regions.size() << ", tempRegions, handleptr);\n";
+			std::cout << "list[" << counter << "] = new gmInstrument(\"" << instr->pInfo->Name << "\"," << regions.size() << ", tempRegions);\n";
 			std::cout << "delete[] tempRegions;\ntempRegions = nullptr;\n\n";
 		}
 		counter++;

@@ -2,6 +2,7 @@
 
 #include "ImguiEffectEditor.h"
 #include "PluginBase.h"
+#include <vector>
 
 class gmsynthPluginEditor : public ImguiEffectEditor
 {
@@ -10,4 +11,8 @@ public:
 
 protected:
 	void imguiFrame() override;
+
+private:
+	std::vector<const char*> instrumentNames;
+	int selectedInstrument = 0;
 };

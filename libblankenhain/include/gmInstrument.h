@@ -15,13 +15,14 @@ class gmInstrument
 {
 public:
 	// TODO remove last argument to constructor
-	gmInstrument(unsigned int numberOfRegions, gmSoundRegion* regions, void* _);
+	gmInstrument(const char* name, unsigned int numberOfRegions, gmSoundRegion* regions);
 	~gmInstrument();
 
 	unsigned int numberOfRegions;
 	gmSoundRegion* regions;
 
 	bool isLoopable;
+	const char* name;
 
 	gmSoundRegion* findTargetRegion(unsigned int rootNote) const;
 };

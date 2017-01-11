@@ -11,6 +11,6 @@ public:
 	~gmsynthInstrumentPlugin();
 
 	void loadMidiInstrument(unsigned int index);
-private:
+
 	gmInstrument** instruments;
 };

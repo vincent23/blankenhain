@@ -8,8 +8,6 @@ gmInstrument** getInstrumentInfo() {
 	gmSoundRegion* tempRegions;
 	gmSoundRegion tempRegion;
 
-	void* handleptr = nullptr;
-
 	tempRegions = new gmSoundRegion[10];
 	tempRegion = gmSoundRegion();
 	tempRegion.lowest = 0;
@@ -111,7 +109,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 9684;
 	tempRegion.startByte = 2045128;
 	tempRegions[9] = tempRegion;
-	list[0] = new gmInstrument(10, tempRegions, handleptr);
+	list[0] = new gmInstrument("Piano 1     ", 10, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -216,7 +214,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 9684;
 	tempRegion.startByte = 2045128;
 	tempRegions[9] = tempRegion;
-	list[1] = new gmInstrument(10, tempRegions, handleptr);
+	list[1] = new gmInstrument("Piano 1     ", 10, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -321,7 +319,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 9684;
 	tempRegion.startByte = 2045128;
 	tempRegions[9] = tempRegion;
-	list[2] = new gmInstrument(10, tempRegions, handleptr);
+	list[2] = new gmInstrument("Piano 1d    ", 10, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -426,7 +424,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 9684;
 	tempRegion.startByte = 2045128;
 	tempRegions[9] = tempRegion;
-	list[3] = new gmInstrument(10, tempRegions, handleptr);
+	list[3] = new gmInstrument("Piano 2     ", 10, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -531,7 +529,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 9684;
 	tempRegion.startByte = 2045128;
 	tempRegions[9] = tempRegion;
-	list[4] = new gmInstrument(10, tempRegions, handleptr);
+	list[4] = new gmInstrument("Piano 2     ", 10, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -636,7 +634,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 9684;
 	tempRegion.startByte = 2045128;
 	tempRegions[9] = tempRegion;
-	list[5] = new gmInstrument(10, tempRegions, handleptr);
+	list[5] = new gmInstrument("Piano 3     ", 10, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -741,7 +739,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 9684;
 	tempRegion.startByte = 2045128;
 	tempRegions[9] = tempRegion;
-	list[6] = new gmInstrument(10, tempRegions, handleptr);
+	list[6] = new gmInstrument("Piano 3     ", 10, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -796,7 +794,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 4008;
 	tempRegion.startByte = 1330592;
 	tempRegions[4] = tempRegion;
-	list[7] = new gmInstrument(5, tempRegions, handleptr);
+	list[7] = new gmInstrument("Honky-tonk  ", 5, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -851,7 +849,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 4008;
 	tempRegion.startByte = 1330592;
 	tempRegions[4] = tempRegion;
-	list[8] = new gmInstrument(5, tempRegions, handleptr);
+	list[8] = new gmInstrument("Honky-tonk  ", 5, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -906,7 +904,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 230;
 	tempRegion.startByte = 1037308;
 	tempRegions[4] = tempRegion;
-	list[9] = new gmInstrument(5, tempRegions, handleptr);
+	list[9] = new gmInstrument("E.Piano 1   ", 5, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -951,7 +949,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 4436;
 	tempRegion.startByte = 940598;
 	tempRegions[3] = tempRegion;
-	list[10] = new gmInstrument(4, tempRegions, handleptr);
+	list[10] = new gmInstrument("Detuned EP 1", 4, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -1006,7 +1004,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 230;
 	tempRegion.startByte = 1037308;
 	tempRegions[4] = tempRegion;
-	list[11] = new gmInstrument(5, tempRegions, handleptr);
+	list[11] = new gmInstrument("E.Piano 1v  ", 5, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -1081,7 +1079,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 1542;
 	tempRegion.startByte = 339322;
 	tempRegions[6] = tempRegion;
-	list[12] = new gmInstrument(7, tempRegions, handleptr);
+	list[12] = new gmInstrument("60's E.Piano", 7, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -1156,7 +1154,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 572;
 	tempRegion.startByte = 1049870;
 	tempRegions[6] = tempRegion;
-	list[13] = new gmInstrument(7, tempRegions, handleptr);
+	list[13] = new gmInstrument("E.Piano 2   ", 7, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -1191,7 +1189,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 10096;
 	tempRegion.startByte = 945202;
 	tempRegions[2] = tempRegion;
-	list[14] = new gmInstrument(3, tempRegions, handleptr);
+	list[14] = new gmInstrument("Detuned EP 2", 3, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -1266,7 +1264,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 572;
 	tempRegion.startByte = 1049870;
 	tempRegions[6] = tempRegion;
-	list[15] = new gmInstrument(7, tempRegions, handleptr);
+	list[15] = new gmInstrument("E.Piano 2v  ", 7, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -1321,7 +1319,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 7332;
 	tempRegion.startByte = 1378252;
 	tempRegions[4] = tempRegion;
-	list[16] = new gmInstrument(5, tempRegions, handleptr);
+	list[16] = new gmInstrument("Harpsichord ", 5, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -1376,7 +1374,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 7332;
 	tempRegion.startByte = 1378252;
 	tempRegions[4] = tempRegion;
-	list[17] = new gmInstrument(5, tempRegions, handleptr);
+	list[17] = new gmInstrument("Coupled Hps.", 5, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -1431,7 +1429,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 7332;
 	tempRegion.startByte = 1378252;
 	tempRegions[4] = tempRegion;
-	list[18] = new gmInstrument(5, tempRegions, handleptr);
+	list[18] = new gmInstrument("Harpsichord ", 5, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -1486,7 +1484,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 7332;
 	tempRegion.startByte = 1378252;
 	tempRegions[4] = tempRegion;
-	list[19] = new gmInstrument(5, tempRegions, handleptr);
+	list[19] = new gmInstrument("Harpsi.o    ", 5, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -1541,7 +1539,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 454;
 	tempRegion.startByte = 1495962;
 	tempRegions[4] = tempRegion;
-	list[20] = new gmInstrument(5, tempRegions, handleptr);
+	list[20] = new gmInstrument("Clav.       ", 5, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -1576,7 +1574,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 630;
 	tempRegion.startByte = 1608828;
 	tempRegions[2] = tempRegion;
-	list[21] = new gmInstrument(3, tempRegions, handleptr);
+	list[21] = new gmInstrument("Celesta     ", 3, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -1611,7 +1609,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 340;
 	tempRegion.startByte = 1240670;
 	tempRegions[2] = tempRegion;
-	list[22] = new gmInstrument(3, tempRegions, handleptr);
+	list[22] = new gmInstrument("Glockenspiel", 3, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -1656,7 +1654,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 630;
 	tempRegion.startByte = 1608828;
 	tempRegions[3] = tempRegion;
-	list[23] = new gmInstrument(4, tempRegions, handleptr);
+	list[23] = new gmInstrument("Music Box   ", 4, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -1711,7 +1709,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 4976;
 	tempRegion.startByte = 3352078;
 	tempRegions[4] = tempRegion;
-	list[24] = new gmInstrument(5, tempRegions, handleptr);
+	list[24] = new gmInstrument("Vibraphone  ", 5, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -1766,7 +1764,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 4976;
 	tempRegion.startByte = 3352078;
 	tempRegions[4] = tempRegion;
-	list[25] = new gmInstrument(5, tempRegions, handleptr);
+	list[25] = new gmInstrument("Vibraphone  ", 5, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -1801,7 +1799,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 630;
 	tempRegion.startByte = 1608828;
 	tempRegions[2] = tempRegion;
-	list[26] = new gmInstrument(3, tempRegions, handleptr);
+	list[26] = new gmInstrument("Marimba     ", 3, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -1836,7 +1834,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 630;
 	tempRegion.startByte = 1608828;
 	tempRegions[2] = tempRegion;
-	list[27] = new gmInstrument(3, tempRegions, handleptr);
+	list[27] = new gmInstrument("Marimba     ", 3, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -1871,7 +1869,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 630;
 	tempRegion.startByte = 1608828;
 	tempRegions[2] = tempRegion;
-	list[28] = new gmInstrument(3, tempRegions, handleptr);
+	list[28] = new gmInstrument("Xylophone   ", 3, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -1906,7 +1904,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 2334;
 	tempRegion.startByte = 3279134;
 	tempRegions[2] = tempRegion;
-	list[29] = new gmInstrument(3, tempRegions, handleptr);
+	list[29] = new gmInstrument("Tubular-bell", 3, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -1941,7 +1939,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 2334;
 	tempRegion.startByte = 3279134;
 	tempRegions[2] = tempRegion;
-	list[30] = new gmInstrument(3, tempRegions, handleptr);
+	list[30] = new gmInstrument("Church Bell ", 3, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -1976,7 +1974,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 2334;
 	tempRegion.startByte = 3279134;
 	tempRegions[2] = tempRegion;
-	list[31] = new gmInstrument(3, tempRegions, handleptr);
+	list[31] = new gmInstrument("Carillon    ", 3, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -2011,7 +2009,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 454;
 	tempRegion.startByte = 1495962;
 	tempRegions[2] = tempRegion;
-	list[32] = new gmInstrument(3, tempRegions, handleptr);
+	list[32] = new gmInstrument("Santur      ", 3, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -2046,7 +2044,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 290;
 	tempRegion.startByte = 1066646;
 	tempRegions[2] = tempRegion;
-	list[33] = new gmInstrument(3, tempRegions, handleptr);
+	list[33] = new gmInstrument("Organ 1     ", 3, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -2071,7 +2069,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 9340;
 	tempRegion.startByte = 978072;
 	tempRegions[1] = tempRegion;
-	list[34] = new gmInstrument(2, tempRegions, handleptr);
+	list[34] = new gmInstrument("Detuned Or.1", 2, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -2126,7 +2124,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 196;
 	tempRegion.startByte = 326368;
 	tempRegions[4] = tempRegion;
-	list[35] = new gmInstrument(5, tempRegions, handleptr);
+	list[35] = new gmInstrument("60's Organ 1", 5, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -2161,7 +2159,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 290;
 	tempRegion.startByte = 1066646;
 	tempRegions[2] = tempRegion;
-	list[36] = new gmInstrument(3, tempRegions, handleptr);
+	list[36] = new gmInstrument("Organ 4     ", 3, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -2196,7 +2194,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 2832;
 	tempRegion.startByte = 1078848;
 	tempRegions[2] = tempRegion;
-	list[37] = new gmInstrument(3, tempRegions, handleptr);
+	list[37] = new gmInstrument("Organ 2     ", 3, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -2241,7 +2239,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 2832;
 	tempRegion.startByte = 1078848;
 	tempRegions[3] = tempRegion;
-	list[38] = new gmInstrument(4, tempRegions, handleptr);
+	list[38] = new gmInstrument("Detuned Or.2", 4, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -2276,7 +2274,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 290;
 	tempRegion.startByte = 1066646;
 	tempRegions[2] = tempRegion;
-	list[39] = new gmInstrument(3, tempRegions, handleptr);
+	list[39] = new gmInstrument("Organ 5     ", 3, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -2311,7 +2309,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 6890;
 	tempRegion.startByte = 1096516;
 	tempRegions[2] = tempRegion;
-	list[40] = new gmInstrument(3, tempRegions, handleptr);
+	list[40] = new gmInstrument("Organ 3     ", 3, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -2366,7 +2364,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 1588;
 	tempRegion.startByte = 924806;
 	tempRegions[4] = tempRegion;
-	list[41] = new gmInstrument(5, tempRegions, handleptr);
+	list[41] = new gmInstrument("Church Org.1", 5, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -2421,7 +2419,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 1588;
 	tempRegion.startByte = 924806;
 	tempRegions[4] = tempRegion;
-	list[42] = new gmInstrument(5, tempRegions, handleptr);
+	list[42] = new gmInstrument("Church Org.2", 5, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -2476,7 +2474,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 1588;
 	tempRegion.startByte = 924806;
 	tempRegions[4] = tempRegion;
-	list[43] = new gmInstrument(5, tempRegions, handleptr);
+	list[43] = new gmInstrument("Church Org.3", 5, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -2531,7 +2529,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 112;
 	tempRegion.startByte = 2204284;
 	tempRegions[4] = tempRegion;
-	list[44] = new gmInstrument(5, tempRegions, handleptr);
+	list[44] = new gmInstrument("Reed Organ  ", 5, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -2576,7 +2574,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 830;
 	tempRegion.startByte = 3297514;
 	tempRegions[3] = tempRegion;
-	list[45] = new gmInstrument(4, tempRegions, handleptr);
+	list[45] = new gmInstrument("Accordion Fr", 4, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -2621,7 +2619,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 202;
 	tempRegion.startByte = 2204562;
 	tempRegions[3] = tempRegion;
-	list[46] = new gmInstrument(4, tempRegions, handleptr);
+	list[46] = new gmInstrument("Accordion It", 4, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -2686,7 +2684,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 46;
 	tempRegion.startByte = 1255374;
 	tempRegions[5] = tempRegion;
-	list[47] = new gmInstrument(6, tempRegions, handleptr);
+	list[47] = new gmInstrument("Harmonica   ", 6, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -2741,7 +2739,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 112;
 	tempRegion.startByte = 2204284;
 	tempRegions[4] = tempRegion;
-	list[48] = new gmInstrument(5, tempRegions, handleptr);
+	list[48] = new gmInstrument("Bandoneon   ", 5, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -2816,7 +2814,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 4982;
 	tempRegion.startByte = 1467020;
 	tempRegions[6] = tempRegion;
-	list[49] = new gmInstrument(7, tempRegions, handleptr);
+	list[49] = new gmInstrument("Nylon-str.Gt", 7, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -2891,7 +2889,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 6644;
 	tempRegion.startByte = 1684826;
 	tempRegions[6] = tempRegion;
-	list[50] = new gmInstrument(7, tempRegions, handleptr);
+	list[50] = new gmInstrument("Ukulele     ", 7, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -2966,7 +2964,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 4982;
 	tempRegion.startByte = 1467020;
 	tempRegions[6] = tempRegion;
-	list[51] = new gmInstrument(7, tempRegions, handleptr);
+	list[51] = new gmInstrument("Nylon Gt.o  ", 7, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -3041,7 +3039,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 4982;
 	tempRegion.startByte = 1467020;
 	tempRegions[6] = tempRegion;
-	list[52] = new gmInstrument(7, tempRegions, handleptr);
+	list[52] = new gmInstrument("Nylon Gt.2  ", 7, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -3116,7 +3114,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 5908;
 	tempRegion.startByte = 2872258;
 	tempRegions[6] = tempRegion;
-	list[53] = new gmInstrument(7, tempRegions, handleptr);
+	list[53] = new gmInstrument("Steel-str.Gt", 7, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -3161,7 +3159,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 4820;
 	tempRegion.startByte = 304836;
 	tempRegions[3] = tempRegion;
-	list[54] = new gmInstrument(4, tempRegions, handleptr);
+	list[54] = new gmInstrument("12-str.Gt   ", 4, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -3226,7 +3224,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 5908;
 	tempRegion.startByte = 2872258;
 	tempRegions[5] = tempRegion;
-	list[55] = new gmInstrument(6, tempRegions, handleptr);
+	list[55] = new gmInstrument("Mandolin    ", 6, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -3301,7 +3299,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 4982;
 	tempRegion.startByte = 1467020;
 	tempRegions[6] = tempRegion;
-	list[56] = new gmInstrument(7, tempRegions, handleptr);
+	list[56] = new gmInstrument("Jazz Gt.    ", 7, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -3376,7 +3374,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 4982;
 	tempRegion.startByte = 1467020;
 	tempRegions[6] = tempRegion;
-	list[57] = new gmInstrument(7, tempRegions, handleptr);
+	list[57] = new gmInstrument("Hawaiian Gt.", 7, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -3441,7 +3439,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 5908;
 	tempRegion.startByte = 2872258;
 	tempRegions[5] = tempRegion;
-	list[58] = new gmInstrument(6, tempRegions, handleptr);
+	list[58] = new gmInstrument("Clean Gt.   ", 6, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -3506,7 +3504,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 5908;
 	tempRegion.startByte = 2872258;
 	tempRegions[5] = tempRegion;
-	list[59] = new gmInstrument(6, tempRegions, handleptr);
+	list[59] = new gmInstrument("Chorus Gt.  ", 6, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -3571,7 +3569,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 4982;
 	tempRegion.startByte = 1467020;
 	tempRegions[5] = tempRegion;
-	list[60] = new gmInstrument(6, tempRegions, handleptr);
+	list[60] = new gmInstrument("Muted Gt.   ", 6, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -3636,7 +3634,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 4982;
 	tempRegion.startByte = 1467020;
 	tempRegions[5] = tempRegion;
-	list[61] = new gmInstrument(6, tempRegions, handleptr);
+	list[61] = new gmInstrument("Funk Gt.    ", 6, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -3701,7 +3699,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 4982;
 	tempRegion.startByte = 1467020;
 	tempRegions[5] = tempRegion;
-	list[62] = new gmInstrument(6, tempRegions, handleptr);
+	list[62] = new gmInstrument("Funk Gt.2   ", 6, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -3806,7 +3804,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 702;
 	tempRegion.startByte = 1795632;
 	tempRegions[9] = tempRegion;
-	list[63] = new gmInstrument(10, tempRegions, handleptr);
+	list[63] = new gmInstrument("Overdrive Gt", 10, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -3901,7 +3899,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 1028;
 	tempRegion.startByte = 1017336;
 	tempRegions[8] = tempRegion;
-	list[64] = new gmInstrument(9, tempRegions, handleptr);
+	list[64] = new gmInstrument("DistortionGt", 9, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -3996,7 +3994,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 1028;
 	tempRegion.startByte = 1017336;
 	tempRegions[8] = tempRegion;
-	list[65] = new gmInstrument(9, tempRegions, handleptr);
+	list[65] = new gmInstrument("Feedback Gt.", 9, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -4041,7 +4039,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 1420;
 	tempRegion.startByte = 1344420;
 	tempRegions[3] = tempRegion;
-	list[66] = new gmInstrument(4, tempRegions, handleptr);
+	list[66] = new gmInstrument("Gt.Harmonics", 4, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -4116,7 +4114,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 86;
 	tempRegion.startByte = 2492872;
 	tempRegions[6] = tempRegion;
-	list[67] = new gmInstrument(7, tempRegions, handleptr);
+	list[67] = new gmInstrument("Gt. Feedback", 7, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -4181,7 +4179,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 4364;
 	tempRegion.startByte = 1276210;
 	tempRegions[5] = tempRegion;
-	list[68] = new gmInstrument(6, tempRegions, handleptr);
+	list[68] = new gmInstrument("Acoustic Bs.", 6, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -4236,7 +4234,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 60;
 	tempRegion.startByte = 2492422;
 	tempRegions[4] = tempRegion;
-	list[69] = new gmInstrument(5, tempRegions, handleptr);
+	list[69] = new gmInstrument("Fingered Bs.", 5, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -4301,7 +4299,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 4982;
 	tempRegion.startByte = 1467020;
 	tempRegions[5] = tempRegion;
-	list[70] = new gmInstrument(6, tempRegions, handleptr);
+	list[70] = new gmInstrument("Picked Bs.  ", 6, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -4366,7 +4364,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 4982;
 	tempRegion.startByte = 1467020;
 	tempRegions[5] = tempRegion;
-	list[71] = new gmInstrument(6, tempRegions, handleptr);
+	list[71] = new gmInstrument("Fretless Bs.", 6, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -4411,7 +4409,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 5908;
 	tempRegion.startByte = 2872258;
 	tempRegions[3] = tempRegion;
-	list[72] = new gmInstrument(4, tempRegions, handleptr);
+	list[72] = new gmInstrument("Slap Bass 1 ", 4, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -4466,7 +4464,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 5908;
 	tempRegion.startByte = 2872258;
 	tempRegions[4] = tempRegion;
-	list[73] = new gmInstrument(5, tempRegions, handleptr);
+	list[73] = new gmInstrument("Slap Bass 2 ", 5, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -4511,7 +4509,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 2756;
 	tempRegion.startByte = 3019526;
 	tempRegions[3] = tempRegion;
-	list[74] = new gmInstrument(4, tempRegions, handleptr);
+	list[74] = new gmInstrument("Synth Bass 1", 4, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -4546,7 +4544,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 2848;
 	tempRegion.startByte = 283212;
 	tempRegions[2] = tempRegion;
-	list[75] = new gmInstrument(3, tempRegions, handleptr);
+	list[75] = new gmInstrument("SynthBass101", 3, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -4591,7 +4589,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 2756;
 	tempRegion.startByte = 3019526;
 	tempRegions[3] = tempRegion;
-	list[76] = new gmInstrument(4, tempRegions, handleptr);
+	list[76] = new gmInstrument("Synth Bass 3", 4, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -4646,7 +4644,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 5908;
 	tempRegion.startByte = 2872258;
 	tempRegions[4] = tempRegion;
-	list[77] = new gmInstrument(5, tempRegions, handleptr);
+	list[77] = new gmInstrument("Synth Bass 2", 5, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -4701,7 +4699,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 2756;
 	tempRegion.startByte = 3019526;
 	tempRegions[4] = tempRegion;
-	list[78] = new gmInstrument(5, tempRegions, handleptr);
+	list[78] = new gmInstrument("Synth Bass 4", 5, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -4776,7 +4774,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 2848;
 	tempRegion.startByte = 283212;
 	tempRegions[6] = tempRegion;
-	list[79] = new gmInstrument(7, tempRegions, handleptr);
+	list[79] = new gmInstrument("Rubber Bass ", 7, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -4871,7 +4869,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 822;
 	tempRegion.startByte = 3130934;
 	tempRegions[8] = tempRegion;
-	list[80] = new gmInstrument(9, tempRegions, handleptr);
+	list[80] = new gmInstrument("Violin      ", 9, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -4976,7 +4974,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 822;
 	tempRegion.startByte = 3130934;
 	tempRegions[9] = tempRegion;
-	list[81] = new gmInstrument(10, tempRegions, handleptr);
+	list[81] = new gmInstrument("Slow Violin ", 10, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -5071,7 +5069,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 822;
 	tempRegion.startByte = 3130934;
 	tempRegions[8] = tempRegion;
-	list[82] = new gmInstrument(9, tempRegions, handleptr);
+	list[82] = new gmInstrument("Viola       ", 9, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -5156,7 +5154,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 46;
 	tempRegion.startByte = 1255374;
 	tempRegions[7] = tempRegion;
-	list[83] = new gmInstrument(8, tempRegions, handleptr);
+	list[83] = new gmInstrument("Cello       ", 8, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -5241,7 +5239,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 104;
 	tempRegion.startByte = 1255104;
 	tempRegions[7] = tempRegion;
-	list[84] = new gmInstrument(8, tempRegions, handleptr);
+	list[84] = new gmInstrument("Contrabass  ", 8, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -5276,7 +5274,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 15096;
 	tempRegion.startByte = 2940694;
 	tempRegions[2] = tempRegion;
-	list[85] = new gmInstrument(3, tempRegions, handleptr);
+	list[85] = new gmInstrument("Tremolo Str ", 3, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -5301,7 +5299,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 1374;
 	tempRegion.startByte = 2068382;
 	tempRegions[1] = tempRegion;
-	list[86] = new gmInstrument(2, tempRegions, handleptr);
+	list[86] = new gmInstrument("PizzicatoStr", 2, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -5346,7 +5344,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 4364;
 	tempRegion.startByte = 1276210;
 	tempRegions[3] = tempRegion;
-	list[87] = new gmInstrument(4, tempRegions, handleptr);
+	list[87] = new gmInstrument("Harp        ", 4, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -5431,7 +5429,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 13538;
 	tempRegion.startByte = 3182968;
 	tempRegions[9] = tempRegion;
-	list[88] = new gmInstrument(10, tempRegions, handleptr);
+	list[88] = new gmInstrument("Timpani     ", 10, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -5466,7 +5464,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 15096;
 	tempRegion.startByte = 2940694;
 	tempRegions[2] = tempRegion;
-	list[89] = new gmInstrument(3, tempRegions, handleptr);
+	list[89] = new gmInstrument("Strings     ", 3, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -5501,7 +5499,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 15096;
 	tempRegion.startByte = 2940694;
 	tempRegions[2] = tempRegion;
-	list[90] = new gmInstrument(3, tempRegions, handleptr);
+	list[90] = new gmInstrument("Orchestra   ", 3, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -5536,7 +5534,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 15096;
 	tempRegion.startByte = 2940694;
 	tempRegions[2] = tempRegion;
-	list[91] = new gmInstrument(3, tempRegions, handleptr);
+	list[91] = new gmInstrument("Slow Strings", 3, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -5571,7 +5569,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 19180;
 	tempRegion.startByte = 2725754;
 	tempRegions[2] = tempRegion;
-	list[92] = new gmInstrument(3, tempRegions, handleptr);
+	list[92] = new gmInstrument("Syn.Strings1", 3, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -5626,7 +5624,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 19180;
 	tempRegion.startByte = 2725754;
 	tempRegions[4] = tempRegion;
-	list[93] = new gmInstrument(5, tempRegions, handleptr);
+	list[93] = new gmInstrument("Syn.Strings3", 5, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -5661,7 +5659,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 19180;
 	tempRegion.startByte = 2725754;
 	tempRegions[2] = tempRegion;
-	list[94] = new gmInstrument(3, tempRegions, handleptr);
+	list[94] = new gmInstrument("Syn.Strings2", 3, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -5696,7 +5694,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 19180;
 	tempRegion.startByte = 2725754;
 	tempRegions[2] = tempRegion;
-	list[95] = new gmInstrument(3, tempRegions, handleptr);
+	list[95] = new gmInstrument("Choir Aahs  ", 3, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -5731,7 +5729,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 19180;
 	tempRegion.startByte = 2725754;
 	tempRegions[2] = tempRegion;
-	list[96] = new gmInstrument(3, tempRegions, handleptr);
+	list[96] = new gmInstrument("Choir Aahs 2", 3, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -5776,7 +5774,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 4858;
 	tempRegion.startByte = 2376652;
 	tempRegions[3] = tempRegion;
-	list[97] = new gmInstrument(4, tempRegions, handleptr);
+	list[97] = new gmInstrument("Voice Oohs  ", 4, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -5821,7 +5819,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 46;
 	tempRegion.startByte = 1255374;
 	tempRegions[3] = tempRegion;
-	list[98] = new gmInstrument(4, tempRegions, handleptr);
+	list[98] = new gmInstrument("SynVox      ", 4, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -5836,7 +5834,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 30784;
 	tempRegion.startByte = 1796500;
 	tempRegions[0] = tempRegion;
-	list[99] = new gmInstrument(1, tempRegions, handleptr);
+	list[99] = new gmInstrument("OrchestraHit", 1, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -5941,7 +5939,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 822;
 	tempRegion.startByte = 3130934;
 	tempRegions[9] = tempRegion;
-	list[100] = new gmInstrument(10, tempRegions, handleptr);
+	list[100] = new gmInstrument("Trumpet     ", 10, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -6046,7 +6044,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 822;
 	tempRegion.startByte = 3130934;
 	tempRegions[9] = tempRegion;
-	list[101] = new gmInstrument(10, tempRegions, handleptr);
+	list[101] = new gmInstrument("Trombone    ", 10, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -6141,7 +6139,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 454;
 	tempRegion.startByte = 3272512;
 	tempRegions[8] = tempRegion;
-	list[102] = new gmInstrument(9, tempRegions, handleptr);
+	list[102] = new gmInstrument("Trombone 2  ", 9, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -6236,7 +6234,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 822;
 	tempRegion.startByte = 3130934;
 	tempRegions[8] = tempRegion;
-	list[103] = new gmInstrument(9, tempRegions, handleptr);
+	list[103] = new gmInstrument("Tuba        ", 9, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -6311,7 +6309,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 822;
 	tempRegion.startByte = 3130934;
 	tempRegions[6] = tempRegion;
-	list[104] = new gmInstrument(7, tempRegions, handleptr);
+	list[104] = new gmInstrument("MutedTrumpet", 7, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -6366,7 +6364,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 11558;
 	tempRegion.startByte = 1129934;
 	tempRegions[4] = tempRegion;
-	list[105] = new gmInstrument(5, tempRegions, handleptr);
+	list[105] = new gmInstrument("French Horns", 5, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -6411,7 +6409,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 822;
 	tempRegion.startByte = 3130934;
 	tempRegions[3] = tempRegion;
-	list[106] = new gmInstrument(4, tempRegions, handleptr);
+	list[106] = new gmInstrument("Fr.Horn 2   ", 4, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -6456,7 +6454,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 10454;
 	tempRegion.startByte = 559842;
 	tempRegions[3] = tempRegion;
-	list[107] = new gmInstrument(4, tempRegions, handleptr);
+	list[107] = new gmInstrument("Brass 1     ", 4, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -6501,7 +6499,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 10454;
 	tempRegion.startByte = 559842;
 	tempRegions[3] = tempRegion;
-	list[108] = new gmInstrument(4, tempRegions, handleptr);
+	list[108] = new gmInstrument("Brass 2     ", 4, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -6566,7 +6564,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 19180;
 	tempRegion.startByte = 2725754;
 	tempRegions[5] = tempRegion;
-	list[109] = new gmInstrument(6, tempRegions, handleptr);
+	list[109] = new gmInstrument("Synth Brass1", 6, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -6631,7 +6629,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 19180;
 	tempRegion.startByte = 2725754;
 	tempRegions[5] = tempRegion;
-	list[110] = new gmInstrument(6, tempRegions, handleptr);
+	list[110] = new gmInstrument("Synth Brass3", 6, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -6696,7 +6694,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 19180;
 	tempRegion.startByte = 2725754;
 	tempRegions[5] = tempRegion;
-	list[111] = new gmInstrument(6, tempRegions, handleptr);
+	list[111] = new gmInstrument("AnalogBrass1", 6, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -6741,7 +6739,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 4858;
 	tempRegion.startByte = 2376652;
 	tempRegions[3] = tempRegion;
-	list[112] = new gmInstrument(4, tempRegions, handleptr);
+	list[112] = new gmInstrument("Synth Brass2", 4, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -6776,7 +6774,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 19180;
 	tempRegion.startByte = 2725754;
 	tempRegions[2] = tempRegion;
-	list[113] = new gmInstrument(3, tempRegions, handleptr);
+	list[113] = new gmInstrument("Synth Brass4", 3, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -6831,7 +6829,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 8170;
 	tempRegion.startByte = 1141658;
 	tempRegions[4] = tempRegion;
-	list[114] = new gmInstrument(5, tempRegions, handleptr);
+	list[114] = new gmInstrument("AnalogBrass2", 5, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -6906,7 +6904,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 822;
 	tempRegion.startByte = 3130934;
 	tempRegions[6] = tempRegion;
-	list[115] = new gmInstrument(7, tempRegions, handleptr);
+	list[115] = new gmInstrument("Soprano Sax ", 7, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -6991,7 +6989,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 710;
 	tempRegion.startByte = 459390;
 	tempRegions[7] = tempRegion;
-	list[116] = new gmInstrument(8, tempRegions, handleptr);
+	list[116] = new gmInstrument("Alto Sax    ", 8, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -7086,7 +7084,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 830;
 	tempRegion.startByte = 3297514;
 	tempRegions[8] = tempRegion;
-	list[117] = new gmInstrument(9, tempRegions, handleptr);
+	list[117] = new gmInstrument("Tenor Sax   ", 9, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -7151,7 +7149,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 830;
 	tempRegion.startByte = 3297514;
 	tempRegions[5] = tempRegion;
-	list[118] = new gmInstrument(6, tempRegions, handleptr);
+	list[118] = new gmInstrument("Baritone Sax", 6, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -7216,7 +7214,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 454;
 	tempRegion.startByte = 3272512;
 	tempRegions[5] = tempRegion;
-	list[119] = new gmInstrument(6, tempRegions, handleptr);
+	list[119] = new gmInstrument("Oboe        ", 6, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -7291,7 +7289,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 822;
 	tempRegion.startByte = 3130934;
 	tempRegions[6] = tempRegion;
-	list[120] = new gmInstrument(7, tempRegions, handleptr);
+	list[120] = new gmInstrument("English Horn", 7, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -7346,7 +7344,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 830;
 	tempRegion.startByte = 3297514;
 	tempRegions[4] = tempRegion;
-	list[121] = new gmInstrument(5, tempRegions, handleptr);
+	list[121] = new gmInstrument("Bassoon     ", 5, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -7411,7 +7409,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 822;
 	tempRegion.startByte = 3130934;
 	tempRegions[5] = tempRegion;
-	list[122] = new gmInstrument(6, tempRegions, handleptr);
+	list[122] = new gmInstrument("Clarinet    ", 6, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -7446,7 +7444,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 5784;
 	tempRegion.startByte = 1717514;
 	tempRegions[2] = tempRegion;
-	list[123] = new gmInstrument(3, tempRegions, handleptr);
+	list[123] = new gmInstrument("Piccolo     ", 3, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -7521,7 +7519,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 5784;
 	tempRegion.startByte = 1717514;
 	tempRegions[6] = tempRegion;
-	list[124] = new gmInstrument(7, tempRegions, handleptr);
+	list[124] = new gmInstrument("Flute       ", 7, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -7586,7 +7584,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 5784;
 	tempRegion.startByte = 1717514;
 	tempRegions[5] = tempRegion;
-	list[125] = new gmInstrument(6, tempRegions, handleptr);
+	list[125] = new gmInstrument("Recorder    ", 6, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -7621,7 +7619,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 950;
 	tempRegion.startByte = 3129818;
 	tempRegions[2] = tempRegion;
-	list[126] = new gmInstrument(3, tempRegions, handleptr);
+	list[126] = new gmInstrument("Pan Flute   ", 3, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -7656,7 +7654,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 950;
 	tempRegion.startByte = 3129818;
 	tempRegions[2] = tempRegion;
-	list[127] = new gmInstrument(3, tempRegions, handleptr);
+	list[127] = new gmInstrument("Bottle Blow ", 3, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -7711,7 +7709,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 5784;
 	tempRegion.startByte = 1717514;
 	tempRegions[4] = tempRegion;
-	list[128] = new gmInstrument(5, tempRegions, handleptr);
+	list[128] = new gmInstrument("Shakuhachi  ", 5, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -7766,7 +7764,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 5784;
 	tempRegion.startByte = 1717514;
 	tempRegions[4] = tempRegion;
-	list[129] = new gmInstrument(5, tempRegions, handleptr);
+	list[129] = new gmInstrument("Whistle     ", 5, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -7801,7 +7799,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 5784;
 	tempRegion.startByte = 1717514;
 	tempRegions[2] = tempRegion;
-	list[130] = new gmInstrument(3, tempRegions, handleptr);
+	list[130] = new gmInstrument("Ocarina     ", 3, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -7866,7 +7864,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 5258;
 	tempRegion.startByte = 2675994;
 	tempRegions[5] = tempRegion;
-	list[131] = new gmInstrument(6, tempRegions, handleptr);
+	list[131] = new gmInstrument("Square Wave ", 6, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -7951,7 +7949,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 32;
 	tempRegion.startByte = 2283310;
 	tempRegions[7] = tempRegion;
-	list[132] = new gmInstrument(8, tempRegions, handleptr);
+	list[132] = new gmInstrument("Square      ", 8, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -8016,7 +8014,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 62;
 	tempRegion.startByte = 2492194;
 	tempRegions[5] = tempRegion;
-	list[133] = new gmInstrument(6, tempRegions, handleptr);
+	list[133] = new gmInstrument("Sine Wave   ", 6, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -8071,7 +8069,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 4858;
 	tempRegion.startByte = 2376652;
 	tempRegions[4] = tempRegion;
-	list[134] = new gmInstrument(5, tempRegions, handleptr);
+	list[134] = new gmInstrument("Saw Wave    ", 5, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -8156,7 +8154,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 32;
 	tempRegion.startByte = 2283310;
 	tempRegions[7] = tempRegion;
-	list[135] = new gmInstrument(8, tempRegions, handleptr);
+	list[135] = new gmInstrument("Saw         ", 8, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -8201,7 +8199,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 822;
 	tempRegion.startByte = 3130934;
 	tempRegions[3] = tempRegion;
-	list[136] = new gmInstrument(4, tempRegions, handleptr);
+	list[136] = new gmInstrument("Doctor Solo ", 4, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -8236,7 +8234,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 19180;
 	tempRegion.startByte = 2725754;
 	tempRegions[2] = tempRegion;
-	list[137] = new gmInstrument(3, tempRegions, handleptr);
+	list[137] = new gmInstrument("Syn.Calliope", 3, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -8261,7 +8259,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 11872;
 	tempRegion.startByte = 722932;
 	tempRegions[1] = tempRegion;
-	list[138] = new gmInstrument(2, tempRegions, handleptr);
+	list[138] = new gmInstrument("Chiffer Lead", 2, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -8306,7 +8304,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 1028;
 	tempRegion.startByte = 1017336;
 	tempRegions[3] = tempRegion;
-	list[139] = new gmInstrument(4, tempRegions, handleptr);
+	list[139] = new gmInstrument("Charang     ", 4, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -8331,7 +8329,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 13132;
 	tempRegion.startByte = 2584388;
 	tempRegions[1] = tempRegion;
-	list[140] = new gmInstrument(2, tempRegions, handleptr);
+	list[140] = new gmInstrument("Solo Vox    ", 2, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -8366,7 +8364,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 7796;
 	tempRegion.startByte = 1395428;
 	tempRegions[2] = tempRegion;
-	list[141] = new gmInstrument(3, tempRegions, handleptr);
+	list[141] = new gmInstrument("5th Saw Wave", 3, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -8421,7 +8419,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 4732;
 	tempRegion.startByte = 604902;
 	tempRegions[4] = tempRegion;
-	list[142] = new gmInstrument(5, tempRegions, handleptr);
+	list[142] = new gmInstrument("Bass & Lead ", 5, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -8466,7 +8464,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 630;
 	tempRegion.startByte = 1608828;
 	tempRegions[3] = tempRegion;
-	list[143] = new gmInstrument(4, tempRegions, handleptr);
+	list[143] = new gmInstrument("Fantasia    ", 4, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -8501,7 +8499,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 6536;
 	tempRegion.startByte = 1175380;
 	tempRegions[2] = tempRegion;
-	list[144] = new gmInstrument(3, tempRegions, handleptr);
+	list[144] = new gmInstrument("Warm Pad    ", 3, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -8556,7 +8554,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 7096;
 	tempRegion.startByte = 2127174;
 	tempRegions[4] = tempRegion;
-	list[145] = new gmInstrument(5, tempRegions, handleptr);
+	list[145] = new gmInstrument("Polysynth   ", 5, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -8591,7 +8589,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 13132;
 	tempRegion.startByte = 2584388;
 	tempRegions[2] = tempRegion;
-	list[146] = new gmInstrument(3, tempRegions, handleptr);
+	list[146] = new gmInstrument("Space Voice ", 3, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -8646,7 +8644,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 230;
 	tempRegion.startByte = 1037308;
 	tempRegions[4] = tempRegion;
-	list[147] = new gmInstrument(5, tempRegions, handleptr);
+	list[147] = new gmInstrument("Bowed Glass ", 5, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -8701,7 +8699,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 4008;
 	tempRegion.startByte = 1330592;
 	tempRegions[4] = tempRegion;
-	list[148] = new gmInstrument(5, tempRegions, handleptr);
+	list[148] = new gmInstrument("Metal Pad   ", 5, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -8736,7 +8734,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 13132;
 	tempRegion.startByte = 2584388;
 	tempRegions[2] = tempRegion;
-	list[149] = new gmInstrument(3, tempRegions, handleptr);
+	list[149] = new gmInstrument("Halo Pad    ", 3, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -8771,7 +8769,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 19180;
 	tempRegion.startByte = 2725754;
 	tempRegions[2] = tempRegion;
-	list[150] = new gmInstrument(3, tempRegions, handleptr);
+	list[150] = new gmInstrument("Sweep Pad   ", 3, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -8806,7 +8804,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 7796;
 	tempRegion.startByte = 1395428;
 	tempRegions[2] = tempRegion;
-	list[151] = new gmInstrument(3, tempRegions, handleptr);
+	list[151] = new gmInstrument("Ice Rain    ", 3, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -8871,7 +8869,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 23572;
 	tempRegion.startByte = 2541498;
 	tempRegions[5] = tempRegion;
-	list[152] = new gmInstrument(6, tempRegions, handleptr);
+	list[152] = new gmInstrument("Soundtrack  ", 6, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -8896,7 +8894,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 6392;
 	tempRegion.startByte = 1114670;
 	tempRegions[1] = tempRegion;
-	list[153] = new gmInstrument(2, tempRegions, handleptr);
+	list[153] = new gmInstrument("Crystal     ", 2, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -8941,7 +8939,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 202;
 	tempRegion.startByte = 2204562;
 	tempRegions[3] = tempRegion;
-	list[154] = new gmInstrument(4, tempRegions, handleptr);
+	list[154] = new gmInstrument("Syn Mallet  ", 4, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -8976,7 +8974,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 6394;
 	tempRegion.startByte = 433686;
 	tempRegions[2] = tempRegion;
-	list[155] = new gmInstrument(3, tempRegions, handleptr);
+	list[155] = new gmInstrument("Atmosphere  ", 3, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -9001,7 +8999,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 6536;
 	tempRegion.startByte = 1175380;
 	tempRegions[1] = tempRegion;
-	list[156] = new gmInstrument(2, tempRegions, handleptr);
+	list[156] = new gmInstrument("Brightness  ", 2, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -9016,7 +9014,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 12536;
 	tempRegion.startByte = 1241176;
 	tempRegions[0] = tempRegion;
-	list[157] = new gmInstrument(1, tempRegions, handleptr);
+	list[157] = new gmInstrument("Goblin      ", 1, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -9051,7 +9049,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 13132;
 	tempRegion.startByte = 2584388;
 	tempRegions[2] = tempRegion;
-	list[158] = new gmInstrument(3, tempRegions, handleptr);
+	list[158] = new gmInstrument("Echo Drops  ", 3, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -9106,7 +9104,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 950;
 	tempRegion.startByte = 3129818;
 	tempRegions[4] = tempRegion;
-	list[159] = new gmInstrument(5, tempRegions, handleptr);
+	list[159] = new gmInstrument("Echo Bell   ", 5, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -9151,7 +9149,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 4858;
 	tempRegion.startByte = 2376652;
 	tempRegions[3] = tempRegion;
-	list[160] = new gmInstrument(4, tempRegions, handleptr);
+	list[160] = new gmInstrument("Echo Pan    ", 4, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -9186,7 +9184,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 950;
 	tempRegion.startByte = 3129818;
 	tempRegions[2] = tempRegion;
-	list[161] = new gmInstrument(3, tempRegions, handleptr);
+	list[161] = new gmInstrument("Star Theme  ", 3, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -9231,7 +9229,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 830;
 	tempRegion.startByte = 3297514;
 	tempRegions[3] = tempRegion;
-	list[162] = new gmInstrument(4, tempRegions, handleptr);
+	list[162] = new gmInstrument("Sitar       ", 4, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -9276,7 +9274,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 830;
 	tempRegion.startByte = 3297514;
 	tempRegions[3] = tempRegion;
-	list[163] = new gmInstrument(4, tempRegions, handleptr);
+	list[163] = new gmInstrument("Sitar 2     ", 4, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -9341,7 +9339,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 202;
 	tempRegion.startByte = 2204562;
 	tempRegions[5] = tempRegion;
-	list[164] = new gmInstrument(6, tempRegions, handleptr);
+	list[164] = new gmInstrument("Banjo       ", 6, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -9406,7 +9404,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 202;
 	tempRegion.startByte = 2204562;
 	tempRegions[5] = tempRegion;
-	list[165] = new gmInstrument(6, tempRegions, handleptr);
+	list[165] = new gmInstrument("Shamisen    ", 6, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -9461,7 +9459,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 202;
 	tempRegion.startByte = 2204562;
 	tempRegions[4] = tempRegion;
-	list[166] = new gmInstrument(5, tempRegions, handleptr);
+	list[166] = new gmInstrument("Koto        ", 5, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -9506,7 +9504,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 202;
 	tempRegion.startByte = 2204562;
 	tempRegions[3] = tempRegion;
-	list[167] = new gmInstrument(4, tempRegions, handleptr);
+	list[167] = new gmInstrument("Taisho Koto ", 4, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -9531,7 +9529,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 4364;
 	tempRegion.startByte = 1276210;
 	tempRegions[1] = tempRegion;
-	list[168] = new gmInstrument(2, tempRegions, handleptr);
+	list[168] = new gmInstrument("Kalimba     ", 2, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -9596,7 +9594,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 950;
 	tempRegion.startByte = 3129818;
 	tempRegions[5] = tempRegion;
-	list[169] = new gmInstrument(6, tempRegions, handleptr);
+	list[169] = new gmInstrument("Bagpipe     ", 6, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -9681,7 +9679,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 1844;
 	tempRegion.startByte = 3373992;
 	tempRegions[7] = tempRegion;
-	list[170] = new gmInstrument(8, tempRegions, handleptr);
+	list[170] = new gmInstrument("Fiddle      ", 8, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -9736,7 +9734,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 46;
 	tempRegion.startByte = 1255374;
 	tempRegions[4] = tempRegion;
-	list[171] = new gmInstrument(5, tempRegions, handleptr);
+	list[171] = new gmInstrument("Shanai      ", 5, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -9821,7 +9819,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 460;
 	tempRegion.startByte = 3196672;
 	tempRegions[7] = tempRegion;
-	list[172] = new gmInstrument(8, tempRegions, handleptr);
+	list[172] = new gmInstrument("Tinkle Bell ", 8, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -9834,7 +9832,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 3078;
 	tempRegion.startByte = 405382;
 	tempRegions[0] = tempRegion;
-	list[173] = new gmInstrument(1, tempRegions, handleptr);
+	list[173] = new gmInstrument("Agogo       ", 1, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -9859,7 +9857,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 4364;
 	tempRegion.startByte = 1276210;
 	tempRegions[1] = tempRegion;
-	list[174] = new gmInstrument(2, tempRegions, handleptr);
+	list[174] = new gmInstrument("Steel Drums ", 2, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -9872,7 +9870,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 3462;
 	tempRegion.startByte = 3421490;
 	tempRegions[0] = tempRegion;
-	list[175] = new gmInstrument(1, tempRegions, handleptr);
+	list[175] = new gmInstrument("Woodblock   ", 1, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -9885,7 +9883,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 750;
 	tempRegion.startByte = 697660;
 	tempRegions[0] = tempRegion;
-	list[176] = new gmInstrument(1, tempRegions, handleptr);
+	list[176] = new gmInstrument("Castanets   ", 1, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -9900,7 +9898,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 9784;
 	tempRegion.startByte = 2959158;
 	tempRegions[0] = tempRegion;
-	list[177] = new gmInstrument(1, tempRegions, handleptr);
+	list[177] = new gmInstrument("Taiko       ", 1, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -9985,7 +9983,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 13538;
 	tempRegion.startByte = 3182968;
 	tempRegions[9] = tempRegion;
-	list[178] = new gmInstrument(10, tempRegions, handleptr);
+	list[178] = new gmInstrument("Concert BD  ", 10, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -10000,7 +9998,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 12934;
 	tempRegion.startByte = 3197298;
 	tempRegions[0] = tempRegion;
-	list[179] = new gmInstrument(1, tempRegions, handleptr);
+	list[179] = new gmInstrument("Melo. Tom 1 ", 1, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -10015,7 +10013,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 12934;
 	tempRegion.startByte = 3197298;
 	tempRegions[0] = tempRegion;
-	list[180] = new gmInstrument(1, tempRegions, handleptr);
+	list[180] = new gmInstrument("Melo. Tom 2 ", 1, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -10030,7 +10028,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 1872;
 	tempRegion.startByte = 3087450;
 	tempRegions[0] = tempRegion;
-	list[181] = new gmInstrument(1, tempRegions, handleptr);
+	list[181] = new gmInstrument("Synth Drum  ", 1, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -10045,7 +10043,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 276;
 	tempRegion.startByte = 848824;
 	tempRegions[0] = tempRegion;
-	list[182] = new gmInstrument(1, tempRegions, handleptr);
+	list[182] = new gmInstrument("808 Tom     ", 1, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -10058,7 +10056,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 4142;
 	tempRegion.startByte = 1026906;
 	tempRegions[0] = tempRegion;
-	list[183] = new gmInstrument(1, tempRegions, handleptr);
+	list[183] = new gmInstrument("Elec Perc.  ", 1, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -10073,7 +10071,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 16584;
 	tempRegion.startByte = 867108;
 	tempRegions[0] = tempRegion;
-	list[184] = new gmInstrument(1, tempRegions, handleptr);
+	list[184] = new gmInstrument("Reverse Cym.", 1, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -10086,7 +10084,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 4976;
 	tempRegion.startByte = 1233672;
 	tempRegions[0] = tempRegion;
-	list[185] = new gmInstrument(1, tempRegions, handleptr);
+	list[185] = new gmInstrument("Gt.FretNoise", 1, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -10107,7 +10105,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 1534;
 	tempRegion.startByte = 3304562;
 	tempRegions[1] = tempRegion;
-	list[186] = new gmInstrument(2, tempRegions, handleptr);
+	list[186] = new gmInstrument("Gt.Cut Noise", 2, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -10120,7 +10118,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 3586;
 	tempRegion.startByte = 570448;
 	tempRegions[0] = tempRegion;
-	list[187] = new gmInstrument(1, tempRegions, handleptr);
+	list[187] = new gmInstrument("String Slap ", 1, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -10155,7 +10153,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 736;
 	tempRegion.startByte = 2059086;
 	tempRegions[2] = tempRegion;
-	list[188] = new gmInstrument(3, tempRegions, handleptr);
+	list[188] = new gmInstrument("Breath Noise", 3, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -10168,7 +10166,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 282;
 	tempRegion.startByte = 1483420;
 	tempRegions[0] = tempRegion;
-	list[189] = new gmInstrument(1, tempRegions, handleptr);
+	list[189] = new gmInstrument("Fl.Key Click", 1, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -10183,7 +10181,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 27338;
 	tempRegion.startByte = 2421238;
 	tempRegions[0] = tempRegion;
-	list[190] = new gmInstrument(1, tempRegions, handleptr);
+	list[190] = new gmInstrument("Seashore    ", 1, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -10198,7 +10196,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 27338;
 	tempRegion.startByte = 2421238;
 	tempRegions[0] = tempRegion;
-	list[191] = new gmInstrument(1, tempRegions, handleptr);
+	list[191] = new gmInstrument("Rain        ", 1, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -10213,7 +10211,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 15958;
 	tempRegion.startByte = 3141544;
 	tempRegions[0] = tempRegion;
-	list[192] = new gmInstrument(1, tempRegions, handleptr);
+	list[192] = new gmInstrument("Thunder     ", 1, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -10228,7 +10226,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 18768;
 	tempRegion.startByte = 3402572;
 	tempRegions[0] = tempRegion;
-	list[193] = new gmInstrument(1, tempRegions, handleptr);
+	list[193] = new gmInstrument("Wind        ", 1, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -10243,7 +10241,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 19092;
 	tempRegion.startByte = 2878334;
 	tempRegions[0] = tempRegion;
-	list[194] = new gmInstrument(1, tempRegions, handleptr);
+	list[194] = new gmInstrument("Stream      ", 1, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -10258,7 +10256,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 14404;
 	tempRegion.startByte = 609800;
 	tempRegions[0] = tempRegion;
-	list[195] = new gmInstrument(1, tempRegions, handleptr);
+	list[195] = new gmInstrument("Bubble      ", 1, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -10273,7 +10271,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 8046;
 	tempRegion.startByte = 501698;
 	tempRegions[0] = tempRegion;
-	list[196] = new gmInstrument(1, tempRegions, handleptr);
+	list[196] = new gmInstrument("Bird        ", 1, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -10286,7 +10284,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 4144;
 	tempRegion.startByte = 973762;
 	tempRegions[0] = tempRegion;
-	list[197] = new gmInstrument(1, tempRegions, handleptr);
+	list[197] = new gmInstrument("Dog         ", 1, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -10301,7 +10299,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 7608;
 	tempRegion.startByte = 1334768;
 	tempRegions[0] = tempRegion;
-	list[198] = new gmInstrument(1, tempRegions, handleptr);
+	list[198] = new gmInstrument("Horse-Gallop", 1, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -10316,7 +10314,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 62;
 	tempRegion.startByte = 2492194;
 	tempRegions[0] = tempRegion;
-	list[199] = new gmInstrument(1, tempRegions, handleptr);
+	list[199] = new gmInstrument("Bird 2      ", 1, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -10331,7 +10329,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 3032;
 	tempRegion.startByte = 3138346;
 	tempRegions[0] = tempRegion;
-	list[200] = new gmInstrument(1, tempRegions, handleptr);
+	list[200] = new gmInstrument("Telephone 1 ", 1, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -10346,7 +10344,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 1722;
 	tempRegion.startByte = 3136458;
 	tempRegions[0] = tempRegion;
-	list[201] = new gmInstrument(1, tempRegions, handleptr);
+	list[201] = new gmInstrument("Telephone 2 ", 1, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -10359,7 +10357,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 10358;
 	tempRegion.startByte = 895978;
 	tempRegions[0] = tempRegion;
-	list[202] = new gmInstrument(1, tempRegions, handleptr);
+	list[202] = new gmInstrument("DoorCreaking", 1, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -10372,7 +10370,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 8094;
 	tempRegion.startByte = 2412978;
 	tempRegions[0] = tempRegion;
-	list[203] = new gmInstrument(1, tempRegions, handleptr);
+	list[203] = new gmInstrument("Door        ", 1, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -10385,7 +10383,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 12950;
 	tempRegion.startByte = 2381660;
 	tempRegions[0] = tempRegion;
-	list[204] = new gmInstrument(1, tempRegions, handleptr);
+	list[204] = new gmInstrument("Scratch     ", 1, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -10400,7 +10398,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 26402;
 	tempRegion.startByte = 3376002;
 	tempRegions[0] = tempRegion;
-	list[205] = new gmInstrument(1, tempRegions, handleptr);
+	list[205] = new gmInstrument("Wind Chimes ", 1, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -10415,7 +10413,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 7772;
 	tempRegion.startByte = 1291620;
 	tempRegions[0] = tempRegion;
-	list[206] = new gmInstrument(1, tempRegions, handleptr);
+	list[206] = new gmInstrument("Helicopter  ", 1, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -10430,7 +10428,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 13896;
 	tempRegion.startByte = 1050608;
 	tempRegions[0] = tempRegion;
-	list[207] = new gmInstrument(1, tempRegions, handleptr);
+	list[207] = new gmInstrument("Car-Engine  ", 1, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -10445,7 +10443,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 5932;
 	tempRegion.startByte = 906502;
 	tempRegions[0] = tempRegion;
-	list[208] = new gmInstrument(1, tempRegions, handleptr);
+	list[208] = new gmInstrument("Car-Stop    ", 1, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -10460,7 +10458,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 13028;
 	tempRegion.startByte = 853914;
 	tempRegions[0] = tempRegion;
-	list[209] = new gmInstrument(1, tempRegions, handleptr);
+	list[209] = new gmInstrument("Car-Pass    ", 1, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -10475,7 +10473,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 11968;
 	tempRegion.startByte = 883860;
 	tempRegions[0] = tempRegion;
-	list[210] = new gmInstrument(1, tempRegions, handleptr);
+	list[210] = new gmInstrument("Car-Crash   ", 1, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -10490,7 +10488,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 3172;
 	tempRegion.startByte = 2493124;
 	tempRegions[0] = tempRegion;
-	list[211] = new gmInstrument(1, tempRegions, handleptr);
+	list[211] = new gmInstrument("Siren       ", 1, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -10505,7 +10503,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 14368;
 	tempRegion.startByte = 3210398;
 	tempRegions[0] = tempRegion;
-	list[212] = new gmInstrument(1, tempRegions, handleptr);
+	list[212] = new gmInstrument("Train       ", 1, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -10520,7 +10518,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 16584;
 	tempRegion.startByte = 867108;
 	tempRegions[0] = tempRegion;
-	list[213] = new gmInstrument(1, tempRegions, handleptr);
+	list[213] = new gmInstrument("Jetplane    ", 1, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -10535,7 +10533,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 3034;
 	tempRegion.startByte = 2955958;
 	tempRegions[0] = tempRegion;
-	list[214] = new gmInstrument(1, tempRegions, handleptr);
+	list[214] = new gmInstrument("Starship    ", 1, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -10550,7 +10548,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 36404;
 	tempRegion.startByte = 624372;
 	tempRegions[0] = tempRegion;
-	list[215] = new gmInstrument(1, tempRegions, handleptr);
+	list[215] = new gmInstrument("Burst Noise ", 1, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -10565,7 +10563,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 14528;
 	tempRegion.startByte = 408626;
 	tempRegions[0] = tempRegion;
-	list[216] = new gmInstrument(1, tempRegions, handleptr);
+	list[216] = new gmInstrument("Applause    ", 1, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -10578,7 +10576,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 34868;
 	tempRegion.startByte = 1507508;
 	tempRegions[0] = tempRegion;
-	list[217] = new gmInstrument(1, tempRegions, handleptr);
+	list[217] = new gmInstrument("Laughing    ", 1, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -10591,7 +10589,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 18066;
 	tempRegion.startByte = 2394760;
 	tempRegions[0] = tempRegion;
-	list[218] = new gmInstrument(1, tempRegions, handleptr);
+	list[218] = new gmInstrument("Screaming   ", 1, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -10604,7 +10602,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 6218;
 	tempRegion.startByte = 2153332;
 	tempRegions[0] = tempRegion;
-	list[219] = new gmInstrument(1, tempRegions, handleptr);
+	list[219] = new gmInstrument("Punch       ", 1, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -10617,7 +10615,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 2896;
 	tempRegion.startByte = 1288558;
 	tempRegions[0] = tempRegion;
-	list[220] = new gmInstrument(1, tempRegions, handleptr);
+	list[220] = new gmInstrument("Heart Beat  ", 1, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -10630,7 +10628,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 2252;
 	tempRegion.startByte = 2800888;
 	tempRegions[0] = tempRegion;
-	list[221] = new gmInstrument(1, tempRegions, handleptr);
+	list[221] = new gmInstrument("Footsteps   ", 1, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -10643,7 +10641,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 8244;
 	tempRegion.startByte = 2059972;
 	tempRegions[0] = tempRegion;
-	list[222] = new gmInstrument(1, tempRegions, handleptr);
+	list[222] = new gmInstrument("Gun Shot    ", 1, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -10658,7 +10656,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 1684;
 	tempRegion.startByte = 1646402;
 	tempRegions[0] = tempRegion;
-	list[223] = new gmInstrument(1, tempRegions, handleptr);
+	list[223] = new gmInstrument("Machine Gun ", 1, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -10671,7 +10669,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 10788;
 	tempRegion.startByte = 1496568;
 	tempRegions[0] = tempRegion;
-	list[224] = new gmInstrument(1, tempRegions, handleptr);
+	list[224] = new gmInstrument("Lasergun    ", 1, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -10686,7 +10684,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 11968;
 	tempRegion.startByte = 883860;
 	tempRegions[0] = tempRegion;
-	list[225] = new gmInstrument(1, tempRegions, handleptr);
+	list[225] = new gmInstrument("Explosion   ", 1, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -11221,7 +11219,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 9784;
 	tempRegion.startByte = 2959158;
 	tempRegions[60] = tempRegion;
-	list[226] = new gmInstrument(61, tempRegions, handleptr);
+	list[226] = new gmInstrument("Standard    ", 61, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -11756,7 +11754,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 9784;
 	tempRegion.startByte = 2959158;
 	tempRegions[60] = tempRegion;
-	list[227] = new gmInstrument(61, tempRegions, handleptr);
+	list[227] = new gmInstrument("Room        ", 61, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -12291,7 +12289,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 9784;
 	tempRegion.startByte = 2959158;
 	tempRegions[60] = tempRegion;
-	list[228] = new gmInstrument(61, tempRegions, handleptr);
+	list[228] = new gmInstrument("Power       ", 61, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -12826,7 +12824,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 9784;
 	tempRegion.startByte = 2959158;
 	tempRegions[60] = tempRegion;
-	list[229] = new gmInstrument(61, tempRegions, handleptr);
+	list[229] = new gmInstrument("Electronic  ", 61, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -13377,7 +13375,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 9784;
 	tempRegion.startByte = 2959158;
 	tempRegions[60] = tempRegion;
-	list[230] = new gmInstrument(61, tempRegions, handleptr);
+	list[230] = new gmInstrument("TR-808      ", 61, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -13912,7 +13910,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 9784;
 	tempRegion.startByte = 2959158;
 	tempRegions[60] = tempRegion;
-	list[231] = new gmInstrument(61, tempRegions, handleptr);
+	list[231] = new gmInstrument("Jazz        ", 61, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -14449,7 +14447,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 9784;
 	tempRegion.startByte = 2959158;
 	tempRegions[60] = tempRegion;
-	list[232] = new gmInstrument(61, tempRegions, handleptr);
+	list[232] = new gmInstrument("Brush       ", 61, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -14976,7 +14974,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 14528;
 	tempRegion.startByte = 408626;
 	tempRegions[61] = tempRegion;
-	list[233] = new gmInstrument(62, tempRegions, handleptr);
+	list[233] = new gmInstrument("Orchestra   ", 62, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 
@@ -15393,7 +15391,7 @@ gmInstrument** getInstrumentInfo() {
 	tempRegion.sampleLength = 14404;
 	tempRegion.startByte = 609800;
 	tempRegions[45] = tempRegion;
-	list[234] = new gmInstrument(46, tempRegions, handleptr);
+	list[234] = new gmInstrument("SFX         ", 46, tempRegions);
 	delete[] tempRegions;
 	tempRegions = nullptr;
 

@@ -6,6 +6,7 @@
 #include "ParameterBundle.h"
 #include "AuxFunc.h"
 #include "gmsynthInstrumentPlugin.h"
+#include "gmInstrument.h"
 
 #include <imgui.h>
 #include <cmath>
@@ -13,9 +14,13 @@
 
 #include <windows.h>
 
-gmsynthPluginEditor::gmsynthPluginEditor(PluginBase* plugin)
-	: ImguiEffectEditor(plugin, 200, 200)
+gmsynthPluginEditor::gmsynthPluginEditor(PluginBase* plugin_)
+	: ImguiEffectEditor(plugin_, 200, 200)
 {
+	gmInstrument** instruments = static_cast<gmsynthInstrumentPlugin*>(plugin_)->instruments;
+	for (unsigned int i = 0; i < 235; i++) {
+		instrumentNames.push_back(instruments[i]->name);
+	}
 }
 
 void gmsynthPluginEditor::imguiFrame()
@@ -24,17 +29,8 @@ void gmsynthPluginEditor::imguiFrame()
 	ImGui::SetNextWindowPos(ImVec2(0, 0));
 	ImGui::SetNextWindowSize(io.DisplaySize);
 	ImGui::Begin("test", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize);
-	char combo[235 * 4 + 1];
-	combo[235 * 4] = 0;
-	for (int i = 0; i < 235; i++) {
-		combo[i * 4] = i / 100 + '0';
-		combo[i * 4 + 1] = (i / 10) % 10 + '0';
-		combo[i * 4 + 2] = i % 10 + '0';
-		combo[i * 4 + 3] = 0;
-	}
-	static int item = 0;
-	if (ImGui::Combo("filter", &item, combo)) {
-		static_cast<gmsynthInstrumentPlugin*>(&plugin)->loadMidiInstrument(item);
+	if (ImGui::Combo("filter", &selectedInstrument, instrumentNames.data(), instrumentNames.size())) {
+		static_cast<gmsynthInstrumentPlugin*>(&plugin)->loadMidiInstrument(selectedInstrument);
 	}
 	ImGui::End();
 }

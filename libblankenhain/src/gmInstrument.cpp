@@ -1,15 +1,14 @@
 #include "gmInstrument.h"
 
 
-gmInstrument::gmInstrument(unsigned int numberOfRegions_, gmSoundRegion* regions_, void* _)
-	: numberOfRegions(numberOfRegions_), regions(regions_), isLoopable(false)
+gmInstrument::gmInstrument(const char* name_, unsigned int numberOfRegions_, gmSoundRegion* regions_)
+	: numberOfRegions(numberOfRegions_), regions(regions_), isLoopable(false), name(name_)
 {
 	if (regions[0].isLoopable == true)
 		isLoopable = true;
 	this->regions = new gmSoundRegion[numberOfRegions_];
 	for (unsigned int i = 0u; i < numberOfRegions_; i++)
 		this->regions[i] = regions_[i];
-
 }
 
 gmInstrument::~gmInstrument()
