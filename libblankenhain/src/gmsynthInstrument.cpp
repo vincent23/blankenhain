@@ -21,7 +21,7 @@ gmsynthInstrument::gmsynthInstrument()
 	params->getParameter(5) = new FloatParameter(100.f, NormalizedRange(1.f, 1700.f, 0.3f), "sustain", "ms");
 	params->getParameter(6) = new FloatParameter(1.0f, NormalizedRange(), "sustainLevel", "ratio");
 	params->getParameter(7) = new FloatParameter(100.f, NormalizedRange(1.f, 1700.f, 0.3f), "release", "ms");
-	params->getParameter(8) = new FloatParameter(0.f, NormalizedRange(0.f, 235.f), "instrument", "");
+	params->getParameter(8) = new FloatParameter(0.f, NormalizedRange(), "loop", "");
 
 	for (unsigned int i = 0; i < 128; i++) {
 		interpolatedSounds[i] = nullptr;
@@ -156,37 +156,37 @@ void gmsynthInstrument::processVoice(VoiceState& voice, unsigned int timeInSampl
 	float sustainLevel = getInterpolatedParameter(6).get();
 	float sustain = getInterpolatedParameter(5).get();
 	float release = getInterpolatedParameter(7).get();
-	unsigned int instrument = static_cast<unsigned int>(getInterpolatedParameter(8).get());
-	bool looping = false;
+	bool loop = getInterpolatedParameter(8).get() > .5f;
+
 
 	for (unsigned int sampleIndex = 0; sampleIndex < numberOfSamples; sampleIndex++) {
 		unsigned int deltaT = (timeInSamples + sampleIndex) - voice.onTime;
-		//buffer[sampleIndex] = Sample(sin(tau * f * float(deltaT)));
 		unsigned int i = 0u;
 
-
-		if (!looping)
-		{
-			gmSound* sound = interpolatedSounds[voice.key];
-			if (sound != nullptr) {
-				unsigned int sampleSize = sound->interpolatedBufferSize;
-				Sample* sampleBuffer = sound->interpolatedBuffer;
-				// TODO quick hack to "convert" the samplerate
-				if (deltaT * .5f < sampleSize)
-				{
-					buffer[sampleIndex] = sampleBuffer[(unsigned int)(deltaT * .5f)];
-				}
-				else {
-					buffer[sampleIndex] = Sample(0);
-				}
+		gmSound* sound = interpolatedSounds[voice.key];
+		if (sound != nullptr) {
+			unsigned int sampleSize = sound->interpolatedBufferSize;
+			Sample* sampleBuffer = sound->interpolatedBuffer;
+			if (sound->isLoopable && loop && deltaT > sound->loopStart) {
+				deltaT -= sound->loopStart;
+				deltaT %= sound->loopLength;
+				deltaT += sound->loopStart;
+			}
+			if (deltaT < sampleSize) {
+				buffer[sampleIndex] = sampleBuffer[deltaT];
 			}
 			else {
 				buffer[sampleIndex] = Sample(0);
 			}
 		}
+		else {
+			buffer[sampleIndex] = Sample(0);
+		}
+
 
 		performAHDSR<Sample>(buffer, voice, timeInSamples, sampleIndex, attack, release, hold, decay, sustain, sustainOn, sustainLevel, holdLevel);
 	}
+	nextSample(numberOfSamples);
 }
 
 void gmsynthInstrument::loadMidiInstrument(const gmInstrument& instrument)

@@ -1,62 +1,58 @@
 #include "gmSound.h"
 
 #include "Sample.h"
+#include "Constants.h"
 #include <cinttypes>
 #include <windows.h>
 
 gmSound::gmSound(gmSoundRegion& region, HANDLE h, unsigned int targetNote)
-	: interpolatedBufferSize(0u), interpolatedBuffer(nullptr), isLoopable(region.isLoopable), rootBuffer(nullptr),
-	loopStart(0u), loopStop(0u), mRegion(region)
+	: interpolatedBufferSize(0u)
+	, interpolatedBuffer(nullptr)
+	, isLoopable(region.isLoopable)
+	, loopStart(0u)
+	, loopLength(0u)
 {
-	rootBuffer = new Sample[region.sampleLength / 2u];
-
-	int16_t* raw_sample = new int16_t[region.sampleLength / 2];
+	unsigned int inputSampleLength = region.sampleLength / 2;
+	int16_t* rawSample = new int16_t[inputSampleLength];
 	if (SetFilePointer(h, region.startByte, NULL/*32 bit*/, FILE_BEGIN) != INVALID_SET_FILE_POINTER)
 	{
 		DWORD dwBytesRead;
-		bool status = ReadFile(h, raw_sample, region.sampleLength, &dwBytesRead, NULL);
-
-		int x = 0;
+		bool status = ReadFile(h, rawSample, region.sampleLength, &dwBytesRead, NULL);
 	}
 	else {
+		// TODO remove this in release
 		DWORD error = GetLastError();
-		int x = 0;
 	}
 
-	for (unsigned int i = 0u; i < region.sampleLength / 2u; i++)
+	Sample* rootBuffer = new Sample[inputSampleLength];
+	for (unsigned int i = 0u; i < inputSampleLength; i++)
 	{
-		rootBuffer[i] = Sample((static_cast<float>(raw_sample[i]) - 0.5f) / 32767.5f);
+		rootBuffer[i] = Sample(static_cast<float>(rawSample[i]) - 0.5f) / 32767.5f;
 	}
+	delete[] rawSample;
 
-	delete raw_sample;
-
-
-
-	// Now interpolation
-	// playback speed via
-	// http://math.stackexchange.com/questions/1205881/what-is-the-equation-for-figuring-out-the-change-in-pitch-from-changes-in-tempo
-
-	float multiplciationLengthFactor = 1. / std::powf(2.f, (static_cast<float>(region.rootNote) - static_cast<float>(targetNote)) / -12.f);
-	interpolatedBufferSize = static_cast<unsigned int>(region.sampleLength / (2 * multiplciationLengthFactor));
-	interpolatedBufferSize = region.sampleLength / 2u;
-
+	float pitchFactor = std::exp2(-(static_cast<float>(region.rootNote) - static_cast<float>(targetNote)) / 12.f);
+	interpolatedBufferSize = inputSampleLength * 2 / pitchFactor;
 	interpolatedBuffer = new Sample[interpolatedBufferSize];
-	if (isLoopable)
-	{
-		//loopStart = static_cast<unsigned int>(region.loopStart / 2.f * multiplciationLengthFactor);
-		//loopStop = static_cast<unsigned int>((region.loopStart + region.loopLength) / 2.f * multiplciationLengthFactor);
-		loopStart = region.loopStart;
-		loopStop = region.loopStart + region.loopLength;
-	}
 
-	for (unsigned int i = 0u; i < interpolatedBufferSize; i++)
-	{
-		//interpolatedBuffer[i] = rootBuffer[static_cast<unsigned int>(static_cast<float>(i) * multiplciationLengthFactor)];
-		interpolatedBuffer[i] = rootBuffer[i];
+	// simple linear interpolation
+	// TODO replace with something better e.g. bandlimited resampling
+	// maybe we can even try to do something to make the loops more seamless
+	for (unsigned int i = 0; i < interpolatedBufferSize; i++) {
+		float interpolatedIndex = static_cast<float>(i) * .5f * pitchFactor;
+		unsigned int indexLower = static_cast<unsigned int>(interpolatedIndex);
+		unsigned int indexUpper = indexLower + 1;
+		if (indexUpper > inputSampleLength - 1) {
+			indexUpper = inputSampleLength - 1;
+		}
+		float t = interpolatedIndex - static_cast<float>(indexLower);
+		interpolatedBuffer[i] = rootBuffer[indexLower] * (1.f - t) + rootBuffer[indexUpper] * t;
 	}
 
 	delete[] rootBuffer;
-	rootBuffer = nullptr;
+
+	loopStart = region.loopStart / pitchFactor * 2;
+	loopLength = region.loopLength / pitchFactor * 2;
 }
 
 gmSound::~gmSound()
@@ -65,10 +61,5 @@ gmSound::~gmSound()
 	{
 		delete[] interpolatedBuffer;
 		interpolatedBuffer = nullptr;
-	}
-	if (rootBuffer != nullptr)
-	{
-		delete[] rootBuffer;
-		rootBuffer = nullptr;
 	}
 }

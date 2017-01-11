@@ -21,9 +21,7 @@ public:
 	unsigned int interpolatedBufferSize;
 	bool isLoopable;
 	unsigned int loopStart;
-	unsigned int loopStop;
-	Sample* rootBuffer;
-	gmSoundRegion mRegion;
+	unsigned int loopLength;
 private:
 
 };
