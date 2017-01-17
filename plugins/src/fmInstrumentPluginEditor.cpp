@@ -266,7 +266,8 @@ void FmInstrumentPluginEditor::imguiFrame()
 	ImGui::EndChild();
 	
 	
-	ImGui::PushStyleVar(ImGuiStyleVar_ChildWindowRounding, 5.0f);
+	// missing pop -> causes crash
+	// ImGui::PushStyleVar(ImGuiStyleVar_ChildWindowRounding, 5.0f);
 	
 	
 	
