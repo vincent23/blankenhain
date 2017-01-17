@@ -8,11 +8,8 @@ class gmsynthPluginEditor : public ImguiEffectEditor
 {
 public:
 	gmsynthPluginEditor(PluginBase* plugin);
-
 protected:
 	void imguiFrame() override;
-
 private:
 	std::vector<const char*> instrumentNames;
-	int selectedInstrument = 0;
 };

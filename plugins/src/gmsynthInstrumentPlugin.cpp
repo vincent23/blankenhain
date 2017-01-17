@@ -25,7 +25,21 @@ gmsynthInstrumentPlugin::~gmsynthInstrumentPlugin()
 
 void gmsynthInstrumentPlugin::loadMidiInstrument(unsigned int index)
 {
+	loadedInstrument = index;
 	static_cast<gmsynthInstrument*>(effect)->loadMidiInstrument(*instruments[index]);
+}
+
+void gmsynthInstrumentPlugin::onBeforeBlock(unsigned int blockOffset)
+{
+	InstrumentPluginBase::onBeforeBlock(blockOffset);
+
+	FloatParameter* instrumentParameter = getParameters().getParameterBundle().getParameter(9);
+	// TODO dirty workaround to skip interpolation
+	instrumentParameter->next(1000);
+	unsigned int instrumentAccordingToParameter = static_cast<unsigned int>(instrumentParameter->getValueUnnormalized());
+	if (instrumentAccordingToParameter != loadedInstrument) {
+		loadMidiInstrument(instrumentAccordingToParameter);
+	}
 }
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster)

@@ -13,4 +13,10 @@ public:
 	void loadMidiInstrument(unsigned int index);
 
 	gmInstrument** instruments;
+
+protected:
+	void onBeforeBlock(unsigned int blockOffset) override;
+
+private:
+	unsigned int loadedInstrument = 0;
 };

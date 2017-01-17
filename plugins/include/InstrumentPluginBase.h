@@ -24,9 +24,8 @@ public:
 
 protected:
   InstrumentBase& instrument;
-private:
 	void onBeforeBlock(unsigned int blockOffset) override;
-
+private:
 	std::vector<MidiEvent> midiEvents;
 	size_t midiEventPosition = 0;
 

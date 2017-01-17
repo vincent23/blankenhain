@@ -29,8 +29,10 @@ void gmsynthPluginEditor::imguiFrame()
 	ImGui::SetNextWindowPos(ImVec2(0, 0));
 	ImGui::SetNextWindowSize(io.DisplaySize);
 	ImGui::Begin("test", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize);
+	FloatParameter* instrumentParameter = plugin.getParameters().getParameterBundle().getParameter(9);
+	int selectedInstrument = static_cast<int>(instrumentParameter->getValueUnnormalized());
 	if (ImGui::Combo("filter", &selectedInstrument, instrumentNames.data(), instrumentNames.size())) {
-		static_cast<gmsynthInstrumentPlugin*>(&plugin)->loadMidiInstrument(selectedInstrument);
+		plugin.setParameterAutomated(9, instrumentParameter->toNormalized(static_cast<float>(selectedInstrument)));
 	}
 	ImGui::End();
 }
