@@ -84,6 +84,13 @@ float NaiveOscillator::naiveWaveformForMode(NaiveOscillatorMode mode) {
     return value;
 }
 
+float NaiveOscillator::getNextSample()
+{
+	mPhase.incrementBy(mPhaseIncrement);
+	float value = naiveWaveformForMode(mOscillatorMode);
+	return value;
+}
+
 float PolyBLEPOscillator::poly_blep(float t) const
 {
 	float dt = mPhaseIncrement / (2. * constants::pi);

@@ -22,12 +22,23 @@
  * access sound generating modules through these two calls only.
  * Everything that generates a sound, wether periodic or not,
  * should derive from this.
+ *
+ * For now we have two (mutually othogonal) ways to access a SoundGenerator,
+ * wither via getSample(uint) or via getNextSample(). The prefered way to access is
+ * get Sample(uint). getNextSample is only reasonable for periodic signals whose frequency
+ * is manipulated. Some SoundGenerators, such as BaseDrum, Pulse etc. are conceptually
+ * not reasonable to be accessed by getNextSample as their signals are not periodic.
  */
 class I_SoundGenerator
 {
 public:
 	virtual void setFrequency(float frequency, float detune = 0.f) = 0;
+
+	// This is the prefered way to access a SoundGenerator
 	virtual float getSample(unsigned int time) = 0;
+
+	// This is only used in case of glide or time-dependent frequency modulation for example.
+	virtual float getNextSample() = 0;
 };
 
 /**
@@ -58,6 +69,7 @@ public:
 			in *= -1;
 		mPhase += in;
 		mPhase = fmod(mPhase, length);
+		return getValue();
 	}
 	static const float length;
 private:
@@ -142,6 +154,8 @@ public:
 
 	virtual float getSample(unsigned int time) override;
 
+	virtual float getNextSample() override;
+
 protected:
     float naiveWaveformForMode(NaiveOscillatorMode mode);
 	NaiveOscillatorMode mOscillatorMode;
@@ -170,6 +184,25 @@ public:
 			osc.setFrequency(currentHarmonic);
 			
 			value += osc.getSample(time) * (1.f / static_cast<float>(k));
+			k += 2;
+		}
+		return value * 4.f / static_cast<float>(constants::pi);
+	}
+
+	virtual float getNextSample() final
+	{
+		mPhase.incrementBy(mPhaseIncrement);
+		float value = 0.f;
+		unsigned int k = 1u;
+		float currentHarmonic = 0.f;
+		NaiveOscillator osc;
+		osc.setMode(NaiveOscillator::NaiveOscillatorMode::OSCILLATOR_MODE_SINE);
+		while (currentHarmonic < constants::sampleRate / 2.f)
+		{
+			currentHarmonic = static_cast<float>(k) * mFrequency;
+			osc.setFrequency(currentHarmonic);
+
+			value += osc.getNextSample() * (1.f / static_cast<float>(k));
 			k += 2;
 		}
 		return value * 4.f / static_cast<float>(constants::pi);
@@ -203,6 +236,25 @@ public:
 		}
 		return value * 8.f / static_cast<float>(constants::pi * constants::pi);
 	}
+
+	virtual float getNextSample() final
+	{
+		mPhase.incrementBy(mPhaseIncrement);
+		float value = 0.f;
+		unsigned int k = 1u;
+		float currentHarmonic = 0.f;
+		NaiveOscillator osc;
+		osc.setMode(NaiveOscillator::NaiveOscillatorMode::OSCILLATOR_MODE_SINE);
+		while (currentHarmonic < constants::sampleRate / 2.f)
+		{
+			currentHarmonic = static_cast<float>(k) * mFrequency;
+			osc.setFrequency(currentHarmonic);
+
+			value += osc.getNextSample() * (powf(-1.f, (k - 1u) / 2u) / (static_cast<float>(k)* static_cast<float>(k)));
+			k += 2;
+		}
+		return value * 8.f / static_cast<float>(constants::pi * constants::pi);
+	}
 };
 
 // via https://www.music.mcgill.ca/~gary/307/week5/bandlimited.html
@@ -231,6 +283,25 @@ public:
 			k += 1;
 		}
 		return 0.5f - value * ( 1.f / static_cast<float>(constants::pi));
+	}
+
+	virtual float getNextSample() final
+	{
+		mPhase.incrementBy(mPhaseIncrement);
+		float value = 0.f;
+		unsigned int k = 1u;
+		float currentHarmonic = 0.f;
+		NaiveOscillator osc;
+		osc.setMode(NaiveOscillator::NaiveOscillatorMode::OSCILLATOR_MODE_SINE);
+		while (currentHarmonic < constants::sampleRate / 2.f)
+		{
+			currentHarmonic = static_cast<float>(k) * mFrequency;
+			osc.setFrequency(currentHarmonic);
+
+			value += osc.getNextSample() / (static_cast<float>(k));
+			k += 1;
+		}
+		return 0.5f - value * (1.f / static_cast<float>(constants::pi));
 	}
 };
 
@@ -268,6 +339,13 @@ public:
 	virtual float getSample(unsigned int time) final
 	{
 		mPhase.set(static_cast<float>(time) * mPhaseIncrement);
+		const float positionInWavetable = mPhase.getValue() * static_cast<float>(size) / static_cast<float>(2.f * constants::pi);
+		return wavetable[static_cast<unsigned int>(positionInWavetable)];
+	}
+
+	virtual float getNextSample() final
+	{
+		mPhase.incrementBy(mPhaseIncrement);
 		const float positionInWavetable = mPhase.getValue() * static_cast<float>(size) / static_cast<float>(2.f * constants::pi);
 		return wavetable[static_cast<unsigned int>(positionInWavetable)];
 	}
@@ -313,6 +391,11 @@ public:
 			this->xorshift32();
 		return (static_cast<float>(state) - 1.f) / 4000000000.f;
 	}
+
+	virtual float getNextSample() final
+	{
+		return this->getSample(0u);
+	}
 };
 
 
@@ -335,6 +418,35 @@ public:
 	};
 
 	virtual float getSample(unsigned int time) final;
+	virtual float getNextSample() final
+	{
+		float value = 0.0;
+
+		mPhase.incrementBy(mPhaseIncrement);
+
+		float t = mPhase.getValue() / (2.f * constants::pi);
+
+		if (mOscillatorMode == OSCILLATOR_MODE_SINE) {
+			value = naiveWaveformForMode(OSCILLATOR_MODE_SINE);
+		}
+		else if (mOscillatorMode == OSCILLATOR_MODE_SAW) {
+			value = naiveWaveformForMode(OSCILLATOR_MODE_SAW);
+			value -= poly_blep(t);
+		}
+		else {
+			value = naiveWaveformForMode(OSCILLATOR_MODE_SQUARE);
+			value += poly_blep(t);
+			float temp = fmod(t + 0.5f, 1.f);
+			value -= poly_blep(temp);
+			if (mOscillatorMode == OSCILLATOR_MODE_TRIANGLE) 
+			{
+				// Leaky integrator: y[n] = A * x[n] + (1 - A) * y[n-1]
+				value = mPhaseIncrement * value + (1. - mPhaseIncrement) * lastOutput;
+				lastOutput = value;
+			}
+		}
+		return value;
+	}
 private:
 	float poly_blep(float t) const;
 	float lastOutput;
@@ -361,6 +473,11 @@ public:
 		if (time <= pulseLengthInSamples)
 			return 1.f;
 		else return 0.f;
+	}
+
+	virtual float getNextSample() final
+	{
+		return 0.f;
 	}
 };
 

@@ -34,6 +34,10 @@ public:
 	{
 		pulse = PulseSound(static_cast<unsigned int>(aux::millisecToSamples(inMs)));
 	}
+	virtual float getNextSample() final
+	{
+		return 0;
+	}
 };
 
 /** 
@@ -89,6 +93,10 @@ public:
 	void setEnvRelease(float envReleaseTimeInMs_)
 	{
 		this->env.releaseInMs = envReleaseTimeInMs_;
+	}
+	virtual float getNextSample() final
+	{
+		return 0;
 	}
 };
 
