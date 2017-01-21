@@ -19,7 +19,7 @@ glidePolyblepInstrument::glidePolyblepInstrument()
 	params->getParameter(5) = new FloatParameter(100.f, NormalizedRange(1.f, 1700.f, 0.3f), "sustain", "ms");
 	params->getParameter(6) = new FloatParameter(1.0f, NormalizedRange(), "sustainLevel", "ratio");
 	params->getParameter(7) = new FloatParameter(100.f, NormalizedRange(1.f, 1700.f, 0.3f), "release", "ms");
-	params->getParameter(8) = new FloatParameter(0.f, NormalizedRange(0.f, 2.9f), "osc", "");
+	params->getParameter(8) = new FloatParameter(0.f, NormalizedRange(0.f, 3.9f), "osc", "");
 	params->getParameter(9) = new FloatParameter(0.f, NormalizedRange(0.f, 0.3f), "glide", "");
 
 	params->getParameter(10) = new FloatParameter(0.f, NormalizedRange(0.f, 1.f), "lfoAmount", "");
@@ -56,7 +56,7 @@ void glidePolyblepInstrument::processVoice(VoiceState& voice, unsigned int timeI
 	// oscMode 2: polyBLEP Square (broken)
 	// oscMode 3: polyBLEP Triangle (broken)
 
-	this->osc.setMode(NaiveOscillator::NaiveOscillatorMode(oscMode + 1u));
+	this->osc.setMode(NaiveOscillator::NaiveOscillatorMode(oscMode));
 
 	// If a new note is played, take this as the start time for glide
 	// TODO we can improve this but as this synth only has one voice

@@ -1,14 +1,14 @@
-#include "polyblepInstrumentPluginEditor.h"
+#include "glidePolyblepInstrumentPluginEditor.h"
 
 
 
-polyblepInstrumentPluginEditor::polyblepInstrumentPluginEditor(PluginBase* plugin)
-	: ImguiEffectEditor(plugin, 800, 805)
+glidePolyblepInstrumentPluginEditor::glidePolyblepInstrumentPluginEditor(PluginBase* plugin)
+	: ImguiEffectEditor(plugin, 400, 680)
 {
 }
 
 
-void polyblepInstrumentPluginEditor::imguiFrame()
+void glidePolyblepInstrumentPluginEditor::imguiFrame()
 {
 
 	ImGuiIO& io = ImGui::GetIO();
@@ -20,9 +20,8 @@ void polyblepInstrumentPluginEditor::imguiFrame()
 
 
 
-	renderADHSR(plugin, ImVec2(ImGui::GetWindowContentRegionWidth() * 0.5f, 300));
+	renderADHSR(plugin, ImVec2(ImGui::GetWindowContentRegionWidth(), 300));
 	
-	ImGui::BeginChild("Waveform", ImVec2(ImGui::GetWindowContentRegionWidth() * 0.48f, 300), true);
 	int waveTypeCarrier = bundle.getParameterNormalized(8) * 4;
 	ImGui::RadioButton("Sine", &waveTypeCarrier, 1);
 	ImGui::SameLine();
@@ -33,7 +32,6 @@ void polyblepInstrumentPluginEditor::imguiFrame()
 	ImGui::RadioButton("Triangle", &waveTypeCarrier, 4);
 	if (waveTypeCarrier != bundle.getParameterNormalized(8) * 4)
 	  plugin.setParameterAutomated(8, (waveTypeCarrier / 4.f));
-	ImGui::EndChild();
 	
 	NormalizedRange const* range = nullptr;
 	float min = 0.f;
@@ -41,18 +39,35 @@ void polyblepInstrumentPluginEditor::imguiFrame()
 	float skew = 0.f;
 
 
-	// detune
-	range = bundle.getParameter(11);
+	// glide
+	range = bundle.getParameter(9);
 	min = range->getStart();
 	max = range->getEnd();
 	skew = range->getSkew();
 	
-	float value = bundle.getParameterUnnormalized(11);
-	if (ImGui::DragFloat((bundle.getParameterName(11)).c_str(), &value, 0.01f, min, max, "%.3f", 1 / skew))
-	  plugin.setParameterAutomated(11, range->toNormalized(value));
+	float value = bundle.getParameterUnnormalized(9);
+	if (ImGui::DragFloat((bundle.getParameterName(9)).c_str(), &value, 0.0001f, min, max, "%.5f", 1 / skew))
+	  plugin.setParameterAutomated(9, range->toNormalized(value));
+	ImGui::SameLine();
 	if (ImGui::Button("Reset"))
 	{
-		plugin.setParameterAutomated(11, bundle.getParameter(11)->getDefaultValueNormalized());
+		plugin.setParameterAutomated(9, bundle.getParameter(9)->getDefaultValueNormalized());
+	}
+
+	// detune
+	range = bundle.getParameter(12);
+	min = range->getStart();
+	max = range->getEnd();
+	skew = range->getSkew();
+
+	value = bundle.getParameterUnnormalized(12);
+	if (ImGui::DragFloat((bundle.getParameterName(12)).c_str(), &value, 0.01f, min, max, "%.3f", 1 / skew))
+		plugin.setParameterAutomated(12, range->toNormalized(value));
+	ImGui::SameLine();
+
+	if (ImGui::Button("Reset"))
+	{
+		plugin.setParameterAutomated(12, bundle.getParameter(12)->getDefaultValueNormalized());
 	}
 	
 	//    range = bundle.getParameterBundle().getParameter(currentParamInt + 1);

@@ -11,7 +11,7 @@
 #include "AuxFunc.h"
 #include "RhythmgateEffect.h"
 
-#include "polyblepInstrumentPlugin.h"
+#include "glidePolyblepInstrumentPlugin.h"
 
 #include <imgui.h>
 #include <cmath>
@@ -21,10 +21,10 @@
 
 #include "ImguiCustomFunctions.h"
 
-class polyblepInstrumentPluginEditor : public ImguiEffectEditor
+class glidePolyblepInstrumentPluginEditor : public ImguiEffectEditor
 {
 public:
-	polyblepInstrumentPluginEditor(PluginBase* plugin);
+	glidePolyblepInstrumentPluginEditor(PluginBase* plugin);
 
 protected:
 	void imguiFrame() override;
