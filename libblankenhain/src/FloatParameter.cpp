@@ -19,6 +19,13 @@ float FloatParameter::getDefaultValueNormalized() const {
 	return defaultValueNormalized;
 }
 
+void FloatParameter::setToDefaultValue()
+{
+	unsigned int interpolationLength = constants::parameterInterpolationLength;
+	valueNormalized = InterpolatedValue<float>(this->getValueNormalized(), this->defaultValueNormalized, interpolationLength);
+}
+
+
 float FloatParameter::getValueNormalized() const
 {
 	return valueNormalized.get();
@@ -38,7 +45,6 @@ float FloatParameter::getValueUnnormalized()
 {
 	return fromNormalized(getValueNormalized());
 }
-
 
 BhString FloatParameter::getName(unsigned int maximumStringLength) const
 {
