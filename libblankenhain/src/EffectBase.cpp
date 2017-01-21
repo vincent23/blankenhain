@@ -31,6 +31,12 @@ const bool EffectBase::effectUsesTempoData() const
 	return tempodata.usesTempoData;
 }
 
+void EffectBase::setTempoData(float bpm, unsigned int position)
+{
+	tempodata.position = position;
+	tempodata.bpm = bpm;
+};
+
 void EffectBase::processBlock(Sample* buffer, size_t numberOfSamples)
 {
 	// TODO find a better way to do initalization

@@ -41,12 +41,15 @@ public:
 	*/
 	virtual void getModulation(float* modulationValues, size_t sampleOffset = 0);
 
+	/**
+	 * Returns if effect is synced to host and uses BPM
+	 */
 	const bool effectUsesTempoData() const;
-	void setTempoData(float bpm, unsigned int position)
-	{
-		tempodata.position = position;
-		tempodata.bpm = bpm;
-	};
+
+	/**
+	 * Called by PluginBase (and therein by host) to update BPM and position
+	 */
+	void setTempoData(float bpm, unsigned int position);
 
 protected:
 	InterpolatedValue<float>& getInterpolatedParameter(unsigned int parameterIndex) const;
@@ -65,6 +68,9 @@ protected:
 	*/
 	virtual void process(Sample* buffer, size_t numberOfSamples) = 0;
 
+	/**
+	 * Holds information about sync with host DAW, BPM and position
+	 */
 	TempoData tempodata;
 
 private:
