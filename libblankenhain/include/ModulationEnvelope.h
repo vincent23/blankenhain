@@ -1,5 +1,6 @@
 #include "InstrumentBase.h"
 #include "VoiceState.h"
+#pragma once
 
 /**
 * Creates an ADHSR Modulation curve
