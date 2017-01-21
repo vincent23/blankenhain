@@ -47,12 +47,19 @@ float PluginParameterBundle::getParameterUnnormalized(unsigned int const& index)
 	return this->parameterBundle->getParameter(index)->fromNormalized(this->currentParametersFromHost[index]);
 }
 
+const FloatParameter* PluginParameterBundle::getParameter(unsigned int const& index) const
+{
+	if (index > this->currentParametersFromHost.size()) throw "argument to big";
+	return this->parameterBundle->getParameter(index);
+}
+
+
 std::string PluginParameterBundle::getParameterUnit(unsigned int const& index) const
 {
 	return parameterBundle->getParameter(index)->getUnit();
 }
 
-const ParameterBundle& PluginParameterBundle::getParameterBundle() const
-{
-	return *parameterBundle;
-}
+//const ParameterBundle& PluginParameterBundle::getParameterBundle() const
+//{
+//	return *parameterBundle;
+//}

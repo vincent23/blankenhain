@@ -18,7 +18,7 @@ void FmInstrumentPluginEditor::imguiFrame()
 
 	const PluginParameterBundle& bundle = plugin.getParameters();
 
-	NormalizedRange* range = nullptr;
+	NormalizedRange const* range = nullptr;
 	float min = 0.f;
 	float max = 0.f;
 	float skew = 0.f;
@@ -77,7 +77,7 @@ void FmInstrumentPluginEditor::imguiFrame()
 	
 	    if (tempoSyncOn == 1.f)
 	    {
-	      range = bundle.getParameterBundle().getParameter(currentParamInt + 10);
+	      range = bundle.getParameter(currentParamInt + 10);
 	      min = range->getStart();
 	      max = range->getEnd();
 	      skew = range->getSkew();
@@ -88,7 +88,7 @@ void FmInstrumentPluginEditor::imguiFrame()
 	
 	    }
 	    // freq
-	    range = bundle.getParameterBundle().getParameter(currentParamInt);
+	    range = bundle.getParameter(currentParamInt);
 	    min = range->getStart();
 	    max = range->getEnd();
 	    skew = range->getSkew();
@@ -97,7 +97,7 @@ void FmInstrumentPluginEditor::imguiFrame()
 	    if (ImGui::DragFloat(("osc" + std::to_string(i + 1) + " " + bundle.getParameterName(currentParamInt)).c_str(), &value, 0.01f, min, max, "%.3f", 1 / skew))
 	      plugin.setParameterAutomated(currentParamInt, range->toNormalized(value));
 	
-	    range = bundle.getParameterBundle().getParameter(currentParamInt + 1);
+	    range = bundle.getParameter(currentParamInt + 1);
 	    min = range->getStart();
 	    max = range->getEnd();
 	    skew = range->getSkew();
@@ -113,7 +113,7 @@ void FmInstrumentPluginEditor::imguiFrame()
 	    }
 	
 	
-	    range = bundle.getParameterBundle().getParameter(currentParamInt + 2);
+	    range = bundle.getParameter(currentParamInt + 2);
 	    min = range->getStart();
 	    max = range->getEnd();
 	    skew = range->getSkew();
@@ -123,7 +123,7 @@ void FmInstrumentPluginEditor::imguiFrame()
 	      plugin.setParameterAutomated(currentParamInt + 2, range->toNormalized(value));
 	
 	
-	    range = bundle.getParameterBundle().getParameter(currentParamInt + 3);
+	    range = bundle.getParameter(currentParamInt + 3);
 	    min = range->getStart();
 	    max = range->getEnd();
 	    skew = range->getSkew();
@@ -133,7 +133,7 @@ void FmInstrumentPluginEditor::imguiFrame()
 	    if (targetOsc != bundle.getParameterUnnormalized(currentParamInt + 3))
 	      plugin.setParameterAutomated(currentParamInt + 3, range->toNormalized(targetOsc * 1.f));
 	
-	    range = bundle.getParameterBundle().getParameter(currentParamInt + 6);
+	    range = bundle.getParameter(currentParamInt + 6);
 	    min = range->getStart();
 	    max = range->getEnd();
 	    skew = range->getSkew();
@@ -186,7 +186,7 @@ void FmInstrumentPluginEditor::imguiFrame()
 	
 	    if (tempoSyncOn == 1.f)
 	    {
-	      range = bundle.getParameterBundle().getParameter(currentParamInt + 10);
+	      range = bundle.getParameter(currentParamInt + 10);
 	      min = range->getStart();
 	      max = range->getEnd();
 	      skew = range->getSkew();
@@ -197,7 +197,7 @@ void FmInstrumentPluginEditor::imguiFrame()
 	
 	    }
 	    // freq
-	    range = bundle.getParameterBundle().getParameter(currentParamInt);
+	    range = bundle.getParameter(currentParamInt);
 	    min = range->getStart();
 	    max = range->getEnd();
 	    skew = range->getSkew();
@@ -206,7 +206,7 @@ void FmInstrumentPluginEditor::imguiFrame()
 	    if (ImGui::DragFloat(("osc" + std::to_string(i + 1) + " " + bundle.getParameterName(currentParamInt)).c_str(), &value, 0.01f, min, max, "%.3f", 1 / skew))
 	      plugin.setParameterAutomated(currentParamInt, range->toNormalized(value));
 	
-	    range = bundle.getParameterBundle().getParameter(currentParamInt + 1);
+	    range = bundle.getParameter(currentParamInt + 1);
 	    min = range->getStart();
 	    max = range->getEnd();
 	    skew = range->getSkew();
@@ -222,7 +222,7 @@ void FmInstrumentPluginEditor::imguiFrame()
 	    }
 	
 	
-	    range = bundle.getParameterBundle().getParameter(currentParamInt + 2);
+	    range = bundle.getParameter(currentParamInt + 2);
 	    min = range->getStart();
 	    max = range->getEnd();
 	    skew = range->getSkew();
@@ -232,7 +232,7 @@ void FmInstrumentPluginEditor::imguiFrame()
 	      plugin.setParameterAutomated(currentParamInt + 2, range->toNormalized(value));
 	
 	
-	    range = bundle.getParameterBundle().getParameter(currentParamInt + 3);
+	    range = bundle.getParameter(currentParamInt + 3);
 	    min = range->getStart();
 	    max = range->getEnd();
 	    skew = range->getSkew();
@@ -242,7 +242,7 @@ void FmInstrumentPluginEditor::imguiFrame()
 	    if (targetOsc != bundle.getParameterUnnormalized(i * 7 + 8 + 3))
 	      plugin.setParameterAutomated(currentParamInt + 3, range->toNormalized(targetOsc * 1.f));
 	
-	    range = bundle.getParameterBundle().getParameter(currentParamInt + 6);
+	    range = bundle.getParameter(currentParamInt + 6);
 	    min = range->getStart();
 	    max = range->getEnd();
 	    skew = range->getSkew();

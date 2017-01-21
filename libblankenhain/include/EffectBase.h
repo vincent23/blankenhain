@@ -30,7 +30,7 @@ public:
 
 	/// Helper functions
 	ParameterBundle* getPointerToParameterBundle() const;
-	unsigned int getNumberOfParameters() const;
+	const unsigned int getNumberOfParameters() const;
 
 
 	/**

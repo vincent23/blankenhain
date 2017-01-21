@@ -17,5 +17,7 @@ namespace aux
 
 	float noteToFrequency(float note);
 	unsigned int frequencyToNearestLowerNote(float frequency);
+
+	float calculateDetune(float frequency, float detune, unsigned int maxDetune = 1u);
 }
 

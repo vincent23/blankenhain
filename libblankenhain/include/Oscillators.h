@@ -32,7 +32,7 @@
 class I_SoundGenerator
 {
 public:
-	virtual void setFrequency(float frequency, float detune = 0.f) = 0;
+	virtual void setFrequency(float frequency) = 0;
 
 	// This is the prefered way to access a SoundGenerator
 	virtual float getSample(unsigned int time) = 0;
@@ -89,7 +89,7 @@ public:
 	BaseOscillator();
 
 	/// Freq in Hertz, Detune is Value between -1.f and 1.f, where 0.f means no detune
-	virtual void setFrequency(float frequency, float detune = 0.f) final;
+	virtual void setFrequency(float frequency) final;
 	float getFrequency() const
 	{
 		return mFrequency;
@@ -467,7 +467,7 @@ public:
 	PulseSound() : pulseLengthInSamples(1u) {}
 	PulseSound(unsigned int pulseLengthInSamples_) : pulseLengthInSamples(pulseLengthInSamples_) {}
 	unsigned int pulseLengthInSamples;
-	virtual void setFrequency(float frequency, float detune) final {};
+	virtual void setFrequency(float frequency) final {};
 	virtual float getSample(unsigned int time) final
 	{
 		if (time <= pulseLengthInSamples)

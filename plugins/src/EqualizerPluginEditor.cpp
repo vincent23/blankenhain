@@ -41,7 +41,7 @@ void EqualizerPluginEditor::imguiFrame()
 		// TODO
 		plugin.setParameterAutomated(item * 5 + 1, isOn ? .75f : .25f);
 	}
-	NormalizedRange* frequencyRange = bundle.getParameterBundle().getParameter(2);
+	NormalizedRange const* frequencyRange = bundle.getParameter(2);
 	float unnormalizedFrequency = bundle.getParameterUnnormalized(item * 5 + 2);
 	float frequencyMin = frequencyRange->getStart();
 	float frequencyMax = frequencyRange->getEnd();
@@ -50,7 +50,7 @@ void EqualizerPluginEditor::imguiFrame()
 	{
 		plugin.setParameterAutomated(item * 5 + 2, frequencyRange->toNormalized(unnormalizedFrequency));
 	}
-	NormalizedRange* gainRange = bundle.getParameterBundle().getParameter(3);
+	NormalizedRange const* gainRange = bundle.getParameter(3);
 	float unnormalizedGain = bundle.getParameterUnnormalized(item * 5 + 3);
 	float gainMin = gainRange->getStart();
 	float gainMax = gainRange->getEnd();
@@ -59,7 +59,7 @@ void EqualizerPluginEditor::imguiFrame()
 	{
 		plugin.setParameterAutomated(item * 5 + 3, gainRange->toNormalized(unnormalizedGain));
 	}
-	NormalizedRange* qRange = bundle.getParameterBundle().getParameter(4);
+	NormalizedRange const* qRange = bundle.getParameter(4);
 	float unnormalizedQ = bundle.getParameterUnnormalized(item * 5 + 4);
 	float qMin = qRange->getStart();
 	float qMax = qRange->getEnd();

@@ -88,12 +88,13 @@ bool PluginBase::getParameterProperties(VstInt32 index, VstParameterProperties* 
 		VstParameterProperties& prop = *p;
 		prop.flags = kVstParameterSupportsDisplayIndex + kVstParameterSupportsDisplayCategory;
 
-		BoolParameter* boolParam = dynamic_cast<BoolParameter*>(this->getParameters().getParameterBundle().getParameter(index));
-		IntegerParameter* intParam = dynamic_cast<IntegerParameter*>(this->getParameters().getParameterBundle().getParameter(index));
-		if (boolParam)
-			prop.flags += kVstParameterIsSwitch;
-		else if (intParam)
-			prop.flags += kVstParameterUsesIntStep;
+		// TODO
+		// BoolParameter* boolParam = dynamic_cast<BoolParameter*>(this->getParameters().getParameterBundle().getParameter(index));
+		// IntegerParameter* intParam = dynamic_cast<IntegerParameter*>(this->getParameters().getParameterBundle().getParameter(index));
+		// if (boolParam)
+		// 	prop.flags += kVstParameterIsSwitch;
+		// else if (intParam)
+		// 	prop.flags += kVstParameterUsesIntStep;
 
 
 		prop.displayIndex = index;
@@ -127,9 +128,9 @@ bool PluginBase::string2parameter(VstInt32 index, char* text)
 	if (index < this->getParameters().getNumberOfParameters())
 	{
 		float floatValueUnnormalized = atof(text);
-		if (pluginParameters->getParameterBundle().getParameter(index)->isInRange(floatValueUnnormalized))
+		if (pluginParameters->getParameter(index)->isInRange(floatValueUnnormalized))
 		{
-			float floatValueNormalized = pluginParameters->getParameterBundle().getParameter(index)->toNormalized(floatValueUnnormalized);
+			float floatValueNormalized = pluginParameters->getParameter(index)->toNormalized(floatValueUnnormalized);
 			this->pluginParameters->setPluginParameter(static_cast<unsigned int>(index), floatValueNormalized);
 
 			return true;

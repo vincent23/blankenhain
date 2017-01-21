@@ -7,7 +7,7 @@
 #include <cmath>
 
 glidePolyblepInstrument::glidePolyblepInstrument()
-	: InstrumentBase(10, 1)
+	: InstrumentBase(13, 1)
 {
 	ParameterBundle* params = getPointerToParameterBundle();
 
@@ -21,6 +21,12 @@ glidePolyblepInstrument::glidePolyblepInstrument()
 	params->getParameter(7) = new FloatParameter(100.f, NormalizedRange(1.f, 1700.f, 0.3f), "release", "ms");
 	params->getParameter(8) = new FloatParameter(0.f, NormalizedRange(0.f, 2.9f), "osc", "");
 	params->getParameter(9) = new FloatParameter(0.f, NormalizedRange(0.f, 0.3f), "glide", "");
+
+	params->getParameter(10) = new FloatParameter(0.f, NormalizedRange(0.f, 1.f), "lfoAmount", "");
+	params->getParameter(11) = new FloatParameter(0.f, NormalizedRange(0.f, 2.9f), "lfoSpeed", "");
+	params->getParameter(12) = new FloatParameter(0.f, NormalizedRange(-5.f, 5.0f), "detune", "");
+	// Lfo einfach in getModulation schreiben. Hier sin() machen und auf detune drauf schreiben. weiﬂ noch nicht ganz was dann passiert, aber wird schon passen
+	// Der lfo einach von fmSynth kopieren.
 
 	freqPrev = 0.f;
 	timeNoteOff = 0u;
@@ -44,6 +50,7 @@ void glidePolyblepInstrument::processVoice(VoiceState& voice, unsigned int timeI
 	float release = getInterpolatedParameter(7).get();
 	unsigned int oscMode = static_cast<unsigned int>(getInterpolatedParameter(8).get());
 	float portamento = getInterpolatedParameter(9).get();
+	float detune = getInterpolatedParameter(12).get();
 
 	// oscMode 1: polyBLEP Sawtooth
 	// oscMode 2: polyBLEP Square (broken)
@@ -60,14 +67,17 @@ void glidePolyblepInstrument::processVoice(VoiceState& voice, unsigned int timeI
 		notePrev = voice.key;
 		timeNoteOff = voice.onTime;
 	}
+
 	float voiceFreq = aux::noteToFrequency(voice.key);
+	if (detune != 0.f)
+		voiceFreq = aux::calculateDetune(voiceFreq, detune, 5u);
 
 
 	for (unsigned int sampleIndex = 0; sampleIndex < numberOfSamples; sampleIndex++)
 	{
 		//unsigned int deltaT = (timeInSamples + sampleIndex) - voice.onTime;
 		unsigned int timeSinceNoteOff = (timeInSamples + sampleIndex) - timeNoteOff;
-		unsigned int currentFreq;
+		float currentFreq;
 
 		// If enough glide time has past, set previousFreq to currentFreq and thereby stop gliding
 		if (freqPrev != voiceFreq
@@ -80,7 +90,7 @@ void glidePolyblepInstrument::processVoice(VoiceState& voice, unsigned int timeI
 		// If subsequent note has same freq or portamento is off
 		// There will be no glide
 		if ((portamento == 0.f
-			&& freqPrev == voiceFreq))
+			|| freqPrev == voiceFreq))
 			currentFreq = voiceFreq;
 		else
 			// otherwise we glide

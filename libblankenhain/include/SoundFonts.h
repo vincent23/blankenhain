@@ -24,7 +24,7 @@ public:
 		return filter.tick(value);
 	}
 
-	virtual void setFrequency(float frequency, float detune) final {};
+	virtual void setFrequency(float frequency) final {};
 
 	void setLowPass(float freq, float q)
 	{
@@ -59,18 +59,8 @@ public:
 		envMult = envMultFactor;
 		//filter.setLowPass(58.f, 5.);
 	}
-	virtual void setFrequency(float frequency, float detune = 0.f) final 
+	virtual void setFrequency(float frequency) final 
 	{
-		if (detune != 0.f)
-		{
-			unsigned int baseNote = aux::frequencyToNearestLowerNote(frequency);
-			float freqLow = aux::noteToFrequency(baseNote);
-			float freqHigh = aux::noteToFrequency(baseNote + 1u);
-			if (detune > 0.f)
-				frequency = (freqHigh - frequency) * detune + frequency;
-			else
-				frequency = (frequency - freqLow) * -1.f * detune + freqLow;
-		}
 		baseFreq = frequency;
 	};
 	virtual float getSample(unsigned int time) final

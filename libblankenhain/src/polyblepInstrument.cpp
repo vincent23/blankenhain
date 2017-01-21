@@ -19,7 +19,7 @@ polyblepInstrument::polyblepInstrument()
 	params->getParameter(5) = new FloatParameter(100.f, NormalizedRange(1.f, 1700.f, 0.3f), "sustain", "ms");
 	params->getParameter(6) = new FloatParameter(1.0f, NormalizedRange(), "sustainLevel", "ratio");
 	params->getParameter(7) = new FloatParameter(100.f, NormalizedRange(1.f, 1700.f, 0.3f), "release", "ms");
-	params->getParameter(8) = new FloatParameter(0.f, NormalizedRange(0.f, 2.9f), "osc", "");
+	params->getParameter(8) = new FloatParameter(0.f, NormalizedRange(0.f, 3.9f), "osc", "");
 
 }
 
@@ -40,13 +40,14 @@ void polyblepInstrument::processVoice(VoiceState& voice, unsigned int timeInSamp
 	float release = getInterpolatedParameter(7).get();
 	unsigned int oscMode = static_cast<unsigned int>(getInterpolatedParameter(8).get());
 
+
 	// oscMode 1: polyBLEP Sawtooth
 	// oscMode 2: polyBLEP Square (broken)
 	// oscMode 3: polyBLEP Triangle (broken)
 
 	this->osc.setFrequency(aux::noteToFrequency(voice.key));
 
-	this->osc.setMode(NaiveOscillator::NaiveOscillatorMode(oscMode + 1u));
+	this->osc.setMode(NaiveOscillator::NaiveOscillatorMode(oscMode));
 
 	for (unsigned int sampleIndex = 0; sampleIndex < numberOfSamples; sampleIndex++) 
 	{

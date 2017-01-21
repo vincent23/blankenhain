@@ -24,6 +24,18 @@ namespace aux
 		return 440.f * exp((note - 69.f)*log(2.f) / 12.f);
 	}
 
+	float calculateDetune(float frequency, float detune, unsigned int maxDetune)
+	{
+		unsigned int baseNote = aux::frequencyToNearestLowerNote(frequency);
+		unsigned int countSemiTones = maxDetune;
+		float freqLow = aux::noteToFrequency(baseNote == 0u ? 0u : baseNote - countSemiTones);
+		float freqHigh = aux::noteToFrequency(baseNote == 127u ? 127u : baseNote  + countSemiTones);
+		if (detune > 0.f)
+			return (freqHigh - frequency) * detune / static_cast<float>(maxDetune) + frequency;
+		else
+			return (freqLow - frequency ) * detune * -1.f / static_cast<float>(maxDetune) + frequency;
+	}
+
 	float linearToDecibel(float linear)
 	{
 #ifdef _LIBBLANKENHAIN_ENABLE_WARNINGS

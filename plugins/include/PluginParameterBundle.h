@@ -3,8 +3,9 @@
 #include <string>
 #include <vector>
 #include <atomic>
-
-class ParameterBundle;
+#include "FloatParameter.h"
+#pragma once
+#include "ParameterBundle.h"
 
 /**
  * Class that handles parameters for the VST plugin.
@@ -36,7 +37,16 @@ public:
 	float getParameterNormalized(unsigned int const& index) const;
 	float getParameterUnnormalized(unsigned int const& index) const;
 	std::string getParameterUnit(unsigned int const& index) const;
-	const ParameterBundle& getParameterBundle() const;
+	/*
+	 * Called only by Host via setParameter or setParameterAutomated
+	 */
+	// You can access stuff via get.
+	// All access is const-&. Don't break encapsulation
+	const FloatParameter* getParameter(unsigned int const& index) const;
+	// This used to exist, but it broke the encapsulation design. Only
+	// the call to "PluginParameterBundle.updateParameters()" may
+	// directly change values in the (bh) parameterBundle
+	//const ParameterBundle& getParameterBundle() const;
 	unsigned int getNumberOfParameters() const;
 
 private:

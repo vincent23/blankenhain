@@ -30,7 +30,7 @@ void RhythmgatePluginEditor::imguiFrame()
 	const PluginParameterBundle& bundle = plugin.getParameters();
 	static int item = 0;
 
-	NormalizedRange* range = bundle.getParameterBundle().getParameter(0u);
+	const NormalizedRange* const range = bundle.getParameter(0u);
 	float min = range->getStart();
 	float max = range->getEnd();
 	float skew = range->getSkew();
@@ -99,7 +99,7 @@ void RhythmgatePluginEditor::imguiFrame()
 	if (ImGui::DragFloat("slider15", &unnormalized15, 0.05f, min, max, "%.3f", 1 / skew))
 		plugin.setParameterAutomated(15u, range->toNormalized(unnormalized15));
 
-	NormalizedRange* range2 = bundle.getParameterBundle().getParameter(16u);
+	const NormalizedRange* range2 = bundle.getParameter(16u);
 	min = range2->getStart();
 	max = range2->getEnd();
 	skew = range2->getSkew();
@@ -107,7 +107,7 @@ void RhythmgatePluginEditor::imguiFrame()
 	if (ImGui::DragFloat("attack", &attack, 0.01f, min, max, "%.3f", 1 / skew))
 		plugin.setParameterAutomated(16u, range2->toNormalized(attack));
 
-	NormalizedRange* range3 = bundle.getParameterBundle().getParameter(17u);
+	const NormalizedRange* range3 = bundle.getParameter(17u);
 	min = range3->getStart();
 	max = range3->getEnd();
 	skew = range3->getSkew();
@@ -115,7 +115,7 @@ void RhythmgatePluginEditor::imguiFrame()
 	if (ImGui::DragFloat("release", &release, 0.01f, min, max, "%.3f", 1 / skew))
 		plugin.setParameterAutomated(17u, range3->toNormalized(release));
 
-	NormalizedRange* range4 = bundle.getParameterBundle().getParameter(18u);
+	const NormalizedRange* range4 = bundle.getParameter(18u);
 	min = range4->getStart();
 	max = range4->getEnd();
 	skew = range4->getSkew();
@@ -126,7 +126,8 @@ void RhythmgatePluginEditor::imguiFrame()
 			multiplier = range4->getStart() + 0.0001;
 		plugin.setParameterAutomated(18u, range4->toNormalized(multiplier));
 	}
-	NormalizedRange* range5 = bundle.getParameterBundle().getParameter(19u);
+
+	const NormalizedRange* range5 = bundle.getParameter(19u);
 	min = range5->getStart();
 	max = range5->getEnd();
 	skew = range5->getSkew();
@@ -134,18 +135,5 @@ void RhythmgatePluginEditor::imguiFrame()
 	if (ImGui::DragFloat("offset", &offset, 0.01f, min, max, "%.3f", 1 / skew))
 		plugin.setParameterAutomated(19u, range5->toNormalized(offset));
 
-
-
-	//for (unsigned int i = 0u; i < 16u; i++) {
-	//	NormalizedRange* range = bundle.getParameterBundle().getParameter(i);
-	//	unnormalized = bundle.getParameterUnnormalized(i);
-	//	float min = range->getStart();
-	//	float max = range->getEnd();
-	//	float skew = range->getSkew();
-	//	if (ImGui::DragFloat("slider", &unnormalized, 0.1f, min, max, "%.3f", 1 / skew))
-	//	{
-	//		plugin.setParameterAutomated(i, range->toNormalized(unnormalized));
-	//	}
-	//}
 	ImGui::End();
 }

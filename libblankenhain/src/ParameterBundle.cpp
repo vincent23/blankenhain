@@ -26,16 +26,16 @@ ParameterBundle::~ParameterBundle()
 	}
 }
 
-unsigned int ParameterBundle::getNumberOfParameters() const
-{
-	return numberOfParameters;
-}
-
 FloatParameter*& ParameterBundle::getParameter(unsigned int const& in) const
 {
-#ifdef _LIBBLANKENHAIN_ENABLE_WARNINGS
+#ifdef _LIBBLANKENHAIN_ENABLE_WARNINGS 
 	if (in >= this->numberOfParameters)
 		throw ("out of range: number of parameters\n");
-#endif
+#endif 
 	return (parameters)[in];
-};
+}
+
+const unsigned int ParameterBundle::getNumberOfParameters() const
+{
+	return this->numberOfParameters;
+}

@@ -28,18 +28,8 @@ void NaiveOscillator::setMode(NaiveOscillatorMode mode) {
     mOscillatorMode = mode;
 }
 
-void BaseOscillator::setFrequency(float frequency, float detune) 
+void BaseOscillator::setFrequency(float frequency) 
 {
-	if (detune != 0.f)
-	{
-		unsigned int baseNote = aux::frequencyToNearestLowerNote(frequency);
-		float freqLow = aux::noteToFrequency(baseNote == 0u ? 0u : baseNote - 1u);
-		float freqHigh = aux::noteToFrequency(baseNote == 127u ? 127u : baseNote + 1u);
-		if (detune > 0.f)
-			frequency = (freqHigh - frequency) * detune + frequency;
-		else
-			frequency = (frequency - freqLow) * -1.f * detune + freqLow;
-	}
 	mFrequency = frequency;
     updateIncrement();
 }

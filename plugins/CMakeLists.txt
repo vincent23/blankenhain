@@ -160,6 +160,8 @@ add_plugin("bh_example_synth"
 add_plugin("bh_polyblep_synth"
 	"polyblepInstrumentPlugin.cpp"
 	"polyblepInstrumentPlugin.h"
+	"polyblepInstrumentPluginEditor.cpp"
+	"polyblepInstrumentPluginEditor.h"
 )
 
 add_plugin("bh_glide_polyblep_synth"

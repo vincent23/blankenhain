@@ -9,14 +9,14 @@ static void renderADHSR(PluginBase& plugin, ImVec2 size = ImGui::GetContentRegio
 	const unsigned int nPoints = 250;
 	float points[250];
 
-	NormalizedRange* range = nullptr;
+	const NormalizedRange* range = nullptr;
 	float min = 0.f;
 	float max = 0.f;
 	float skew = 0.f;
 
 	// attack
 	PluginParameterBundle const& bundle = plugin.getParameters();
-	range = bundle.getParameterBundle().getParameter(paramAttack);
+	range = bundle.getParameter(paramAttack);
 	min = range->getStart();
 	max = range->getEnd();
 	skew = range->getSkew();
@@ -26,7 +26,7 @@ static void renderADHSR(PluginBase& plugin, ImVec2 size = ImGui::GetContentRegio
 		plugin.setParameterAutomated(paramAttack, range->toNormalized(unnormalizedAttack));
 
 	// hold
-	range = bundle.getParameterBundle().getParameter(paramHold);
+	range = bundle.getParameter((paramHold));
 	min = range->getStart();
 	max = range->getEnd();
 	skew = range->getSkew();
@@ -36,7 +36,7 @@ static void renderADHSR(PluginBase& plugin, ImVec2 size = ImGui::GetContentRegio
 		plugin.setParameterAutomated(paramHold, range->toNormalized(unnormalizedHold));
 
 	// holdLevel
-	range = bundle.getParameterBundle().getParameter(paramHoldlevel);
+	range  =bundle.getParameter((paramHold));
 	min = range->getStart();
 	max = range->getEnd();
 	skew = range->getSkew();
@@ -47,7 +47,7 @@ static void renderADHSR(PluginBase& plugin, ImVec2 size = ImGui::GetContentRegio
 
 
 	// decay
-	range = bundle.getParameterBundle().getParameter(paramDecay);
+	range = bundle.getParameter(paramDecay);
 	min = range->getStart();
 	max = range->getEnd();
 	skew = range->getSkew();
@@ -58,7 +58,7 @@ static void renderADHSR(PluginBase& plugin, ImVec2 size = ImGui::GetContentRegio
 
 
 	// sustainBool
-	range = bundle.getParameterBundle().getParameter(paramSustainbool);
+	range = bundle.getParameter(paramSustainbool);
 	min = range->getStart();
 	max = range->getEnd();
 	skew = range->getSkew();
@@ -70,7 +70,7 @@ static void renderADHSR(PluginBase& plugin, ImVec2 size = ImGui::GetContentRegio
 		plugin.setParameterAutomated(paramSustainbool, range->toNormalized(unnormalizedSustainbool));
 
 	// sustain
-	range = bundle.getParameterBundle().getParameter(paramSustain);
+	range = bundle.getParameter(paramSustain);
 	min = range->getStart();
 	max = range->getEnd();
 	skew = range->getSkew();
@@ -80,7 +80,7 @@ static void renderADHSR(PluginBase& plugin, ImVec2 size = ImGui::GetContentRegio
 		plugin.setParameterAutomated(paramSustain, range->toNormalized(unnormalizedSustain));
 
 	// sustainLevel
-	range = bundle.getParameterBundle().getParameter(paramSustainlevel);
+	range = bundle.getParameter(paramSustainlevel);
 	min = range->getStart();
 	max = range->getEnd();
 	skew = range->getSkew();
@@ -91,7 +91,7 @@ static void renderADHSR(PluginBase& plugin, ImVec2 size = ImGui::GetContentRegio
 
 
 	// release
-	range = bundle.getParameterBundle().getParameter(paramRelease);
+	range = bundle.getParameter(paramRelease);
 	min = range->getStart();
 	max = range->getEnd();
 	skew = range->getSkew();

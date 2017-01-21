@@ -84,7 +84,7 @@ ParameterBundle* EffectBase::getPointerToParameterBundle() const
 	return (this->paramBundle);
 }
 
-unsigned int EffectBase::getNumberOfParameters() const
+const unsigned int EffectBase::getNumberOfParameters() const
 {
 	return this->paramBundle->getNumberOfParameters();
 }
