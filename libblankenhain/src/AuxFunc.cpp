@@ -11,7 +11,7 @@ namespace aux
 		if (frequency < 0.f)
 			throw ("frequency was negative value\n");
 #endif
-		return static_cast<unsigned int>(12.f * log2(frequency / 440.f)) + 69u;
+		return static_cast<unsigned int>(12.f * log2(frequency / 440.f)) + 68u;
 	};
 
 	float noteToFrequency(float note)
