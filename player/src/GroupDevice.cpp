@@ -1,6 +1,6 @@
 #include "GroupDevice.h"
 
-Sample* GroupDevice::process(MidiTrack* tracks, const Sample* input, unsigned int numberOfSamples)
+Sample* GroupDevice::process(SongInfo& songInfo, const Sample* input, unsigned int numberOfSamples, unsigned int globalSamplePosition)
 {
 	for (unsigned int samplePosition = 0; samplePosition < numberOfSamples; samplePosition++)
 	{
@@ -9,7 +9,7 @@ Sample* GroupDevice::process(MidiTrack* tracks, const Sample* input, unsigned in
 	for (unsigned int deviceIndex = 0; deviceIndex < numberOfDevices; deviceIndex++)
 	{
 		Device& device = devices[deviceIndex];
-		Sample* output = device.process(tracks, input, numberOfSamples);
+		Sample* output = device.process(songInfo, input, numberOfSamples, globalSamplePosition);
 		for (unsigned int samplePosition = 0; samplePosition < numberOfSamples; samplePosition++)
 		{
 			outputBuffer[samplePosition] += output[samplePosition];

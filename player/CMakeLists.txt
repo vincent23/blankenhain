@@ -19,7 +19,9 @@ prepend(HEADERS "include/"
 	"GroupDevice.h"
 	"InstrumentDevice.h"
 	"MidiTrack.h"
+	"ParameterTrack.h"
 	"Song.h"
+	"SongInfo.h"
 )
 
 prepend(SOURCES "src/"
@@ -31,7 +33,9 @@ prepend(SOURCES "src/"
 	"GroupDevice.cpp"
 	"InstrumentDevice.cpp"
 	"MidiTrack.cpp"
+	"ParameterTrack.cpp"
 	"Song.cpp"
+	"SongInfo.cpp"
 )
 
 include_directories("include")

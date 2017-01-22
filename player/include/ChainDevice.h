@@ -7,5 +7,5 @@ class ChainDevice : public CombinedDevice
 public:
 	using CombinedDevice::CombinedDevice;
 
-	Sample* process(MidiTrack* tracks, const Sample* input, unsigned int numberOfSamples) override;
+	Sample* process(SongInfo& songInfo, const Sample* input, unsigned int numberOfSamples, unsigned int globalSamplePosition) override;
 };

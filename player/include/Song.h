@@ -1,14 +1,14 @@
 #pragma once
 
-class MidiTrack;
+class SongInfo;
 class GroupDevice;
 
 class Song
 {
 public:
-	Song(MidiTrack* tracks, GroupDevice& master);
+	Song(SongInfo& songInfo, GroupDevice& master);
 
 private:
-	MidiTrack* tracks;
+	SongInfo& songInfo;
 	GroupDevice& master;
 };

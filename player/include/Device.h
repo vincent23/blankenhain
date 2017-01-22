@@ -2,7 +2,7 @@
 
 #include "Sample.h"
 
-class MidiTrack;
+class SongInfo;
 
 class Device
 {
@@ -10,7 +10,7 @@ public:
 	Device(unsigned int blockSize);
 	virtual ~Device();
 
-	virtual Sample* process(MidiTrack* tracks, const Sample* input, unsigned int numberOfSamples) = 0;
+	virtual Sample* process(SongInfo& songInfo, const Sample* input, unsigned int numberOfSamples, unsigned int globalSamplePosition) = 0;
 
 protected:
 	Sample* outputBuffer;
