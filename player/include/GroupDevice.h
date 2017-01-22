@@ -1,8 +1,11 @@
 #pragma once
 
-#include "Device.h"
+#include "CombinedDevice.h"
 
-class GroupDevice : public Device
+class GroupDevice : public CombinedDevice
 {
-	using Device::Device;
+public:
+	using CombinedDevice::CombinedDevice;
+
+	Sample* process(MidiTrack* tracks, const Sample* input, unsigned int numberOfSamples) override;
 };

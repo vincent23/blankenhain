@@ -1,9 +1,11 @@
 #pragma once
 
-#include "Device.h"
+#include "CombinedDevice.h"
 
-class ChainDevice : public Device
+class ChainDevice : public CombinedDevice
 {
 public:
-	using Device::Device;
+	using CombinedDevice::CombinedDevice;
+
+	Sample* process(MidiTrack* tracks, const Sample* input, unsigned int numberOfSamples) override;
 };

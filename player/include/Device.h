@@ -8,11 +8,10 @@ class Device
 {
 public:
 	Device(unsigned int blockSize);
+	virtual ~Device();
 
-	virtual Sample* process(MidiTrack* tracks, Sample* input, unsigned int numberOfSamples) = 0;
+	virtual Sample* process(MidiTrack* tracks, const Sample* input, unsigned int numberOfSamples) = 0;
 
 protected:
-	~Device();
-
 	Sample* outputBuffer;
 };
