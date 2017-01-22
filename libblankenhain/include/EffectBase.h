@@ -5,6 +5,10 @@
 
 class ParameterBundle;
 
+/**
+ * Container for bpm and position. Accquired at the beginning of every processReplacing funtion.
+ * Updated during processReplacing.
+ */
 class TempoData
 {
 public:
@@ -34,11 +38,14 @@ public:
 
 
 	/**
-	* Computes modulating values using current parameters.
-	* These values will be added to the normalized representation of the parameters for modulation.
-	* @param[out] modulationValues An array of modulation values of length @a getNumberOfParameters()
-	* @param[in] sampleOffset Relative sample position at which modulation is evaluated
-	*/
+	 * Computes modulating values using current parameters.
+	 * These values will be added to the normalized representation of the parameters for modulation.
+	 * @param[out] modulationValues An array of modulation values of length @a getNumberOfParameters()
+	 * @param[in] sampleOffset Relative sample position at which modulation is evaluated.
+	 *
+	 * You may use tempoData in this function if effect uses it (add sample offset to tempodata.postion to get the very
+	 * current position).
+	 */
 	virtual void getModulation(float* modulationValues, size_t sampleOffset = 1);
 
 	/**

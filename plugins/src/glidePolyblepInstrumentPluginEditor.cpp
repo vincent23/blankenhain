@@ -69,8 +69,10 @@ void glidePolyblepInstrumentPluginEditor::imguiFrame()
 	{
 		plugin.setParameterAutomated(12, bundle.getParameter(12)->getDefaultValueNormalized());
 	}
-	
-	renderLFO(plugin, ImVec2(ImGui::GetWindowContentRegionWidth(), 120), 11, 10, 14, 15, 16, 13);
+
+	ImGui::Text("Detune LFO");
+
+	renderLFO(plugin, ImVec2(ImGui::GetWindowContentRegionWidth(), 160), 11, 10, 14, 15, 16, 13, 17);
 
 	ImGui::End();
 }

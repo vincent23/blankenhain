@@ -77,6 +77,9 @@ void EffectBase::processBlock(Sample* buffer, size_t numberOfSamples)
 	}
 	process(buffer, numberOfSamples);
 
+	if (this->effectUsesTempoData())
+		this->tempodata.position += numberOfSamples;
+
 }
 
 ParameterBundle* EffectBase::getPointerToParameterBundle() const

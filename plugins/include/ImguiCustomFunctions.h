@@ -132,19 +132,30 @@ static void renderADHSR(PluginBase& plugin, ImVec2 size = ImGui::GetContentRegio
 
 
 static void renderLFO(PluginBase& plugin, ImVec2 size = ImGui::GetContentRegionAvail(), unsigned int paramLFOSpeed = 8u, unsigned int paramLFOAmount = 9u, unsigned int paramLFOWaveform = 10u,
-	unsigned int paramLFOTemposync = 11u, unsigned int paramLFOphase = 13, unsigned int paramLFObeatMultiplier = 14)
+	unsigned int paramLFOTemposync = 11u, unsigned int paramLFOphase = 13, unsigned int paramLFObeatMultiplier = 14, unsigned int paramLFObaseline = 15u)
 {
 	ImGui::BeginChild("LFOsub", size, true);
-	//const unsigned int nPoints = 250;
-	//float points[250];
+
+	const unsigned int nPoints = 250;
+	float points[250];
+	bool renderLFO = false;
+	float bpm = 0.f;
+	unsigned int position = 0u;
+	PluginBase* ptr = nullptr;
+	PluginParameterBundle const& bundle = plugin.getParameters();
+
+	if (ptr = dynamic_cast<PluginBase*>(&plugin), ptr)
+	{
+		if (ptr->getBPMandPosition(bpm, position))
+		{
+			renderLFO = true;
+		}
+	}
 
 	const NormalizedRange* range = nullptr;
 	float min = 0.f;
 	float max = 0.f;
 	float skew = 0.f;
-
-
-	PluginParameterBundle const& bundle = plugin.getParameters();
 
 
 	// Amount
@@ -154,7 +165,7 @@ static void renderLFO(PluginBase& plugin, ImVec2 size = ImGui::GetContentRegionA
 	skew = range->getSkew();
 
 	float unnormalizedLFOAmount = bundle.getParameterUnnormalized(paramLFOAmount);
-	if (ImGui::DragFloat("lfoAmount", &unnormalizedLFOAmount, 0.01f, min * 1.005, max * 0.995, "%.3f", 1 / skew))
+	if (ImGui::DragFloat("lfoAmount", &unnormalizedLFOAmount, 0.01f, min *  0.995, max * 0.995, "%.3f", 1 / skew))
 		plugin.setParameterAutomated(paramLFOAmount, range->toNormalized(unnormalizedLFOAmount));
 
 	// waveform
@@ -215,6 +226,16 @@ static void renderLFO(PluginBase& plugin, ImVec2 size = ImGui::GetContentRegionA
 	if (ImGui::DragFloat("lfoPhase", &unnormalizedLFOphase, 0.01f, min * 1.0025, max * 0.9975, "%.3f", 1 / skew))
 		plugin.setParameterAutomated(paramLFOphase, range->toNormalized(unnormalizedLFOphase));
 
+	// baseline
+	range = bundle.getParameter((paramLFObaseline));
+	min = range->getStart();
+	max = range->getEnd();
+	skew = range->getSkew();
+
+	float unnormalizedLFObaseline = bundle.getParameterUnnormalized(paramLFObaseline);
+	if (ImGui::DragFloat("lfoBaseline", &unnormalizedLFObaseline, 0.01f, min * 0.9975, max * 0.9975, "%.3f", 1 / skew))
+		plugin.setParameterAutomated(paramLFObaseline, range->toNormalized(unnormalizedLFObaseline));
+
 	// param LF target
 	//range = bundle.getParameter(paramLFOtarget);
 	//min = range->getStart();
@@ -229,26 +250,26 @@ static void renderLFO(PluginBase& plugin, ImVec2 size = ImGui::GetContentRegionA
 
 
 
-	// Plot lfo
-	//float length = unnormalizedAttack + unnormalizedHold + unnormalizedDecay + unnormalizedSustain + unnormalizedRelease;
+	//// Plot lfo
+	//float length = 60.f * 1000.f / bpm; // milliseconds per beat
 	//std::string lengthStr = "Length of visualized curve: " + std::to_string(length) + " ms.";
 	//ImGui::Text(lengthStr.c_str());
 	//
 	//
-	//if (length < 1000.f)
-	//	length = 1000.f;
-	//else if (length > 5000.f)
-	//	length = 5000.f;
+	////if (length < 1000.f)
+	////	length = 1000.f;
+	////else if (length > 5000.f)
+	////	length = 5000.f;
 	//float incrementForVisualization = length / static_cast<float>(nPoints);
 	//VoiceState dummy;
 	//dummy.on(0u, 69u, 100u);
 	//for (unsigned int i = 0; i < nPoints; i++)
 	//{
 	//	points[i] = 1.f;
+	//
 	//	performAHDSR<float>(points, dummy, aux::millisecToSamples(i * incrementForVisualization), i,
 	//		unnormalizedAttack, unnormalizedRelease, unnormalizedHold, unnormalizedDecay, unnormalizedSustain,
-	//		true, normalizedSustainlevel, normalizedHoldlevel);
-	//}
+	//		true, normalizedSustainlevel, normalizedHoldlevel);	}
 	//
 	//ImVec2 availRest = ImGui::GetContentRegionAvail();
 	//availRest.x *= 2.f / 3.f;

@@ -104,7 +104,6 @@ class IntegerParameter : public FloatParameter
 		this->setTargetValueNormalized(static_cast<float>(found) / static_cast<float>(numberOfPossibleValues));
 
 		// No interpolation for IntegerParameters
-		//next(2147483647u); //maxint via https://msdn.microsoft.com/de-de/library/296az74e.aspx
 	};
 
 	virtual void setTargetValueNormalized(float normalizedValue) override

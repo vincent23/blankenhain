@@ -123,7 +123,7 @@ float PolyBLEPOscillator::getSample(unsigned int time, float phase)
 		value += poly_blep(t);
 		float temp = fmod(t + 0.5f, 1.f);
 		value -= poly_blep(temp);
-		if (mOscillatorMode == OSCILLATOR_MODE_TRIANGLE, phase) {
+		if (mOscillatorMode == OSCILLATOR_MODE_TRIANGLE) {
 			// Leaky integrator: y[n] = A * x[n] + (1 - A) * y[n-1]
 			value = mPhaseIncrement * value + (1. - mPhaseIncrement) * lastOutput;
 			lastOutput = value;

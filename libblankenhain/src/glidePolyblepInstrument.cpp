@@ -7,7 +7,7 @@
 #include <cmath>
 
 glidePolyblepInstrument::glidePolyblepInstrument()
-	: InstrumentBase(17, 1, true)
+	: InstrumentBase(18, 1, true)
 {
 	ParameterBundle* params = getPointerToParameterBundle();
 
@@ -28,6 +28,8 @@ glidePolyblepInstrument::glidePolyblepInstrument()
 	params->getParameter(15) = new FloatParameter(0.f, NormalizedRange(0.f, 1.0f), "lfoTemposync", "");
 	params->getParameter(13) = new FloatParameter(1.f, NormalizedRange(0.125f / 2.f, 4.f), "lfoBeatMultiplier", "");
 	params->getParameter(16) = new FloatParameter(0.f, NormalizedRange(0.f, 2.f * 3.14159265359f), "lfoPhase", "");
+	params->getParameter(17) = new FloatParameter(0.f, NormalizedRange(-1.f, 1.f), "lfoBaseline", "");
+
 
 	params->getParameter(12) = new FloatParameter(0.f, NormalizedRange(-5.f, 5.0f), "detune", "");
 	// Lfo einfach in getModulation schreiben. Hier sin() machen und auf detune drauf schreiben. weiß noch nicht ganz was dann passiert, aber wird schon passen
@@ -122,12 +124,13 @@ void glidePolyblepInstrument::processVoice(VoiceState& voice, unsigned int timeI
 
 void glidePolyblepInstrument::getModulation(float* modulationValues, size_t sampleOffset)
 {
-
 	float lfoAmount = getInterpolatedParameter(10).get();
 
 	// Perform LFO on detune
 	if (lfoAmount != 0.f)
 	{
+		float lfoBaseline = getInterpolatedParameter(17).get();
+
 		float lfoWaveform = getInterpolatedParameter(14).get();
 		bool lfoTempoSync = getInterpolatedParameter(15).get();
 		this->lfo.setMode(static_cast<NaiveOscillator::NaiveOscillatorMode>(static_cast<unsigned int>(lfoWaveform)));
@@ -135,10 +138,7 @@ void glidePolyblepInstrument::getModulation(float* modulationValues, size_t samp
 		if (!lfoTempoSync)
 		{
 			float lfoSpeed = getInterpolatedParameter(11).get();
-
 			this->lfo.setFrequency(lfoSpeed);
-			for (unsigned int i = 0u; i < sampleOffset; i++)
-				modulationValues[12] = this->lfo.getNextSample(lfoPhase) * lfoAmount;
 		}
 		else
 		{
@@ -161,15 +161,16 @@ void glidePolyblepInstrument::getModulation(float* modulationValues, size_t samp
 			float quarterNoteLength = (60.f /*seconds in a minute*/ * lfoMult) / tempodata.bpm;
 			float sixteenthNoteLength = quarterNoteLength / 4.f;
 			float wholeBeatLength = sixteenthNoteLength * 16.f;
-			//float currentSecond = static_cast<float>(tempodata.position) / constants::sampleRate;
 
 			this->lfo.setFrequency(2.f / wholeBeatLength);
-			for (unsigned int i = 0u; i < sampleOffset; i++)
-			{
-				modulationValues[12] = this->lfo.getNextSample(lfoPhase) * lfoAmount;
-			}
-
-
+		}
+		
+		for (unsigned int i = 0u; i < sampleOffset; i++)
+		{
+			if (this->effectUsesTempoData())
+				modulationValues[12] = this->lfo.getSample(sampleOffset + this->tempodata.position, lfoPhase) * lfoAmount + lfoBaseline;
+			else
+				modulationValues[12] = this->lfo.getNextSample(lfoPhase) * lfoAmount + lfoBaseline;
 		}
 	}
 

@@ -180,20 +180,24 @@ void PluginBase::processReplacing(float** inputs, float** outputs, VstInt32 samp
 
 	this->pluginParameters->updateParameters();
 	unsigned int sampleFrames = static_cast<unsigned int>(sampleFrames_);
-	for (unsigned int blockOffset = 0; blockOffset < sampleFrames; blockOffset += constants::blockSize) {
+	for (unsigned int blockOffset = 0; blockOffset < sampleFrames; blockOffset += constants::blockSize) 
+	{
 		unsigned int blockLength = sampleFrames - blockOffset;
 		// the last block of the buffer may be smaller than blockSize
 		// we process it anyway, which might be source of jittering
-		if (blockLength > constants::blockSize) {
+		if (blockLength > constants::blockSize) 
+		{
 			blockLength = constants::blockSize;
 		}
-		for (unsigned sampleOffset = 0; sampleOffset < blockLength; sampleOffset++) {
+		for (unsigned sampleOffset = 0; sampleOffset < blockLength; sampleOffset++) 
+		{
 			unsigned int samplePosition = blockOffset + sampleOffset;
 			processBuffer[sampleOffset] = Sample(inputs[0][samplePosition], inputs[1][samplePosition]);
 		}
 		onBeforeBlock(blockOffset);
 		effect->processBlock(processBuffer, blockLength);
-		for (unsigned sampleOffset = 0; sampleOffset < blockLength; sampleOffset++) {
+		for (unsigned sampleOffset = 0; sampleOffset < blockLength; sampleOffset++) 
+		{
 			unsigned int samplePosition = blockOffset + sampleOffset;
 			alignas(16) double outputSample[2];
 			processBuffer[sampleOffset].store_aligned(outputSample);
