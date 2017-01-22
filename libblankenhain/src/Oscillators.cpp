@@ -34,29 +34,29 @@ void BaseOscillator::setFrequency(float frequency)
     updateIncrement();
 }
 
-float NaiveOscillator::getSample(unsigned int time)
+float NaiveOscillator::getSample(unsigned int time, float phase)
 {
 	mPhase.set(static_cast<float>(time) * mPhaseIncrement);
-	float value = naiveWaveformForMode(mOscillatorMode);
+	float value = naiveWaveformForMode(mOscillatorMode, phase);
 	return value;
 };
 
 void BaseOscillator::updateIncrement() {
-	//double calculatedFrequency = fmin(mFrequency, constants::sampleRate / 2.0);
 	mPhaseIncrement = mFrequency * (2.f * constants::pi) / constants::sampleRate;
 }
 
-float NaiveOscillator::naiveWaveformForMode(NaiveOscillatorMode mode) {
+float NaiveOscillator::naiveWaveformForMode(NaiveOscillatorMode mode, float phase) 
+{
 	float value;
     switch (mode) {
         case OSCILLATOR_MODE_SINE:
-            value = sin(mPhase.getValue());
+            value = sin(mPhase.getValue() + phase);
             break;
         case OSCILLATOR_MODE_SAW:
-            value = ( mPhase.getValue() / constants::pi) - 1.0;
+            value = (fmod(mPhase.getValue() + phase, 2.f * (constants::pi)) / constants::pi) - 1.0;
             break;
         case OSCILLATOR_MODE_SQUARE:
-            if (mPhase.getValue() < (constants::pi)) {
+            if (fmod(mPhase.getValue() + phase, 2.f * (constants::pi)) < (constants::pi)) {
                 value = 1.0;
             } else {
                 value = -1.0;
@@ -64,7 +64,7 @@ float NaiveOscillator::naiveWaveformForMode(NaiveOscillatorMode mode) {
             break;
         case OSCILLATOR_MODE_TRIANGLE:
 		{
-			float tempvalue = -1.0 + (mPhase.getValue() / (constants::pi));
+			float tempvalue = -1.0 + (fmod(mPhase.getValue() + phase, 2.f * (constants::pi)) / (constants::pi));
 			value = 2.0 * (fabs(tempvalue) - 0.5);
 			break;
 		}
@@ -74,10 +74,10 @@ float NaiveOscillator::naiveWaveformForMode(NaiveOscillatorMode mode) {
     return value;
 }
 
-float NaiveOscillator::getNextSample()
+float NaiveOscillator::getNextSample(float phase)
 {
 	mPhase.incrementBy(mPhaseIncrement);
-	float value = naiveWaveformForMode(mOscillatorMode);
+	float value = naiveWaveformForMode(mOscillatorMode, phase);
 	return value;
 }
 
@@ -103,27 +103,57 @@ float PolyBLEPOscillator::poly_blep(float t) const
 	}
 }
 
-float PolyBLEPOscillator::getSample(unsigned int time)
+float PolyBLEPOscillator::getSample(unsigned int time, float phase)
 {
 	float value = 0.0;
 
 	mPhase.set(static_cast<float>(time) * mPhaseIncrement);
 
-	float t = mPhase.getValue() / (2.f * constants::pi);
+	float t = fmod((mPhase.getValue() + phase), (2.f * constants::pi)) / (2.f * constants::pi) ;
 
 	if (mOscillatorMode == OSCILLATOR_MODE_SINE) {
-		value = naiveWaveformForMode(OSCILLATOR_MODE_SINE);
+		value = naiveWaveformForMode(OSCILLATOR_MODE_SINE, phase);
 	}
 	else if (mOscillatorMode == OSCILLATOR_MODE_SAW) {
-		value = naiveWaveformForMode(OSCILLATOR_MODE_SAW);
+		value = naiveWaveformForMode(OSCILLATOR_MODE_SAW, phase);
 		value -= poly_blep(t);
 	}
 	else {
-		value = naiveWaveformForMode(OSCILLATOR_MODE_SQUARE);
+		value = naiveWaveformForMode(OSCILLATOR_MODE_SQUARE, phase);
 		value += poly_blep(t);
 		float temp = fmod(t + 0.5f, 1.f);
 		value -= poly_blep(temp);
-		if (mOscillatorMode == OSCILLATOR_MODE_TRIANGLE) {
+		if (mOscillatorMode == OSCILLATOR_MODE_TRIANGLE, phase) {
+			// Leaky integrator: y[n] = A * x[n] + (1 - A) * y[n-1]
+			value = mPhaseIncrement * value + (1. - mPhaseIncrement) * lastOutput;
+			lastOutput = value;
+		}
+	}
+	return value;
+}
+
+float PolyBLEPOscillator::getNextSample(float phase)
+{
+	float value = 0.0;
+
+	mPhase.incrementBy(mPhaseIncrement);
+
+	float t = fmod((mPhase.getValue() + phase ), (2.f * constants::pi)) / (2.f * constants::pi);
+
+	if (mOscillatorMode == OSCILLATOR_MODE_SINE) {
+		value = naiveWaveformForMode(OSCILLATOR_MODE_SINE, phase);
+	}
+	else if (mOscillatorMode == OSCILLATOR_MODE_SAW) {
+		value = naiveWaveformForMode(OSCILLATOR_MODE_SAW, phase);
+		value -= poly_blep(t);
+	}
+	else {
+		value = naiveWaveformForMode(OSCILLATOR_MODE_SQUARE, phase);
+		value += poly_blep(t);
+		float temp = fmod(t + 0.5f, 1.f);
+		value -= poly_blep(temp);
+		if (mOscillatorMode == OSCILLATOR_MODE_TRIANGLE)
+		{
 			// Leaky integrator: y[n] = A * x[n] + (1 - A) * y[n-1]
 			value = mPhaseIncrement * value + (1. - mPhaseIncrement) * lastOutput;
 			lastOutput = value;

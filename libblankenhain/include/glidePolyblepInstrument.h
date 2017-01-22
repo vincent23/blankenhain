@@ -13,8 +13,14 @@ public:
 	~glidePolyblepInstrument();
 
 	void processVoice(VoiceState& voice, unsigned int timeInSamples, Sample* buffer, unsigned int numberOfSamples);
+
+	virtual void getModulation(float* modulationValues, size_t sampleOffset = 0) override;
+
 private:
 	PolyBLEPOscillator osc;
+
+	PolyBLEPOscillator lfo;
+
 	float freqPrev;
 	unsigned int notePrev;
 	unsigned int timeNoteOff;

@@ -7,7 +7,7 @@
 #include <cmath>
 
 glidePolyblepInstrument::glidePolyblepInstrument()
-	: InstrumentBase(13, 1)
+	: InstrumentBase(17, 1, true)
 {
 	ParameterBundle* params = getPointerToParameterBundle();
 
@@ -22,8 +22,13 @@ glidePolyblepInstrument::glidePolyblepInstrument()
 	params->getParameter(8) = new FloatParameter(0.f, NormalizedRange(0.f, 3.9f), "osc", "");
 	params->getParameter(9) = new FloatParameter(0.f, NormalizedRange(0.f, 0.3f), "glide", "");
 
-	params->getParameter(10) = new FloatParameter(0.f, NormalizedRange(0.f, 1.f), "lfoAmount", "");
-	params->getParameter(11) = new FloatParameter(0.f, NormalizedRange(0.f, 2.9f), "lfoSpeed", "");
+	params->getParameter(10) = new FloatParameter(0.f, NormalizedRange(-1.f, 1.f), "lfoAmount", "");
+	params->getParameter(11) = new FloatParameter(0.0055f, NormalizedRange(0.005f, 20.f, 0.325), "lfoSpeed", "");
+	params->getParameter(14) = new FloatParameter(0.f, NormalizedRange(0.f, 3.9f), "lfoWaveform", "");
+	params->getParameter(15) = new FloatParameter(0.f, NormalizedRange(0.f, 1.0f), "lfoTemposync", "");
+	params->getParameter(13) = new FloatParameter(1.f, NormalizedRange(0.125f / 2.f, 4.f), "lfoBeatMultiplier", "");
+	params->getParameter(16) = new FloatParameter(0.f, NormalizedRange(0.f, 2.f * 3.14159265359f), "lfoPhase", "");
+
 	params->getParameter(12) = new FloatParameter(0.f, NormalizedRange(-5.f, 5.0f), "detune", "");
 	// Lfo einfach in getModulation schreiben. Hier sin() machen und auf detune drauf schreiben. weiß noch nicht ganz was dann passiert, aber wird schon passen
 	// Der lfo einach von fmSynth kopieren.
@@ -52,9 +57,19 @@ void glidePolyblepInstrument::processVoice(VoiceState& voice, unsigned int timeI
 	float portamento = getInterpolatedParameter(9).get();
 	float detune = getInterpolatedParameter(12).get();
 
+	float lfoAmount = getInterpolatedParameter(10).get();
+	float lfoSpeed = getInterpolatedParameter(11).get();
+	float lfoWaveform = getInterpolatedParameter(14).get();
+	bool lfoTempoSync = getInterpolatedParameter(15).get();
+
+
+
+
+
+
 	// oscMode 1: polyBLEP Sawtooth
-	// oscMode 2: polyBLEP Square (broken)
-	// oscMode 3: polyBLEP Triangle (broken)
+	// oscMode 2: polyBLEP Square
+	// oscMode 3: polyBLEP Triangle
 
 	this->osc.setMode(NaiveOscillator::NaiveOscillatorMode(oscMode));
 
@@ -104,3 +119,58 @@ void glidePolyblepInstrument::processVoice(VoiceState& voice, unsigned int timeI
 		performAHDSR<Sample>(buffer, voice, timeInSamples, sampleIndex, attack, release, hold, decay, sustain, sustainOn, sustainLevel, holdLevel);
 	}
 }
+
+void glidePolyblepInstrument::getModulation(float* modulationValues, size_t sampleOffset)
+{
+
+	float lfoAmount = getInterpolatedParameter(10).get();
+
+	// Perform LFO on detune
+	if (lfoAmount != 0.f)
+	{
+		float lfoWaveform = getInterpolatedParameter(14).get();
+		bool lfoTempoSync = getInterpolatedParameter(15).get();
+		this->lfo.setMode(static_cast<NaiveOscillator::NaiveOscillatorMode>(static_cast<unsigned int>(lfoWaveform)));
+		float lfoPhase = getInterpolatedParameter(16).get();
+		if (!lfoTempoSync)
+		{
+			float lfoSpeed = getInterpolatedParameter(11).get();
+
+			this->lfo.setFrequency(lfoSpeed);
+			for (unsigned int i = 0u; i < sampleOffset; i++)
+				modulationValues[12] = this->lfo.getNextSample(lfoPhase) * lfoAmount;
+		}
+		else
+		{
+			float lfoMult = getInterpolatedParameter(13).get();
+			if (lfoMult < 0.125f)
+				lfoMult = 0.0625;
+			else if (lfoMult < 0.25)
+				lfoMult = 0.125f;
+			else if (lfoMult < 0.5)
+				lfoMult = 0.25;
+			else if (lfoMult < 1.f)
+				lfoMult = 0.5;
+			else if (lfoMult < 1.9f)
+				lfoMult = 1.f;
+			else if (lfoMult < 3.5f)
+				lfoMult = 2.f;
+			else
+				lfoMult = 4.f;
+
+			float quarterNoteLength = (60.f /*seconds in a minute*/ * lfoMult) / tempodata.bpm;
+			float sixteenthNoteLength = quarterNoteLength / 4.f;
+			float wholeBeatLength = sixteenthNoteLength * 16.f;
+			//float currentSecond = static_cast<float>(tempodata.position) / constants::sampleRate;
+
+			this->lfo.setFrequency(2.f / wholeBeatLength);
+			for (unsigned int i = 0u; i < sampleOffset; i++)
+			{
+				modulationValues[12] = this->lfo.getNextSample(lfoPhase) * lfoAmount;
+			}
+
+
+		}
+	}
+
+};

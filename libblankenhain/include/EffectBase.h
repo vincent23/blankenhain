@@ -39,7 +39,7 @@ public:
 	* @param[out] modulationValues An array of modulation values of length @a getNumberOfParameters()
 	* @param[in] sampleOffset Relative sample position at which modulation is evaluated
 	*/
-	virtual void getModulation(float* modulationValues, size_t sampleOffset = 0);
+	virtual void getModulation(float* modulationValues, size_t sampleOffset = 1);
 
 	/**
 	 * Returns if effect is synced to host and uses BPM
