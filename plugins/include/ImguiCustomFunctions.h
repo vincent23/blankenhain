@@ -1,5 +1,75 @@
 #pragma once
 #include <imgui.h>
+#include "FloatParameter.h"
+#include "PluginBase.h"
+
+static void renderParam(FloatParameter const* param, PluginBase& plugin, unsigned int paramIndex)
+{
+	const NormalizedRange* range = nullptr;
+	float min = 0.f;
+	float max = 0.f;
+	float skew = 0.f;
+
+	range = param;
+	min = range->getStart();
+	max = range->getEnd();
+	skew = range->getSkew();
+	if (dynamic_cast<BoolParameter const*>(param))
+	{
+		BoolParameter const* cParam = dynamic_cast<BoolParameter const*>(param);
+		const bool before = cParam->getValue();
+		int after = cParam->getValue();
+
+		ImGui::Text(cParam->getName().c_str()); ImGui::SameLine();
+		ImGui::RadioButton("Off", &after, 0); ImGui::SameLine();
+		ImGui::RadioButton("On", &after, 1);
+		plugin.setParameterAutomated(paramIndex, static_cast<float>(after));
+
+	}
+	else if (dynamic_cast<OptionParameter const*>(param))
+	{
+		OptionParameter const* cParam = dynamic_cast<OptionParameter const*>(param);
+		const int before(cParam->getCurrentNumber());
+		int current(cParam->getCurrentNumber());
+		for (unsigned int i = 0u; i < cParam->getNumberOfPossibleValues(); i++)
+		{
+			ImGui::RadioButton(cParam->getOptionName(i).c_str(), &current, i);
+			if (i != cParam->getNumberOfPossibleValues() - 1u)
+				ImGui::SameLine();
+		}
+		if (before != current)
+		{
+			float normalized = static_cast<float>(current) / static_cast<float>(cParam->getNumberOfPossibleValues());
+			plugin.setParameterAutomated(paramIndex, normalized);
+		}
+	}
+	else if (dynamic_cast<DiscreteParameter const*>(param))
+	{
+
+		DiscreteParameter const* cParam = dynamic_cast<DiscreteParameter const*>(param);
+		const int before(cParam->getCurrentNumber());
+		int current(cParam->getCurrentNumber());
+
+		ImGui::SliderInt((cParam->getName()).c_str(), &current, 0u, cParam->getNumberOfPossibleValues());
+		if (before != current)
+		{
+			float normalized = static_cast<float>(current) / static_cast<float>(cParam->getNumberOfPossibleValues());
+			plugin.setParameterAutomated(paramIndex, normalized);
+		}
+	}
+	else
+	{
+		float unnormalized = param->getValueUnnormalized();
+		if (ImGui::DragFloat(param->getName().c_str(), &unnormalized, 0.001, min * 1.002, max * 0.998, "%.3f", 1 / skew))
+			plugin.setParameterAutomated(paramIndex, range->toNormalized(unnormalized));
+		ImGui::SameLine();
+		if (ImGui::Button("Reset"))
+		{
+			plugin.setParameterAutomated(paramIndex, param->getDefaultValueNormalized());
+		}
+	
+	}
+}
 
 static void renderADHSR(PluginBase& plugin, ImVec2 size = ImGui::GetContentRegionAvail(), unsigned int paramAttack = 0u, unsigned int paramHold = 1u, unsigned int paramHoldlevel = 2u,
 	unsigned int paramDecay = 3u, unsigned int paramSustainbool = 4u, unsigned int paramSustain = 5u
@@ -36,7 +106,7 @@ static void renderADHSR(PluginBase& plugin, ImVec2 size = ImGui::GetContentRegio
 		plugin.setParameterAutomated(paramHold, range->toNormalized(unnormalizedHold));
 
 	// holdLevel
-	range  =bundle.getParameter((paramHold));
+	range  =bundle.getParameter((paramHoldlevel));
 	min = range->getStart();
 	max = range->getEnd();
 	skew = range->getSkew();
@@ -130,7 +200,6 @@ static void renderADHSR(PluginBase& plugin, ImVec2 size = ImGui::GetContentRegio
 
 }
 
-
 static void renderLFO(PluginBase& plugin, ImVec2 size = ImGui::GetContentRegionAvail(), unsigned int paramLFOSpeed = 8u, unsigned int paramLFOAmount = 9u, unsigned int paramLFOWaveform = 10u,
 	unsigned int paramLFOTemposync = 11u, unsigned int paramLFOphase = 13, unsigned int paramLFObeatMultiplier = 14, unsigned int paramLFObaseline = 15u)
 {
@@ -152,90 +221,42 @@ static void renderLFO(PluginBase& plugin, ImVec2 size = ImGui::GetContentRegionA
 		}
 	}
 
-	const NormalizedRange* range = nullptr;
-	float min = 0.f;
-	float max = 0.f;
-	float skew = 0.f;
+	ImGui::PushID(paramLFOAmount);
+	renderParam(bundle.getParameter(paramLFOAmount), plugin, paramLFOAmount);
+	ImGui::PopID();
 
+	ImGui::PushID(paramLFOWaveform);
+	renderParam(bundle.getParameter(paramLFOWaveform), plugin, paramLFOWaveform);
+	ImGui::PopID();
 
-	// Amount
-	range = bundle.getParameter((paramLFOAmount));
-	min = range->getStart();
-	max = range->getEnd();
-	skew = range->getSkew();
+	ImGui::PushID(paramLFOTemposync);
+	renderParam(bundle.getParameter(paramLFOTemposync), plugin, paramLFOTemposync);
+	ImGui::PopID();
 
-	float unnormalizedLFOAmount = bundle.getParameterUnnormalized(paramLFOAmount);
-	if (ImGui::DragFloat("lfoAmount", &unnormalizedLFOAmount, 0.01f, min *  0.995, max * 0.995, "%.3f", 1 / skew))
-		plugin.setParameterAutomated(paramLFOAmount, range->toNormalized(unnormalizedLFOAmount));
-
-	// waveform
-	range = bundle.getParameter((paramLFOWaveform));
-	min = range->getStart();
-	max = range->getEnd();
-	skew = range->getSkew();
-
-	float unnormalizedLFOWaveform = bundle.getParameterUnnormalized(paramLFOWaveform);
-	if (ImGui::DragFloat("lfoWaveform", &unnormalizedLFOWaveform, 0.01f, min * 1.005, max * 0.995, "%.3f", 1 / skew))
-		plugin.setParameterAutomated(paramLFOWaveform, range->toNormalized(unnormalizedLFOWaveform));
-
-
-	// paramLFOTemposync
-	range = bundle.getParameter(paramLFOTemposync);
-	min = range->getStart();
-	max = range->getEnd();
-	skew = range->getSkew();
-	int unnormalizedLFOTemposync = bundle.getParameterUnnormalized(paramLFOTemposync);
-	ImGui::Text("Temposync"); ImGui::SameLine();
-	ImGui::RadioButton("Off", &unnormalizedLFOTemposync, 0); ImGui::SameLine();
-	ImGui::RadioButton("On", &unnormalizedLFOTemposync, 1);
-	if (unnormalizedLFOTemposync != static_cast<int>(bundle.getParameterUnnormalized(paramLFOTemposync)))
-		plugin.setParameterAutomated(paramLFOTemposync, range->toNormalized(unnormalizedLFOTemposync));
-
-	if (unnormalizedLFOTemposync == 0)
+	BoolParameter const* temposync = dynamic_cast<BoolParameter const*>(bundle.getParameter(paramLFOTemposync));
+	if (temposync->getValue() == 0)
 	{
-		// Speed
-		range = bundle.getParameter(paramLFOSpeed);
-		min = range->getStart();
-		max = range->getEnd();
-		skew = range->getSkew();
+		ImGui::PushID(paramLFOSpeed);
+		renderParam(bundle.getParameter(paramLFOSpeed), plugin, paramLFOSpeed);
+		ImGui::PopID();
 
-		float unnormalizedLFOSpeed = bundle.getParameterUnnormalized(paramLFOSpeed);
-		if (ImGui::DragFloat("lfoSpeed", &unnormalizedLFOSpeed, 0.01f, min * 1.005, max * 0.995, "%.3f", 1 / skew))
-			plugin.setParameterAutomated(paramLFOSpeed, range->toNormalized(unnormalizedLFOSpeed));
 	}
 	else
 	{
+		ImGui::PushID(paramLFObeatMultiplier);
+		renderParam(bundle.getParameter(paramLFObeatMultiplier), plugin, paramLFObeatMultiplier);
+		ImGui::PopID();
 		// beat multiply
-		range = bundle.getParameter(paramLFObeatMultiplier);
-		min = range->getStart();
-		max = range->getEnd();
-		skew = range->getSkew();
-
-		float unnormalizedLFObeatMultiplier = bundle.getParameterUnnormalized(paramLFObeatMultiplier);
-		if (ImGui::DragFloat("lfoBeatMult", &unnormalizedLFObeatMultiplier, 0.01f, min * 1.005, max * 0.995, "%.3f", 1 / skew))
-			plugin.setParameterAutomated(paramLFObeatMultiplier, range->toNormalized(unnormalizedLFObeatMultiplier));
 	}
 
-	// phase
-	range = bundle.getParameter((paramLFOphase));
-	min = range->getStart();
-	max = range->getEnd();
-	skew = range->getSkew();
-
-	float unnormalizedLFOphase = bundle.getParameterUnnormalized(paramLFOphase);
-	if (ImGui::DragFloat("lfoPhase", &unnormalizedLFOphase, 0.01f, min * 1.0025, max * 0.9975, "%.3f", 1 / skew))
-		plugin.setParameterAutomated(paramLFOphase, range->toNormalized(unnormalizedLFOphase));
+	ImGui::PushID(paramLFOphase);
+	renderParam(bundle.getParameter(paramLFOphase), plugin, paramLFOphase);
+	ImGui::PopID();
 
 	// baseline
-	range = bundle.getParameter((paramLFObaseline));
-	min = range->getStart();
-	max = range->getEnd();
-	skew = range->getSkew();
-
-	float unnormalizedLFObaseline = bundle.getParameterUnnormalized(paramLFObaseline);
-	if (ImGui::DragFloat("lfoBaseline", &unnormalizedLFObaseline, 0.01f, min * 0.9975, max * 0.9975, "%.3f", 1 / skew))
-		plugin.setParameterAutomated(paramLFObaseline, range->toNormalized(unnormalizedLFObaseline));
-
+	ImGui::PushID(paramLFObaseline);
+	renderParam(bundle.getParameter(paramLFObaseline), plugin, paramLFObaseline);
+	ImGui::PopID();
 	// param LF target
 	//range = bundle.getParameter(paramLFOtarget);
 	//min = range->getStart();

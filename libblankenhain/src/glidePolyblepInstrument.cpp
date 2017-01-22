@@ -19,19 +19,19 @@ glidePolyblepInstrument::glidePolyblepInstrument()
 	params->getParameter(5) = new FloatParameter(100.f, NormalizedRange(1.f, 1700.f, 0.3f), "sustain", "ms");
 	params->getParameter(6) = new FloatParameter(1.0f, NormalizedRange(), "sustainLevel", "ratio");
 	params->getParameter(7) = new FloatParameter(100.f, NormalizedRange(1.f, 1700.f, 0.3f), "release", "ms");
-	params->getParameter(8) = new FloatParameter(0.f, NormalizedRange(0.f, 3.9f), "osc", "");
+	BhString names[4] = { "sine", "saw", "square", "triangle" };
+	params->getParameter(8) = new OptionParameter(4u, names, "osc", "");
 	params->getParameter(9) = new FloatParameter(0.f, NormalizedRange(0.f, 0.3f), "glide", "");
-
 	params->getParameter(10) = new FloatParameter(0.f, NormalizedRange(-1.f, 1.f), "lfoAmount", "");
 	params->getParameter(11) = new FloatParameter(0.0055f, NormalizedRange(0.005f, 20.f, 0.325), "lfoSpeed", "");
-	params->getParameter(14) = new FloatParameter(0.f, NormalizedRange(0.f, 3.9f), "lfoWaveform", "");
-	params->getParameter(15) = new FloatParameter(0.f, NormalizedRange(0.f, 1.0f), "lfoTemposync", "");
-	params->getParameter(13) = new FloatParameter(1.f, NormalizedRange(0.125f / 2.f, 4.f), "lfoBeatMultiplier", "");
+	params->getParameter(12) = new FloatParameter(0.f, NormalizedRange(-5.f, 5.0f), "detune", "");
+	params->getParameter(13) = new DiscreteParameter(7u, "lfoBeatMultiplier", "", multiplierValues);
+	params->getParameter(14) = new OptionParameter(4u, names, "lfoWaveform", "");
+	params->getParameter(15) = new BoolParameter(false, "lfoTemposync");
+	float multiplierValues[7] = { 0.0625, 0.125, 0.25, 0.5, 1., 2., 4.};
 	params->getParameter(16) = new FloatParameter(0.f, NormalizedRange(0.f, 2.f * 3.14159265359f), "lfoPhase", "");
 	params->getParameter(17) = new FloatParameter(0.f, NormalizedRange(-1.f, 1.f), "lfoBaseline", "");
 
-
-	params->getParameter(12) = new FloatParameter(0.f, NormalizedRange(-5.f, 5.0f), "detune", "");
 	// Lfo einfach in getModulation schreiben. Hier sin() machen und auf detune drauf schreiben. weiﬂ noch nicht ganz was dann passiert, aber wird schon passen
 	// Der lfo einach von fmSynth kopieren.
 
@@ -55,7 +55,7 @@ void glidePolyblepInstrument::processVoice(VoiceState& voice, unsigned int timeI
 	float sustainLevel = getInterpolatedParameter(6).get();
 	float sustain = getInterpolatedParameter(5).get();
 	float release = getInterpolatedParameter(7).get();
-	unsigned int oscMode = static_cast<unsigned int>(getInterpolatedParameter(8).get());
+	float oscMode = getInterpolatedParameter(8).get();
 	float portamento = getInterpolatedParameter(9).get();
 	float detune = getInterpolatedParameter(12).get();
 
@@ -73,7 +73,7 @@ void glidePolyblepInstrument::processVoice(VoiceState& voice, unsigned int timeI
 	// oscMode 2: polyBLEP Square
 	// oscMode 3: polyBLEP Triangle
 
-	this->osc.setMode(NaiveOscillator::NaiveOscillatorMode(oscMode));
+	this->osc.setMode(NaiveOscillator::NaiveOscillatorMode(static_cast<unsigned int>(oscMode * 4.f)));
 
 	// If a new note is played, take this as the start time for glide
 	// TODO we can improve this but as this synth only has one voice
@@ -133,7 +133,7 @@ void glidePolyblepInstrument::getModulation(float* modulationValues, size_t samp
 
 		float lfoWaveform = getInterpolatedParameter(14).get();
 		bool lfoTempoSync = getInterpolatedParameter(15).get();
-		this->lfo.setMode(static_cast<NaiveOscillator::NaiveOscillatorMode>(static_cast<unsigned int>(lfoWaveform)));
+		this->lfo.setMode(NaiveOscillator::NaiveOscillatorMode(static_cast<unsigned int>(lfoWaveform * 4.f)));
 		float lfoPhase = getInterpolatedParameter(16).get();
 		if (!lfoTempoSync)
 		{

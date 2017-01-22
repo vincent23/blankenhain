@@ -59,6 +59,9 @@ public:
 	void setTempoData(float bpm, unsigned int position);
 
 protected:
+	/**
+	 * Use this, and only this function, to get access to current parameter values
+	 */
 	InterpolatedValue<float>& getInterpolatedParameter(unsigned int parameterIndex) const;
 
 	/** 
