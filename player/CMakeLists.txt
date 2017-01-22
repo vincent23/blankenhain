@@ -12,10 +12,24 @@ endfunction(prepend)
 
 prepend(HEADERS "include/"
 	"BlankenhainPlayer.h"
+	"ChainDevice.h"
+	"Device.h"
+	"EffectDevice.h"
+	"GroupDevice.h"
+	"InstrumentDevice.h"
+	"MidiTrack.h"
+	"Song.h"
 )
 
 prepend(SOURCES "src/"
 	"BlankenhainPlayer.cpp"
+	"ChainDevice.cpp"
+	"Device.cpp"
+	"EffectDevice.cpp"
+	"GroupDevice.cpp"
+	"InstrumentDevice.cpp"
+	"MidiTrack.cpp"
+	"Song.cpp"
 )
 
 include_directories("include")
