@@ -48,12 +48,12 @@ void InstrumentBase::handleNoteEvent(bool isNoteOn, unsigned int key, unsigned i
 		}
 	}
 	else {
-		// note off: find the earliest note with the same key and set the voice to off
+		// note off: find the earliest note that is on with the same key and set the voice to off
 		unsigned int earliestTime = 0xffffffff;
 		VoiceState* earliestNote = nullptr;
 		for (unsigned int voiceIndex = 0; voiceIndex < numberOfVoices; voiceIndex++) {
 			VoiceState& voice = voices[voiceIndex];
-			if (!voice.isSilent && voice.key == key && voice.onTime <= earliestTime) {
+			if (!voice.isSilent && voice.key == key && voice.isOn && voice.onTime <= earliestTime) {
 				earliestNote = &voice;
 			}
 		}
