@@ -21,7 +21,7 @@ Sample* EffectDevice::process(SongInfo& songInfo, const Sample* input, unsigned 
 	ParameterBundle* parameters = effect.getPointerToParameterBundle();
 	for (unsigned int parameterIndex = 0; parameterIndex < effect.getNumberOfParameters(); parameterIndex++)
 	{
-		float targetValue = parameterValues[parameterIndex].getValueAt(globalSamplePosition);
+		float targetValue = parameterValues[parameterIndex].getCurrentValueAndAdvance(globalSamplePosition);
 		parameters->getParameter(parameterIndex)->setTargetValueNormalized(targetValue);
 	}
 	for (unsigned int sampleIndex = 0; sampleIndex < constants::blockSize; sampleIndex++)
