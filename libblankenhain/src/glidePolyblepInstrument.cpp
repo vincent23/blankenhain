@@ -15,7 +15,7 @@ glidePolyblepInstrument::glidePolyblepInstrument()
 	params->getParameter(1) = new FloatParameter(100.f, NormalizedRange(1.f, 1700.f, 0.3f), "hold", "ms");
 	params->getParameter(2) = new FloatParameter(1.f, NormalizedRange(), "holdlevel", "ratio");
 	params->getParameter(3) = new FloatParameter(100.f, NormalizedRange(1.f, 1700.f, 0.3f), "decay", "ms");
-	params->getParameter(4) = new FloatParameter(0.f, NormalizedRange(), "sustainBool", "bool");
+	params->getParameter(4) = new BoolParameter(false, "sustainBool");
 	params->getParameter(5) = new FloatParameter(100.f, NormalizedRange(1.f, 1700.f, 0.3f), "sustain", "ms");
 	params->getParameter(6) = new FloatParameter(1.0f, NormalizedRange(), "sustainLevel", "ratio");
 	params->getParameter(7) = new FloatParameter(100.f, NormalizedRange(1.f, 1700.f, 0.3f), "release", "ms");
@@ -25,10 +25,11 @@ glidePolyblepInstrument::glidePolyblepInstrument()
 	params->getParameter(10) = new FloatParameter(0.f, NormalizedRange(-1.f, 1.f), "lfoAmount", "");
 	params->getParameter(11) = new FloatParameter(0.0055f, NormalizedRange(0.005f, 20.f, 0.325), "lfoSpeed", "");
 	params->getParameter(12) = new FloatParameter(0.f, NormalizedRange(-5.f, 5.0f), "detune", "");
+	float multiplierValues[7] = { 0.0625, 0.125, 0.25, 0.5, 1., 2., 4. };
 	params->getParameter(13) = new DiscreteParameter(7u, "lfoBeatMultiplier", "", multiplierValues);
 	params->getParameter(14) = new OptionParameter(4u, names, "lfoWaveform", "");
 	params->getParameter(15) = new BoolParameter(false, "lfoTemposync");
-	float multiplierValues[7] = { 0.0625, 0.125, 0.25, 0.5, 1., 2., 4.};
+
 	params->getParameter(16) = new FloatParameter(0.f, NormalizedRange(0.f, 2.f * 3.14159265359f), "lfoPhase", "");
 	params->getParameter(17) = new FloatParameter(0.f, NormalizedRange(-1.f, 1.f), "lfoBaseline", "");
 

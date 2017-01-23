@@ -2,18 +2,15 @@
 #include <imgui.h>
 #include "FloatParameter.h"
 #include "PluginBase.h"
+#include "VoiceState.h"
+#include "InstrumentBase.h"
 
+#ifndef IM_ARRAYSIZE(_ARR)
+#define IM_ARRAYSIZE(_ARR)  ((int)(sizeof(_ARR)/sizeof(*_ARR)))
+#endif
 static void renderParam(FloatParameter const* param, PluginBase& plugin, unsigned int paramIndex)
 {
-	const NormalizedRange* range = nullptr;
-	float min = 0.f;
-	float max = 0.f;
-	float skew = 0.f;
 
-	range = param;
-	min = range->getStart();
-	max = range->getEnd();
-	skew = range->getSkew();
 	if (dynamic_cast<BoolParameter const*>(param))
 	{
 		BoolParameter const* cParam = dynamic_cast<BoolParameter const*>(param);
@@ -50,15 +47,34 @@ static void renderParam(FloatParameter const* param, PluginBase& plugin, unsigne
 		const int before(cParam->getCurrentNumber());
 		int current(cParam->getCurrentNumber());
 
-		ImGui::SliderInt((cParam->getName()).c_str(), &current, 0u, cParam->getNumberOfPossibleValues());
+		//const char* items[] = { "AAAA", "BBBB", "CCCC", "DDDD", "EEEE", "FFFF", "GGGG", "HHHH", "IIII", "JJJJ", "KKKK" };
+		const char** items = new const char*[cParam->getNumberOfPossibleValues()];
+		BhString* comboBoxValue = new BhString[cParam->getNumberOfPossibleValues()];
+		for (unsigned int i = 0u; i < cParam->getNumberOfPossibleValues(); i++)
+		{
+			comboBoxValue[i] = std::to_string(*(cParam->getPossibleValue(i)));
+			items[i] = comboBoxValue[i].c_str();
+		}
+		ImGui::Combo(cParam->getName().c_str(), &current, items, cParam->getNumberOfPossibleValues());
 		if (before != current)
 		{
 			float normalized = static_cast<float>(current) / static_cast<float>(cParam->getNumberOfPossibleValues());
 			plugin.setParameterAutomated(paramIndex, normalized);
 		}
+		delete[] items;
+		delete[] comboBoxValue;
 	}
 	else
 	{
+		const NormalizedRange* range = nullptr;
+		float min = 0.f;
+		float max = 0.f;
+		float skew = 0.f;
+
+		range = param;
+		min = range->getStart();
+		max = range->getEnd();
+		skew = range->getSkew();
 		float unnormalized = param->getValueUnnormalized();
 		if (ImGui::DragFloat(param->getName().c_str(), &unnormalized, 0.001, min * 1.002, max * 0.998, "%.3f", 1 / skew))
 			plugin.setParameterAutomated(paramIndex, range->toNormalized(unnormalized));
@@ -79,100 +95,47 @@ static void renderADHSR(PluginBase& plugin, ImVec2 size = ImGui::GetContentRegio
 	const unsigned int nPoints = 250;
 	float points[250];
 
-	const NormalizedRange* range = nullptr;
-	float min = 0.f;
-	float max = 0.f;
-	float skew = 0.f;
-
-	// attack
 	PluginParameterBundle const& bundle = plugin.getParameters();
-	range = bundle.getParameter(paramAttack);
-	min = range->getStart();
-	max = range->getEnd();
-	skew = range->getSkew();
 
-	float unnormalizedAttack = bundle.getParameterUnnormalized(paramAttack);
-	if (ImGui::DragFloat("attack", &unnormalizedAttack, 0.01f, min * 1.005, max * 0.995, "%.3f", 1 / skew))
-		plugin.setParameterAutomated(paramAttack, range->toNormalized(unnormalizedAttack));
+	ImGui::PushID(paramAttack);
+	renderParam(bundle.getParameter(paramAttack), plugin, paramAttack);
+	ImGui::PopID();
 
-	// hold
-	range = bundle.getParameter((paramHold));
-	min = range->getStart();
-	max = range->getEnd();
-	skew = range->getSkew();
+	ImGui::PushID(paramHold);
+	renderParam(bundle.getParameter(paramHold), plugin, paramHold);
+	ImGui::PopID();
 
-	float unnormalizedHold = bundle.getParameterUnnormalized(paramHold);
-	if (ImGui::DragFloat("hold", &unnormalizedHold, 0.01f, min * 1.005, max * 0.995, "%.3f", 1 / skew))
-		plugin.setParameterAutomated(paramHold, range->toNormalized(unnormalizedHold));
+	ImGui::PushID(paramHoldlevel);
+	renderParam(bundle.getParameter(paramHoldlevel), plugin, paramHoldlevel);
+	ImGui::PopID();
 
-	// holdLevel
-	range  =bundle.getParameter((paramHoldlevel));
-	min = range->getStart();
-	max = range->getEnd();
-	skew = range->getSkew();
+	ImGui::PushID(paramDecay);
+	renderParam(bundle.getParameter(paramDecay), plugin, paramDecay);
+	ImGui::PopID();
 
-	float normalizedHoldlevel = bundle.getParameterUnnormalized(paramHoldlevel);
-	if (ImGui::DragFloat("holdLevel", &normalizedHoldlevel, 0.01f, min * 1.005, max * 0.995, "%.3f", 1 / skew))
-		plugin.setParameterAutomated(paramHoldlevel, range->toNormalized(normalizedHoldlevel));
+	ImGui::PushID(paramSustainbool);
+	renderParam(bundle.getParameter(paramSustainbool), plugin, paramSustainbool);
+	ImGui::PopID();
 
+	ImGui::PushID(paramSustain);
+	renderParam(bundle.getParameter(paramSustain), plugin, paramSustain);
+	ImGui::PopID();
 
-	// decay
-	range = bundle.getParameter(paramDecay);
-	min = range->getStart();
-	max = range->getEnd();
-	skew = range->getSkew();
+	ImGui::PushID(paramSustainlevel);
+	renderParam(bundle.getParameter(paramSustainlevel), plugin, paramSustainlevel);
+	ImGui::PopID();
 
-	float unnormalizedDecay = bundle.getParameterUnnormalized(paramDecay);
-	if (ImGui::DragFloat("decay", &unnormalizedDecay, 0.01f, min * 1.005, max * 0.995, "%.3f", 1 / skew))
-		plugin.setParameterAutomated(paramDecay, range->toNormalized(unnormalizedDecay));
-
-
-	// sustainBool
-	range = bundle.getParameter(paramSustainbool);
-	min = range->getStart();
-	max = range->getEnd();
-	skew = range->getSkew();
-	int unnormalizedSustainbool = bundle.getParameterUnnormalized(paramSustainbool);
-	ImGui::Text("Hard Sustain Enforcement"); ImGui::SameLine();
-	ImGui::RadioButton("On", &unnormalizedSustainbool, 0); ImGui::SameLine();
-	ImGui::RadioButton("Off", &unnormalizedSustainbool, 1);
-	if (unnormalizedSustainbool != static_cast<int>(bundle.getParameterUnnormalized(paramSustainbool)))
-		plugin.setParameterAutomated(paramSustainbool, range->toNormalized(unnormalizedSustainbool));
-
-	// sustain
-	range = bundle.getParameter(paramSustain);
-	min = range->getStart();
-	max = range->getEnd();
-	skew = range->getSkew();
-
-	float unnormalizedSustain = bundle.getParameterUnnormalized(paramSustain);
-	if (ImGui::DragFloat("sustain", &unnormalizedSustain, 0.01f, min * 1.005, max * 0.995, "%.3f", 1 / skew))
-		plugin.setParameterAutomated(paramSustain, range->toNormalized(unnormalizedSustain));
-
-	// sustainLevel
-	range = bundle.getParameter(paramSustainlevel);
-	min = range->getStart();
-	max = range->getEnd();
-	skew = range->getSkew();
-
-	float normalizedSustainlevel = bundle.getParameterUnnormalized(paramSustainlevel);
-	if (ImGui::DragFloat("sustainLevel", &normalizedSustainlevel, 0.01f, min * 1.005, max * 0.995, "%.3f", 1 / skew))
-		plugin.setParameterAutomated(paramSustainlevel, range->toNormalized(normalizedSustainlevel));
-
-
-	// release
-	range = bundle.getParameter(paramRelease);
-	min = range->getStart();
-	max = range->getEnd();
-	skew = range->getSkew();
-
-	float unnormalizedRelease = bundle.getParameterUnnormalized(paramRelease);
-	if (ImGui::DragFloat("release", &unnormalizedRelease, 0.01f, min * 1.005, max * 0.995, "%.3f", 1 / skew))
-		plugin.setParameterAutomated(paramRelease, range->toNormalized(unnormalizedRelease));
-
+	ImGui::PushID(paramRelease);
+	renderParam(bundle.getParameter(paramRelease), plugin, paramRelease);
+	ImGui::PopID();
 
 	// Plot adhsr
-	float length = unnormalizedAttack + unnormalizedHold + unnormalizedDecay + unnormalizedSustain + unnormalizedRelease;
+	float length = bundle.getParameter(paramAttack)->getValueUnnormalized() 
+		+ bundle.getParameter(paramHold)->getValueUnnormalized()
+		+ bundle.getParameter(paramDecay)->getValueUnnormalized()
+		+ bundle.getParameter(paramSustain)->getValueUnnormalized()
+		+ bundle.getParameter(paramRelease)->getValueUnnormalized();
+
 	std::string lengthStr = "Length of visualized curve: " + std::to_string(length) + " ms.";
 	ImGui::Text(lengthStr.c_str());
 
@@ -188,8 +151,13 @@ static void renderADHSR(PluginBase& plugin, ImVec2 size = ImGui::GetContentRegio
 	{
 		points[i] = 1.f;
 		performAHDSR<float>(points, dummy, aux::millisecToSamples(i * incrementForVisualization), i,
-			unnormalizedAttack, unnormalizedRelease, unnormalizedHold, unnormalizedDecay, unnormalizedSustain,
-			true, normalizedSustainlevel, normalizedHoldlevel);
+			bundle.getParameter(paramAttack)->getValueUnnormalized(), 
+			bundle.getParameter(paramRelease)->getValueUnnormalized(), 
+			bundle.getParameter(paramHold)->getValueUnnormalized(), 
+			bundle.getParameter(paramDecay)->getValueUnnormalized(), 
+			bundle.getParameter(paramSustain)->getValueUnnormalized(),
+			true, bundle.getParameter(paramSustainlevel)->getValueNormalized(), 
+			bundle.getParameter(paramHoldlevel)->getValueNormalized());
 	}
 
 	ImVec2 availRest = ImGui::GetContentRegionAvail();
