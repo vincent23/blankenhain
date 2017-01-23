@@ -12,7 +12,9 @@ public:
 
 	Sample* process(SongInfo& songInfo, const Sample* input, unsigned int numberOfSamples, unsigned int globalSamplePosition) override;
 
-private:
+protected:
 	EffectBase& effect;
+
+private:
 	ParameterTrack* parameterValues;
 };
