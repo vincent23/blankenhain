@@ -14,4 +14,5 @@ public:
 private:
 	InstrumentBase& getInstrument();
 	unsigned int inputTrackIndex;
+	unsigned int nextNoteIndex = 0;
 };

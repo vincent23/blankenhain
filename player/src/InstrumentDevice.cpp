@@ -14,9 +14,10 @@ Sample* InstrumentDevice::process(SongInfo& songInfo, const Sample* input, unsig
 	unsigned int velocity;
 	unsigned int key;
 	MidiTrack& midiTrack = songInfo.midiTracks[inputTrackIndex];
-	while (midiTrack.getNextNote(globalSamplePosition, key, velocity)) {
+	while (midiTrack.getNextNote(globalSamplePosition, nextNoteIndex, key, velocity)) {
 		bool isNoteOn = velocity != 0;
 		getInstrument().handleNoteEvent(isNoteOn, key, velocity);
+		nextNoteIndex++;
 	}
 	EffectDevice::process(songInfo, input, globalSamplePosition);
 	return outputBuffer;

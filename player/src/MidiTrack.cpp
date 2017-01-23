@@ -1,15 +1,22 @@
 #include "MidiTrack.h"
 
-MidiTrack::MidiTrack(unsigned int numberOfEvents_, unsigned int* sampleOffsets_, unsigned int* keys_, unsigned int* velocities_)
+MidiTrack::MidiTrack(unsigned int numberOfEvents_, unsigned int* samplePositions_, unsigned int* keys_, unsigned int* velocities_)
 	: numberOfEvents(numberOfEvents_)
-	, sampleOffsets(sampleOffsets_)
+	, samplePositions(samplePositions_)
 	, keys(keys_)
 	, velocities(velocities_)
 {}
 
-bool MidiTrack::getNextNote(unsigned int blockOffset, unsigned int& keyOut, unsigned int& velocityOut)
+bool MidiTrack::getNextNote(unsigned int samplePosition, unsigned int nextNoteIndex, unsigned int& keyOut, unsigned int& velocityOut)
 {
-	keyOut = 0;
-	velocityOut = 0;
-	return false;
+	if (nextNoteIndex >= numberOfEvents || samplePosition < samplePositions[nextNoteIndex])
+	{
+		return false;
+	}
+	else
+	{
+		keyOut = keys[nextNoteIndex];
+		velocityOut = velocities[nextNoteIndex];
+		return true;
+	}
 }
