@@ -7,10 +7,10 @@ class SongInfo;
 class Device
 {
 public:
-	Device(unsigned int blockSize);
+	Device();
 	virtual ~Device();
 
-	virtual Sample* process(SongInfo& songInfo, const Sample* input, unsigned int numberOfSamples, unsigned int globalSamplePosition) = 0;
+	virtual Sample* process(SongInfo& songInfo, const Sample* input, unsigned int globalSamplePosition) = 0;
 
 protected:
 	Sample* outputBuffer;

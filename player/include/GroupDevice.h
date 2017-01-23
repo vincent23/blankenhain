@@ -7,5 +7,5 @@ class GroupDevice : public CombinedDevice
 public:
 	using CombinedDevice::CombinedDevice;
 
-	Sample* process(SongInfo& songInfo, const Sample* input, unsigned int numberOfSamples, unsigned int samplePosition) override;
+	Sample* process(SongInfo& songInfo, const Sample* input, unsigned int samplePosition) override;
 };

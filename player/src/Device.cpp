@@ -1,7 +1,9 @@
 #include "Device.h"
 
-Device::Device(unsigned int blockSize)
-	: outputBuffer(new Sample[blockSize])
+#include "Constants.h"
+
+Device::Device()
+	: outputBuffer(new Sample[constants::blockSize])
 {}
 
 Device::~Device()

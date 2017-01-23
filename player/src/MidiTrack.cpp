@@ -7,7 +7,7 @@ MidiTrack::MidiTrack(unsigned int numberOfEvents_, unsigned int* sampleOffsets_,
 	, velocities(velocities_)
 {}
 
-bool MidiTrack::getNextNote(unsigned int blockOffset, unsigned int numberOfSamples, unsigned int& keyOut, unsigned int& velocityOut)
+bool MidiTrack::getNextNote(unsigned int blockOffset, unsigned int& keyOut, unsigned int& velocityOut)
 {
 	keyOut = 0;
 	velocityOut = 0;

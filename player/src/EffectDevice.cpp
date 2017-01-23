@@ -4,14 +4,14 @@
 #include "ParameterBundle.h"
 #include "ParameterTrack.h"
 #include "SongInfo.h"
+#include "Constants.h"
 
-EffectDevice::EffectDevice(unsigned int blockSize, EffectBase& effect_, ParameterTrack* parameterValues_)
-	: Device(blockSize)
-	, effect(effect_)
+EffectDevice::EffectDevice(EffectBase& effect_, ParameterTrack* parameterValues_)
+	: effect(effect_)
 	, parameterValues(parameterValues_)
 {}
 
-Sample* EffectDevice::process(SongInfo& songInfo, const Sample* input, unsigned int numberOfSamples, unsigned int globalSamplePosition)
+Sample* EffectDevice::process(SongInfo& songInfo, const Sample* input, unsigned int globalSamplePosition)
 {
 	if (effect.effectUsesTempoData())
 	{
@@ -24,10 +24,10 @@ Sample* EffectDevice::process(SongInfo& songInfo, const Sample* input, unsigned 
 		float targetValue = parameterValues[parameterIndex].getValueAt(globalSamplePosition);
 		parameters->getParameter(parameterIndex)->setTargetValueNormalized(targetValue);
 	}
-	for (unsigned int sampleIndex = 0; sampleIndex < numberOfSamples; sampleIndex++)
+	for (unsigned int sampleIndex = 0; sampleIndex < constants::blockSize; sampleIndex++)
 	{
 		outputBuffer[sampleIndex] = input[sampleIndex];
 	}
-	effect.processBlock(outputBuffer, numberOfSamples);
+	effect.processBlock(outputBuffer, constants::blockSize);
 	return outputBuffer;
 }
