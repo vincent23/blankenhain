@@ -24,7 +24,8 @@ static void renderParam(PluginBase& plugin, unsigned int paramIndex, unsigned in
 		ImGui::Text(cParam->getName().c_str()); ImGui::SameLine();
 		ImGui::RadioButton("Off", &after, 0); ImGui::SameLine();
 		ImGui::RadioButton("On", &after, 1);
-		plugin.setParameterAutomated(paramIndex, static_cast<float>(after));
+		if (before != after)
+			plugin.setParameterAutomated(paramIndex, static_cast<float>(after));
 
 	}
 	else if (dynamic_cast<OptionParameter const*>(param))
