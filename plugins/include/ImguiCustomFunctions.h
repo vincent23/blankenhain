@@ -8,9 +8,13 @@
 #ifndef IM_ARRAYSIZE(_ARR)
 #define IM_ARRAYSIZE(_ARR)  ((int)(sizeof(_ARR)/sizeof(*_ARR)))
 #endif
-static void renderParam(FloatParameter const* param, PluginBase& plugin, unsigned int paramIndex)
+static void renderParam(PluginBase& plugin, unsigned int paramIndex, unsigned int style = 0u)
 {
 
+	const PluginParameterBundle& bundle = plugin.getParameters();
+	FloatParameter const* param = bundle.getParameter(paramIndex);
+
+	ImGui::PushID(paramIndex);
 	if (dynamic_cast<BoolParameter const*>(param))
 	{
 		BoolParameter const* cParam = dynamic_cast<BoolParameter const*>(param);
@@ -85,6 +89,7 @@ static void renderParam(FloatParameter const* param, PluginBase& plugin, unsigne
 		}
 	
 	}
+	ImGui::PopID();
 }
 
 static void renderADHSR(PluginBase& plugin, ImVec2 size = ImGui::GetContentRegionAvail(), unsigned int paramAttack = 0u, unsigned int paramHold = 1u, unsigned int paramHoldlevel = 2u,
@@ -98,35 +103,35 @@ static void renderADHSR(PluginBase& plugin, ImVec2 size = ImGui::GetContentRegio
 	PluginParameterBundle const& bundle = plugin.getParameters();
 
 	ImGui::PushID(paramAttack);
-	renderParam(bundle.getParameter(paramAttack), plugin, paramAttack);
+	renderParam(plugin, paramAttack);
 	ImGui::PopID();
 
 	ImGui::PushID(paramHold);
-	renderParam(bundle.getParameter(paramHold), plugin, paramHold);
+	renderParam(plugin, paramHold);
 	ImGui::PopID();
 
 	ImGui::PushID(paramHoldlevel);
-	renderParam(bundle.getParameter(paramHoldlevel), plugin, paramHoldlevel);
+	renderParam(plugin, paramHoldlevel);
 	ImGui::PopID();
 
 	ImGui::PushID(paramDecay);
-	renderParam(bundle.getParameter(paramDecay), plugin, paramDecay);
+	renderParam(plugin, paramDecay);
 	ImGui::PopID();
 
 	ImGui::PushID(paramSustainbool);
-	renderParam(bundle.getParameter(paramSustainbool), plugin, paramSustainbool);
+	renderParam(plugin, paramSustainbool);
 	ImGui::PopID();
 
 	ImGui::PushID(paramSustain);
-	renderParam(bundle.getParameter(paramSustain), plugin, paramSustain);
+	renderParam(plugin, paramSustain);
 	ImGui::PopID();
 
 	ImGui::PushID(paramSustainlevel);
-	renderParam(bundle.getParameter(paramSustainlevel), plugin, paramSustainlevel);
+	renderParam(plugin, paramSustainlevel);
 	ImGui::PopID();
 
 	ImGui::PushID(paramRelease);
-	renderParam(bundle.getParameter(paramRelease), plugin, paramRelease);
+	renderParam(plugin, paramRelease);
 	ImGui::PopID();
 
 	// Plot adhsr
@@ -190,40 +195,40 @@ static void renderLFO(PluginBase& plugin, ImVec2 size = ImGui::GetContentRegionA
 	}
 
 	ImGui::PushID(paramLFOAmount);
-	renderParam(bundle.getParameter(paramLFOAmount), plugin, paramLFOAmount);
+	renderParam(plugin, paramLFOAmount);
 	ImGui::PopID();
 
 	ImGui::PushID(paramLFOWaveform);
-	renderParam(bundle.getParameter(paramLFOWaveform), plugin, paramLFOWaveform);
+	renderParam(plugin, paramLFOWaveform);
 	ImGui::PopID();
 
 	ImGui::PushID(paramLFOTemposync);
-	renderParam(bundle.getParameter(paramLFOTemposync), plugin, paramLFOTemposync);
+	renderParam(plugin, paramLFOTemposync);
 	ImGui::PopID();
 
 	BoolParameter const* temposync = dynamic_cast<BoolParameter const*>(bundle.getParameter(paramLFOTemposync));
 	if (temposync->getValue() == 0)
 	{
 		ImGui::PushID(paramLFOSpeed);
-		renderParam(bundle.getParameter(paramLFOSpeed), plugin, paramLFOSpeed);
+		renderParam(plugin, paramLFOSpeed);
 		ImGui::PopID();
 
 	}
 	else
 	{
 		ImGui::PushID(paramLFObeatMultiplier);
-		renderParam(bundle.getParameter(paramLFObeatMultiplier), plugin, paramLFObeatMultiplier);
+		renderParam(plugin, paramLFObeatMultiplier);
 		ImGui::PopID();
 		// beat multiply
 	}
 
 	ImGui::PushID(paramLFOphase);
-	renderParam(bundle.getParameter(paramLFOphase), plugin, paramLFOphase);
+	renderParam(plugin, paramLFOphase);
 	ImGui::PopID();
 
 	// baseline
 	ImGui::PushID(paramLFObaseline);
-	renderParam(bundle.getParameter(paramLFObaseline), plugin, paramLFObaseline);
+	renderParam(plugin, paramLFObaseline);
 	ImGui::PopID();
 	// param LF target
 	//range = bundle.getParameter(paramLFOtarget);

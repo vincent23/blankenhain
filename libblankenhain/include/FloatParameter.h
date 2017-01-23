@@ -92,8 +92,8 @@ public:
 class DiscreteParameter : public FloatParameter
 {
 public:
-	DiscreteParameter(unsigned int numberOfValues, BhString name = "", BhString unit = "", const float* values = nullptr)
-		: FloatParameter(values != nullptr ? values[0] : 0.f, NormalizedRange(), name, unit), numberOfPossibleValues(numberOfValues), possibleValues(nullptr)
+	DiscreteParameter(unsigned int numberOfValues, BhString name = "", BhString unit = "", const float* values = nullptr, unsigned int defValueIndex = 0u)
+		: FloatParameter(values != nullptr ? values[defValueIndex] : 0.f, NormalizedRange(), name, unit), numberOfPossibleValues(numberOfValues), possibleValues(nullptr)
 	{
 		possibleValues = new float[numberOfPossibleValues];
 		for (unsigned int i = 0u; i < numberOfPossibleValues; i++)

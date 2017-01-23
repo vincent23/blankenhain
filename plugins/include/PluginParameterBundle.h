@@ -33,10 +33,14 @@ public:
 	 * Interpolation is performed
 	 */
 	void updateParameters();
+
+	// in the future, remove this functions. they break deisgn, althrough they provide easy access
 	std::string getParameterName(unsigned int const& in) const;
 	float getParameterNormalized(unsigned int const& index) const;
 	float getParameterUnnormalized(unsigned int const& index) const;
 	std::string getParameterUnit(unsigned int const& index) const;
+
+
 	/*
 	 * Called only by Host via setParameter or setParameterAutomated
 	 */

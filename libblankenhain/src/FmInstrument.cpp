@@ -18,7 +18,7 @@ FmInstrument::FmInstrument()
 	params->getParameter(1) = new FloatParameter(100.f, NormalizedRange(1.f, 1700.f, 0.3f), "hold", "ms");
 	params->getParameter(2) = new FloatParameter(1.f, NormalizedRange(), "holdlevel", "ratio");
 	params->getParameter(3) = new FloatParameter(100.f, NormalizedRange(1.f, 1700.f, 0.3f), "decay", "ms");
-	params->getParameter(4) = new FloatParameter(0.f, NormalizedRange(), "sustainBool", "bool");
+	params->getParameter(4) = new BoolParameter(false, "sustainBool");
 	params->getParameter(5) = new FloatParameter(100.f, NormalizedRange(1.f, 1700.f, 0.3f), "sustain", "ms");
 	params->getParameter(6) = new FloatParameter(1.0f, NormalizedRange(), "sustainLevel", "ratio");
 	params->getParameter(7) = new FloatParameter(100.f, NormalizedRange(1.f, 1700.f, 0.3f), "release", "ms");
@@ -28,22 +28,35 @@ FmInstrument::FmInstrument()
 	for (unsigned int i = 8u; i < 8 * 11 + 8; i += 11)
 	{
 		params->getParameter(i + 0) = new FloatParameter(440.f, NormalizedRange(33.f, 16000.f, 0.25), "freq", "hz");
-		params->getParameter(i + 1) = new FloatParameter(0.f, NormalizedRange(), "modType", "type");
+		BhString names[3] = { "FM", "PM", "AM" };
+		params->getParameter(i + 1) = new OptionParameter(3u, names, "modType", "");
 		params->getParameter(i + 2) = new FloatParameter(0.f, NormalizedRange(), "modAmount", "amount");
-		params->getParameter(i + 3) = new FloatParameter(static_cast<float>(numOsc - 1u), NormalizedRange(0.f, static_cast<float>(numOsc - 1u), 1.f), "target", "");
+
+		float* numbersOfOsc = new float[numOsc];
+		for (unsigned int i = 0u; i < numOsc; i++)
+		{
+			numbersOfOsc[i] = static_cast<float>(i);
+		}
+
+		params->getParameter(i + 3) = new DiscreteParameter(numOsc, "target", "", numbersOfOsc, numOsc - 1u);
+		delete[] numbersOfOsc;
+
 		params->getParameter(i + 4) = new FloatParameter(0.f, NormalizedRange(), "selfmodAmount", "amount");
 		params->getParameter(i + 5) = new FloatParameter(0.f, NormalizedRange(), "selfmodType", "type");
-		params->getParameter(i + 6) = new FloatParameter(0.f, NormalizedRange(), "waveform", "type");
-		params->getParameter(i + 7) = new FloatParameter(0.f, NormalizedRange(), "isOn", "");
-		params->getParameter(i + 8) = new FloatParameter(0.f, NormalizedRange(), "isLFO", "");
-		params->getParameter(i + 9) = new FloatParameter(0.f, NormalizedRange(), "tempoSyncOn", "");
-		params->getParameter(i + 10) = new FloatParameter( 1.f, NormalizedRange(0.0625f, 2.f, 0.23f), "tempoSyncMultiplier", "");
+		BhString waveform[4] = { "Sine", "Saw", "Square", "Triangle" };
+		params->getParameter(i + 6) = new OptionParameter(4u, waveform, "waveform", "");
+		params->getParameter(i + 7) = new BoolParameter(false, "isOn");
+		params->getParameter(i + 8) = new BoolParameter(false, "isLFO");
+		params->getParameter(i + 9) = new BoolParameter(false, "tempoSyncOn");
+		float multiplierValues[7] = { 0.0625, 0.125, 0.25, 0.5, 1., 2., 4. };
+		params->getParameter(i + 10) = new DiscreteParameter( 7u, "multiplier", "", multiplierValues);
 	}
 
 	//Carrier
 	params->getParameter(96) = new FloatParameter(0.f, NormalizedRange(), "selfmodAmount", "amount");
 	params->getParameter(97) = new FloatParameter(0.f, NormalizedRange(), "selfmodType", "type");
-	params->getParameter(98) = new FloatParameter(0.f, NormalizedRange(), "waveform", "type");
+	BhString waveform[4] = { "Sine", "Saw", "Square", "Triangle" };
+	params->getParameter(98) = new OptionParameter(4u, waveform, "waveform", "");
 
 
 	for (unsigned int i = 0u; i < numOsc; i++)
@@ -83,7 +96,7 @@ void FmInstrument::processVoice(VoiceState& voice, unsigned int timeInSamples, S
 				float freq = getInterpolatedParameter(8 + i * 11 + 0).get();
 				float modType = getInterpolatedParameter(8 + i * 11 + 1).get();
 				//amount
-				float target = getInterpolatedParameter(8 + i * 11 + 3).get();
+				float target = getInterpolatedParameter(8 + i * 11 + 3).get() * numOsc;
 				//params->getParameter(i + 4) = new FloatParameter(0.f, NormalizedRange(), "selfmod", "amount");
 				//params->getParameter(i + 5) = new FloatParameter(0.f, NormalizedRange(), "selfmod", "type");
 				float waveFormType = getInterpolatedParameter(8 + i * 11 + 6).get() * 4.f;
