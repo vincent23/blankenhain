@@ -118,7 +118,15 @@ def getPluginDevices(liveSet):
 				plugins = device.findall('./Branches/*/DeviceChain/*/Devices/PluginDevice')
 				for plugin in plugins:
 					yield plugin
-	# TODO: plugins on master
+	# add plugins on master
+	devices = liveSet.findall('./MasterTrack/MasterChain/DeviceChain/Devices/*[@Id]')
+	for device in devices:
+		if device.tag == 'PluginDevice':
+			yield device
+		elif device.tag == 'AudioEffectGroupDevice':
+			plugins = device.findall('./Branches/*/DeviceChain/*/Devices/PluginDevice')
+			for plugin in plugins:
+				yield plugin
 
 def convertAlsFile(filename):
 	with gzip.open(filename) as inputFile:
