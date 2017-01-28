@@ -37,9 +37,7 @@ VstInt32 InstrumentPluginBase::processEvents(VstEvents* events)
 {
 	size_t remaining = midiEvents.size() - midiEventPosition;
 	std::move(midiEvents.begin() + midiEventPosition, midiEvents.end(), midiEvents.begin());
-	// because we do not have a default constructor we have to supply a dummy element.
-	// since we always shrink the vector, this won't be used.
-	midiEvents.resize(remaining, MidiEvent(0, 0, 0));
+	midiEvents.resize(remaining);
 	for (unsigned int i = 0; i < remaining; i++) {
 		midiEvents[i].sampleOffset = 0;
 	}

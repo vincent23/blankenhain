@@ -9,9 +9,9 @@ class MidiBase : public EffectBase
 {
 public:
 	MidiBase(unsigned int numberOfParameters) : EffectBase(numberOfParameters) {};
-	virtual void processMidiEvents(MidiEvent*& events, unsigned int& numberOfMidiEvents, unsigned int maxNumEvents) = 0;
+	virtual void processMidiEvents(MidiEvent* events, unsigned int& numberOfMidiEvents, unsigned int maxNumEvents) = 0;
 protected:
-	virtual void process(Sample* buffer, size_t numberOfSamples) final 
+	virtual void process(Sample* buffer, size_t numberOfSamples) final
 	{
 		this->nextSample(numberOfSamples);
 	};

@@ -5,6 +5,7 @@
 // event with velocity > 0u is noteOn Event
 struct MidiEvent
 {
+	MidiEvent() = default;
 	MidiEvent(unsigned int sampleOffset, unsigned int key, unsigned int velocity);
 	bool isNoteOn() const;
 

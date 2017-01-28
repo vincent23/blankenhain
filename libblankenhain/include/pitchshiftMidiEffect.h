@@ -10,5 +10,5 @@ private:
 	int oldShift;
 public:
 	pitchshiftMidiEffect();
-	virtual void processMidiEvents(MidiEvent*& events, unsigned int& numberOfMidiEvents, unsigned int maxNumEvents) override;
+	virtual void processMidiEvents(MidiEvent* events, unsigned int& numberOfMidiEvents, unsigned int maxNumEvents) override;
 };
