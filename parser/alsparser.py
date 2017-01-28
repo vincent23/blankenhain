@@ -59,7 +59,8 @@ def makePluginParameterTracks(pluginDevice, pluginIndex):
 	# name = plugin.find('./PluginDesc/VstPluginInfo/PlugName').get('Value')
 	pluginParameterTracksCpp = []
 	parameters = pluginDevice.findall('./ParameterList/PluginFloatParameter')
-	for parameterIndex, parameter in enumerate(parameters):
+	parameterValuesList = []
+	for parameter in parameters:
 		parameterId = parameter.find('ParameterId').get('Value')
 		if parameterId == '-1':
 			continue
@@ -73,6 +74,23 @@ def makePluginParameterTracks(pluginDevice, pluginIndex):
 			value = float(event.get('Value'))
 			parameterValues.append((samplePosition, value))
 		parameterValues.sort()
+		parameterValuesList.append(parameterValues)
+
+	# also convert the special "on" parameter to a float parameter
+	# and add it after the other ones
+	onEvents = pluginDevice.findall('./On/ArrangerAutomation/Events/BoolEvent')
+	onValues = []
+	for event in onEvents:
+		eventTime = max(0, float(event.get('Time')))
+		bpm = 120 # TODO
+		sampleRate = 44100 # TODO
+		samplePosition = round(eventTime / bpm * 60 * sampleRate)
+		onAsFloat = 1.0 if event.get('Value') == 'true' else 0.0
+		onValues.append((samplePosition, onAsFloat))
+	onValues.sort()
+	parameterValuesList.append(onValues)
+
+	for parameterIndex, parameterValues in enumerate(parameterValuesList):
 		samplePositions, values = zip(*parameterValues)
 		samplePositionsArray = makeCppArray(
 			'parameterSamplePositions_{}_{}'.format(pluginIndex, parameterIndex),
@@ -84,6 +102,7 @@ def makePluginParameterTracks(pluginDevice, pluginIndex):
 			values)
 		pluginParameterTracksCpp.extend(samplePositionsArray)
 		pluginParameterTracksCpp.extend(valuesArray)
+
 	return pluginParameterTracksCpp
 
 def getPluginDevices(liveSet):
@@ -118,4 +137,5 @@ def convertAlsFile(filename):
 	resultCpp.extend(pluginDevicesCpp)
 	return '\n'.join(resultCpp)
 	
+#convertAlsFile('bh2test.als')
 print(convertAlsFile('bh2test.als'))
