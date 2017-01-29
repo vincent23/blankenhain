@@ -86,7 +86,14 @@ void InstrumentBase::process(Sample* buffer, size_t numberOfSamples)
 		}
 		processVoice(voice, timeInSamples, voiceBuffer, numberOfSamples);
 		for (unsigned int sampleIndex = 0; sampleIndex < numberOfSamples; sampleIndex++) {
-			buffer[sampleIndex] += voiceBuffer[sampleIndex];
+			Sample& currentSample = voiceBuffer[sampleIndex];
+			// via "normalizeed value" skewing with factor 1.
+			// This can be adjusted to give a more natural behaviour maybe?
+			// TODO 
+			float skew = 1.f;
+			float velocityVolumeScaling = std::pow(static_cast<float>(voice.velocity) / 127.f, 1.f / skew);
+			currentSample *= Sample(velocityVolumeScaling);
+			buffer[sampleIndex] += currentSample;
 		}
 	}
 	nextSample(numberOfSamples);
