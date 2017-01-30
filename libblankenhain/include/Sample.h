@@ -3,8 +3,6 @@
 #include <emmintrin.h>
 #include "AlignedType.h"
 
-#include <cmath>
-
 /**
  * A stereo sample.
  */
@@ -92,52 +90,44 @@ struct alignas(16) Sample : public AlignedType
 };
 
 inline Sample operator+(const Sample& a, const Sample& b) {
-	return Sample(_mm_add_pd(a.v, b.v));
+	return _mm_add_pd(a.v, b.v);
 }
 
 inline Sample operator-(const Sample& a, const Sample& b) {
-	return Sample(_mm_sub_pd(a.v, b.v));
+	return _mm_sub_pd(a.v, b.v);
 }
 
 inline Sample operator*(const Sample& a, const Sample& b) {
-	return Sample(_mm_mul_pd(a.v, b.v));
+	return _mm_mul_pd(a.v, b.v);
 }
 
 inline Sample operator/(const Sample& a, const Sample& b) {
-	return Sample(_mm_div_pd(a.v, b.v));
+	return _mm_div_pd(a.v, b.v);
 }
 
-inline Sample operator-(const Sample& a)
+static Sample operator-(const Sample& a)
 {
-	return Sample(0) - a;
+	// flip sign bit
+	return _mm_xor_pd(a.v, Sample(-0.f).v);
 }
 
 inline Sample load_aligned(const double* ptr)
 {
-	return Sample(_mm_load_pd(ptr));
+	return _mm_load_pd(ptr);
 }
 
-inline Sample abs(Sample const& in)
+static Sample abs(const Sample& in)
 {
-	alignas(16) double lr[2];
-	in.store_aligned(lr);
-	if (lr[0] < 0.) lr[0] *= -1.;
-	if (lr[1] < 0.) lr[1] *= -1.;
-	return load_aligned(lr);
+	// delete sign bits
+	return _mm_andnot_pd(Sample(-0.f).v, in.v);
 }
 
-inline Sample sign(Sample const& in)
+static Sample sign(Sample const& in)
 {
-	alignas(16) double lr[2];
-	in.store_aligned(lr);
-
-	if (lr[0] < 0.) lr[0] = -1.;
-	else lr[0] = 1.;
-
-	if (lr[1] < 0.) lr[1] *= -1.;
-	else lr[1] = 1.;
-
-	return load_aligned(lr);
+	// not properly tested, could be wrong
+	// extract sign bit, then combine it with 1
+	__m128d signBits = _mm_and_pd(in.v, Sample(-0.f).v);
+	return _mm_or_pd(signBits, Sample(1).v);
 }
 
 inline double avgValue(Sample const& in)
@@ -163,10 +153,5 @@ inline double minValue(Sample const& in)
 
 inline Sample sqrt(const Sample& in)
 {
-	alignas(16) double lr[2];
-	in.store_aligned(lr);
-	// handle small negative values as zero
-	lr[0] = std::sqrt(lr[0] < 0 && lr[0] > -1e-6 ? 0 : lr[0]);
-	lr[1] = std::sqrt(lr[1] < 0 && lr[1] > -1e-6 ? 0 : lr[1]);
-	return load_aligned(lr);
+	return _mm_sqrt_pd(in.v);
 }
