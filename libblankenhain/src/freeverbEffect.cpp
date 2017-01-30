@@ -112,7 +112,7 @@ void freeverbEffect::process(Sample* buffer, size_t numberOfSamples)
     }
 
     // Mix output
-    out = out * aux::decibelToLinear(wet.get()) + buffer[i] * aux::decibelToLinear(dry.get());
+    out = out * Sample(aux::decibelToLinear(wet.get())) + buffer[i] * Sample(aux::decibelToLinear(dry.get()));
 
     buffer[i] = out;
     nextSample();

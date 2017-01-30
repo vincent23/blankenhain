@@ -23,7 +23,7 @@ void VolumeEffect::process(Sample* buffer, size_t numberOfSamples)
 	{
 		for (size_t bufferIteration = 0; bufferIteration < numberOfSamples; bufferIteration++)
 		{
-			buffer[bufferIteration] = buffer[bufferIteration] * aux::decibelToLinear(currentVolumeL.get());
+			buffer[bufferIteration] = buffer[bufferIteration] * Sample(aux::decibelToLinear(currentVolumeL.get()));
 			nextSample();
 		}
 	}

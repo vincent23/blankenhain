@@ -103,28 +103,8 @@ inline Sample operator*(const Sample& a, const Sample& b) {
 	return Sample(_mm_mul_pd(a.v, b.v));
 }
 
-inline Sample operator*(const Sample& a, const double& b)
-{
-	return a * Sample(b);
-}
-
-inline Sample operator*(const Sample& a, const float& b)
-{
-	return a * Sample(static_cast<double>(b));
-}
-
 inline Sample operator/(const Sample& a, const Sample& b) {
 	return Sample(_mm_div_pd(a.v, b.v));
-}
-
-inline Sample operator/(const Sample& a, const double& b)
-{
-	return a / Sample(b);
-}
-
-inline Sample operator/(const Sample& a, const float& b)
-{
-	return a / Sample(static_cast<double>(b));
 }
 
 inline Sample operator-(const Sample& a)

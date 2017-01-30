@@ -131,7 +131,7 @@ void CircularBuffer<T>::reset(void)
 template <typename T>
 T LinearInterpolatedCircularBuffer<T>::interpolate(T& valueBegin, T& valueEnd, float ratio)
 {
-	return valueBegin + (valueEnd - valueBegin) * ratio;
+	return valueBegin + (valueEnd - valueBegin) * T(ratio);
 }
 
 template <typename T>

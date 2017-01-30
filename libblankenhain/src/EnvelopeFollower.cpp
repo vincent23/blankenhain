@@ -61,5 +61,5 @@ Sample EnvelopeFollower::getRmsSample(const Sample& in)
 {
 	Sample inSquared = in * in;
 	total += inSquared - rmsWindow.pushpop(inSquared);
-	return sqrt(total / static_cast<float>(rmsWindow.getSize()));
+	return sqrt(total / Sample(static_cast<double>(rmsWindow.getSize())));
 }

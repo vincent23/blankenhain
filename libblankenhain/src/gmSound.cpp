@@ -27,7 +27,7 @@ gmSound::gmSound(gmSoundRegion& region, HANDLE h, unsigned int targetNote)
 	Sample* rootBuffer = new Sample[inputSampleLength];
 	for (unsigned int i = 0u; i < inputSampleLength; i++)
 	{
-		rootBuffer[i] = Sample(static_cast<float>(rawSample[i]) - 0.5f) / 32767.5f;
+		rootBuffer[i] = Sample((static_cast<float>(rawSample[i]) - 0.5f) / 32767.5f);
 	}
 	delete[] rawSample;
 
@@ -46,7 +46,7 @@ gmSound::gmSound(gmSoundRegion& region, HANDLE h, unsigned int targetNote)
 			indexUpper = inputSampleLength - 1;
 		}
 		float t = interpolatedIndex - static_cast<float>(indexLower);
-		interpolatedBuffer[i] = rootBuffer[indexLower] * (1.f - t) + rootBuffer[indexUpper] * t;
+		interpolatedBuffer[i] = rootBuffer[indexLower] * Sample(1.f - t) + rootBuffer[indexUpper] * Sample(t);
 	}
 
 	delete[] rootBuffer;
