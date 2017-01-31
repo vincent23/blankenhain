@@ -43,9 +43,9 @@ void DistortionEffect::process(Sample* buffer, size_t numberOfSamples)
 			else if (algo == distortionAlgorithms::DoidicSymmetric)
 			{
 				processed =
-					(abs(Sample(2.) *  processed) \
+					((Sample(2.) *  processed).abs() \
 						- processed * processed) \
-					* sign(processed);
+					* processed.sign();
 			}
 			else
 			{

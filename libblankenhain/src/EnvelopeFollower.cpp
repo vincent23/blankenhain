@@ -54,12 +54,12 @@ Sample EnvelopeFollower::getEnvelope(const Sample& envelopeSample)
 
 Sample EnvelopeFollower::getPeakSample(const Sample& in)
 {
-	return abs(in);
+	return in.abs();
 }
 
 Sample EnvelopeFollower::getRmsSample(const Sample& in)
 {
 	Sample inSquared = in * in;
 	total += inSquared - rmsWindow.pushpop(inSquared);
-	return sqrt(total / Sample(static_cast<double>(rmsWindow.getSize())));
+	return (total / Sample(static_cast<double>(rmsWindow.getSize()))).sqrt();
 }

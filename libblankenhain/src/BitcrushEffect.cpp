@@ -64,5 +64,5 @@ Sample BitcrushEffect::discretize(Sample const& sample)
 	sample.store_aligned(lr);
 	lr[0] = static_cast<double>(static_cast<int>(lr[0]));
 	lr[1] = static_cast<double>(static_cast<int>(lr[1]));
-	return load_aligned(lr);
+	return Sample::load_aligned(lr);
 }

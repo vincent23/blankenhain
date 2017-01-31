@@ -37,7 +37,7 @@ void DelayEffect::process(Sample* buffer, size_t numberOfSamples)
 
 	for (size_t i = 0; i < numberOfSamples; i++)
 	{
-		double avg_ = avgValue(buffer[i]);
+		double avg_ = buffer[i].avgValue();
 		Sample original = buffer[i];
 		Sample line = delayLine.get();
 
@@ -52,7 +52,7 @@ void DelayEffect::process(Sample* buffer, size_t numberOfSamples)
 		line.store_aligned(lr);
 		lr[0] = lr[0] * (1.f - aux::max(0.0f, pan.get()));
 		lr[1] = lr[1] * (1.f + aux::min(0.0f, pan.get()));
-		line = load_aligned(lr);
+		line = Sample::load_aligned(lr);
 
 		buffer[i] = original + line;
 
