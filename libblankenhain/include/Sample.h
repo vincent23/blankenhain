@@ -124,7 +124,6 @@ static Sample abs(const Sample& in)
 
 static Sample sign(Sample const& in)
 {
-	// not properly tested, could be wrong
 	// extract sign bit, then combine it with 1
 	__m128d signBits = _mm_and_pd(in.v, Sample(-0.f).v);
 	return _mm_or_pd(signBits, Sample(1).v);
