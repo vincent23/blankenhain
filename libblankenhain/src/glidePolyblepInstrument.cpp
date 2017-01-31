@@ -4,8 +4,6 @@
 #include "FloatParameter.h"
 #include "VoiceState.h"
 
-#include <cmath>
-
 glidePolyblepInstrument::glidePolyblepInstrument()
 	: InstrumentBase(18, 1, true)
 {

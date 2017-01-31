@@ -1,7 +1,5 @@
 #pragma once
 
-#include <cmath>
-
 /**
  * Constants for the blankenhain2 environment
  * 
@@ -14,9 +12,12 @@
 
 	constexpr unsigned int parameterInterpolationLength = 256;
 
-	const double pi = std::acos(-1.);
+	constexpr float pi = 3.14159265359f;
 
-	const double sampleRate = 44100;
+	constexpr float sampleRate = 44100;
 
-	const unsigned int maxMidiEventsPerVSTEventBlock = 265u;
+	constexpr unsigned int maxMidiEventsPerVSTEventBlock = 256;
 }
+
+ using uint32_t = unsigned int;
+ using int16_t = short;

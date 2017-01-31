@@ -3,7 +3,6 @@
 #include "ParameterBundle.h"
 #include "InterpolatedValue.h"
 #include "AuxFunc.h"
-#include <cmath>
 
 DistortionEffect::DistortionEffect() : EffectBase(4)
 {

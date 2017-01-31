@@ -4,8 +4,6 @@
 #include "FloatParameter.h"
 #include "VoiceState.h"
 
-#include <cmath>
-
 //Todo selfmod!
 
 FmInstrument::FmInstrument()

@@ -4,8 +4,6 @@
 #include "AuxFunc.h"
 #include "InterpolatedValue.h"
 
-#include <algorithm>
-
 // Here, enter the number of GUI parameters you want to have
 const unsigned int NUMBER_OF_PARAMETERS = 5u;
 

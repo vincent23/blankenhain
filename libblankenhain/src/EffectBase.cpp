@@ -3,8 +3,6 @@
 #include "ParameterBundle.h"
 #include "InterpolatedValue.h"
 
-#include <utility>
-
 EffectBase::EffectBase(unsigned int numberOfParameters, bool useTempoData)
 	: tempodata(useTempoData)
 	, paramBundle(new ParameterBundle(numberOfParameters))

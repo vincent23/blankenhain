@@ -11,11 +11,10 @@
 // Resources: http://lib.tkk.fi/Dipl/2007/urn009585.pdf
 
 #pragma once
-#include <math.h>
 #include "Constants.h"
 #include "Sample.h"
-#include <stdint.h>
 #include "AuxFunc.h"
+#include "BhMath.h"
 
 /**
  * Interface class for sound generators, processVoice Function will 
@@ -60,7 +59,7 @@ public:
 		if (in < 0.f)
 			in *= -1;
 		mPhase = in;
-		mPhase = fmod(mPhase, length);
+		mPhase = BhMath::fmod(mPhase, length);
 	};
 
 	float incrementBy(float in)
@@ -68,7 +67,7 @@ public:
 		if (in < 0.f)
 			in *= -1;
 		mPhase += in;
-		mPhase = fmod(mPhase, length);
+		mPhase = BhMath::fmod(mPhase, length);
 		return getValue();
 	}
 	static const float length;
@@ -228,7 +227,7 @@ public:
 			currentHarmonic = static_cast<float>(k) * mFrequency;
 			osc.setFrequency(currentHarmonic);
 
-			value += osc.getSample(time, phase) * (powf(-1.f, (k - 1u) / 2u) / (static_cast<float>(k)* static_cast<float>(k)));
+			value += osc.getSample(time, phase) * (BhMath::pow(-1.f, (k - 1u) / 2u) / (static_cast<float>(k)* static_cast<float>(k)));
 			k += 2;
 		}
 		return value * 8.f / static_cast<float>(constants::pi * constants::pi);
@@ -247,7 +246,7 @@ public:
 			currentHarmonic = static_cast<float>(k) * mFrequency;
 			osc.setFrequency(currentHarmonic);
 
-			value += osc.getNextSample(phase) * (powf(-1.f, (k - 1u) / 2u) / (static_cast<float>(k)* static_cast<float>(k)));
+			value += osc.getNextSample(phase) * (BhMath::pow(-1.f, (k - 1u) / 2u) / (static_cast<float>(k)* static_cast<float>(k)));
 			k += 2;
 		}
 		return value * 8.f / static_cast<float>(constants::pi * constants::pi);

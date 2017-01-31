@@ -4,8 +4,6 @@
 #include "FloatParameter.h"
 #include "VoiceState.h"
 
-#include <cmath>
-
 basedrum1Instrument::basedrum1Instrument()
 	: InstrumentBase(14, 4),
 	drm1(58.f, 5.f, 1.f),

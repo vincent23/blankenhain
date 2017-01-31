@@ -4,8 +4,6 @@
 #include "FloatParameter.h"
 #include "VoiceState.h"
 
-#include <cmath>
-
 ExampleInstrument::ExampleInstrument()
 	: InstrumentBase(9, 4), currentSound(nullptr)
 {

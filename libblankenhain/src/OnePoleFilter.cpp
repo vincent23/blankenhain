@@ -1,5 +1,4 @@
 // instance float circular buffer
-#pragma once
 #include "Sample.h"
 #include "OnePoleFilter.h"
 template OnePoleFilter<Sample>;

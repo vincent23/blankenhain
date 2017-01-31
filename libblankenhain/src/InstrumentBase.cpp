@@ -1,5 +1,6 @@
 #include "InstrumentBase.h"
 #include "VoiceState.h"
+#include "BhMath.h"
 
 InstrumentBase::InstrumentBase(unsigned int numberOfParameters, unsigned int numberOfVoices_, bool usesTempoData)
 	: EffectBase(numberOfParameters, usesTempoData)
@@ -91,7 +92,7 @@ void InstrumentBase::process(Sample* buffer, size_t numberOfSamples)
 			// This can be adjusted to give a more natural behaviour maybe?
 			// TODO 
 			float skew = 1.f;
-			float velocityVolumeScaling = std::pow(static_cast<float>(voice.velocity) / 127.f, 1.f / skew);
+			float velocityVolumeScaling = BhMath::pow(static_cast<float>(voice.velocity) / 127.f, 1.f / skew);
 			currentSample *= Sample(velocityVolumeScaling);
 			buffer[sampleIndex] += currentSample;
 		}

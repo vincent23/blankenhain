@@ -5,8 +5,6 @@
 #include "AuxFunc.h"
 #include "Constants.h"
 
-#include <algorithm>
-
 CompressorEffect::CompressorEffect()
 	: EffectBase(8u)
 	, lookaheadDelay(static_cast<unsigned int>(constants::sampleRate * 1e-3)) // constant lookahead of 1 ms

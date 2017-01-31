@@ -2,8 +2,8 @@
 
 #include "Sample.h"
 #include "Constants.h"
-#include <cinttypes>
 #include <windows.h>
+#include "BhMath.h"
 
 gmSound::gmSound(gmSoundRegion& region, HANDLE h, unsigned int targetNote)
 	: interpolatedBufferSize(0u)
@@ -31,7 +31,7 @@ gmSound::gmSound(gmSoundRegion& region, HANDLE h, unsigned int targetNote)
 	}
 	delete[] rawSample;
 
-	float pitchFactor = std::exp2(-(static_cast<float>(region.rootNote) - static_cast<float>(targetNote)) / 12.f);
+	float pitchFactor = BhMath::exp2(-(static_cast<float>(region.rootNote) - static_cast<float>(targetNote)) / 12.f);
 	interpolatedBufferSize = inputSampleLength * 2 / pitchFactor;
 	interpolatedBuffer = new Sample[interpolatedBufferSize];
 

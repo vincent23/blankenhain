@@ -220,6 +220,6 @@ static void renderLFO(PluginBase& plugin, ImVec2 size = ImGui::GetContentRegionA
 	//availRest.x *= 2.f / 3.f;
 	//ImGui::PlotLines("##AHDSR", points, nPoints, 0, 0, 0.f, 1.f, availRest);
 	//
-	//ImGui::EndChild();
 
+	ImGui::EndChild();
 }

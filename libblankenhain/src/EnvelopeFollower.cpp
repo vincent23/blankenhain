@@ -1,6 +1,6 @@
 #include "EnvelopeFollower.h"
-#include <cmath>
 #include "constants.h"
+#include "BhMath.h"
 
 EnvelopeFollower::EnvelopeFollower()
 	: rmsWindow(128u)
@@ -14,8 +14,8 @@ void EnvelopeFollower::setTimes(double attack, double release) {
 	// times are in ms
 	attack /= 1000.;
 	release /= 1000.;
-	attackGain = std::exp(-1. / (attack * constants::sampleRate));
-	releaseGain = std::exp(-1. / (release * constants::sampleRate));
+	attackGain = BhMath::exp(-1. / (attack * constants::sampleRate));
+	releaseGain = BhMath::exp(-1. / (release * constants::sampleRate));
 }
 
 Sample EnvelopeFollower::getPeakEnvelope(const Sample& in)

@@ -1,6 +1,5 @@
 #include "AuxFunc.h"
-
-#include <cmath>
+#include "BhMath.h"
 
 // Auxiliary helper functions
 namespace aux
@@ -11,7 +10,7 @@ namespace aux
 		if (frequency < 0.f)
 			throw ("frequency was negative value\n");
 #endif
-		return static_cast<unsigned int>(12.f * log2(frequency / 440.f)) + 68u;
+		return static_cast<unsigned int>(12.f * BhMath::log2(frequency / 440.f)) + 68u;
 	};
 
 	float noteToFrequency(float note)
@@ -21,7 +20,7 @@ namespace aux
 			throw ("(midi)note was bigger than 127\n");
 #endif
 		// via http://stackoverflow.com/questions/5779127/convert-frequency-to-keyboard-note
-		return 440.f * exp((note - 69.f)*log(2.f) / 12.f);
+		return 440.f * BhMath::exp2((note - 69.f) / 12.f);
 	}
 
 	float calculateDetune(float frequency, float detune, unsigned int maxDetune)
@@ -29,11 +28,11 @@ namespace aux
 		unsigned int baseNote = aux::frequencyToNearestLowerNote(frequency);
 		unsigned int countSemiTones = maxDetune;
 		float freqLow = aux::noteToFrequency(baseNote == 0u ? 0u : baseNote - countSemiTones);
-		float freqHigh = aux::noteToFrequency(baseNote == 127u ? 127u : baseNote  + countSemiTones);
+		float freqHigh = aux::noteToFrequency(baseNote == 127u ? 127u : baseNote + countSemiTones);
 		if (detune > 0.f)
 			return (freqHigh - frequency) * detune / static_cast<float>(maxDetune) + frequency;
 		else
-			return (freqLow - frequency ) * detune * -1.f / static_cast<float>(maxDetune) + frequency;
+			return (freqLow - frequency) * detune * -1.f / static_cast<float>(maxDetune) + frequency;
 	}
 
 	float linearToDecibel(float linear)
@@ -45,7 +44,7 @@ namespace aux
 		float db;
 
 		if (linear != 0.0f)
-			db = 20.0f * static_cast<float>(log10(linear));
+			db = 20.0f * static_cast<float>(BhMath::log10(linear));
 		else
 			db = -144.0f;  // effectively minus infinity
 
@@ -59,7 +58,7 @@ namespace aux
 		if (db < -144.0f)
 			linear = 0.f;
 		else
-			linear = static_cast<float>(pow(10.f, db / 20.f));
+			linear = static_cast<float>(BhMath::pow(10.f, db / 20.f));
 
 		return linear;
 	}
@@ -81,4 +80,31 @@ namespace aux
 #endif
 		return (samples / samplerate) * 1000.f;
 	}
+
+	float max(float a, float b)
+	{
+		return a > b ? a : b;
+	}
+
+	float min(float a, float b)
+	{
+		return a < b ? a : b;
+	}
+
+	template<typename T>
+	T max(T a, T b)
+	{
+		return a > b ? a : b;
+	}
+
+	template<typename T>
+	T min(T a, T b)
+	{
+		return a < b ? a : b;
+	}
+
+	template float min<float>(float a, float b);
+	template float max<float>(float a, float b);
+	template unsigned int min<unsigned int>(unsigned int a, unsigned int b);
+	template unsigned int max<unsigned int>(unsigned int a, unsigned int b);
 }

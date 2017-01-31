@@ -2,8 +2,7 @@
 
 #include "ParameterBundle.h"
 #include "InterpolatedValue.h"
-
-#include <algorithm>
+#include "AuxFunc.h"
 
 BitcrushEffect::BitcrushEffect() : EffectBase(3)
 {
@@ -20,7 +19,7 @@ void BitcrushEffect::process(Sample* buffer, size_t numberOfSamples)
 	InterpolatedValue<float>& downsample = getInterpolatedParameter(1);
 	InterpolatedValue<float>& drywet = getInterpolatedParameter(2);
 
-	int groupedSamples = std::min(static_cast<int>(std::max(1.f, downsample.get() * 100.f)), static_cast<int>(numberOfSamples));
+	unsigned int groupedSamples = aux::min(static_cast<unsigned int>(aux::max(1.f, downsample.get() * 100.f)), numberOfSamples);
 	float bitdepth = 12.f * (1.f - bitcrush.get()) + 1.f * bitcrush.get();
 	int steps = static_cast<int>(exp2(bitdepth));
 

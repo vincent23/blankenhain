@@ -5,7 +5,6 @@
 #include "VoiceState.h"
 #include "gmSound.h"
 #include <windows.h>
-#include <cmath>
 
 gmsynthInstrument::gmsynthInstrument()
 	: InstrumentBase(10, 8)
