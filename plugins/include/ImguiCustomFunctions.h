@@ -29,6 +29,7 @@ static void renderParam(PluginBase& plugin, unsigned int paramIndex, unsigned in
 		OptionParameter const* cParam = dynamic_cast<OptionParameter const*>(param);
 		const int before(cParam->getCurrentNumber());
 		int current(cParam->getCurrentNumber());
+		ImGui::Text(cParam->getName().c_str()); ImGui::SameLine();
 		for (unsigned int i = 0u; i < cParam->getNumberOfPossibleValues(); i++)
 		{
 			ImGui::RadioButton(cParam->getOptionName(i).c_str(), &current, i);
