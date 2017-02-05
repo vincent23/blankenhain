@@ -63,6 +63,8 @@ private:
  * setValue(bool)
  * bool getValue()
  *
+ * Normalized range is euqal to unnormalized range [0,1] 
+ *
  * Try not to explicitly use setTargetValueNormalized, getValueUnnormalized and so on...
  */
 class BoolParameter : public FloatParameter

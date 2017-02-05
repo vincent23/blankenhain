@@ -96,10 +96,10 @@ void FmInstrument::processVoice(VoiceState& voice, unsigned int timeInSamples, S
 				float freq = getInterpolatedParameter(8 + i * 11 + 0).get();
 				float modType = getInterpolatedParameter(8 + i * 11 + 1).get();
 				//amount
-				float target = getInterpolatedParameter(8 + i * 11 + 3).get() * numOsc;
+				float target = getInterpolatedParameter(8 + i * 11 + 3).get();
 				//params->getParameter(i + 4) = new FloatParameter(0.f, NormalizedRange(), "selfmod", "amount");
 				//params->getParameter(i + 5) = new FloatParameter(0.f, NormalizedRange(), "selfmod", "type");
-				float waveFormType = getInterpolatedParameter(8 + i * 11 + 6).get() * 4.f;
+				float waveFormType = getInterpolatedParameter(8 + i * 11 + 6).get();
 				bool isLFO = getInterpolatedParameter(8 + i * 11 + 8).get();
 				bool tempoSync = getInterpolatedParameter(8 + i * 11 + 9).get();
 				float tempoSyncVal = getInterpolatedParameter(8 + i * 11 + 10).get();
@@ -192,7 +192,7 @@ void FmInstrument::processVoice(VoiceState& voice, unsigned int timeInSamples, S
 		float freq = aux::noteToFrequency(voice.key);
 		//params->getParameter(i + 4) = new FloatParameter(0.f, NormalizedRange(), "selfmod", "amount");
 		//params->getParameter(i + 5) = new FloatParameter(0.f, NormalizedRange(), "selfmod", "type");
-		float waveFormType = getInterpolatedParameter(98).get() * 4.f;
+		float waveFormType = getInterpolatedParameter(98).get();
 
 		osc[(numOsc - 1u)].setMode(NaiveOscillator::NaiveOscillatorMode(static_cast<int>(waveFormType)));
 
@@ -203,7 +203,7 @@ void FmInstrument::processVoice(VoiceState& voice, unsigned int timeInSamples, S
 		}
 		else if (mod[(numOsc - 1u)].pm)
 		{
-			osc[(numOsc - 1u)].setFrequency(freq + (mod[(numOsc - 1u)].pmVal * mod[(numOsc - 1u)].pmAmount));
+			osc[(numOsc - 1u)].setFrequency(freq + (mod[(numOsc - 1u)].pmVal * mod[(numOsc - 1u)].pmAmount) * 25.f);
 		}
 		else
 		{

@@ -58,22 +58,31 @@ void EffectBase::processBlock(Sample* buffer, size_t numberOfSamples)
 
 	for (unsigned int parameterIndex = 0; parameterIndex < getNumberOfParameters(); parameterIndex++) {
 		FloatParameter* parameter = paramBundle->getParameter(parameterIndex);
+		
+		if (dynamic_cast<DiscreteParameter*>(parameter)
+			|| dynamic_cast<BoolParameter*>(parameter))
+		{
+			// No interpolation or modulation for Bool / Discrete / Option Param
+			parameterValues[parameterIndex] = InterpolatedValue<float>(parameter->getValueUnnormalized());
+		}
+		else
+		{
+			// get normalized value at start of next block
+			parameter->next(numberOfSamples);
+			float normalizedNextValue = parameter->getValueNormalized();
 
-		// get normalized value at start of next block
-		parameter->next(numberOfSamples);
-		float normalizedNextValue = parameter->getValueNormalized();
-
-		// we clamp the normalized value after modulation
-		float normalizedNextValueModulated = normalizedNextValue + nextModulation[parameterIndex];
-		if (normalizedNextValueModulated < 0.f)
-			normalizedNextValueModulated = 0.f;
-		else if(normalizedNextValueModulated > 1.f)
-			normalizedNextValueModulated = 1.f;
+			// we clamp the normalized value after modulation
+			float normalizedNextValueModulated = normalizedNextValue + nextModulation[parameterIndex];
+			if (normalizedNextValueModulated < 0.f)
+				normalizedNextValueModulated = 0.f;
+			else if (normalizedNextValueModulated > 1.f)
+				normalizedNextValueModulated = 1.f;
 
 
-		float previousValue = parameterValues[parameterIndex].get();
-		float nextValue = parameter->fromNormalized(normalizedNextValueModulated);
-		parameterValues[parameterIndex] = InterpolatedValue<float>(previousValue, nextValue, numberOfSamples);
+			float previousValue = parameterValues[parameterIndex].get();
+			float nextValue = parameter->fromNormalized(normalizedNextValueModulated);
+			parameterValues[parameterIndex] = InterpolatedValue<float>(previousValue, nextValue, numberOfSamples);
+		}
 	}
 	process(buffer, numberOfSamples);
 
