@@ -33,7 +33,7 @@ void gmsynthInstrumentPlugin::onBeforeBlock(unsigned int blockOffset)
 {
 	InstrumentPluginBase::onBeforeBlock(blockOffset);
 
-	FloatParameter const* instrumentParameter = getParameters().getParameter(9);
+	DiscreteParameter const* instrumentParameter = static_cast<DiscreteParameter const*>(getParameters().getParameter(9));
 	// TODO dirty workaround to skip interpolation
 	// TODO merely commented out during revision of bh2-framework. Still needs to be adressed. Maybe through IntegerParameters?
 	// instrumentParameter->next(1000);
