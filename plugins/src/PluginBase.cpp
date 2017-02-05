@@ -83,7 +83,8 @@ bool PluginBase::getParameterProperties(VstInt32 index, VstParameterProperties* 
 	// Seems not to be used in Live 8.2
 	// see also:
 	// https://www.kvraudio.com/forum/viewtopic.php?f=33&t=375315
-	if (index < this->getParameters().getNumberOfParameters())
+	unsigned int vstIndex = static_cast<unsigned int>(index);
+	if (vstIndex < this->getParameters().getNumberOfParameters())
 	{
 		VstParameterProperties& prop = *p;
 		prop.flags = kVstParameterSupportsDisplayIndex + kVstParameterSupportsDisplayCategory;
@@ -111,6 +112,7 @@ bool PluginBase::getParameterProperties(VstInt32 index, VstParameterProperties* 
 
 bool PluginBase::string2parameter(VstInt32 index, char* text)
 {
+	unsigned int vstIndex = static_cast<unsigned int>(index);
 	// Seems not to be used in Live 8.2
 
 	//Convert a string representation to a parameter value.
@@ -125,13 +127,13 @@ bool PluginBase::string2parameter(VstInt32 index, char* text)
 	//  Note :
 	//Implies setParameter().text == 0 is to be expected to check the capability(returns true)
 
-	if (index < this->getParameters().getNumberOfParameters())
+	if (vstIndex < this->getParameters().getNumberOfParameters())
 	{
 		float floatValueUnnormalized = atof(text);
-		if (pluginParameters->getParameter(index)->isInRange(floatValueUnnormalized))
+		if (pluginParameters->getParameter(vstIndex)->isInRange(floatValueUnnormalized))
 		{
-			float floatValueNormalized = pluginParameters->getParameter(index)->toNormalized(floatValueUnnormalized);
-			this->pluginParameters->setPluginParameter(static_cast<unsigned int>(index), floatValueNormalized);
+			float floatValueNormalized = pluginParameters->getParameter(vstIndex)->toNormalized(floatValueUnnormalized);
+			this->pluginParameters->setPluginParameter(vstIndex, floatValueNormalized);
 
 			return true;
 		}
@@ -168,6 +170,8 @@ bool PluginBase::getSpeakerArrangement(VstSpeakerArrangement** pluginInput, VstS
 
 void PluginBase::processReplacing(float** inputs, float** outputs, VstInt32 sampleFrames_)
 {
+	//Update tempo data
+
 	if (effect->effectUsesTempoData())
 	{
 		float bpm(0.f);
@@ -268,7 +272,7 @@ bool PluginBase::getBPMandPosition(float& bpm, unsigned int& position)
 		return false;
 	}
 	if (ptr->flags | kVstTempoValid)
-		bpm = ptr->tempo;
+		bpm = static_cast<float>(ptr->tempo);
 	else
 		return false;
 	if (ptr->samplePos != 0.f)

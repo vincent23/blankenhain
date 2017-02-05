@@ -17,11 +17,6 @@ void FmInstrumentPluginEditor::imguiFrame()
 
 	const PluginParameterBundle& bundle = plugin.getParameters();
 
-	NormalizedRange const* range = nullptr;
-	float min = 0.f;
-	float max = 0.f;
-	float skew = 0.f;
-
 	// Top section
 	// Left: AHDSR
 	// Right: Carrier Waveform and carrier stuff
@@ -45,7 +40,7 @@ void FmInstrumentPluginEditor::imguiFrame()
 	  renderParam(plugin, currentParamInt + 7);
 	  float isOn = bundle.getParameterUnnormalized(currentParamInt + 7);
 	
-	  ImGui::SameLine;
+	  ImGui::SameLine();
 	  // On / Off
 	  if (isOn == 1.f)
 	  {
@@ -53,7 +48,7 @@ void FmInstrumentPluginEditor::imguiFrame()
 
 	    int isLFO = static_cast<float>(bundle.getParameterUnnormalized(currentParamInt + 8));
 	
-	    ImGui::SameLine;
+	    ImGui::SameLine();
 		renderParam(plugin, currentParamInt + 9);
 
 	    float tempoSyncOn = bundle.getParameterUnnormalized(currentParamInt + 9);
@@ -84,14 +79,14 @@ void FmInstrumentPluginEditor::imguiFrame()
 		unsigned int currentParamInt = 8 + i * 11;
 		renderParam(plugin, currentParamInt + 7);
 		float isOn = bundle.getParameterUnnormalized(currentParamInt + 7);
-		ImGui::SameLine;
+		ImGui::SameLine();
 		// On / Off
 		if (isOn == 1.f)
 		{
 			renderParam(plugin, currentParamInt + 8);
 
 			int isLFO = static_cast<float>(bundle.getParameterUnnormalized(currentParamInt + 8));
-			ImGui::SameLine;
+			ImGui::SameLine();
 			renderParam(plugin, currentParamInt + 9);
 
 			float tempoSyncOn = bundle.getParameterUnnormalized(currentParamInt + 9);
