@@ -1,4 +1,5 @@
 #include "BhMath.h"
+#include "AuxFunc.h"
 
 namespace BhMath {
 	float log2(float x)
@@ -79,6 +80,11 @@ namespace BhMath {
 
 	float pow(float x, float y)
 	{
+		// negative numbers are treated like 0
+		x = aux::max(0.f, x);
+		if (x < 1e-8) {
+			return x;
+		}
 		float result = 0.f;
 		__asm
 		{
