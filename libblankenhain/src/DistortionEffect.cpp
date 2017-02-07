@@ -67,7 +67,7 @@ void DistortionEffect::process(Sample* buffer, size_t numberOfSamples)
 						lr[k] = 0.630035;
 					}
 				}
-				processed.load_aligned(lr);
+				processed = Sample::load_aligned(lr);
 			}
 		}
 		if (drywet.get() > 0.5)

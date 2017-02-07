@@ -48,7 +48,7 @@ Sample EnvelopeFollower::getEnvelope(const Sample& envelopeSample)
 			envelopeUnpacked[i] = envelopeSampleUnpacked[i] + releaseGain * (envelopeUnpacked[i] - envelopeSampleUnpacked[i]);
 		}
 	}
-	envelope.load_aligned(envelopeUnpacked);
+	envelope = Sample::load_aligned(envelopeUnpacked);
 	return envelope;
 }
 

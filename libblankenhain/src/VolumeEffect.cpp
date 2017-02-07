@@ -39,7 +39,7 @@ void VolumeEffect::process(Sample* buffer, size_t numberOfSamples)
 			buffer[bufferIteration].store_aligned(currentBuffer);
 			currentBuffer[0] = currentBuffer[0] * aux::decibelToLinear(currentVolumeL.get());
 			currentBuffer[1] = currentBuffer[1] * aux::decibelToLinear(currentVolumeR.get());
-			buffer[bufferIteration].load_aligned(currentBuffer);
+			buffer[bufferIteration] = Sample::load_aligned(currentBuffer);
 			nextSample();
 		}
 	}
