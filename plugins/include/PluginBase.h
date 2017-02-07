@@ -95,6 +95,28 @@ public:
 		}
 	}
 
+	virtual VstInt32 startProcess() override
+	{
+		// this is actually called when first time loading a plugin
+		// Update Tempodata
+		if (effect->effectUsesTempoData())
+		{
+			float bpm(0.f);
+			unsigned int position(0u);
+			if (this->getBPMandPosition(bpm, position))
+			{
+				effect->setTempoData(bpm, position);
+			}
+		}
+		return 0;
+	}
+
+	virtual VstInt32 stopProcess() override
+	{
+		// this is actually called when deleting a plugin
+		return 0u;
+	}
+
 	void resume() override
 	{
 		if (effect->effectUsesTempoData())

@@ -72,7 +72,7 @@ void glidePolyblepInstrument::processVoice(VoiceState& voice, unsigned int timeI
 	// oscMode 2: polyBLEP Square
 	// oscMode 3: polyBLEP Triangle
 
-	this->osc.setMode(NaiveOscillator::NaiveOscillatorMode(static_cast<unsigned int>(oscMode * 4.f)));
+	this->osc.setMode(NaiveOscillator::NaiveOscillatorMode(static_cast<unsigned int>(oscMode)));
 
 	// If a new note is played, take this as the start time for glide
 	// TODO we can improve this but as this synth only has one voice
@@ -132,7 +132,7 @@ void glidePolyblepInstrument::getModulation(float* modulationValues, size_t samp
 
 		float lfoWaveform = getInterpolatedParameter(14).get();
 		bool lfoTempoSync = getInterpolatedParameter(15).get();
-		this->lfo.setMode(NaiveOscillator::NaiveOscillatorMode(static_cast<unsigned int>(lfoWaveform * 4.f)));
+		this->lfo.setMode(NaiveOscillator::NaiveOscillatorMode(static_cast<unsigned int>(lfoWaveform)));
 		float lfoPhase = getInterpolatedParameter(16).get();
 		if (!lfoTempoSync)
 		{

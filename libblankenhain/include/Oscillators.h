@@ -314,7 +314,7 @@ private:
 	unsigned int size;
 public:
 	WaveTableOscillator() = delete;
-	WaveTableOscillator(BaseOscillator& base, float waveTableBaseFrequency = 8.5f)
+	WaveTableOscillator(BaseOscillator& base, float waveTableBaseFrequency = 30.f)
 		: size(0u), wavetable(nullptr)
 	{
 		if (wavetable == nullptr)

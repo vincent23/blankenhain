@@ -29,6 +29,7 @@ static void renderParam(PluginBase& plugin, unsigned int paramIndex, unsigned in
 		OptionParameter const* cParam = dynamic_cast<OptionParameter const*>(param);
 		const int before(cParam->getCurrentNumber());
 		int current(cParam->getCurrentNumber());
+		ImGui::Text(cParam->getName().c_str()); ImGui::SameLine();
 		for (unsigned int i = 0u; i < cParam->getNumberOfPossibleValues(); i++)
 		{
 			ImGui::RadioButton(cParam->getOptionName(i).c_str(), &current, i);
@@ -220,6 +221,6 @@ static void renderLFO(PluginBase& plugin, ImVec2 size = ImGui::GetContentRegionA
 	//availRest.x *= 2.f / 3.f;
 	//ImGui::PlotLines("##AHDSR", points, nPoints, 0, 0, 0.f, 1.f, availRest);
 	//
-
 	ImGui::EndChild();
+
 }

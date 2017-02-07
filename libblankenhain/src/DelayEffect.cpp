@@ -50,8 +50,8 @@ void DelayEffect::process(Sample* buffer, size_t numberOfSamples)
 		// Pan
 		alignas(16) double lr[2];
 		line.store_aligned(lr);
-		lr[0] = lr[0] * (1.f - aux::max(0.0f, pan.get()));
-		lr[1] = lr[1] * (1.f + aux::min(0.0f, pan.get()));
+		lr[1] = lr[0] * (1.f + (0.0f < pan.get() ? 0.0f : pan.get()) * 0.02f);
+		lr[0] = lr[0] * (1.f - (0.0f < pan.get() ? pan.get() : 0.0f) * 0.02f);
 		line = Sample::load_aligned(lr);
 
 		buffer[i] = original + line;

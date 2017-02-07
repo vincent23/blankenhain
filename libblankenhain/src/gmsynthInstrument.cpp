@@ -21,7 +21,8 @@ gmsynthInstrument::gmsynthInstrument()
 	params->getParameter(6) = new FloatParameter(1.0f, NormalizedRange(), "sustainLevel", "ratio");
 	params->getParameter(7) = new FloatParameter(100.f, NormalizedRange(1.f, 1700.f, 0.3f), "release", "ms");
 	params->getParameter(8) = new FloatParameter(0.f, NormalizedRange(), "loop", "");
-	params->getParameter(9) = new FloatParameter(0.f, NormalizedRange(0, 235), "instrument", "");
+	//params->getParameter(9) = new FloatParameter(0.f, NormalizedRange(0, 235), "instrument", "");
+	params->getParameter(9) = new DiscreteParameter(235, "instrument");
 
 	for (unsigned int i = 0; i < 128; i++) {
 		interpolatedSounds[i] = nullptr;
