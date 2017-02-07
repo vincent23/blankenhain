@@ -3,6 +3,7 @@
 #include "ParameterBundle.h"
 #include "InterpolatedValue.h"
 #include "AuxFunc.h"
+#include "BhMath.h"
 
 DistortionEffect::DistortionEffect() : EffectBase(4)
 {
@@ -43,8 +44,8 @@ void DistortionEffect::process(Sample* buffer, size_t numberOfSamples)
 			else if (algo == distortionAlgorithms::DoidicSymmetric)
 			{
 				processed =
-					((Sample(2.) *  processed).abs() \
-						- processed * processed) \
+					(Sample(2.) *  processed.abs()
+						- processed * processed)
 					* processed.sign();
 			}
 			else
@@ -55,8 +56,8 @@ void DistortionEffect::process(Sample* buffer, size_t numberOfSamples)
 				{
 					if (lr[k] < -0.08905)
 					{
-						lr[k] = -0.75 * (1. - std::pow(1. - (std::abs(lr[k]) - 0.032847), 12) \
-							+ (1. / 3.) * (std::abs(lr[k]) - 0.032847)) + 0.01;
+						lr[k] = -0.75 * (1. - BhMath::pow(1.f - (BhMath::abs(lr[k]) - 0.032847f), 12)
+							+ (1. / 3.) * (BhMath::abs(lr[k]) - 0.032847)) + 0.01;
 					}
 					else if (lr[k] < 0.320018)
 					{

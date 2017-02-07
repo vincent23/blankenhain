@@ -78,10 +78,10 @@ namespace BhMath {
 		return result;
 	}
 
+	// for convenience, we implement pow as |x|^y
 	float pow(float x, float y)
 	{
-		// negative numbers are treated like 0
-		x = aux::max(0.f, x);
+		x = abs(x);
 		if (x < 1e-8) {
 			return x;
 		}
