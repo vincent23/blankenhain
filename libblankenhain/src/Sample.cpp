@@ -25,7 +25,7 @@ Sample::Sample(const Sample& x)
 
 Sample::Sample(double sampleLeft, double sampleRight)
 {
-	v = _mm_set_pd(sampleLeft, sampleRight);
+	v = _mm_set_pd(sampleRight, sampleLeft);
 }
 
 Sample Sample::load_aligned(const double* ptr)
