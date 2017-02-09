@@ -117,7 +117,8 @@ Sample Sample::sign() const
 
 Sample Sample::sqrt() const
 {
-	return _mm_sqrt_pd(v);
+	Sample radicand = _mm_max_pd(Sample(0).v, v);
+	return _mm_sqrt_pd(radicand.v);
 }
 
 double Sample::avgValue() const

@@ -33,10 +33,10 @@ void CompressorEffect::process(Sample* buffer, size_t numberOfSamples)
 	envelope.setTimes(attack, release);
 	for (unsigned int i = 0; i < numberOfSamples; i++) {
 		if (rms) {
-			envelope.getRmsEnvelope(buffer[i]);
+			envelope.nextRmsEnvelope(buffer[i]);
 		}
 		else {
-			envelope.getPeakEnvelope(buffer[i]);
+			envelope.nextPeakEnvelope(buffer[i]);
 		}
 		float dbIn = envelope.getCurrentEnvelope().maxValue();
 		float dbGain = makeupGain.get() + compressorGain(threshold.get(), ratio.get(), knee.get(), dbIn);
