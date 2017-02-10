@@ -114,6 +114,8 @@ add_plugin("bh_compressor"
 add_plugin("bh_delay"
 	"DelayPlugin.cpp"
 	"DelayPlugin.h"
+	"DelayPluginEditor.cpp"
+	"DelayPluginEditor.h"
 )
 
 add_plugin("bh_distortion"

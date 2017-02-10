@@ -1,6 +1,7 @@
 #pragma once
 
 #include "PluginBase.h"
+#include "DelayPluginEditor.h"
 #include "DelayEffect.h"
 
 class DelayPlugin : public PluginBase
