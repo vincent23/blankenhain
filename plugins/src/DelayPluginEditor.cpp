@@ -3,7 +3,7 @@
 
 
 DelayPluginEditor::DelayPluginEditor(PluginBase* plugin)
-	: ImguiEffectEditor(plugin, 460, 680)
+	: ImguiEffectEditor(plugin, 460, 225)
 {
 }
 
