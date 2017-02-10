@@ -148,6 +148,8 @@ add_plugin("bh_pan"
 add_plugin("bh_volume"
 	"VolumePlugin.cpp"
 	"VolumePlugin.h"
+	"VolumePluginEditor.h"
+	"VolumePluginEditor.cpp"
 )
 
 add_plugin("bh_example_synth"
