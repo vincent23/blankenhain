@@ -35,6 +35,12 @@ void EffectBase::setTempoData(float bpm, unsigned int position)
 	tempodata.bpm = bpm;
 };
 
+void EffectBase::incrementTempoDataPosition(unsigned int increment)
+{
+	this->tempodata.position += increment;
+}
+
+
 void EffectBase::processBlock(Sample* buffer, size_t numberOfSamples)
 {
 	// TODO find a better way to do initalization

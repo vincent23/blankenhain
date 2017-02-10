@@ -58,16 +58,6 @@ void glidePolyblepInstrument::processVoice(VoiceState& voice, unsigned int timeI
 	float portamento = getInterpolatedParameter(9).get();
 	float detune = getInterpolatedParameter(12).get();
 
-	float lfoAmount = getInterpolatedParameter(10).get();
-	float lfoSpeed = getInterpolatedParameter(11).get();
-	float lfoWaveform = getInterpolatedParameter(14).get();
-	bool lfoTempoSync = getInterpolatedParameter(15).get();
-
-
-
-
-
-
 	// oscMode 1: polyBLEP Sawtooth
 	// oscMode 2: polyBLEP Square
 	// oscMode 3: polyBLEP Triangle

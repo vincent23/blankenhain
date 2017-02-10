@@ -61,6 +61,8 @@ public:
 	 */
 	void setTempoData(float bpm, unsigned int position);
 
+	void incrementTempoDataPosition(unsigned int increment);
+
 protected:
 	/**
 	 * Use this, and only this function, to get access to current parameter values

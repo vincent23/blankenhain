@@ -166,14 +166,6 @@ static void renderLFO(PluginBase& plugin, ImVec2 size = ImGui::GetContentRegionA
 	PluginBase* ptr = nullptr;
 	PluginParameterBundle const& bundle = plugin.getParameters();
 
-	if (ptr = dynamic_cast<PluginBase*>(&plugin), ptr)
-	{
-		if (ptr->getBPMandPosition(bpm, position))
-		{
-			renderLFO = true;
-		}
-	}
-
 	renderParam(plugin, paramLFOAmount);
 	renderParam(plugin, paramLFOWaveform);
 	renderParam(plugin, paramLFOTemposync);

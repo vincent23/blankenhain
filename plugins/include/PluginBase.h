@@ -88,7 +88,7 @@ public:
 		{
 			float bpm(0.f);
 			unsigned int position(0u);
-			if (this->getBPMandPosition(bpm, position))
+			if (this->getBPMandPositionFromHost(bpm, position))
 			{
 				effect->setTempoData(bpm, position);
 			}
@@ -103,7 +103,7 @@ public:
 		{
 			float bpm(0.f);
 			unsigned int position(0u);
-			if (this->getBPMandPosition(bpm, position))
+			if (this->getBPMandPositionFromHost(bpm, position))
 			{
 				effect->setTempoData(bpm, position);
 			}
@@ -123,7 +123,7 @@ public:
 		{
 			float bpm(0.f);
 			unsigned int position(0u);
-			if (this->getBPMandPosition(bpm, position))
+			if (this->getBPMandPositionFromHost(bpm, position))
 			{
 				effect->setTempoData(bpm, position);
 			}
@@ -143,8 +143,7 @@ public:
 	 * Returns true when tempo is valid. Only use the values you get
 	 * in this function when it returns true!
 	 */
-	bool getBPMandPosition(float& bpm, unsigned int& position);
-
+	bool getBPMandPositionFromHost(float& bpm, unsigned int& position);
 
 	const PluginParameterBundle& getParameters() const;
 
@@ -180,7 +179,7 @@ protected:
 	PluginParameterBundle* pluginParameters;
 
 private:
-
+	unsigned int timeSinceLastBPMandPositionUpdate;
 	VstSpeakerArrangement* speakerArr;
 	Sample* processBuffer;
 };
