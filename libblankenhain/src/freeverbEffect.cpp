@@ -75,45 +75,46 @@ void freeverbEffect::process(Sample* buffer, size_t numberOfSamples)
 
 
   // set low pass filter for delay output
-  for (int i = 0; i < nCombs; i++) {
+  for (int i = 0; i < nCombs; i++) 
+  {
     combLP_[i]->setParams(Sample(1.0 - damping), Sample(-1.0 * damping));
   }
 
 	for (size_t i = 0; i < numberOfSamples; i++)
 	{
-    const float currentRoomSize = mode ? 1.f : (roomSize.get() * scaleRoom) + offsetRoom;
+		const float currentRoomSize = mode ? 1.f : (roomSize.get() * scaleRoom) + offsetRoom;
 
 
-    Sample fInput = buffer[i];
-    Sample out(0.0);
+		Sample fInput = buffer[i];
+		Sample out(0.0);
 
-    // Parallel LBCF filters
-    for (int j = 0; j < nCombs; j++) {
-      // Left channel
-      Sample yn = fInput + (Sample(currentRoomSize) * combLP_[j]->tick(combDelay_[j]->get()));
-      combDelay_[j]->pushpop(yn);
-      out += yn;
+		// Parallel LBCF filters
+		for (int j = 0; j < nCombs; j++) 
+		{
+		  // Left channel
+		  Sample yn = fInput + (Sample(currentRoomSize) * combLP_[j]->tick(combDelay_[j]->get()));
+		  combDelay_[j]->pushpop(yn);
+		  out += yn;
 
-    }
+		}
 
-    // Series allpass filters
-    for (int j = 0; j < nAllpasses; j++) {
-      // Left channel
-      Sample vn_m = allPassDelay_[j]->get();
-      Sample vn = out + (Sample(g_) * vn_m);
-      allPassDelay_[j]->pushpop(vn);
+		// Series allpass filters
+		for (int j = 0; j < nAllpasses; j++) 
+		{
+		  // Left channel
+		  Sample vn_m = allPassDelay_[j]->get();
+		  Sample vn = out + (Sample(g_) * vn_m);
+		  allPassDelay_[j]->pushpop(vn);
 
-      // calculate output
-      out = Sample(-1.) * vn + Sample((1.0 + g_))*vn_m;
+		  // calculate output
+		  out = Sample(-1.) * vn + Sample((1.0 + g_))*vn_m;
 
-    }
+		}
 
-    // Mix output
-    out = out * Sample(aux::decibelToLinear(wet.get())) + buffer[i] * Sample(aux::decibelToLinear(dry.get()));
+		// Mix output
+		out = out * Sample(aux::decibelToLinear(wet.get())) + buffer[i] * Sample(aux::decibelToLinear(dry.get()));
 
-    buffer[i] = out;
-    nextSample();
+		buffer[i] = out;
+		nextSample();
 	}
-	
-
 }

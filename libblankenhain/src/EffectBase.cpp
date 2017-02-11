@@ -66,11 +66,13 @@ void EffectBase::processBlock(Sample* buffer, size_t numberOfSamples)
 		if (dynamic_cast<DiscreteParameter*>(parameter)
 			|| dynamic_cast<BoolParameter*>(parameter))
 		{
-			// No interpolation or modulation for Bool / Discrete / Option Param
+			// No or modulation for Bool / Discrete / Option Param
 			parameterValues[parameterIndex] = InterpolatedValue<float>(parameter->getValueUnnormalized());
 		}
 		else
 		{
+			// FloatParameter are modulated
+
 			// get normalized value at start of next block
 			parameter->next(numberOfSamples);
 			float normalizedNextValue = parameter->getValueNormalized();
@@ -110,8 +112,12 @@ const unsigned int EffectBase::getNumberOfParameters() const
 void EffectBase::getModulation(float* modulationValues, size_t sampleOffset)
 { }
 
+/**
+ * Get interpolated parameter containing unnormalized values.
+ */
 InterpolatedValue<float>& EffectBase::getInterpolatedParameter(unsigned int parameterIndex) const
 {
+	// parameterValues contain results of parameter->getValueUnnormalized()
 	return parameterValues[parameterIndex];
 }
 
