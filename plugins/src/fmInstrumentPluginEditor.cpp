@@ -47,8 +47,6 @@ void FmInstrumentPluginEditor::imguiFrame()
 	  if (isOn == 1.f)
 	  {
 		renderParam(plugin, currentParamInt + 8);
-
-	    int isLFO = static_cast<float>(bundle.getParameterUnnormalized(currentParamInt + 8));
 	
 
 		renderParam(plugin, currentParamInt + 9);
@@ -88,8 +86,6 @@ void FmInstrumentPluginEditor::imguiFrame()
 		if (isOn == 1.f)
 		{
 			renderParam(plugin, currentParamInt + 8);
-
-			int isLFO = static_cast<float>(bundle.getParameterUnnormalized(currentParamInt + 8));
 
 			renderParam(plugin, currentParamInt + 9);
 

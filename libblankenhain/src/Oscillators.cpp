@@ -53,19 +53,19 @@ float NaiveOscillator::naiveWaveformForMode(NaiveOscillatorMode mode, float phas
             value = BhMath::sin(mPhase.getValue() + phase);
             break;
         case OSCILLATOR_MODE_SAW:
-            value = (BhMath::fmod(mPhase.getValue() + phase, 2.f * (constants::pi)) / constants::pi) - 1.0;
+            value = (BhMath::fmod(mPhase.getValue() + phase, 2.f * (constants::pi)) / constants::pi) - 1.f;
             break;
         case OSCILLATOR_MODE_SQUARE:
             if (BhMath::fmod(mPhase.getValue() + phase, 2.f * (constants::pi)) < (constants::pi)) {
-                value = 1.0;
+                value = 1.f;
             } else {
-                value = -1.0;
+                value = -1.f;
             }
             break;
         case OSCILLATOR_MODE_TRIANGLE:
 		{
-			float tempvalue = -1.0 + (BhMath::fmod(mPhase.getValue() + phase, 2.f * (constants::pi)) / (constants::pi));
-			value = 2.0 * (BhMath::abs(tempvalue) - 0.5);
+			float tempvalue = -1.f + (BhMath::fmod(mPhase.getValue() + phase, 2.f * (constants::pi)) / (constants::pi));
+			value = 2.f * (BhMath::abs(tempvalue) - 0.5f);
 			break;
 		}
         default:
@@ -88,13 +88,13 @@ float PolyBLEPOscillator::poly_blep(float t) const
 	if (t < dt)
 	{
 		t /= dt;
-		return t + t - t*t - 1.0;
+		return t + t - t*t - 1.f;
 	}
 	// -1 < t < 0
 	else if (t > 1.0 - dt)
 	{
 		t = (t - 1.0) / dt;
-		return t*t + t + t + 1.0;
+		return t*t + t + t + 1.f;
 	}
 	// 0 otherwise
 	else

@@ -38,7 +38,7 @@ void CompressorEffect::process(Sample* buffer, size_t numberOfSamples)
 		else {
 			envelope.nextPeakEnvelope(buffer[i]);
 		}
-		float dbIn = envelope.getCurrentEnvelope().maxValue();
+		float dbIn = static_cast<float>(envelope.getCurrentEnvelope().maxValue());
 		float dbGain = makeupGain.get() + compressorGain(threshold.get(), ratio.get(), knee.get(), dbIn);
 		Sample delayed = lookaheadDelay.pushpop(buffer[i]);
 		delayed *= Sample(aux::decibelToLinear(dbGain));;
@@ -52,7 +52,7 @@ Sample CompressorEffect::getCurrentEnvelope() const
 	return envelope.getCurrentEnvelope();
 }
 
-double CompressorEffect::compressorGain(double threshold, double ratio, double knee, double dbIn)
+double CompressorEffect::compressorGain(float threshold, float ratio, float knee, float dbIn)
 {
 	// probably this can be done in a smarter (branchless) way
 	float kneeStart = static_cast<float>(threshold - knee);

@@ -130,7 +130,7 @@ bool PluginBase::string2parameter(VstInt32 index, char* text)
 
 	if (vstIndex < this->getParameters().getNumberOfParameters())
 	{
-		float floatValueUnnormalized = atof(text);
+		float floatValueUnnormalized = static_cast<float>(atof(text));
 		if (pluginParameters->getParameter(vstIndex)->isInRange(floatValueUnnormalized))
 		{
 			float floatValueNormalized = pluginParameters->getParameter(vstIndex)->toNormalized(floatValueUnnormalized);

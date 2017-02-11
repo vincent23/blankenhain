@@ -77,9 +77,11 @@ static void renderParam(PluginBase& plugin, unsigned int paramIndex, unsigned in
 		min = range->getStart();
 		max = range->getEnd();
 		skew = range->getSkew();
-		float unnormalized = param->getValueUnnormalized();
-		if (ImGui::DragFloat(param->getName().c_str(), &unnormalized, 0.001, min * 1.002, max * 0.998, "%.3f", 1 / skew))
-			plugin.setParameterAutomated(paramIndex, range->toNormalized(unnormalized));
+		float* unnormalized = new float;
+		*unnormalized = param->getValueUnnormalized();
+		if (ImGui::DragFloat(param->getName().c_str(), unnormalized, 0.001, min * 1.002, max * 0.998, "%.3f", 1 / skew))
+			plugin.setParameterAutomated(paramIndex, range->toNormalized(*unnormalized));
+		delete unnormalized;
 		ImGui::SameLine();
 		if (ImGui::Button("Reset"))
 		{
@@ -159,11 +161,11 @@ static void renderLFO(PluginBase& plugin, ImVec2 size = ImGui::GetContentRegionA
 
 	const unsigned int nPoints = 250;
 	float points[250];
-	bool renderLFO = false;
+	//bool renderLFO = false;
 
-	float bpm = 0.f;
-	unsigned int position = 0u;
-	PluginBase* ptr = nullptr;
+	//float bpm = 0.f;
+	//unsigned int position = 0u;
+
 	PluginParameterBundle const& bundle = plugin.getParameters();
 
 	renderParam(plugin, paramLFOAmount);

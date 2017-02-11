@@ -13,7 +13,7 @@ public:
 	void process(Sample* buffer, size_t numberOfSamples) override;
 	Sample getCurrentEnvelope() const;
 
-	static double compressorGain(double threshold, double ratio, double knee, double dbIn);
+	static double compressorGain(float threshold, float ratio, float knee, float dbIn);
 private:
 	EnvelopeFollower envelope;
 	CircularBuffer<Sample> lookaheadDelay;

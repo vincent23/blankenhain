@@ -6,7 +6,7 @@
 #include "..\..\libblankenhain\include\EffectBase.h"
 
 class PluginParameterBundle;
-struct Sample;
+class Sample;
 
 
 /**
