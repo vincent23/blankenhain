@@ -14,7 +14,8 @@ public:
 	Sample getCurrentEnvelope() const;
 
 	static double compressorGain(float threshold, float ratio, float knee, float dbIn);
+
 private:
 	EnvelopeFollower envelope;
-	CircularBuffer<Sample> lookaheadDelay;
+	LinearInterpolatedCircularBuffer<Sample> lookaheadDelay;
 };

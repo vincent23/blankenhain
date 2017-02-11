@@ -15,7 +15,7 @@ CompressorEffect::CompressorEffect()
 	(params->getParameter(2)) = new FloatParameter(0.f, NormalizedRange(-66.f, 6.f), "threshold", "dB");
 	(params->getParameter(3)) = new FloatParameter(2.f, NormalizedRange::fromMidpoint(1.f, 2.f, 64.f), "ratio", "");
 	(params->getParameter(4)) = new FloatParameter(0.f, NormalizedRange::fromMidpoint(0.f, 9.f, 18.f), "knee", "dB");
-	(params->getParameter(5)) = new FloatParameter(1.f, NormalizedRange::fromMidpoint(0.f, 1.f, 10.f), "lookahead", "ms");
+	(params->getParameter(5)) = new FloatParameter(1.f, NormalizedRange::fromMidpoint(aux::samplesToMillisec(2u), 1.f, 20.f), "lookahead", "ms");
 	(params->getParameter(6)) = new FloatParameter(0.f, NormalizedRange(-36.f, 36.f), "makeup", "dB");
 	(params->getParameter(7)) = new FloatParameter(1.f, NormalizedRange(0.f, 1.f), "envelope", "peak/rms");
 }
@@ -29,7 +29,10 @@ void CompressorEffect::process(Sample* buffer, size_t numberOfSamples)
 	InterpolatedValue<float>& ratio = getInterpolatedParameter(3);
 	InterpolatedValue<float>& knee = getInterpolatedParameter(4);
 	InterpolatedValue<float>& makeupGain = getInterpolatedParameter(6);
-	// TODO set lookahead
+	float lookahead = getInterpolatedParameter(5).get();
+
+	lookaheadDelay.setSize(static_cast<unsigned int>(aux::millisecToSamples(lookahead)));
+
 	envelope.setTimes(attack, release);
 	for (unsigned int i = 0; i < numberOfSamples; i++) {
 		if (rms) {
