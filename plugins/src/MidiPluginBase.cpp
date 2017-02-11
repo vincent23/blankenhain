@@ -143,11 +143,13 @@ void MidiPluginBase::processReplacing(float** inputs, float** outputs, VstInt32 
 	MidiEvent* a = &midiEvents[0];
 
 	// Here, the magic happens
-	effect.processMidiEvents(a, midiEventNum, midiEvents.size());
+	effect.processMidiEvents(a, midiEventNum, midiEvents.size(), sampleFrames_);
 	midiEvents.resize(midiEventNum, MidiEvent(0u, 0u, 0u));
 
 	// Midi is dispatched in here
 	onAfterProcess();
+
+	incrementTempoDataPosition(sampleFrames_);
 }
 
 void initializeAllEventsAsNull(VSTEventBlock& in)

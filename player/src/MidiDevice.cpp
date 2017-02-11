@@ -29,7 +29,7 @@ void MidiDevice::processMidi(SongInfo& songInfo)
 			midiEventBuffer[numberOfEvents++] = MidiEvent(globalSamplePosition, key, velocity);
 			nextNoteIndex++;
 		}
-		getMidiEffect().processMidiEvents(midiEventBuffer, numberOfEvents, eventBufferSize);
+		getMidiEffect().processMidiEvents(midiEventBuffer, numberOfEvents, eventBufferSize, constants::blockSize);
 		for (unsigned int eventIndex = 0; eventIndex < numberOfEvents; eventIndex++) {
 			unsigned int& outIndex = midiOutputTrack.numberOfEvents;
 			midiOutputTrack.keys[outIndex] = midiEventBuffer[eventIndex].key;

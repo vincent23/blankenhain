@@ -15,7 +15,7 @@ pitchshiftMidiEffect::pitchshiftMidiEffect()
 	params->getParameter(0) = new FloatParameter(0.f, NormalizedRange(-12.f, 12.f), "shift", "semitones");
 }
 
-void pitchshiftMidiEffect::processMidiEvents(MidiEvent* events, unsigned int& numberOfMidiEvents, unsigned int maxNumEvents)
+void pitchshiftMidiEffect::processMidiEvents(MidiEvent* events, unsigned int& numberOfMidiEvents, unsigned int maxNumEvents, unsigned int numberOfSamples)
 {
 	// calculate new shift
 	int shift = static_cast<int>(getInterpolatedParameter(0).get());

@@ -81,16 +81,6 @@ namespace aux
 		return (samples / samplerate) * 1000.f;
 	}
 
-	float max(float a, float b)
-	{
-		return a > b ? a : b;
-	}
-
-	float min(float a, float b)
-	{
-		return a < b ? a : b;
-	}
-
 	template<typename T>
 	T max(T a, T b)
 	{
@@ -107,4 +97,13 @@ namespace aux
 	template float max<float>(float a, float b);
 	template unsigned int min<unsigned int>(unsigned int a, unsigned int b);
 	template unsigned int max<unsigned int>(unsigned int a, unsigned int b);
+
+	float positionToTime(unsigned int samplePosition)
+	{
+		// perform this calculation in double precision
+		double samplePositionDouble = static_cast<double>(samplePosition);
+		double sampleRateDouble = static_cast<double>(constants::sampleRate);
+		double timeInSeconds = samplePositionDouble / sampleRateDouble;
+		return static_cast<float>(timeInSeconds);
+	}
 }

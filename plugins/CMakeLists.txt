@@ -213,3 +213,8 @@ add_plugin("bh_fm_synth"
 	"fmInstrumentPluginEditor.h"
 )
 
+add_plugin("bh_arp"
+	"ArpPlugin.h"
+	"ArpPlugin.cpp"
+)
+

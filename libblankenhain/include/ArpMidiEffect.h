@@ -2,13 +2,12 @@
 
 #include "MidiBase.h"
 
-
-class pitchshiftMidiEffect : public MidiBase
+class ArpMidiEffect : public MidiBase
 {
 private:
 	bool whichNotesAreOn[128u];
 	int oldShift;
 public:
-	pitchshiftMidiEffect();
+	ArpMidiEffect();
 	virtual void processMidiEvents(MidiEvent* events, unsigned int& numberOfMidiEvents, unsigned int maxNumEvents, unsigned int numberOfSamples) override;
 };

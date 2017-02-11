@@ -25,5 +25,7 @@ namespace aux
 
 	template<typename T>
 	T min(T a, T b);
+
+	float positionToTime(unsigned int samplePosition);
 }
 

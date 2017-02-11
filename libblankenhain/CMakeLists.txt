@@ -12,6 +12,7 @@ endfunction(prepend)
 
 prepend(HEADERS "include/"
 	"AlignedType.h"
+	"ArpMidiEffect.h"
 	"AuxFunc.h"
 	"Basedrum1Instrument.h"
 	"BitcrushEffect.h"
@@ -60,6 +61,7 @@ prepend(HEADERS "include/"
 
 prepend(SOURCES "src/"
 	"AlignedType.cpp"
+	"ArpMidiEffect.cpp"
 	"AuxFunc.cpp"
 	"Basedrum1Instrument.cpp"
 	"BitcrushEffect.cpp"

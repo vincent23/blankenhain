@@ -173,18 +173,7 @@ bool PluginBase::getSpeakerArrangement(VstSpeakerArrangement** pluginInput, VstS
 
 void PluginBase::processReplacing(float** inputs, float** outputs, VstInt32 sampleFrames_)
 {
-	//Update tempo data
-
-	if (effect->effectUsesTempoData() && timeSinceLastBPMandPositionUpdate > 10000u)
-	{
-		float bpm(0.f);
-		unsigned int position(0u);
-		if (this->getBPMandPositionFromHost(bpm, position))
-		{
-			effect->setTempoData(bpm, position);
-		}
-		timeSinceLastBPMandPositionUpdate = 0u;
-	}
+	updateTempoData();
 
 	this->pluginParameters->updateParameters();
 	const unsigned int sampleFrames = static_cast<unsigned int>(sampleFrames_);
@@ -215,14 +204,9 @@ void PluginBase::processReplacing(float** inputs, float** outputs, VstInt32 samp
 		}
 
 		// increment tempodata.position
-		if (effect->effectUsesTempoData())
-		{
-			effect->incrementTempoDataPosition(blockLength);
-		}
+		incrementTempoDataPosition(blockLength);
 	}
 	onAfterProcess();
-
-	timeSinceLastBPMandPositionUpdate += sampleFrames;
 }
 
 void PluginBase::setParameter(VstInt32 index, float value)
@@ -294,6 +278,31 @@ bool PluginBase::getBPMandPositionFromHost(float& bpm, unsigned int& position)
 		return false;
 };
 
+void PluginBase::updateTempoData(bool force)
+{
+	if (!force && timeSinceLastBPMandPositionUpdate <= 10000u) {
+		return;
+	}
+	if (effect->effectUsesTempoData())
+	{
+		float bpm(0.f);
+		unsigned int position(0u);
+		if (this->getBPMandPositionFromHost(bpm, position))
+		{
+			effect->setTempoData(bpm, position);
+		}
+		timeSinceLastBPMandPositionUpdate = 0u;
+	}
+}
+
+void PluginBase::incrementTempoDataPosition(unsigned int increment)
+{
+	if (effect->effectUsesTempoData())
+	{
+		effect->incrementTempoDataPosition(increment);
+		timeSinceLastBPMandPositionUpdate += increment;
+	}
+}
 
 void PluginBase::onBeforeBlock(unsigned int blockOffset)
 { }
