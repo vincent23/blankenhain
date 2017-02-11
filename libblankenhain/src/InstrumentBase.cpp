@@ -91,8 +91,10 @@ void InstrumentBase::process(Sample* buffer, size_t numberOfSamples)
 			// via "normalizeed value" skewing with factor 1.
 			// This can be adjusted to give a more natural behaviour maybe?
 			// TODO 
-			float skew = 1.f;
-			float velocityVolumeScaling = BhMath::pow(static_cast<float>(voice.velocity) / 127.f, 1.f / skew);
+			//float skew = 1.f;
+			//float velocityVolumeScaling = BhMath::pow(static_cast<float>(voice.velocity) / 127.f, 1.f / skew);
+			// BHMATH pow was incredibly slow
+			float velocityVolumeScaling = (static_cast<float>(voice.velocity) / 127.f);
 			currentSample *= Sample(velocityVolumeScaling);
 			buffer[sampleIndex] += currentSample;
 		}

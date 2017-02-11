@@ -63,8 +63,7 @@ void EffectBase::processBlock(Sample* buffer, size_t numberOfSamples)
 	for (unsigned int parameterIndex = 0; parameterIndex < getNumberOfParameters(); parameterIndex++) {
 		FloatParameter* parameter = paramBundle->getParameter(parameterIndex);
 		
-		if (dynamic_cast<DiscreteParameter*>(parameter)
-			|| dynamic_cast<BoolParameter*>(parameter))
+		if (!parameter->canBeModulated())
 		{
 			// No or modulation for Bool / Discrete / Option Param
 			parameterValues[parameterIndex] = InterpolatedValue<float>(parameter->getValueUnnormalized());

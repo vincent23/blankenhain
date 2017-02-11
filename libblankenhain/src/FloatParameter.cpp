@@ -25,6 +25,10 @@ void FloatParameter::setToDefaultValue()
 	valueNormalized = InterpolatedValue<float>(this->getValueNormalized(), this->defaultValueNormalized, interpolationLength);
 }
 
+const bool FloatParameter::canBeModulated() const
+{
+	return true;
+}
 
 float FloatParameter::getValueNormalized() const
 {
@@ -108,6 +112,16 @@ void BoolParameter::flip()
 void BoolParameter::setValue(bool value)
 {
 	valueNormalized = InterpolatedValue<float>(value);
+}
+
+const bool BoolParameter::canBeModulated() const
+{
+	return false;
+}
+
+const bool DiscreteParameter::canBeModulated() const
+{
+	return false;
 }
 
 DiscreteParameter::DiscreteParameter(unsigned int numberOfValues, BhString name, BhString unit, const float* values, unsigned int defValueIndex)

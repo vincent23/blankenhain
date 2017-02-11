@@ -99,7 +99,7 @@ void CircularBuffer<T>::setSize(size_t size_)
 };
 
 template <typename T>
-T CircularBuffer<T>::get(int iterator)
+T const& CircularBuffer<T>::get(int iterator)
 {
 	if (iterator == -1) return buffer[currentPosition];
 #ifndef _LIBBLANKENHAIN_ENABLE_WARNINGS

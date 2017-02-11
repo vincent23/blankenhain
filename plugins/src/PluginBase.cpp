@@ -21,6 +21,8 @@
 //Formats Tested : AU & VST
 //
 //Latency Compensation : can be updated dynamically with ioChanged().
+// NOTE BY DUSTIN 11.02.17: Ableton does not call getInitialDelay() after ioChanged was called().
+// ioChanged() returns false.
 //
 //Keyboard Input : works fine with OS events(kEventRawKeyDown and WM_KEYDOWN).
 //

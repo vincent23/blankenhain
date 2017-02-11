@@ -25,7 +25,7 @@ public:
 
 	// This may be overriden by children to prevent interpolation
 	virtual void setToDefaultValue();
-
+	virtual const bool canBeModulated() const;
 
 	// For classes derived from FloatParam
 	// you should prefer using their custom
@@ -81,6 +81,7 @@ public:
 	void flip();
 	void setValue(bool value);
 
+	virtual const bool canBeModulated() const final;
 };
 
 /**
@@ -129,6 +130,8 @@ public:
 	unsigned int getCurrentNumber() const;
 	float const* getPossibleValue(unsigned int n) const;
 	void setDiscreteValue(unsigned int n);
+
+	virtual const bool canBeModulated() const final;
 
 protected:
 	const unsigned int numberOfPossibleValues;
