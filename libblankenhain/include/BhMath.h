@@ -11,4 +11,7 @@ namespace BhMath {
 	float tan(float x);
 	float sin(float x);
 	float abs(float x);
+
+	//via http://martin.ankerl.com/2012/01/25/optimized-approximative-pow-in-c-and-cpp/
+	double fastPow(double a, double b);
 }

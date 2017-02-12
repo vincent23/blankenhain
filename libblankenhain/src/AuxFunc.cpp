@@ -58,7 +58,8 @@ namespace aux
 		if (db < -144.0f)
 			linear = 0.f;
 		else
-			linear = static_cast<float>(BhMath::pow(10.f, db / 20.f));
+			// Use fastPow, tested it, its accurate enough for at least db -> lienar mapping
+			linear = static_cast<float>(BhMath::fastPow(10.f, db / 20.f));
 
 		return linear;
 	}
