@@ -56,7 +56,7 @@ void DistortionEffect::process(Sample* buffer, size_t numberOfSamples)
 				{
 					if (lr[k] < -0.08905)
 					{
-						lr[k] = -0.75 * (1. - BhMath::fastPow(1.f - (BhMath::abs(lr[k]) - 0.032847f), 12)
+						lr[k] = -0.75 * (1. - BhMath::pow(1.f - (BhMath::abs(lr[k]) - 0.032847f), 12)
 							+ (1. / 3.) * (BhMath::abs(lr[k]) - 0.032847)) + 0.01;
 					}
 					else if (lr[k] < 0.320018)

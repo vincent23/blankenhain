@@ -45,7 +45,7 @@ void Filter<T>::setNotch(double frequency, double Q)
 template <typename T>
 void Filter<T>::setBell(double frequency, double Q, double gainInDb)
 {
-	double A = BhMath::fastPow(10, gainInDb / 40.);
+	double A = BhMath::pow(10, gainInDb / 40.);
 	recomputeCoefficients(frequency, Q * A, 1);
 	m0 = T(1);
 	m1 = T(k * T(A * A - 1));
@@ -55,7 +55,7 @@ void Filter<T>::setBell(double frequency, double Q, double gainInDb)
 template <typename T>
 void Filter<T>::setLowShelf(double frequency, double Q, double gainInDb)
 {
-	double A = BhMath::fastPow(10, gainInDb / 40.);
+	double A = BhMath::pow(10, gainInDb / 40.);
 	recomputeCoefficients(frequency, Q, 1. / BhMath::sqrt(A));
 	m0 = T(1);
 	m1 = k * T(A - 1);
@@ -65,7 +65,7 @@ void Filter<T>::setLowShelf(double frequency, double Q, double gainInDb)
 template <typename T>
 void Filter<T>::setHighShelf(double frequency, double Q, double gainInDb)
 {
-	double A = BhMath::fastPow(10, gainInDb / 40.);
+	double A = BhMath::pow(10, gainInDb / 40.);
 	recomputeCoefficients(frequency, Q, BhMath::sqrt(A));
 	m0 = T(A * A);
 	m1 = k * T((1 - A) * A);
