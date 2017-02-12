@@ -41,7 +41,7 @@ float NormalizedRange::fromNormalized(float normalizedValue) const
     normalizedValue = 1.f;
 #endif
 	if (skew != 1.f && normalizedValue > 0.f) {
-		normalizedValue = BhMath::pow(normalizedValue, 1.f / skew);
+		normalizedValue = BhMath::fastPow(normalizedValue, 1.f / skew);
 	}
 	return start + (end - start) * normalizedValue;
 }
@@ -57,7 +57,7 @@ float NormalizedRange::toNormalized(float unnormalizedValue) const
 
 	float normalizedValue = (unnormalizedValue - start) / (end - start);
 	if (skew != 1) {
-		normalizedValue = BhMath::pow(normalizedValue, skew);
+		normalizedValue = BhMath::fastPow(normalizedValue, skew);
 	}
 	return normalizedValue;
 }

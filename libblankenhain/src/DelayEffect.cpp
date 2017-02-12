@@ -21,15 +21,15 @@ DelayEffect::DelayEffect() : EffectBase(7, true), delayLine(size_t(aux::millisec
 
 void DelayEffect::process(Sample* buffer, size_t numberOfSamples)
 {
-	InterpolatedValue<float>& pan = getInterpolatedParameter(0);
-	InterpolatedValue<float>& length = getInterpolatedParameter(1);
-	InterpolatedValue<float>& feedback = getInterpolatedParameter(2);
-	InterpolatedValue<float>& drywet = getInterpolatedParameter(3);
+	float pan = getInterpolatedParameter(0).get();
+	float length = getInterpolatedParameter(1).get();
+	float feedback = getInterpolatedParameter(2).get();
+	float drywet = getInterpolatedParameter(3).get();
 	bool panicButton = static_cast<bool>(getInterpolatedParameter(4).get());
 	bool tempoSync = static_cast<bool>(getInterpolatedParameter(6).get());
 
 	if (!tempoSync)
-		delayLine.setSize(static_cast<size_t>(aux::millisecToSamples(length.get())));
+		delayLine.setSize(static_cast<size_t>(aux::millisecToSamples(length)));
 	else
 	{
 		float beatMultiplier = getInterpolatedParameter(5).get();
@@ -72,22 +72,22 @@ void DelayEffect::process(Sample* buffer, size_t numberOfSamples)
 		Sample original = buffer[i];
 		Sample line = delayLine.get();
 
-		if (drywet.get() > 0.5)
+		if (drywet > 0.5)
 		{
-			original *= Sample((1 - drywet.get()) * 2.f);
+			original *= Sample((1 - drywet) * 2.f);
 		}
-		else line *= Sample(drywet.get() * 2.f);
+		else line *= Sample(drywet * 2.f);
 
 		// Pan
 		alignas(16) double lr[2];
 		line.store_aligned(lr);
-		lr[0] = lr[0] * (1.f - (0.0f < pan.get() ? pan.get() : 0.0f) * 0.02f);
-		lr[1] = lr[1] * (1.f + (0.0f < pan.get() ? 0.0f : pan.get()) * 0.02f);
+		lr[0] = lr[0] * (1.f - (0.0f < pan ? pan : 0.0f) * 0.02f);
+		lr[1] = lr[1] * (1.f + (0.0f < pan ? 0.0f : pan) * 0.02f);
 		line = Sample::load_aligned(lr);
 
 		buffer[i] = original + line;
 
-		delayLine.push(delayLine.get() * Sample(feedback.get()) + Sample(avg_));
-		nextSample();
+		delayLine.push(delayLine.get() * Sample(feedback) + Sample(avg_));
 	}
+	nextSample(numberOfSamples);
 }
