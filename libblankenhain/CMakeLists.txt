@@ -104,3 +104,8 @@ prepend(SOURCES "src/"
 
 include_directories("include")
 add_library(libblankenhain STATIC ${HEADERS} ${SOURCES})
+
+# Group items into folders for less crowded folder viewing experience
+# via //http://stackoverflow.com/questions/7091385/how-to-organise-my-files-using-cmake
+source_group(Effects REGULAR_EXPRESSION .*Effect.*)
+source_group(Instruments REGULAR_EXPRESSION .*Instrument.*)
