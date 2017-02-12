@@ -103,6 +103,8 @@ void FmInstrument::processVoice(VoiceState& voice, unsigned int timeInSamples, S
 				bool isLFO = getInterpolatedParameter(8 + i * 11 + 8).get();
 				bool tempoSync = getInterpolatedParameter(8 + i * 11 + 9).get();
 				float tempoSyncVal = getInterpolatedParameter(8 + i * 11 + 10).get();
+				float freqMultiplierFM = 1.f;
+				float freqAdditionPM = 0.f;
 
 				if (!tempoSync && isLFO)
 					freq /= 1000.f;
@@ -161,9 +163,11 @@ void FmInstrument::processVoice(VoiceState& voice, unsigned int timeInSamples, S
 					else
 						fmAmount = 1.f / cFmVal;
 
-					osc[i].setFrequency(freq * (cFmVal * mod[i].fmAmount + selfmod * selfModAmount));
+					freqMultiplierFM = (cFmVal * mod[i].fmAmount + selfmod * selfModAmount);
+					//osc[i].setFrequency(freq * (cFmVal * mod[i].fmAmount + selfmod * selfModAmount));
 				}
-				else if (mod[i].pm || (selfModOn && selfModtype == 1.f))
+
+				if (mod[i].pm || (selfModOn && selfModtype == 1.f))
 				{
 					float selfmod = 0.f;
 					if (selfModOn && selfModtype == 1.f)
@@ -176,12 +180,11 @@ void FmInstrument::processVoice(VoiceState& voice, unsigned int timeInSamples, S
 						// Normalize from [-1; 1] to [-1; 0]
 						cPmVal = mod[i].pmVal;
 
-					osc[i].setFrequency(freq + (mod[i].pmVal * mod[i].pmAmount) + selfmod  * 5.f * selfModAmount);
+					freqAdditionPM = (mod[i].pmVal * mod[i].pmAmount) + selfmod  * 5.f * selfModAmount;
+					//osc[i].setFrequency(freq + (mod[i].pmVal * mod[i].pmAmount) + selfmod  * 5.f * selfModAmount);
 				}
-				else
-				{
-					osc[i].setFrequency(freq);
-				}
+
+				osc[i].setFrequency(freq * freqMultiplierFM + freqAdditionPM);
 
 				float val = osc[i].getSample(deltaT);
 				if (mod[i].am || (selfModOn && selfModtype == 2.f))
@@ -195,8 +198,10 @@ void FmInstrument::processVoice(VoiceState& voice, unsigned int timeInSamples, S
 					float cAmAmount = 0.f;
 					if (mod[i].am)
 						cAmAmount = mod[i].amAmount;
+					else
+						cAmAmount = mod[i].amVal = 1.f;
 
-					val *= mod[i].amAmount * mod[i].amVal + selfmod * selfModAmount;
+					val *= cAmAmount * mod[i].amVal + selfmod * selfModAmount;
 				}
 				lastOscValues[i] = val;
 
@@ -225,9 +230,12 @@ void FmInstrument::processVoice(VoiceState& voice, unsigned int timeInSamples, S
 
 		float freq = aux::noteToFrequency(voice.key);
 		float selfModAmount = getInterpolatedParameter(96).get();
-		bool selfModOn = selfModAmount != 0.f;
+		bool selfModOn = selfModAmount > 1e-15;
 		float selfModtype = getInterpolatedParameter(97).get();
 		float waveFormType = getInterpolatedParameter(98).get();
+
+		float freqMultiplierFM = 1.f;
+		float freqAdditionPM = 0.f;
 
 		osc[(numOsc - 1u)].setMode(NaiveOscillator::NaiveOscillatorMode(static_cast<int>(waveFormType)));
 
@@ -247,9 +255,10 @@ void FmInstrument::processVoice(VoiceState& voice, unsigned int timeInSamples, S
 			else
 				fmAmount = 1.f / cFmVal;
 
-			osc[(numOsc - 1u)].setFrequency(freq * ( (cFmVal * fmAmount) + (selfModAmount * selfmod)) );
+			freqMultiplierFM = ((cFmVal * fmAmount) + (selfModAmount * selfmod));
 		}
-		else if (mod[(numOsc - 1u)].pm || (selfModOn && selfModtype == 1.f))
+
+		if (mod[(numOsc - 1u)].pm || (selfModOn && selfModtype == 1.f))
 		{
 			float selfmod = 0.f;
 			if (selfModOn && selfModtype == 1.f)
@@ -262,14 +271,18 @@ void FmInstrument::processVoice(VoiceState& voice, unsigned int timeInSamples, S
 				// Normalize from [-1; 1] to [-1; 0]
 				cPmVal = mod[(numOsc - 1u)].pmVal;
 
-			osc[(numOsc - 1u)].setFrequency(freq + (cPmVal * mod[(numOsc - 1u)].pmAmount) + (selfModAmount * 5.f * selfmod));
-		}
-		else
-		{
-			osc[(numOsc - 1u)].setFrequency(freq);
+			freqAdditionPM = (cPmVal * mod[(numOsc - 1u)].pmAmount) + (selfModAmount * 5.f * selfmod);
+			//osc[(numOsc - 1u)].setFrequency(freq + (cPmVal * mod[(numOsc - 1u)].pmAmount) + (selfModAmount * 5.f * selfmod));
 		}
 
+		///////////////////////
+		osc[(numOsc - 1u)].setFrequency(freq * freqMultiplierFM + freqAdditionPM);
+		///////////////////////
+
+		///////////////////////
 		float val = osc[(numOsc - 1u)].getSample(deltaT);
+		///////////////////////
+
 		if (mod[(numOsc - 1u)].am || (selfModOn && selfModtype == 2.f))
 		{
 			float selfmod = 0.f;
@@ -281,6 +294,8 @@ void FmInstrument::processVoice(VoiceState& voice, unsigned int timeInSamples, S
 			float cAmAmount = 0.f;
 			if (mod[(numOsc - 1u)].am)
 				cAmAmount = mod[(numOsc - 1u)].amAmount;
+			else
+				cAmAmount = mod[(numOsc - 1u)].amVal = 1.f;
 
 
 			val *= cAmAmount * mod[(numOsc - 1u)].amVal + selfmod * selfModAmount;
