@@ -50,22 +50,22 @@ float NaiveOscillator::naiveWaveformForMode(NaiveOscillatorMode mode, float phas
 	float value;
     switch (mode) {
         case OSCILLATOR_MODE_SINE:
-            value = sin(mPhase.getValue() + phase);
+            value = BhMath::sin(mPhase.getValue() + phase);
             break;
         case OSCILLATOR_MODE_SAW:
-            value = (fmod(mPhase.getValue() + phase, 2.f * (constants::pi)) / constants::pi) - 1.0;
+            value = (BhMath::fmod(mPhase.getValue() + phase, 2.f * (constants::pi)) / constants::pi) - 1.f;
             break;
         case OSCILLATOR_MODE_SQUARE:
-            if (fmod(mPhase.getValue() + phase, 2.f * (constants::pi)) < (constants::pi)) {
-                value = 1.0;
+            if (BhMath::fmod(mPhase.getValue() + phase, 2.f * (constants::pi)) < (constants::pi)) {
+                value = 1.f;
             } else {
-                value = -1.0;
+                value = -1.f;
             }
             break;
         case OSCILLATOR_MODE_TRIANGLE:
 		{
-			float tempvalue = -1.0 + (fmod(mPhase.getValue() + phase, 2.f * (constants::pi)) / (constants::pi));
-			value = 2.0 * (fabs(tempvalue) - 0.5);
+			float tempvalue = -1.f + (BhMath::fmod(mPhase.getValue() + phase, 2.f * (constants::pi)) / (constants::pi));
+			value = 2.f * (BhMath::abs(tempvalue) - 0.5f);
 			break;
 		}
         default:
@@ -88,13 +88,13 @@ float PolyBLEPOscillator::poly_blep(float t) const
 	if (t < dt)
 	{
 		t /= dt;
-		return t + t - t*t - 1.0;
+		return t + t - t*t - 1.f;
 	}
 	// -1 < t < 0
 	else if (t > 1.0 - dt)
 	{
 		t = (t - 1.0) / dt;
-		return t*t + t + t + 1.0;
+		return t*t + t + t + 1.f;
 	}
 	// 0 otherwise
 	else
@@ -109,7 +109,7 @@ float PolyBLEPOscillator::getSample(unsigned int time, float phase)
 
 	mPhase.set(static_cast<float>(time) * mPhaseIncrement);
 
-	float t = fmod((mPhase.getValue() + phase), (2.f * constants::pi)) / (2.f * constants::pi) ;
+	float t = BhMath::fmod((mPhase.getValue() + phase), (2.f * constants::pi)) / (2.f * constants::pi);
 
 	if (mOscillatorMode == OSCILLATOR_MODE_SINE) {
 		value = naiveWaveformForMode(OSCILLATOR_MODE_SINE, phase);
@@ -121,7 +121,7 @@ float PolyBLEPOscillator::getSample(unsigned int time, float phase)
 	else {
 		value = naiveWaveformForMode(OSCILLATOR_MODE_SQUARE, phase);
 		value += poly_blep(t);
-		float temp = fmod(t + 0.5f, 1.f);
+		float temp = BhMath::fmod(t + 0.5f, 1.f);
 		value -= poly_blep(temp);
 		if (mOscillatorMode == OSCILLATOR_MODE_TRIANGLE) {
 			// Leaky integrator: y[n] = A * x[n] + (1 - A) * y[n-1]
@@ -138,7 +138,7 @@ float PolyBLEPOscillator::getNextSample(float phase)
 
 	mPhase.incrementBy(mPhaseIncrement);
 
-	float t = fmod((mPhase.getValue() + phase ), (2.f * constants::pi)) / (2.f * constants::pi);
+	float t = BhMath::fmod((mPhase.getValue() + phase ), (2.f * constants::pi)) / (2.f * constants::pi);
 
 	if (mOscillatorMode == OSCILLATOR_MODE_SINE) {
 		value = naiveWaveformForMode(OSCILLATOR_MODE_SINE, phase);
@@ -150,7 +150,7 @@ float PolyBLEPOscillator::getNextSample(float phase)
 	else {
 		value = naiveWaveformForMode(OSCILLATOR_MODE_SQUARE, phase);
 		value += poly_blep(t);
-		float temp = fmod(t + 0.5f, 1.f);
+		float temp = BhMath::fmod(t + 0.5f, 1.f);
 		value -= poly_blep(temp);
 		if (mOscillatorMode == OSCILLATOR_MODE_TRIANGLE)
 		{

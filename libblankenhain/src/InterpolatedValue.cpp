@@ -40,7 +40,7 @@ T InterpolatedValue<T>::next(unsigned int steps)
 	else
 	{
 		currentStep += steps;
+		current += step * steps;
+		return current;
 	}
-	current += step * steps;
-	return current;
 }

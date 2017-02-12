@@ -3,8 +3,6 @@
 #include "ParameterBundle.h"
 #include "InterpolatedValue.h"
 
-#include <utility>
-
 EffectBase::EffectBase(unsigned int numberOfParameters, bool useTempoData)
 	: tempodata(useTempoData)
 	, paramBundle(new ParameterBundle(numberOfParameters))
@@ -37,6 +35,12 @@ void EffectBase::setTempoData(float bpm, unsigned int position)
 	tempodata.bpm = bpm;
 };
 
+void EffectBase::incrementTempoDataPosition(unsigned int increment)
+{
+	this->tempodata.position += increment;
+}
+
+
 void EffectBase::processBlock(Sample* buffer, size_t numberOfSamples)
 {
 	// TODO find a better way to do initalization
@@ -58,22 +62,32 @@ void EffectBase::processBlock(Sample* buffer, size_t numberOfSamples)
 
 	for (unsigned int parameterIndex = 0; parameterIndex < getNumberOfParameters(); parameterIndex++) {
 		FloatParameter* parameter = paramBundle->getParameter(parameterIndex);
+		
+		if (!parameter->canBeModulated())
+		{
+			// No or modulation for Bool / Discrete / Option Param
+			parameterValues[parameterIndex] = InterpolatedValue<float>(parameter->getValueUnnormalized());
+		}
+		else
+		{
+			// FloatParameter are modulated
 
-		// get normalized value at start of next block
-		parameter->next(numberOfSamples);
-		float normalizedNextValue = parameter->getValueNormalized();
+			// get normalized value at start of next block
+			parameter->next(numberOfSamples);
+			float normalizedNextValue = parameter->getValueNormalized();
 
-		// we clamp the normalized value after modulation
-		float normalizedNextValueModulated = normalizedNextValue + nextModulation[parameterIndex];
-		if (normalizedNextValueModulated < 0.f)
-			normalizedNextValueModulated = 0.f;
-		else if(normalizedNextValueModulated > 1.f)
-			normalizedNextValueModulated = 1.f;
+			// we clamp the normalized value after modulation
+			float normalizedNextValueModulated = normalizedNextValue + nextModulation[parameterIndex];
+			if (normalizedNextValueModulated < 0.f)
+				normalizedNextValueModulated = 0.f;
+			else if (normalizedNextValueModulated > 1.f)
+				normalizedNextValueModulated = 1.f;
 
 
-		float previousValue = parameterValues[parameterIndex].get();
-		float nextValue = parameter->fromNormalized(normalizedNextValueModulated);
-		parameterValues[parameterIndex] = InterpolatedValue<float>(previousValue, nextValue, numberOfSamples);
+			float previousValue = parameterValues[parameterIndex].get();
+			float nextValue = parameter->fromNormalized(normalizedNextValueModulated);
+			parameterValues[parameterIndex] = InterpolatedValue<float>(previousValue, nextValue, numberOfSamples);
+		}
 	}
 	process(buffer, numberOfSamples);
 
@@ -97,8 +111,12 @@ const unsigned int EffectBase::getNumberOfParameters() const
 void EffectBase::getModulation(float* modulationValues, size_t sampleOffset)
 { }
 
+/**
+ * Get interpolated parameter containing unnormalized values.
+ */
 InterpolatedValue<float>& EffectBase::getInterpolatedParameter(unsigned int parameterIndex) const
 {
+	// parameterValues contain results of parameter->getValueUnnormalized()
 	return parameterValues[parameterIndex];
 }
 

@@ -4,8 +4,6 @@
 #include "InterpolatedValue.h"
 #include "AuxFunc.h"
 
-#include <string>
-
 EqualizerEffect::EqualizerEffect() : EffectBase(1 + 5 * numberOfFilters)
 {
 	ParameterBundle* params = getPointerToParameterBundle();

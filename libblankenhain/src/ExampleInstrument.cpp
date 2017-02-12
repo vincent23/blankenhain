@@ -4,8 +4,6 @@
 #include "FloatParameter.h"
 #include "VoiceState.h"
 
-#include <cmath>
-
 ExampleInstrument::ExampleInstrument()
 	: InstrumentBase(9, 4), currentSound(nullptr)
 {
@@ -36,7 +34,7 @@ void ExampleInstrument::processVoice(VoiceState& voice, unsigned int timeInSampl
 	float release = getInterpolatedParameter(7).get();
 	unsigned int mode = static_cast<unsigned int>(getInterpolatedParameter(8).get());
 	
-	this->osc.setFrequency(aux::noteToFrequency(voice.key));
+	this->osc.setFrequency(aux::noteToFrequency(static_cast<float>(voice.key)));
 
 	if (mode == 0u)
 		currentSound = &osc;

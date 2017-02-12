@@ -6,7 +6,6 @@ public:
 	ParameterTrack(unsigned int numberOfPoints, unsigned int* samplePositions, float* normalizedValues);
 	float getCurrentValueAndAdvance(unsigned int samplePosition);
 
-private:
 	unsigned int numberOfPoints;
 	unsigned int* samplePositions;
 	float* normalizedValues;

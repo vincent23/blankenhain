@@ -2,8 +2,8 @@
 
 #include "Sample.h"
 #include "Constants.h"
-#include <cinttypes>
 #include <windows.h>
+#include "BhMath.h"
 
 gmSound::gmSound(gmSoundRegion& region, HANDLE h, unsigned int targetNote)
 	: interpolatedBufferSize(0u)
@@ -27,11 +27,11 @@ gmSound::gmSound(gmSoundRegion& region, HANDLE h, unsigned int targetNote)
 	Sample* rootBuffer = new Sample[inputSampleLength];
 	for (unsigned int i = 0u; i < inputSampleLength; i++)
 	{
-		rootBuffer[i] = Sample(static_cast<float>(rawSample[i]) - 0.5f) / 32767.5f;
+		rootBuffer[i] = Sample((static_cast<float>(rawSample[i]) - 0.5f) / 32767.5f);
 	}
 	delete[] rawSample;
 
-	float pitchFactor = std::exp2(-(static_cast<float>(region.rootNote) - static_cast<float>(targetNote)) / 12.f);
+	float pitchFactor = BhMath::exp2(-(static_cast<float>(region.rootNote) - static_cast<float>(targetNote)) / 12.f);
 	interpolatedBufferSize = inputSampleLength * 2 / pitchFactor;
 	interpolatedBuffer = new Sample[interpolatedBufferSize];
 
@@ -46,7 +46,7 @@ gmSound::gmSound(gmSoundRegion& region, HANDLE h, unsigned int targetNote)
 			indexUpper = inputSampleLength - 1;
 		}
 		float t = interpolatedIndex - static_cast<float>(indexLower);
-		interpolatedBuffer[i] = rootBuffer[indexLower] * (1.f - t) + rootBuffer[indexUpper] * t;
+		interpolatedBuffer[i] = rootBuffer[indexLower] * Sample(1.f - t) + rootBuffer[indexUpper] * Sample(t);
 	}
 
 	delete[] rootBuffer;

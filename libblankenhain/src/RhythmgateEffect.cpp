@@ -3,7 +3,6 @@
 #include "ParameterBundle.h"
 #include "InterpolatedValue.h"
 #include "AuxFunc.h"
-#include <cmath>
 
 RhythmgateEffect::RhythmgateEffect() : EffectBase(20, true)
 {

@@ -5,8 +5,6 @@
 #include "AuxFunc.h"
 #include "Constants.h"
 
-#include <algorithm>
-
 CompressorEffect::CompressorEffect()
 	: EffectBase(8u)
 	, lookaheadDelay(static_cast<unsigned int>(constants::sampleRate * 1e-3)) // constant lookahead of 1 ms
@@ -17,7 +15,7 @@ CompressorEffect::CompressorEffect()
 	(params->getParameter(2)) = new FloatParameter(0.f, NormalizedRange(-66.f, 6.f), "threshold", "dB");
 	(params->getParameter(3)) = new FloatParameter(2.f, NormalizedRange::fromMidpoint(1.f, 2.f, 64.f), "ratio", "");
 	(params->getParameter(4)) = new FloatParameter(0.f, NormalizedRange::fromMidpoint(0.f, 9.f, 18.f), "knee", "dB");
-	(params->getParameter(5)) = new FloatParameter(1.f, NormalizedRange::fromMidpoint(0.f, 1.f, 10.f), "lookahead", "ms");
+	(params->getParameter(5)) = new FloatParameter(1.f, NormalizedRange::fromMidpoint(aux::samplesToMillisec(2u), 1.f, 20.f), "lookahead", "ms");
 	(params->getParameter(6)) = new FloatParameter(0.f, NormalizedRange(-36.f, 36.f), "makeup", "dB");
 	(params->getParameter(7)) = new FloatParameter(1.f, NormalizedRange(0.f, 1.f), "envelope", "peak/rms");
 }
@@ -31,16 +29,19 @@ void CompressorEffect::process(Sample* buffer, size_t numberOfSamples)
 	InterpolatedValue<float>& ratio = getInterpolatedParameter(3);
 	InterpolatedValue<float>& knee = getInterpolatedParameter(4);
 	InterpolatedValue<float>& makeupGain = getInterpolatedParameter(6);
-	// TODO set lookahead
+	float lookahead = getInterpolatedParameter(5).get();
+
+	lookaheadDelay.setSize(static_cast<unsigned int>(aux::millisecToSamples(lookahead)));
+
 	envelope.setTimes(attack, release);
 	for (unsigned int i = 0; i < numberOfSamples; i++) {
 		if (rms) {
-			envelope.getRmsEnvelope(buffer[i]);
+			envelope.nextRmsEnvelope(buffer[i]);
 		}
 		else {
-			envelope.getPeakEnvelope(buffer[i]);
+			envelope.nextPeakEnvelope(buffer[i]);
 		}
-		float dbIn = maxValue(envelope.getCurrentEnvelope());
+		float dbIn = static_cast<float>(envelope.getCurrentEnvelope().maxValue());
 		float dbGain = makeupGain.get() + compressorGain(threshold.get(), ratio.get(), knee.get(), dbIn);
 		Sample delayed = lookaheadDelay.pushpop(buffer[i]);
 		delayed *= Sample(aux::decibelToLinear(dbGain));;
@@ -54,7 +55,7 @@ Sample CompressorEffect::getCurrentEnvelope() const
 	return envelope.getCurrentEnvelope();
 }
 
-double CompressorEffect::compressorGain(double threshold, double ratio, double knee, double dbIn)
+double CompressorEffect::compressorGain(float threshold, float ratio, float knee, float dbIn)
 {
 	// probably this can be done in a smarter (branchless) way
 	float kneeStart = static_cast<float>(threshold - knee);

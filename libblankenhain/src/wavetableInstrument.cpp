@@ -4,8 +4,6 @@
 #include "FloatParameter.h"
 #include "VoiceState.h"
 
-#include <cmath>
-
 wavetableInstrument::wavetableInstrument()
 	: InstrumentBase(9, 4),
 	tri_osc(AdditiveTriangleWaveOscillator()),

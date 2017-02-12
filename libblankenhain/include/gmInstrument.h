@@ -5,7 +5,7 @@ class gmSound;
 
 using HANDLE = void*;
 
-struct Sample;
+class Sample;
 
 /**
 * Stores interpolated sounds of one gmInstrument in a gmSound array.

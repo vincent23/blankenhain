@@ -28,6 +28,9 @@ public:
 	 * Processing in bh2 is performed blockwise. Here we prepare the parameterValues array
 	 * which is to be used during the process() function of each effect. Do not access paramBundle.
 	 *
+	 * ProcessBlock also accounts for updating the timeData if the effect uses BPM and position information from the host
+	 * after processing each block.
+	 *
 	 * In short, this passes on the call to the provided virtual void process function() in a manner so that everyhting is ok :-)
 	 **/
 	void processBlock(Sample* buffer, size_t numberOfSamples);
@@ -58,6 +61,8 @@ public:
 	 */
 	void setTempoData(float bpm, unsigned int position);
 
+	void incrementTempoDataPosition(unsigned int increment);
+
 protected:
 	/**
 	 * Use this, and only this function, to get access to current parameter values
@@ -67,6 +72,8 @@ protected:
 	/** 
 	 * Adjusts parameter interpolation by moving ALL of their interpolation foreward
 	 * Call as shorthand when your synth doesnt need current values of the parameters but only approximate ones.
+	 *
+	 * See also: FloatParameter::next(uint). This may be called manually instead of EffectBase::nextSample()
 	 **/
 	void nextSample(unsigned int steps = 1) const;
 

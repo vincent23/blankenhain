@@ -4,7 +4,7 @@
 
 using HANDLE = void*;
 
-struct Sample;
+class Sample;
 
 /**
 * Contains a note of a gmInstrument as a Sample array.

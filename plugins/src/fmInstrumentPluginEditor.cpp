@@ -17,11 +17,6 @@ void FmInstrumentPluginEditor::imguiFrame()
 
 	const PluginParameterBundle& bundle = plugin.getParameters();
 
-	NormalizedRange const* range = nullptr;
-	float min = 0.f;
-	float max = 0.f;
-	float skew = 0.f;
-
 	// Top section
 	// Left: AHDSR
 	// Right: Carrier Waveform and carrier stuff
@@ -31,6 +26,8 @@ void FmInstrumentPluginEditor::imguiFrame()
 	
 	ImGui::BeginChild("Carrier", ImVec2(ImGui::GetWindowContentRegionWidth() * 0.48f, 300), true);
 	renderParam(plugin, 98);
+	renderParam(plugin, 96);
+	renderParam(plugin, 97);
 
 	ImGui::EndChild();
 	
@@ -45,15 +42,13 @@ void FmInstrumentPluginEditor::imguiFrame()
 	  renderParam(plugin, currentParamInt + 7);
 	  float isOn = bundle.getParameterUnnormalized(currentParamInt + 7);
 	
-	  ImGui::SameLine;
+	  //ImGui::SameLine();
 	  // On / Off
 	  if (isOn == 1.f)
 	  {
 		renderParam(plugin, currentParamInt + 8);
-
-	    int isLFO = static_cast<float>(bundle.getParameterUnnormalized(currentParamInt + 8));
 	
-	    ImGui::SameLine;
+
 		renderParam(plugin, currentParamInt + 9);
 
 	    float tempoSyncOn = bundle.getParameterUnnormalized(currentParamInt + 9);
@@ -68,6 +63,8 @@ void FmInstrumentPluginEditor::imguiFrame()
 		renderParam(plugin, currentParamInt + 1);
 		renderParam(plugin, currentParamInt + 2);
 		renderParam(plugin, currentParamInt + 3);
+		renderParam(plugin, currentParamInt + 4);
+		renderParam(plugin, currentParamInt + 5);
 		renderParam(plugin, currentParamInt + 6);
 
 	    ImGui::Separator();
@@ -84,14 +81,12 @@ void FmInstrumentPluginEditor::imguiFrame()
 		unsigned int currentParamInt = 8 + i * 11;
 		renderParam(plugin, currentParamInt + 7);
 		float isOn = bundle.getParameterUnnormalized(currentParamInt + 7);
-		ImGui::SameLine;
+		//ImGui::SameLine();
 		// On / Off
 		if (isOn == 1.f)
 		{
 			renderParam(plugin, currentParamInt + 8);
 
-			int isLFO = static_cast<float>(bundle.getParameterUnnormalized(currentParamInt + 8));
-			ImGui::SameLine;
 			renderParam(plugin, currentParamInt + 9);
 
 			float tempoSyncOn = bundle.getParameterUnnormalized(currentParamInt + 9);
@@ -102,6 +97,8 @@ void FmInstrumentPluginEditor::imguiFrame()
 			renderParam(plugin, currentParamInt);
 			renderParam(plugin, currentParamInt + 1);
 			renderParam(plugin, currentParamInt + 2);
+			renderParam(plugin, currentParamInt + 4);
+			renderParam(plugin, currentParamInt + 5);
 			renderParam(plugin, currentParamInt + 3);
 			renderParam(plugin, currentParamInt + 6);
 			ImGui::Separator();

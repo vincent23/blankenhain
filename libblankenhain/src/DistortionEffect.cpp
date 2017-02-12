@@ -3,7 +3,7 @@
 #include "ParameterBundle.h"
 #include "InterpolatedValue.h"
 #include "AuxFunc.h"
-#include <cmath>
+#include "BhMath.h"
 
 DistortionEffect::DistortionEffect() : EffectBase(4)
 {
@@ -16,8 +16,8 @@ DistortionEffect::DistortionEffect() : EffectBase(4)
 
 void DistortionEffect::process(Sample* buffer, size_t numberOfSamples)
 {
-	InterpolatedValue<float>& inGain = getInterpolatedParameter(0);
-	InterpolatedValue<float>& drywet = getInterpolatedParameter(3);
+	float inGain = getInterpolatedParameter(0).get();
+	float drywet = getInterpolatedParameter(3).get();
 	size_t iterations = static_cast<size_t>(getInterpolatedParameter(1).get());
 
 
@@ -34,7 +34,7 @@ void DistortionEffect::process(Sample* buffer, size_t numberOfSamples)
 	{
 
 		Sample processed(buffer[bufferIteration]), original(buffer[bufferIteration]);
-		processed *= Sample(aux::decibelToLinear(inGain.get(bufferIteration)));
+		processed *= Sample(aux::decibelToLinear(inGain));
 		for (size_t j = 0; j < iterations; j++)
 		{
 			if (algo == distortionAlgorithms::ArayaAndSuyama)
@@ -44,9 +44,9 @@ void DistortionEffect::process(Sample* buffer, size_t numberOfSamples)
 			else if (algo == distortionAlgorithms::DoidicSymmetric)
 			{
 				processed =
-					(abs(Sample(2.) *  processed) \
-						- processed * processed) \
-					* sign(processed);
+					(Sample(2.) *  processed.abs()
+						- processed * processed)
+					* processed.sign();
 			}
 			else
 			{
@@ -56,8 +56,8 @@ void DistortionEffect::process(Sample* buffer, size_t numberOfSamples)
 				{
 					if (lr[k] < -0.08905)
 					{
-						lr[k] = -0.75 * (1. - std::pow(1. - (std::abs(lr[k]) - 0.032847), 12) \
-							+ (1. / 3.) * (std::abs(lr[k]) - 0.032847)) + 0.01;
+						lr[k] = -0.75 * (1. - BhMath::pow(1.f - (BhMath::abs(lr[k]) - 0.032847f), 12)
+							+ (1. / 3.) * (BhMath::abs(lr[k]) - 0.032847)) + 0.01;
 					}
 					else if (lr[k] < 0.320018)
 					{
@@ -68,15 +68,17 @@ void DistortionEffect::process(Sample* buffer, size_t numberOfSamples)
 						lr[k] = 0.630035;
 					}
 				}
-				processed.load_aligned(lr);
+				processed = Sample::load_aligned(lr);
 			}
 		}
-		if (drywet.get() > 0.5)
+		if (drywet > 0.5)
 		{
-			original *= Sample((1 - drywet.get()) * 2.f);
+			original *= Sample((1.f - drywet) * 2.f);
 		}
-		else 
-			processed *= Sample(drywet.get() * 2.f);
+		else
+		{
+			processed *= Sample(drywet * 2.f);
+		}
 		buffer[bufferIteration] = original + processed;
 	}
 	nextSample(numberOfSamples);

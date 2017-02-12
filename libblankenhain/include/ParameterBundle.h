@@ -1,7 +1,7 @@
 #pragma once
 
 #include "FloatParameter.h"
-#pragma once
+
 /// Contains a number of FloatParameters
 class ParameterBundle
 {

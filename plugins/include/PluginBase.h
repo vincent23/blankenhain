@@ -6,7 +6,7 @@
 #include "..\..\libblankenhain\include\EffectBase.h"
 
 class PluginParameterBundle;
-struct Sample;
+class Sample;
 
 
 /**
@@ -41,7 +41,7 @@ public:
 	/*
 	 * @param audioMaster: handed through by host
 	 * @param effect: pointer to actuall bh2 effect from libblankenhain
-	 * @param producesTailOutput: Set false if you are sure that this effect is silent when silence if passed through 
+	 * @param producesTailOutput: Set false if you are sure that this effect is silent when silence if passed through
 	 * (ie no delay line or release time and so on).
 	 */
 	PluginBase(audioMasterCallback const& audioMaster, EffectBase* effect, bool producesTailOutput = true);
@@ -84,28 +84,25 @@ public:
 
 	void open() override
 	{
-		if (effect->effectUsesTempoData())
-		{
-			float bpm(0.f);
-			unsigned int position(0u);
-			if (this->getBPMandPosition(bpm, position))
-			{
-				effect->setTempoData(bpm, position);
-			}
-		}
+		updateTempoData(true);
+	}
+
+	virtual VstInt32 startProcess() override
+	{
+		// this is actually called when first time loading a plugin
+		updateTempoData(true);
+		return 0;
+	}
+
+	virtual VstInt32 stopProcess() override
+	{
+		// this is actually called when deleting a plugin
+		return 0u;
 	}
 
 	void resume() override
 	{
-		if (effect->effectUsesTempoData())
-		{
-			float bpm(0.f);
-			unsigned int position(0u);
-			if (this->getBPMandPosition(bpm, position))
-			{
-				effect->setTempoData(bpm, position);
-			}
-		}
+		updateTempoData(true);
 	}
 
 
@@ -113,15 +110,6 @@ public:
 	//// RTIFICIAL FLAVOR
 	//// ACCESS THE EFFECT!
 	/////////////////////////////////////////////////////
-
-	/*
-	 * We don't use getTimeInfo directly because we dont need all
-	 * the information but only bpm and position in samples.
-	 *
-	 * Returns true when tempo is valid. Only use the values you get
-	 * in this function when it returns true!
-	 */
-	bool getBPMandPosition(float& bpm, unsigned int& position);
 
 
 	const PluginParameterBundle& getParameters() const;
@@ -139,6 +127,19 @@ public:
 
 
 protected:
+	/*
+	* We don't use getTimeInfo directly because we dont need all
+	* the information but only bpm and position in samples.
+	*
+	* Returns true when tempo is valid. Only use the values you get
+	* in this function when it returns true!
+	*/
+	bool getBPMandPositionFromHost(float& bpm, unsigned int& position);
+
+	void updateTempoData(bool force = false);
+
+	void incrementTempoDataPosition(unsigned int increment);
+
 	/*
 	 * This function may be provided optionaly. It
 	 * is called pretty much right before the call to effect->process()
@@ -158,7 +159,7 @@ protected:
 	PluginParameterBundle* pluginParameters;
 
 private:
-
+	unsigned int timeSinceLastBPMandPositionUpdate;
 	VstSpeakerArrangement* speakerArr;
 	Sample* processBuffer;
 };

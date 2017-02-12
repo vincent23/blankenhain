@@ -1,5 +1,4 @@
 #include "ParameterBundle.h"
-#include <utility>
 
 ParameterBundle::ParameterBundle(unsigned int numberOfParameters_) : numberOfParameters(numberOfParameters_)
 {

@@ -18,8 +18,9 @@ public:
 
 private:
 	PolyBLEPOscillator osc;
-
+	NoiseOscillator noise;
 	PolyBLEPOscillator lfo;
+	BaseOscillator* currentOsc;
 
 	float freqPrev;
 	unsigned int notePrev;

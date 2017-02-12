@@ -1,5 +1,4 @@
 // instance float circular buffer
-#pragma once
 #include "Sample.h"
 #include "OnePoleFilter.h"
 template OnePoleFilter<Sample>;
@@ -7,7 +6,7 @@ template OnePoleFilter<Sample>;
 template <typename T>
 OnePoleFilter<T>::OnePoleFilter(T const& polePosition)
 {
-  gain = Sample(1.);
+  gain = T(1.);
   this->setPole(polePosition);
 }
 
@@ -19,10 +18,10 @@ template <typename T>
 T OnePoleFilter<T>::tick(T const& in)
 {
   inputValue = gain * in;
-  Sample lastFrame_ = param_b0 * inputValue - param_a1 * outputValue0;
+  T lastFrame_ = param_b0 * inputValue - param_a1 * outputValue0;
   outputValue0 = lastFrame_;
 
-  return lastFrame_;
+  return outputValue0;
 }
 
 template <typename T>

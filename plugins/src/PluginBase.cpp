@@ -21,6 +21,8 @@
 //Formats Tested : AU & VST
 //
 //Latency Compensation : can be updated dynamically with ioChanged().
+// NOTE BY DUSTIN 11.02.17: Ableton does not call getInitialDelay() after ioChanged was called().
+// ioChanged() returns false.
 //
 //Keyboard Input : works fine with OS events(kEventRawKeyDown and WM_KEYDOWN).
 //
@@ -42,6 +44,7 @@ PluginBase::PluginBase(audioMasterCallback const& audioMaster, EffectBase* effec
 	, effect(effect_)
 	, pluginParameters(new PluginParameterBundle(effect_->getPointerToParameterBundle()))
 	, processBuffer(new Sample[constants::blockSize])
+	, timeSinceLastBPMandPositionUpdate(0u)
 {
 	canDoubleReplacing(false);
 	setNumInputs(2);
@@ -83,7 +86,8 @@ bool PluginBase::getParameterProperties(VstInt32 index, VstParameterProperties* 
 	// Seems not to be used in Live 8.2
 	// see also:
 	// https://www.kvraudio.com/forum/viewtopic.php?f=33&t=375315
-	if (index < this->getParameters().getNumberOfParameters())
+	unsigned int vstIndex = static_cast<unsigned int>(index);
+	if (vstIndex < this->getParameters().getNumberOfParameters())
 	{
 		VstParameterProperties& prop = *p;
 		prop.flags = kVstParameterSupportsDisplayIndex + kVstParameterSupportsDisplayCategory;
@@ -111,6 +115,7 @@ bool PluginBase::getParameterProperties(VstInt32 index, VstParameterProperties* 
 
 bool PluginBase::string2parameter(VstInt32 index, char* text)
 {
+	unsigned int vstIndex = static_cast<unsigned int>(index);
 	// Seems not to be used in Live 8.2
 
 	//Convert a string representation to a parameter value.
@@ -125,13 +130,13 @@ bool PluginBase::string2parameter(VstInt32 index, char* text)
 	//  Note :
 	//Implies setParameter().text == 0 is to be expected to check the capability(returns true)
 
-	if (index < this->getParameters().getNumberOfParameters())
+	if (vstIndex < this->getParameters().getNumberOfParameters())
 	{
-		float floatValueUnnormalized = atof(text);
-		if (pluginParameters->getParameter(index)->isInRange(floatValueUnnormalized))
+		float floatValueUnnormalized = static_cast<float>(atof(text));
+		if (pluginParameters->getParameter(vstIndex)->isInRange(floatValueUnnormalized))
 		{
-			float floatValueNormalized = pluginParameters->getParameter(index)->toNormalized(floatValueUnnormalized);
-			this->pluginParameters->setPluginParameter(static_cast<unsigned int>(index), floatValueNormalized);
+			float floatValueNormalized = pluginParameters->getParameter(vstIndex)->toNormalized(floatValueUnnormalized);
+			this->pluginParameters->setPluginParameter(vstIndex, floatValueNormalized);
 
 			return true;
 		}
@@ -168,23 +173,16 @@ bool PluginBase::getSpeakerArrangement(VstSpeakerArrangement** pluginInput, VstS
 
 void PluginBase::processReplacing(float** inputs, float** outputs, VstInt32 sampleFrames_)
 {
-	if (effect->effectUsesTempoData())
-	{
-		float bpm(0.f);
-		unsigned int position(0u);
-		if (this->getBPMandPosition(bpm, position))
-		{
-			effect->setTempoData(bpm, position);
-		}
-	}
+	updateTempoData();
 
 	this->pluginParameters->updateParameters();
-	unsigned int sampleFrames = static_cast<unsigned int>(sampleFrames_);
+	const unsigned int sampleFrames = static_cast<unsigned int>(sampleFrames_);
 	for (unsigned int blockOffset = 0; blockOffset < sampleFrames; blockOffset += constants::blockSize) 
 	{
 		unsigned int blockLength = sampleFrames - blockOffset;
 		// the last block of the buffer may be smaller than blockSize
 		// we process it anyway, which might be source of jittering
+
 		if (blockLength > constants::blockSize) 
 		{
 			blockLength = constants::blockSize;
@@ -204,6 +202,9 @@ void PluginBase::processReplacing(float** inputs, float** outputs, VstInt32 samp
 			outputs[0][samplePosition] = float(outputSample[0]);
 			outputs[1][samplePosition] = float(outputSample[1]);
 		}
+
+		// increment tempodata.position
+		incrementTempoDataPosition(blockLength);
 	}
 	onAfterProcess();
 }
@@ -261,22 +262,47 @@ const PluginParameterBundle& PluginBase::getParameters() const
 	return *pluginParameters;
 }
 
-bool PluginBase::getBPMandPosition(float& bpm, unsigned int& position)
+bool PluginBase::getBPMandPositionFromHost(float& bpm, unsigned int& position)
 {
 	VstTimeInfo* ptr = this->getTimeInfo(kVstTempoValid);
 	if (!ptr) {
 		return false;
 	}
 	if (ptr->flags | kVstTempoValid)
-		bpm = ptr->tempo;
-	else
-		return false;
-	if (ptr->samplePos != 0.f)
+	{
+		bpm = static_cast<float>(ptr->tempo);
 		position = static_cast<unsigned int>(ptr->samplePos);
+		return true;
+	}
 	else
 		return false;
-	return true;
 };
+
+void PluginBase::updateTempoData(bool force)
+{
+	if (!force && timeSinceLastBPMandPositionUpdate <= 10000u) {
+		return;
+	}
+	if (effect->effectUsesTempoData())
+	{
+		float bpm(0.f);
+		unsigned int position(0u);
+		if (this->getBPMandPositionFromHost(bpm, position))
+		{
+			effect->setTempoData(bpm, position);
+		}
+		timeSinceLastBPMandPositionUpdate = 0u;
+	}
+}
+
+void PluginBase::incrementTempoDataPosition(unsigned int increment)
+{
+	if (effect->effectUsesTempoData())
+	{
+		effect->incrementTempoDataPosition(increment);
+		timeSinceLastBPMandPositionUpdate += increment;
+	}
+}
 
 void PluginBase::onBeforeBlock(unsigned int blockOffset)
 { }

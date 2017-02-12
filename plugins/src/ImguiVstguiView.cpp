@@ -10,10 +10,20 @@
 ImguiVstguiView::ImguiVstguiView(ImguiFrameCallback& imguiCallback_, const CRect& size)
 	: COpenGLView(size)
 	, imguiCallback(imguiCallback_)
-{ }
+	, imguiContext(ImGui::CreateContext())
+{
+	ImGui::SetCurrentContext(imguiContext);
+	ImGui::GetIO().Fonts = &fonts;
+}
+
+ImguiVstguiView::~ImguiVstguiView()
+{ 
+	ImGui::DestroyContext(imguiContext);
+}
 
 void ImguiVstguiView::platformOpenGLViewCreated()
 {
+	ImGui::SetCurrentContext(imguiContext);
 	gladLoadGL();
 
 	ImGuiIO& io = ImGui::GetIO();
@@ -50,6 +60,7 @@ void ImguiVstguiView::platformOpenGLViewWillDestroy()
 
 void ImguiVstguiView::drawOpenGL(const CRect& updateRect)
 {
+	ImGui::SetCurrentContext(imguiContext);
 	CRect r(getViewSize());
 	newFrame(r);
 
@@ -296,6 +307,8 @@ void ImguiVstguiView::renderDrawLists(ImDrawData* draw_data)
 
 void ImguiVstguiView::createFontsTexture()
 {
+	ImGui::SetCurrentContext(imguiContext);
+
 	// Build texture atlas
 	ImGuiIO& io = ImGui::GetIO();
 	unsigned char* pixels;
@@ -414,6 +427,7 @@ void ImguiVstguiView::invalidateDeviceObjects()
 
 	if (g_FontTexture)
 	{
+		ImGui::SetCurrentContext(imguiContext);
 		glDeleteTextures(1, &g_FontTexture);
 		ImGui::GetIO().Fonts->TexID = 0;
 		g_FontTexture = 0;

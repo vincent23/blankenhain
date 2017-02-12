@@ -40,6 +40,9 @@ private:
 	FmModulation mod[numOsc];
 
 	I_SoundGenerator* currentSound;
+
+	float lastOscValues[numOsc];
+	float lastCarrierValue;
 public:
 	FmInstrument();
 

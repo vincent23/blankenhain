@@ -19,13 +19,13 @@ class EnvelopeFollower {
 public:
 	EnvelopeFollower();
 	EnvelopeFollower(unsigned int bufferSize);
-	void setTimes(double attack, double release);
-	Sample getPeakEnvelope(const Sample& in);
-	Sample getRmsEnvelope(const Sample& in);
+	void setTimes(float attack, float release);
+	Sample nextPeakEnvelope(const Sample& in);
+	Sample nextRmsEnvelope(const Sample& in);
 	Sample getCurrentEnvelope() const;
 
 private:
-	Sample getEnvelope(const Sample& envelopeSample);
+	Sample nextEnvelope(const Sample& envelopeSample);
 	Sample getPeakSample(const Sample& in);
 	Sample getRmsSample(const Sample& in);
 

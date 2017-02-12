@@ -29,6 +29,7 @@ static void renderParam(PluginBase& plugin, unsigned int paramIndex, unsigned in
 		OptionParameter const* cParam = dynamic_cast<OptionParameter const*>(param);
 		const int before(cParam->getCurrentNumber());
 		int current(cParam->getCurrentNumber());
+		ImGui::Text(cParam->getName().c_str()); ImGui::SameLine();
 		for (unsigned int i = 0u; i < cParam->getNumberOfPossibleValues(); i++)
 		{
 			ImGui::RadioButton(cParam->getOptionName(i).c_str(), &current, i);
@@ -76,9 +77,11 @@ static void renderParam(PluginBase& plugin, unsigned int paramIndex, unsigned in
 		min = range->getStart();
 		max = range->getEnd();
 		skew = range->getSkew();
-		float unnormalized = param->getValueUnnormalized();
-		if (ImGui::DragFloat(param->getName().c_str(), &unnormalized, 0.001, min * 1.002, max * 0.998, "%.3f", 1 / skew))
-			plugin.setParameterAutomated(paramIndex, range->toNormalized(unnormalized));
+		float* unnormalized = new float;
+		*unnormalized = param->getValueUnnormalized();
+		if (ImGui::DragFloat(param->getName().c_str(), unnormalized, 0.001, min * 1.002, max * 0.998, "%.3f", 1 / skew))
+			plugin.setParameterAutomated(paramIndex, range->toNormalized(*unnormalized));
+		delete unnormalized;
 		ImGui::SameLine();
 		if (ImGui::Button("Reset"))
 		{
@@ -158,20 +161,12 @@ static void renderLFO(PluginBase& plugin, ImVec2 size = ImGui::GetContentRegionA
 
 	const unsigned int nPoints = 250;
 	float points[250];
-	bool renderLFO = false;
+	//bool renderLFO = false;
 
-	float bpm = 0.f;
-	unsigned int position = 0u;
-	PluginBase* ptr = nullptr;
+	//float bpm = 0.f;
+	//unsigned int position = 0u;
+
 	PluginParameterBundle const& bundle = plugin.getParameters();
-
-	if (ptr = dynamic_cast<PluginBase*>(&plugin), ptr)
-	{
-		if (ptr->getBPMandPosition(bpm, position))
-		{
-			renderLFO = true;
-		}
-	}
 
 	renderParam(plugin, paramLFOAmount);
 	renderParam(plugin, paramLFOWaveform);
@@ -220,6 +215,6 @@ static void renderLFO(PluginBase& plugin, ImVec2 size = ImGui::GetContentRegionA
 	//availRest.x *= 2.f / 3.f;
 	//ImGui::PlotLines("##AHDSR", points, nPoints, 0, 0, 0.f, 1.f, availRest);
 	//
-	//ImGui::EndChild();
+	ImGui::EndChild();
 
 }

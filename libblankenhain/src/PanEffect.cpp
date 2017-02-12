@@ -23,7 +23,7 @@ void PanEffect::process(Sample* buffer, size_t numberOfSamples)
 			buffer[bufferIteration].store_aligned(lr);
 			lr[1] = lr[0] * (1.f + (0.0f < panningValue.get() ? 0.0f : panningValue.get()) * 0.02f);
 			lr[0] = lr[0] * (1.f - (0.0f < panningValue.get() ? panningValue.get() : 0.0f) * 0.02f);
-			buffer[bufferIteration] = load_aligned(lr);
+			buffer[bufferIteration] = Sample::load_aligned(lr);
 			nextSample();
 		}
 	}
@@ -35,7 +35,7 @@ void PanEffect::process(Sample* buffer, size_t numberOfSamples)
 			buffer[bufferIteration].store_aligned(lr);
 			lr[0] = lr[0] * (1.f - (0.0f < panningValue.get() ? panningValue.get() : 0.0f) * 0.02f);
 			lr[1] = lr[1] * (1.f + (0.0f < panningValue.get() ? 0.0f : panningValue.get()) * 0.02f);
-			buffer[bufferIteration] = load_aligned(lr);
+			buffer[bufferIteration] = Sample::load_aligned(lr);
 			nextSample();
 		}
 	}

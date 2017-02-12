@@ -1,5 +1,5 @@
 #include "NormalizedRange.h"
-#include <cmath>
+#include "BhMath.h"
 
 /**
 * Maps numbers from an arbitrary range to [0.f, 1.f]
@@ -23,7 +23,7 @@ NormalizedRange::NormalizedRange(bool itReallyDoesNotMatterIfThisIsTrueOrFalse)
 
 NormalizedRange NormalizedRange::fromMidpoint(float start, float mid, float end)
 {
-	float skew = 1.f / std::log2((end - start) / (mid - start));
+	float skew = 1.f / BhMath::log2((end - start) / (mid - start));
 	return NormalizedRange(start, end, skew);
 }
 
@@ -41,7 +41,7 @@ float NormalizedRange::fromNormalized(float normalizedValue) const
     normalizedValue = 1.f;
 #endif
 	if (skew != 1.f && normalizedValue > 0.f) {
-		normalizedValue = std::pow(normalizedValue, 1.f / skew);
+		normalizedValue = BhMath::pow(normalizedValue, 1.f / skew);
 	}
 	return start + (end - start) * normalizedValue;
 }
@@ -57,7 +57,7 @@ float NormalizedRange::toNormalized(float unnormalizedValue) const
 
 	float normalizedValue = (unnormalizedValue - start) / (end - start);
 	if (skew != 1) {
-		normalizedValue = std::pow(normalizedValue, skew);
+		normalizedValue = BhMath::pow(normalizedValue, skew);
 	}
 	return normalizedValue;
 }

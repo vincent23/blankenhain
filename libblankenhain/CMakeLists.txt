@@ -12,9 +12,11 @@ endfunction(prepend)
 
 prepend(HEADERS "include/"
 	"AlignedType.h"
+	"ArpMidiEffect.h"
 	"AuxFunc.h"
 	"Basedrum1Instrument.h"
 	"BitcrushEffect.h"
+	"BhMath.h"
 	"CircularBuffer.h"
 	"CompressorEffect.h"
 	"Constants.h"
@@ -60,9 +62,11 @@ prepend(HEADERS "include/"
 
 prepend(SOURCES "src/"
 	"AlignedType.cpp"
+	"ArpMidiEffect.cpp"
 	"AuxFunc.cpp"
 	"Basedrum1Instrument.cpp"
 	"BitcrushEffect.cpp"
+	"BhMath.cpp"
 	"CircularBuffer.cpp"
 	"CompressorEffect.cpp"
 	"DelayEffect.cpp"
@@ -83,6 +87,7 @@ prepend(SOURCES "src/"
 	"gmsynthInstrument.cpp"
 	"InstrumentBase.cpp"
 	"InterpolatedValue.cpp"
+	"MidiEvent.cpp"
 	"NormalizedRange.cpp"
 	"OnePoleFilter.cpp"
 	"Oscillators.cpp"
@@ -91,6 +96,7 @@ prepend(SOURCES "src/"
 	"pitchshiftMidiEffect.cpp"
 	"polyblepInstrument.cpp"
 	"RhythmgateEffect.cpp"
+	"Sample.cpp"
 	"UpDownSampling.cpp"
 	"VibratoEffect.cpp"
 	"VoiceState.cpp"
@@ -100,3 +106,8 @@ prepend(SOURCES "src/"
 
 include_directories("include")
 add_library(libblankenhain STATIC ${HEADERS} ${SOURCES})
+
+# Group items into folders for less crowded folder viewing experience
+# via //http://stackoverflow.com/questions/7091385/how-to-organise-my-files-using-cmake
+source_group(Effects REGULAR_EXPRESSION .*Effect.*)
+source_group(Instruments REGULAR_EXPRESSION .*Instrument.*)
