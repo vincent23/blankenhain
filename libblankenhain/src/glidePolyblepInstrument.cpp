@@ -5,7 +5,7 @@
 #include "VoiceState.h"
 
 glidePolyblepInstrument::glidePolyblepInstrument()
-	: InstrumentBase(18, 1, true)
+	: InstrumentBase(18, 1, true), noise(), currentOsc(&noise)
 {
 	ParameterBundle* params = getPointerToParameterBundle();
 
@@ -17,8 +17,8 @@ glidePolyblepInstrument::glidePolyblepInstrument()
 	params->getParameter(5) = new FloatParameter(100.f, NormalizedRange(1.f, 1700.f, 0.3f), "sustain", "ms");
 	params->getParameter(6) = new FloatParameter(1.0f, NormalizedRange(), "sustainLevel", "ratio");
 	params->getParameter(7) = new FloatParameter(100.f, NormalizedRange(1.f, 1700.f, 0.3f), "release", "ms");
-	BhString names[4] = { "sine", "saw", "square", "triangle" };
-	params->getParameter(8) = new OptionParameter(4u, names, "osc", "");
+	BhString names[5] = { "sine", "saw", "square", "triangle", "noise" };
+	params->getParameter(8) = new OptionParameter(5u, names, "osc", "");
 	params->getParameter(9) = new FloatParameter(0.f, NormalizedRange(0.f, 0.3f), "glide", "");
 	params->getParameter(10) = new FloatParameter(0.f, NormalizedRange(-1.f, 1.f), "lfoAmount", "");
 	params->getParameter(11) = new FloatParameter(0.0055f, NormalizedRange(0.005f, 20.f, 0.325), "lfoSpeed", "");
@@ -54,15 +54,24 @@ void glidePolyblepInstrument::processVoice(VoiceState& voice, unsigned int timeI
 	float sustainLevel = getInterpolatedParameter(6).get();
 	float sustain = getInterpolatedParameter(5).get();
 	float release = getInterpolatedParameter(7).get();
-	float oscMode = getInterpolatedParameter(8).get();
+	unsigned int oscMode = static_cast<unsigned int>(getInterpolatedParameter(8).get());
 	float portamento = getInterpolatedParameter(9).get();
 	float detune = getInterpolatedParameter(12).get();
-
+	// oscMode 0: polyBLEP Sine
 	// oscMode 1: polyBLEP Sawtooth
 	// oscMode 2: polyBLEP Square
 	// oscMode 3: polyBLEP Triangle
+	// oscMode 4: noise
 
-	this->osc.setMode(NaiveOscillator::NaiveOscillatorMode(static_cast<unsigned int>(oscMode)));
+	if (oscMode >= 4u)
+	{
+		currentOsc = &noise;
+	}
+	else
+	{
+		currentOsc = &osc;
+		this->osc.setMode(NaiveOscillator::NaiveOscillatorMode(static_cast<unsigned int>(oscMode)));
+	}
 
 	// If a new note is played, take this as the start time for glide
 	// TODO we can improve this but as this synth only has one voice
@@ -105,8 +114,8 @@ void glidePolyblepInstrument::processVoice(VoiceState& voice, unsigned int timeI
 			    freqPrev * exp(-1.f * timeSinceNoteOff / (constants::sampleRate * portamento) );
 
 		// evalutate Frequency as usual
-		this->osc.setFrequency(currentFreq);
-		buffer[sampleIndex] = Sample(this->osc.getNextSample());
+		currentOsc->setFrequency(currentFreq);
+		buffer[sampleIndex] = Sample(currentOsc->getNextSample());
 		performAHDSR<Sample>(buffer, voice, timeInSamples, sampleIndex, attack, release, hold, decay, sustain, sustainOn, sustainLevel, holdLevel);
 	}
 }
