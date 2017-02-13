@@ -17,6 +17,8 @@
 	constexpr float sampleRate = 44100;
 
 	constexpr unsigned int maxMidiEventsPerVSTEventBlock = 256;
+
+	constexpr unsigned int maxMidiNotesInFlight = 256;
 }
 
  using uint32_t = unsigned int;
