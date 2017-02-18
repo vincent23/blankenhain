@@ -14,8 +14,8 @@ static void renderParam(PluginBase& plugin, unsigned int paramIndex, unsigned in
 	if (dynamic_cast<BoolParameter const*>(param))
 	{
 		BoolParameter const* cParam = dynamic_cast<BoolParameter const*>(param);
-		const bool before = cParam->getValue();
-		int after = cParam->getValue();
+		const int before = cParam->getValue() ? 1 : 0;
+		int after = cParam->getValue() ? 1 : 0;
 
 		ImGui::Text(cParam->getName().c_str()); ImGui::SameLine();
 		ImGui::RadioButton("Off", &after, 0); ImGui::SameLine();
@@ -79,7 +79,7 @@ static void renderParam(PluginBase& plugin, unsigned int paramIndex, unsigned in
 		skew = range->getSkew();
 		float* unnormalized = new float;
 		*unnormalized = param->getValueUnnormalized();
-		if (ImGui::DragFloat(param->getName().c_str(), unnormalized, 0.001, min * 1.002, max * 0.998, "%.3f", 1 / skew))
+		if (ImGui::DragFloat(param->getName().c_str(), unnormalized, 0.001f, min * 1.002f, max * 0.998f, "%.3f", 1.f / skew))
 			plugin.setParameterAutomated(paramIndex, range->toNormalized(*unnormalized));
 		delete unnormalized;
 		ImGui::SameLine();
@@ -133,7 +133,8 @@ static void renderADHSR(PluginBase& plugin, ImVec2 size = ImGui::GetContentRegio
 	for (unsigned int i = 0; i < nPoints; i++)
 	{
 		points[i] = 1.f;
-		performAHDSR<float>(points, dummy, aux::millisecToSamples(i * incrementForVisualization), i,
+		performAHDSR<float>(points, dummy, static_cast<unsigned int>(aux::millisecToSamples(i * incrementForVisualization)),
+			i,
 			bundle.getParameter(paramAttack)->getValueUnnormalized(), 
 			bundle.getParameter(paramRelease)->getValueUnnormalized(), 
 			bundle.getParameter(paramHold)->getValueUnnormalized(), 
@@ -160,7 +161,7 @@ static void renderLFO(PluginBase& plugin, ImVec2 size = ImGui::GetContentRegionA
 	ImGui::BeginChild("LFOsub", size, true);
 
 	const unsigned int nPoints = 250;
-	float points[250];
+	//float points[250];
 	//bool renderLFO = false;
 
 	//float bpm = 0.f;

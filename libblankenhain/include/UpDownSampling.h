@@ -2,7 +2,7 @@
 
 #include <cmath>
 
-struct Sample;
+class Sample;
 
 // Upsampling using Spine Interpolation, watch the syntax (differs from upsampleZeros)
 Sample* upsampleSpline(Sample* buffer, size_t originalSamples, size_t interpolatedSamples);

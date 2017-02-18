@@ -69,7 +69,7 @@ void EqualizerPluginEditor::imguiFrame()
 	}
 	int type = (int)bundle.getParameterUnnormalized(item * 5 + 5);
 	if (ImGui::Combo("type", &type, "High pass\0Low shelf\0Bell\0Notch\0High shelf\0Low pass\0\0")) {
-		plugin.setParameterAutomated(item * 5 + 5, ((type + .1f) / 6.));
+		plugin.setParameterAutomated(item * 5 + 5, ((type + .1f) / 6.f));
 	}
 	for (unsigned int i = 0; i < nPoints; i++) {
 		points[i] = 0;
@@ -87,7 +87,7 @@ void EqualizerPluginEditor::imguiFrame()
 		double gk = g * k;
 		int type = (int)bundle.getParameterUnnormalized(filterIndex * 5 + 5);
 		for (unsigned int i = 0; i < nPoints; i++) {
-			double frequency = frequencyRange->fromNormalized((double)i / (nPoints - 1));
+			double frequency = frequencyRange->fromNormalized((float)i / (nPoints - 1));
 			// TODO move angular frequency conversion to a common place
 			double omega = frequency * constants::pi / nyquist;
 			//double omega = ((double)i / (nPoints - 1)) * constants::pi;

@@ -101,12 +101,12 @@ void BoolParameter::setTargetValueUnnormalized(float unnormalizedValue)
 
 bool BoolParameter::getValue() const
 {
-	return static_cast<bool>(this->valueNormalized.get());
+	return this->valueNormalized.get() == 1.f;
 }
 
 void BoolParameter::flip()
 {
-	valueNormalized = InterpolatedValue<float>(!static_cast<bool>(this->valueNormalized.get()));
+	valueNormalized = InterpolatedValue<float>(!(this->valueNormalized.get() == 1.f));
 }
 
 void BoolParameter::setValue(bool value)
@@ -125,7 +125,7 @@ const bool DiscreteParameter::canBeModulated() const
 }
 
 DiscreteParameter::DiscreteParameter(unsigned int numberOfValues, BhString name, BhString unit, const float* values, unsigned int defValueIndex)
-	: FloatParameter(values != nullptr ? values[defValueIndex] : 0.f, NormalizedRange(0u, numberOfValues), name, unit), numberOfPossibleValues(numberOfValues), possibleValues(nullptr)
+	: FloatParameter(values != nullptr ? values[defValueIndex] : 0.f, NormalizedRange(0.f, static_cast<float>(numberOfValues)), name, unit), numberOfPossibleValues(numberOfValues), possibleValues(nullptr)
 {
 	possibleValues = new float[numberOfPossibleValues];
 	for (unsigned int i = 0u; i < numberOfPossibleValues; i++)
@@ -226,5 +226,7 @@ BhString OptionParameter::getOptionName(unsigned int num) const
 
 void OptionParameter::setTargetValueUnnormalized(float unnormalizedValue)
 {
-	this->setTargetValueNormalized(static_cast<unsigned int>(unnormalizedValue) / numberOfPossibleValues);
+	this->setTargetValueNormalized(
+		static_cast<float>(static_cast<unsigned int>(unnormalizedValue) / numberOfPossibleValues)
+	);
 };

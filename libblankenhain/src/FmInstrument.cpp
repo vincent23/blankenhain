@@ -90,7 +90,7 @@ void FmInstrument::processVoice(VoiceState& voice, unsigned int timeInSamples, S
 		for (unsigned int i = 0u; i < numOsc - 1u; i++)
 		{
 			float amount = getInterpolatedParameter(8 + i * 11 + 2).get();
-			bool isOn = getInterpolatedParameter(8 + i * 11 + 7).get();
+			bool isOn = getInterpolatedParameter(8 + i * 11 + 7).get() == 1.f;
 			if (isOn)
 			{
 				float freq = getInterpolatedParameter(8 + i * 11 + 0).get();
@@ -100,8 +100,8 @@ void FmInstrument::processVoice(VoiceState& voice, unsigned int timeInSamples, S
 				bool selfModOn = selfModAmount > 0.0000000001f;
 				float selfModtype = getInterpolatedParameter(8 + i * 11 + 5).get();
 				float waveFormType = getInterpolatedParameter(8 + i * 11 + 6).get();
-				bool isLFO = getInterpolatedParameter(8 + i * 11 + 8).get();
-				bool tempoSync = getInterpolatedParameter(8 + i * 11 + 9).get();
+				bool isLFO = getInterpolatedParameter(8 + i * 11 + 8).get() == 1.f;
+				bool tempoSync = getInterpolatedParameter(8 + i * 11 + 9).get() == 1.f;
 				float tempoSyncVal = getInterpolatedParameter(8 + i * 11 + 10).get();
 				float freqMultiplierFM = 1.f;
 				float freqAdditionPM = 0.f;
@@ -228,7 +228,7 @@ void FmInstrument::processVoice(VoiceState& voice, unsigned int timeInSamples, S
 
 		// Carrier now
 
-		float freq = aux::noteToFrequency(voice.key);
+		float freq = aux::noteToFrequency(static_cast<float>(voice.key));
 		float selfModAmount = getInterpolatedParameter(96).get();
 		bool selfModOn = selfModAmount > 1e-15;
 		float selfModtype = getInterpolatedParameter(97).get();

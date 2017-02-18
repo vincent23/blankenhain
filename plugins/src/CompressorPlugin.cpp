@@ -21,7 +21,7 @@ float CompressorPlugin::getEnvelope()
 void CompressorPlugin::onAfterProcess()
 {
 	Sample envelope = static_cast<CompressorEffect*>(effect)->getCurrentEnvelope();
-	currentEnvelope = (float)aux::linearToDecibel(envelope.maxValue());
+	currentEnvelope = (float)aux::linearToDecibel(static_cast<float>(envelope.maxValue()));
 }
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster)

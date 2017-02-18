@@ -21,7 +21,7 @@ glidePolyblepInstrument::glidePolyblepInstrument()
 	params->getParameter(8) = new OptionParameter(5u, names, "osc", "");
 	params->getParameter(9) = new FloatParameter(0.f, NormalizedRange(0.f, 0.3f), "glide", "");
 	params->getParameter(10) = new FloatParameter(0.f, NormalizedRange(-1.f, 1.f), "lfoAmount", "");
-	params->getParameter(11) = new FloatParameter(0.0055f, NormalizedRange(0.005f, 20.f, 0.325), "lfoSpeed", "");
+	params->getParameter(11) = new FloatParameter(0.0055f, NormalizedRange(0.005f, 20.f, 0.325f), "lfoSpeed", "");
 	params->getParameter(12) = new FloatParameter(0.f, NormalizedRange(-5.f, 5.0f), "detune", "");
 	float multiplierValues[7] = { 0.0625, 0.125, 0.25, 0.5, 1., 2., 4. };
 	params->getParameter(13) = new DiscreteParameter(7u, "lfoBeatMultiplier", "", multiplierValues);
@@ -83,7 +83,7 @@ void glidePolyblepInstrument::processVoice(VoiceState& voice, unsigned int timeI
 		timeNoteOff = voice.onTime;
 	}
 
-	float voiceFreq = aux::noteToFrequency(voice.key);
+	float voiceFreq = aux::noteToFrequency(static_cast<float>(voice.key));
 	if (detune != 0.f)
 		voiceFreq = aux::calculateDetune(voiceFreq, detune, 5u);
 
@@ -130,7 +130,7 @@ void glidePolyblepInstrument::getModulation(float* modulationValues, size_t samp
 		float lfoBaseline = getInterpolatedParameter(17).get();
 
 		float lfoWaveform = getInterpolatedParameter(14).get();
-		bool lfoTempoSync = getInterpolatedParameter(15).get();
+		bool lfoTempoSync = getInterpolatedParameter(15).get() == 1.f;
 		this->lfo.setMode(NaiveOscillator::NaiveOscillatorMode(static_cast<unsigned int>(lfoWaveform)));
 		float lfoPhase = getInterpolatedParameter(16).get();
 		if (!lfoTempoSync)

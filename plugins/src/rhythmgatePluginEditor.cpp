@@ -123,7 +123,7 @@ void RhythmgatePluginEditor::imguiFrame()
 	if (ImGui::DragFloat("multiplier", &multiplier, 0.01f, min, max, "%.3f", 1 / skew))
 	{
 		if (multiplier < range4->getStart())
-			multiplier = range4->getStart() + 0.0001;
+			multiplier = range4->getStart() + 0.0001f;
 		plugin.setParameterAutomated(18u, range4->toNormalized(multiplier));
 	}
 

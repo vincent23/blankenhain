@@ -54,10 +54,10 @@ void DistortionEffect::process(Sample* buffer, size_t numberOfSamples)
 				// Treat both channels (l / r) seperately
 				for (size_t k = 0; k < 2u; k++)
 				{
-					if (lr[k] < -0.08905)
+					if (lr[k] < -0.08905f)
 					{
-						lr[k] = -0.75 * (1. - BhMath::pow(1.f - (BhMath::abs(lr[k]) - 0.032847f), 12)
-							+ (1. / 3.) * (BhMath::abs(lr[k]) - 0.032847)) + 0.01;
+						lr[k] = -0.75 * (1. - static_cast<double>(BhMath::pow(1.f - ( BhMath::abs(static_cast<float>(lr[k])) - 0.032847f ), 12.f))
+							+ (1. / 3.) * (static_cast<double>(BhMath::abs(static_cast<float>(lr[k]))) - 0.032847f)) + 0.01;
 					}
 					else if (lr[k] < 0.320018)
 					{

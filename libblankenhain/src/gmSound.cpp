@@ -17,7 +17,7 @@ gmSound::gmSound(gmSoundRegion& region, HANDLE h, unsigned int targetNote)
 	if (SetFilePointer(h, region.startByte, NULL/*32 bit*/, FILE_BEGIN) != INVALID_SET_FILE_POINTER)
 	{
 		DWORD dwBytesRead;
-		bool status = ReadFile(h, rawSample, region.sampleLength, &dwBytesRead, NULL);
+		bool status = ReadFile(h, rawSample, region.sampleLength, &dwBytesRead, NULL) == 1;
 	}
 	else {
 		// TODO remove this in release
@@ -32,7 +32,7 @@ gmSound::gmSound(gmSoundRegion& region, HANDLE h, unsigned int targetNote)
 	delete[] rawSample;
 
 	float pitchFactor = BhMath::exp2(-(static_cast<float>(region.rootNote) - static_cast<float>(targetNote)) / 12.f);
-	interpolatedBufferSize = inputSampleLength * 2 / pitchFactor;
+	interpolatedBufferSize = static_cast<unsigned int>(inputSampleLength * 2 / pitchFactor);
 	interpolatedBuffer = new Sample[interpolatedBufferSize];
 
 	// simple linear interpolation
@@ -51,8 +51,8 @@ gmSound::gmSound(gmSoundRegion& region, HANDLE h, unsigned int targetNote)
 
 	delete[] rootBuffer;
 
-	loopStart = region.loopStart / pitchFactor * 2;
-	loopLength = region.loopLength / pitchFactor * 2;
+	loopStart = static_cast<unsigned int>(region.loopStart / pitchFactor * 2);
+	loopLength = static_cast<unsigned int>(region.loopLength / pitchFactor * 2);
 }
 
 gmSound::~gmSound()

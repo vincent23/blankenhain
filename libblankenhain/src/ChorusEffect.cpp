@@ -10,7 +10,7 @@ ChorusEffect::ChorusEffect() : EffectBase(11), delayLine(size_t(aux::millisecToS
 	wasPaniced = false;
 	ParameterBundle* params = getPointerToParameterBundle();
 	params->getParameter(0) = new FloatParameter(0.f, NormalizedRange(0.f, 1.f), "lfoAmount", "");
-	(params->getParameter(1)) = new FloatParameter(0.0001f, NormalizedRange(0.0001f, 1.f, 0.2), "width", "%");
+	(params->getParameter(1)) = new FloatParameter(0.0001f, NormalizedRange(0.0001f, 1.f, 0.2f), "width", "%");
 	(params->getParameter(2)) = new FloatParameter(15.f, NormalizedRange(1.f, 50.f, 0.2f), "delay", "ms");
 	(params->getParameter(3)) = new FloatParameter(0.0f, NormalizedRange(0.0f, 1.f), "feedback", "%");
 	(params->getParameter(4)) = new FloatParameter(0.f, NormalizedRange(), "drywet", "");
@@ -30,8 +30,8 @@ void ChorusEffect::process(Sample* buffer, size_t numberOfSamples)
 	float width = getInterpolatedParameter(1).get() * delay;
 	float feedback = getInterpolatedParameter(3).get();
 	float drywet = getInterpolatedParameter(4).get();
-	bool panicButton = static_cast<bool>(getInterpolatedParameter(5).get());
-	bool stereoButton = static_cast<bool>(getInterpolatedParameter(10).get());
+	bool panicButton = getInterpolatedParameter(5).get() == 1.f;
+	bool stereoButton = getInterpolatedParameter(10).get() == 1.f;
 	float pan = getInterpolatedParameter(8).get();
 
 	float lfoAmount = getInterpolatedParameter(0).get();

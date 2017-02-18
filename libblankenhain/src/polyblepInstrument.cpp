@@ -43,7 +43,7 @@ void polyblepInstrument::processVoice(VoiceState& voice, unsigned int timeInSamp
 	// oscMode 2: polyBLEP Square (broken)
 	// oscMode 3: polyBLEP Triangle (broken)
 
-	this->osc.setFrequency(aux::noteToFrequency(voice.key));
+	this->osc.setFrequency(aux::noteToFrequency(static_cast<float>(voice.key)));
 
 	this->osc.setMode(NaiveOscillator::NaiveOscillatorMode(oscMode));
 

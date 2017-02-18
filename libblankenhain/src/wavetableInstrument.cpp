@@ -49,11 +49,11 @@ void wavetableInstrument::processVoice(VoiceState& voice, unsigned int timeInSam
 	// oscMode 4: WaveTable Noise HQ
 	// oscMode 5: WaveTable Noise LQ
 
-	this->sq_osc.setFrequency(aux::noteToFrequency(voice.key));
-	this->tri_osc.setFrequency(aux::noteToFrequency(voice.key));
-	this->noise_osc1.setFrequency(aux::noteToFrequency(voice.key));
-	this->noise_osc2.setFrequency(aux::noteToFrequency(voice.key));
-	this->sawt_osc.setFrequency(aux::noteToFrequency(voice.key));
+	this->sq_osc.setFrequency(aux::noteToFrequency(static_cast<float>(voice.key)));
+	this->tri_osc.setFrequency(aux::noteToFrequency(static_cast<float>(voice.key)));
+	this->noise_osc1.setFrequency(aux::noteToFrequency(static_cast<float>(voice.key)));
+	this->noise_osc2.setFrequency(aux::noteToFrequency(static_cast<float>(voice.key)));
+	this->sawt_osc.setFrequency(aux::noteToFrequency(static_cast<float>(voice.key)));
 
 	for (unsigned int sampleIndex = 0; sampleIndex < numberOfSamples; sampleIndex++) {
 		unsigned int deltaT = (timeInSamples + sampleIndex) - voice.onTime;

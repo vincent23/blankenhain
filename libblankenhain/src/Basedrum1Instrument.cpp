@@ -47,7 +47,7 @@ void basedrum1Instrument::processVoice(VoiceState& voice, unsigned int timeInSam
 	float release = getInterpolatedParameter(7).get();
 	unsigned int oscMode = static_cast<unsigned int>(getInterpolatedParameter(8).get());
 
-	this->drm2.setFrequency(aux::noteToFrequency(voice.key));
+	this->drm2.setFrequency(aux::noteToFrequency(static_cast<float>(voice.key)));
 
 	if (oscMode == 0u)
 	{

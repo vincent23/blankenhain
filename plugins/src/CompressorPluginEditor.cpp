@@ -30,12 +30,12 @@ void CompressorPluginEditor::imguiFrame()
 	const float dbMax = 6.f;
 	for (unsigned int i = 0; i < nPoints; i++) {
 		float dbIn = dbMin + (dbMax - dbMin) * ((float)i / (nPoints - 1));
-		points[i] = dbIn + CompressorEffect::compressorGain(threshold, ratio, knee, dbIn);
+		points[i] = dbIn + static_cast<float>(CompressorEffect::compressorGain(threshold, ratio, knee, dbIn));
 	}
 
 	// show gain reduction
 	float envelopeDbIn = static_cast<CompressorPlugin*>(&plugin)->getEnvelope();
-	float compressorGain = CompressorEffect::compressorGain(threshold, ratio, knee, envelopeDbIn);
+	float compressorGain = static_cast<float>(CompressorEffect::compressorGain(threshold, ratio, knee, envelopeDbIn));
 	float gainReduction = compressorGain / dbMin;
 	std::string overlay = std::to_string(compressorGain) + " dB";
 	ImGui::ProgressBar(gainReduction, ImVec2(0, 0), overlay.c_str());

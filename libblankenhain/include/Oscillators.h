@@ -227,7 +227,7 @@ public:
 			currentHarmonic = static_cast<float>(k) * mFrequency;
 			osc.setFrequency(currentHarmonic);
 
-			value += osc.getSample(time, phase) * (BhMath::pow(-1.f, (k - 1u) / 2u) / (static_cast<float>(k)* static_cast<float>(k)));
+			value += osc.getSample(time, phase) * (BhMath::pow(-1.f, static_cast<float>((k - 1u) / 2u)) / (static_cast<float>(k)* static_cast<float>(k)));
 			k += 2;
 		}
 		return value * 8.f / static_cast<float>(constants::pi * constants::pi);
@@ -246,7 +246,8 @@ public:
 			currentHarmonic = static_cast<float>(k) * mFrequency;
 			osc.setFrequency(currentHarmonic);
 
-			value += osc.getNextSample(phase) * (BhMath::pow(-1.f, (k - 1u) / 2u) / (static_cast<float>(k)* static_cast<float>(k)));
+			value += osc.getNextSample(phase) * (BhMath::pow(-1.f, static_cast<float>((k - 1u) / 2u)) 
+				/ (static_cast<float>(k) * static_cast<float>(k)));
 			k += 2;
 		}
 		return value * 8.f / static_cast<float>(constants::pi * constants::pi);

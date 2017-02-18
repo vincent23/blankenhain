@@ -83,7 +83,7 @@ float NaiveOscillator::getNextSample(float phase)
 
 float PolyBLEPOscillator::poly_blep(float t) const
 {
-	float dt = mPhaseIncrement / (2. * constants::pi);
+	float dt = mPhaseIncrement / (2.f * constants::pi);
 	// 0 <= t < 1
 	if (t < dt)
 	{
@@ -91,15 +91,15 @@ float PolyBLEPOscillator::poly_blep(float t) const
 		return t + t - t*t - 1.f;
 	}
 	// -1 < t < 0
-	else if (t > 1.0 - dt)
+	else if (t > 1.f - dt)
 	{
-		t = (t - 1.0) / dt;
+		t = (t - 1.f) / dt;
 		return t*t + t + t + 1.f;
 	}
 	// 0 otherwise
 	else
 	{
-		return 0.0;
+		return 0.f;
 	}
 }
 
@@ -125,7 +125,7 @@ float PolyBLEPOscillator::getSample(unsigned int time, float phase)
 		value -= poly_blep(temp);
 		if (mOscillatorMode == OSCILLATOR_MODE_TRIANGLE) {
 			// Leaky integrator: y[n] = A * x[n] + (1 - A) * y[n-1]
-			value = mPhaseIncrement * value + (1. - mPhaseIncrement) * lastOutput;
+			value = mPhaseIncrement * value + (1.f - mPhaseIncrement) * lastOutput;
 			lastOutput = value;
 		}
 	}
@@ -155,7 +155,7 @@ float PolyBLEPOscillator::getNextSample(float phase)
 		if (mOscillatorMode == OSCILLATOR_MODE_TRIANGLE)
 		{
 			// Leaky integrator: y[n] = A * x[n] + (1 - A) * y[n-1]
-			value = mPhaseIncrement * value + (1. - mPhaseIncrement) * lastOutput;
+			value = mPhaseIncrement * value + (1.f - mPhaseIncrement) * lastOutput;
 			lastOutput = value;
 		}
 	}

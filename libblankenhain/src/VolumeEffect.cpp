@@ -12,7 +12,7 @@ VolumeEffect::VolumeEffect() : EffectBase(10u, true)
 	(params->getParameter(2)) = new FloatParameter(1.f, NormalizedRange(), "coupling", "bool");
 	BhString names[4] = { "sine", "saw", "square", "triangle" };
 	params->getParameter(3) = new FloatParameter(0.f, NormalizedRange(-1.f, 1.f), "lfoAmount", "");
-	params->getParameter(4) = new FloatParameter(0.0055f, NormalizedRange(0.005f, 20.f, 0.325), "lfoSpeed", "");
+	params->getParameter(4) = new FloatParameter(0.0055f, NormalizedRange(0.005f, 20.f, 0.325f), "lfoSpeed", "");
 	float multiplierValues[7] = { 0.0625, 0.125, 0.25, 0.5, 1., 2., 4. };
 	params->getParameter(5) = new DiscreteParameter(7u, "lfoBeatMultiplier", "", multiplierValues);
 	params->getParameter(6) = new OptionParameter(4u, names, "lfoWaveform", "");
@@ -64,7 +64,7 @@ void VolumeEffect::getModulation(float* modulationValues, size_t sampleOffset)
 		float lfoBaseline = getInterpolatedParameter(9).get();
 
 		float lfoWaveform = getInterpolatedParameter(6).get();
-		bool lfoTempoSync = getInterpolatedParameter(7).get();
+		bool lfoTempoSync = getInterpolatedParameter(7).get() == 1.f;
 		this->lfo.setMode(NaiveOscillator::NaiveOscillatorMode(static_cast<unsigned int>(lfoWaveform)));
 		float lfoPhase = getInterpolatedParameter(8).get();
 		if (!lfoTempoSync)

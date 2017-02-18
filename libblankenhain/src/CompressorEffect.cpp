@@ -42,7 +42,7 @@ void CompressorEffect::process(Sample* buffer, size_t numberOfSamples)
 			envelope.nextPeakEnvelope(buffer[i]);
 		}
 		float dbIn = static_cast<float>(envelope.getCurrentEnvelope().maxValue());
-		float dbGain = makeupGain.get() + compressorGain(threshold.get(), ratio.get(), knee.get(), dbIn);
+		float dbGain = makeupGain.get() + static_cast<float>(compressorGain(threshold.get(), ratio.get(), knee.get(), dbIn));
 		Sample delayed = lookaheadDelay.pushpop(buffer[i]);
 		delayed *= Sample(aux::decibelToLinear(dbGain));;
 		buffer[i] = delayed;

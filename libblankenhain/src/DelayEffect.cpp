@@ -9,7 +9,7 @@ DelayEffect::DelayEffect() : EffectBase(7, true), delayLine(size_t(aux::millisec
 	wasPaniced = false;
 	ParameterBundle* params = getPointerToParameterBundle();
 	(params->getParameter(0)) = new FloatParameter(0.f, NormalizedRange(-50.f, 50.f), "pan", "");
-	(params->getParameter(1)) = new FloatParameter(100.f, NormalizedRange(1.f, 2500.f, 0.3), "length", "ms");
+	(params->getParameter(1)) = new FloatParameter(100.f, NormalizedRange(1.f, 2500.f, 0.3f), "length", "ms");
 	(params->getParameter(2)) = new FloatParameter(0.f, NormalizedRange(0.f, 1.5f), "feedback", "");
 	(params->getParameter(3)) = new FloatParameter(1.f, NormalizedRange(), "drywet", "");
 	(params->getParameter(4)) = new BoolParameter(false, "PANIC!");
@@ -25,8 +25,8 @@ void DelayEffect::process(Sample* buffer, size_t numberOfSamples)
 	float length = getInterpolatedParameter(1).get();
 	float feedback = getInterpolatedParameter(2).get();
 	float drywet = getInterpolatedParameter(3).get();
-	bool panicButton = static_cast<bool>(getInterpolatedParameter(4).get());
-	bool tempoSync = static_cast<bool>(getInterpolatedParameter(6).get());
+	bool panicButton = getInterpolatedParameter(4).get() == 1.f;
+	bool tempoSync = getInterpolatedParameter(6).get() == 1.f;
 
 	if (!tempoSync)
 		delayLine.setSize(static_cast<size_t>(aux::millisecToSamples(length)));
