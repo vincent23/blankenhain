@@ -67,7 +67,7 @@ T CircularBuffer<T>::pushpop(T const& in)
 }
 
 template <typename T>
-size_t CircularBuffer<T>::getSize() const
+size_t const& CircularBuffer<T>::getSize() const
 {
 	return numberOfSamples;
 }
