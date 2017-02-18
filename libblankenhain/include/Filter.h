@@ -24,7 +24,7 @@ public:
 	void setPeak(double frequency, double Q);
 	void setAll(double frequency, double Q);
 
-	T tick(const T& v0);
+	T _vectorcall tick(const T& v0);
 private:
 	void recomputeCoefficients(double frequency, double Q, double gFactor);
 

@@ -17,22 +17,22 @@ void EnvelopeFollower::setTimes(float attack, float release) {
 	releaseGain = BhMath::exp(-1.f / release * msPerSamples);
 }
 
-Sample EnvelopeFollower::nextPeakEnvelope(const Sample& in)
+Sample _vectorcall EnvelopeFollower::nextPeakEnvelope(const Sample& in)
 {
 	return nextEnvelope(getPeakSample(in));
 }
 
-Sample EnvelopeFollower::nextRmsEnvelope(const Sample& in)
+Sample _vectorcall EnvelopeFollower::nextRmsEnvelope(const Sample& in)
 {
 	return nextEnvelope(getRmsSample(in));
 }
 
-Sample EnvelopeFollower::getCurrentEnvelope() const
+Sample _vectorcall EnvelopeFollower::getCurrentEnvelope() const
 {
 	return envelope;
 }
 
-Sample EnvelopeFollower::nextEnvelope(const Sample& envelopeSample)
+Sample _vectorcall EnvelopeFollower::nextEnvelope(const Sample& envelopeSample)
 {
 	// TODO do this in a fancy simd way without unpacking
 	alignas(16) double envelopeUnpacked[2];
@@ -48,12 +48,12 @@ Sample EnvelopeFollower::nextEnvelope(const Sample& envelopeSample)
 	return envelope;
 }
 
-Sample EnvelopeFollower::getPeakSample(const Sample& in)
+Sample _vectorcall EnvelopeFollower::getPeakSample(const Sample& in)
 {
 	return in.abs();
 }
 
-Sample EnvelopeFollower::getRmsSample(const Sample& in)
+Sample _vectorcall EnvelopeFollower::getRmsSample(const Sample& in)
 {
 	Sample inSquared = in * in;
 	total += inSquared - rmsWindow.pushpop(inSquared);

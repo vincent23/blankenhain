@@ -13,11 +13,11 @@ protected:
 public:
 	CircularBuffer(size_t numberOfSamples);
 	~CircularBuffer(void);
-	virtual void push(T const& in);
-	virtual T pushpop(T const& in);
-	size_t const& getSize() const;
+	virtual void _vectorcall push(const T& in);
+	virtual T _vectorcall pushpop(const T& in);
+	const size_t& getSize() const;
 	virtual void setSize(size_t size_);
-	virtual T const& get(int iterator = -1);
+	const T& _vectorcall get(int iterator = -1);
 	void reset();
 	size_t const& getCurrentIteratorInDelayline() const;
 };
@@ -28,7 +28,7 @@ class LinearInterpolatedCircularBuffer
 {
 public:
 	LinearInterpolatedCircularBuffer(size_t numberOfSamples) : CircularBuffer(numberOfSamples) {};
-	void setSize(size_t size_) override;
+	void setSize(size_t size_) override final;
 private:
-	T interpolate(T& valueBegin, T& valueEnd, float ratio);
+	T _vectorcall interpolate(const T& valueBegin, const T& valueEnd, float ratio);
 };

@@ -23,35 +23,35 @@ public:
 	* @param ptr The location of the sample values.
 	* @return The values as a Sample.
 	*/
-	static Sample load_aligned(const double* ptr);
+	static Sample _vectorcall load_aligned(const double* ptr);
 
 	/**
 	* Write the sample values as two doubles to the given address.
 	* Note that the address must be aligned to 16-byte boundaries.
 	* @param The location to which the values should be written.
 	*/
-	void store_aligned(double* ptr) const;
+	void _vectorcall store_aligned(double* ptr) const;
 
-	Sample& operator=(const Sample& other);
-	Sample& operator+=(const Sample& other);
-	Sample& operator-=(const Sample& other);
-	Sample& operator*=(const Sample& other);
-	Sample& operator/=(const Sample& other);
+	Sample& _vectorcall operator=(const Sample& other);
+	Sample& _vectorcall operator+=(const Sample& other);
+	Sample& _vectorcall operator-=(const Sample& other);
+	Sample& _vectorcall operator*=(const Sample& other);
+	Sample& _vectorcall operator/=(const Sample& other);
 
-	Sample operator+(const Sample& other) const;
-	Sample operator-(const Sample& other) const;
-	Sample operator*(const Sample& b) const;
-	Sample operator/(const Sample& other) const;
-	Sample operator-() const;
+	Sample _vectorcall operator+(const Sample& other) const;
+	Sample _vectorcall operator-(const Sample& other) const;
+	Sample _vectorcall operator*(const Sample& b) const;
+	Sample _vectorcall operator/(const Sample& other) const;
+	Sample _vectorcall operator-() const;
 
-	Sample abs() const;
-	Sample sign() const;
-	Sample sqrt() const;
+	Sample _vectorcall abs() const;
+	Sample _vectorcall sign() const;
+	Sample _vectorcall sqrt() const;
 
-	double avgValue() const;
-	double maxValue() const;
-	double minValue() const;
+	double _vectorcall avgValue() const;
+	double _vectorcall maxValue() const;
+	double _vectorcall minValue() const;
 
 private:
-	alignas(16) __m128d v;
+	__m128d v;
 };

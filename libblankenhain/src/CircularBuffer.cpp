@@ -32,14 +32,13 @@ CircularBuffer<T>::~CircularBuffer(void)
 }
 
 template <typename T>
-size_t const& CircularBuffer<T>::getCurrentIteratorInDelayline() const
+const size_t& CircularBuffer<T>::getCurrentIteratorInDelayline() const
 {
 	return this->currentPosition;
 }
 
-
 template <typename T>
-void CircularBuffer<T>::push(T const& in)
+void _vectorcall CircularBuffer<T>::push(const T& in)
 {
 	buffer[currentPosition] = in;
 	currentPosition++;
@@ -52,7 +51,7 @@ void CircularBuffer<T>::push(T const& in)
 }
 
 template <typename T>
-T CircularBuffer<T>::pushpop(T const& in)
+T _vectorcall CircularBuffer<T>::pushpop(T const& in)
 {
 	T out = buffer[currentPosition];
 	buffer[currentPosition] = in;
@@ -67,7 +66,7 @@ T CircularBuffer<T>::pushpop(T const& in)
 }
 
 template <typename T>
-size_t const& CircularBuffer<T>::getSize() const
+const size_t& CircularBuffer<T>::getSize() const
 {
 	return numberOfSamples;
 }
@@ -106,7 +105,7 @@ void CircularBuffer<T>::setSize(size_t size_)
 };
 
 template <typename T>
-T const& CircularBuffer<T>::get(int iterator)
+T const& _vectorcall CircularBuffer<T>::get(int iterator)
 {
 	if (iterator == -1) return buffer[currentPosition];
 #ifndef _LIBBLANKENHAIN_ENABLE_WARNINGS
@@ -136,7 +135,7 @@ void CircularBuffer<T>::reset(void)
 ////////////////////////////////////////////////////////////////////////////////////////
 
 template <typename T>
-T LinearInterpolatedCircularBuffer<T>::interpolate(T& valueBegin, T& valueEnd, float ratio)
+T _vectorcall LinearInterpolatedCircularBuffer<T>::interpolate(const T& valueBegin, const T& valueEnd, float ratio)
 {
 	return valueBegin + (valueEnd - valueBegin) * T(ratio);
 }

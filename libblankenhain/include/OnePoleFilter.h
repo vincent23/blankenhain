@@ -14,12 +14,12 @@ protected:
   T gain;
   T inputValue, outputValue0;
 public:
-  OnePoleFilter(T const& polePosition);
+  OnePoleFilter(const T& polePosition);
   ~OnePoleFilter(void);
-  T tick(T const& in);
-  void setParams(T const& b0, T const&a1);
-  void setGain(T const& gain);
-  T getGain() const;
-  void getParams(T & b0, T& a1) const;
-  void setPole(T const& polePosition);
+  T _vectorcall tick(const T& in);
+  void _vectorcall setParams(const T& b0, const T& a1);
+  void _vectorcall setGain(T const& gain);
+  T _vectorcall getGain() const;
+  void _vectorcall getParams(T& b0, T& a1) const;
+  void _vectorcall setPole(const T& polePosition);
 };

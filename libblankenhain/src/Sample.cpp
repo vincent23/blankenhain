@@ -28,114 +28,114 @@ Sample::Sample(double sampleLeft, double sampleRight)
 	v = _mm_set_pd(sampleRight, sampleLeft);
 }
 
-Sample Sample::load_aligned(const double* ptr)
+Sample _vectorcall Sample::load_aligned(const double* ptr)
 {
 	return _mm_load_pd(ptr);
 }
 
-void Sample::store_aligned(double* ptr) const
+void _vectorcall Sample::store_aligned(double* ptr) const
 {
 	_mm_store_pd(ptr, v);
 }
 
-Sample& Sample::operator=(const Sample& other)
+Sample& _vectorcall Sample::operator=(const Sample& other)
 {
 	v = other.v;
 	return *this;
 }
 
-Sample& Sample::operator+=(const Sample& other)
+Sample& _vectorcall Sample::operator+=(const Sample& other)
 {
 	v = _mm_add_pd(v, other.v);
 	return *this;
 }
 
-Sample& Sample::operator-=(const Sample& other)
+Sample& _vectorcall Sample::operator-=(const Sample& other)
 {
 	v = _mm_sub_pd(v, other.v);
 	return *this;
 }
 
-Sample& Sample::operator*=(const Sample& other)
+Sample& _vectorcall Sample::operator*=(const Sample& other)
 {
 	v = _mm_mul_pd(v, other.v);
 	return *this;
 }
 
-Sample& Sample::operator/=(const Sample& other)
+Sample& _vectorcall Sample::operator/=(const Sample& other)
 {
 	v = _mm_div_pd(v, other.v);
 	return *this;
 }
 
-Sample Sample::operator+(const Sample& other) const
+Sample _vectorcall Sample::operator+(const Sample& other) const
 {
 	Sample result(v);
 	result += other;
 	return result;
 }
 
-Sample Sample::operator-(const Sample& other) const
+Sample _vectorcall Sample::operator-(const Sample& other) const
 {
 	Sample result(v);
 	result -= other;
 	return result;
 }
 
-Sample Sample::operator*(const Sample& other) const
+Sample _vectorcall Sample::operator*(const Sample& other) const
 {
 	Sample result(v);
 	result *= other;
 	return result;
 }
 
-Sample Sample::operator/(const Sample& other) const
+Sample _vectorcall Sample::operator/(const Sample& other) const
 {
 	Sample result(v);
 	result /= other;
 	return result;
 }
 
-Sample Sample::operator-() const
+Sample _vectorcall Sample::operator-() const
 {
 	// flip sign bit
 	return _mm_xor_pd(v, Sample(-0.f).v);
 }
 
-Sample Sample::abs() const
+Sample _vectorcall Sample::abs() const
 {
 	// delete sign bits
 	return _mm_andnot_pd(Sample(-0.f).v, v);
 }
 
-Sample Sample::sign() const
+Sample _vectorcall Sample::sign() const
 {
 	// extract sign bit, then combine it with 1
 	__m128d signBits = _mm_and_pd(v, Sample(-0.f).v);
 	return _mm_or_pd(signBits, Sample(1).v);
 }
 
-Sample Sample::sqrt() const
+Sample _vectorcall Sample::sqrt() const
 {
 	Sample radicand = _mm_max_pd(Sample(0).v, v);
 	return _mm_sqrt_pd(radicand.v);
 }
 
-double Sample::avgValue() const
+double _vectorcall Sample::avgValue() const
 {
 	alignas(16) double lr[2];
 	store_aligned(lr);
 	return (lr[0] + lr[1]) / 2.;
 }
 
-double Sample::maxValue() const
+double _vectorcall Sample::maxValue() const
 {
 	alignas(16) double lr[2];
 	store_aligned(lr);
 	return lr[0] < lr[1] ? lr[1] : lr[0];
 }
 
-double Sample::minValue() const
+double _vectorcall Sample::minValue() const
 {
 	alignas(16) double lr[2];
 	store_aligned(lr);

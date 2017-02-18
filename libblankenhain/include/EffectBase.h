@@ -33,7 +33,7 @@ public:
 	 *
 	 * In short, this passes on the call to the provided virtual void process function() in a manner so that everyhting is ok :-)
 	 **/
-	void processBlock(Sample* buffer, size_t numberOfSamples);
+	void  processBlock(Sample* buffer, size_t numberOfSamples);
 
 	/// Helper functions
 	ParameterBundle* getPointerToParameterBundle() const;
