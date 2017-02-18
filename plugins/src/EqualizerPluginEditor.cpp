@@ -30,7 +30,6 @@ void EqualizerPluginEditor::imguiFrame()
 	float points[nPoints];
 	double nyquist = constants::sampleRate * .5;
 	const PluginParameterBundle& bundle = plugin.getParameters();
-	int item = 0;
 	ImGui::Combo("filter", &item, " 1st\0 2nd\0 3rd\0 4th\0 5th\0 6th\0 7th\0 8th\0\0");
 	bool isOnPrevious = bundle.getParameterUnnormalized(item * 5 + 1) >= .5;
 	bool isOn = isOnPrevious;

@@ -10,4 +10,7 @@ public:
 
 protected:
 	void imguiFrame() override;
+
+private:
+	int item = 0;
 };
