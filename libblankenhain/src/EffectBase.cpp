@@ -2,6 +2,7 @@
 
 #include "ParameterBundle.h"
 #include "InterpolatedValue.h"
+#include "FpuState.h"
 
 EffectBase::EffectBase(unsigned int numberOfParameters, bool useTempoData)
 	: tempodata(useTempoData)
@@ -43,6 +44,8 @@ void EffectBase::incrementTempoDataPosition(unsigned int increment)
 
 void EffectBase::processBlock(Sample* buffer, size_t numberOfSamples)
 {
+	FpuState fpuState;
+
 	// TODO find a better way to do initalization
 	if (!initializedParameters) {
 		for (unsigned int parameterIndex = 0; parameterIndex < getNumberOfParameters(); parameterIndex++) {
