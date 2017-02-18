@@ -17,12 +17,7 @@ void PanEffect::process(Sample* buffer, size_t numberOfSamples)
 	for (size_t bufferIteration = 0u; bufferIteration < numberOfSamples; bufferIteration++)
 	{
 		float panValue = panningValue.get() * .02f;
-		float boost = aux::decibelToLinear(3.f);
-		float left = aux::max(0.f, -panValue);
-		float right = aux::max(0.f, panValue);
-		float panLeft = ((1.f - left) + left * boost) * (1.f - right);
-		float panRight = ((1.f - right) + right * boost) * (1.f - left);
-		buffer[bufferIteration] *= Sample(panLeft, panRight);
+		aux::performPanning(buffer[bufferIteration], panValue);
 		nextSample();
 	}
 }

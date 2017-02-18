@@ -79,11 +79,7 @@ void DelayEffect::process(Sample* buffer, size_t numberOfSamples)
 		else line *= Sample(drywet * 2.f);
 
 		// Pan
-		alignas(16) double lr[2];
-		line.store_aligned(lr);
-		lr[0] = lr[0] * (1.f - (0.0f < pan ? pan : 0.0f) * 0.02f);
-		lr[1] = lr[1] * (1.f + (0.0f < pan ? 0.0f : pan) * 0.02f);
-		line = Sample::load_aligned(lr);
+		aux::performPanning(line, pan * 0.02f);
 
 		buffer[i] = original + line;
 

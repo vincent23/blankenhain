@@ -107,4 +107,14 @@ namespace aux
 		double timeInSeconds = samplePositionDouble / sampleRateDouble;
 		return static_cast<float>(timeInSeconds);
 	}
+
+	void performPanning(Sample& sample, float const& panningBetweenMinusOneAndOne)
+	{
+		const float boost = aux::decibelToLinear(3.f);
+		const float left = aux::max(0.f, -panningBetweenMinusOneAndOne);
+		const float right = aux::max(0.f, panningBetweenMinusOneAndOne);
+		const float panLeft = ((1.f - left) + left * boost) * (1.f - right);
+		const float panRight = ((1.f - right) + right * boost) * (1.f - left);
+		sample *= Sample(panLeft, panRight);
+	}
 }

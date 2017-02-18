@@ -1,6 +1,7 @@
 #pragma once
 #include "Constants.h"
 #include "warnings.h"
+#include "Sample.h"
 /*
  * Namespace for common conversions 
  * of units and such
@@ -27,5 +28,7 @@ namespace aux
 	T min(T a, T b);
 
 	float positionToTime(unsigned int samplePosition);
+
+	void performPanning(Sample& sample, float const& panning);
 }
 
