@@ -1,21 +1,20 @@
-#include "VibratoPluginEditor.h"
+#include "ChorusPluginEditor.h"
 #include "PluginParameterBundle.h"
 #include "PluginBase.h"
 #include "AuxFunc.h"
-#include "VibratoPlugin.h"
-#include "VibratoEffect.h"
+#include "ChorusPlugin.h"
+#include "ChorusEffect.h"
 
 #include <algorithm>
 #include <string>
 #include <imgui.h>
 
-VibratoPluginEditor::VibratoPluginEditor(PluginBase* plugin)
+ChorusPluginEditor::ChorusPluginEditor(PluginBase* plugin)
 	: ImguiEffectEditor(plugin, 500, 500)
 {}
 
 
-void VibratoPluginEditor::imguiFrame()
+void ChorusPluginEditor::imguiFrame()
 {
-
 	ImGui::End();
 }

@@ -2,11 +2,11 @@
 
 #include "EffectBase.h"
 #include "CircularBuffer.h"
-
-class VibratoEffect : public EffectBase
+#include "Oscillators.h"
+class ChorusEffect : public EffectBase
 {
 public:
-	VibratoEffect();
+	ChorusEffect();
 
 	void process(Sample* buffer, size_t numberOfSamples) override;
     void resetDelayLine()
@@ -16,4 +16,5 @@ public:
 protected:
 	bool wasPaniced;
 	LinearInterpolatedCircularBuffer<Sample> delayLine;
+	PolyBLEPOscillator lfo;
 };

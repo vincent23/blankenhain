@@ -32,6 +32,13 @@ CircularBuffer<T>::~CircularBuffer(void)
 }
 
 template <typename T>
+size_t const& CircularBuffer<T>::getCurrentIteratorInDelayline() const
+{
+	return this->currentPosition;
+}
+
+
+template <typename T>
 void CircularBuffer<T>::push(T const& in)
 {
 	buffer[currentPosition] = in;

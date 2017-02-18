@@ -2,10 +2,10 @@
 
 #include "ImguiEffectEditor.h"
 
-class VibratoPluginEditor : public ImguiEffectEditor
+class ChorusPluginEditor : public ImguiEffectEditor
 {
 public:
-	VibratoPluginEditor(PluginBase* plugin);
+	ChorusPluginEditor(PluginBase* plugin);
 
 protected:
 	void imguiFrame() override;

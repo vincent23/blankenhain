@@ -217,10 +217,10 @@ add_plugin("bh_arp"
 	"ArpPlugin.h"
 	"ArpPlugin.cpp"
 )
-add_plugin("bh_vibrato"
-	"VibratoPlugin.cpp"
-	"VibratoPlugin.h"
-	"VibratoPluginEditor.cpp"
-	"VibratoPluginEditor.h"
+add_plugin("bh_chorus"
+	"ChorusPlugin.cpp"
+	"ChorusPlugin.h"
+	"ChorusPluginEditor.cpp"
+	"ChorusPluginEditor.h"
 )
 
