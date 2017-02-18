@@ -4,10 +4,11 @@
 #include "InterpolatedValue.h"
 #include "AuxFunc.h"
 
-PanEffect::PanEffect() : EffectBase(1u)
+PanEffect::PanEffect() : EffectBase(2u)
 {
 	ParameterBundle* params = getPointerToParameterBundle();
 	(params->getParameter(0)) = new FloatParameter(0.f, NormalizedRange(-50.f, 50.f), "pan", "");
+	(params->getParameter(1)) = new FloatParameter(0.f, NormalizedRange(0.f, 1.f), "dummy", "");
 }
 
 void PanEffect::process(Sample* buffer, size_t numberOfSamples)
