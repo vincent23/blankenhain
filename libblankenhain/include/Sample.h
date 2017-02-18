@@ -52,6 +52,10 @@ public:
 	double _vectorcall maxValue() const;
 	double _vectorcall minValue() const;
 
+	void  _vectorcall replaceLeftChannel(Sample const&);
+	void  _vectorcall replaceRightChannel(Sample const&);
+
 private:
 	__m128d v;
 };
+

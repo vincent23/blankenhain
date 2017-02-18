@@ -141,3 +141,12 @@ double _vectorcall Sample::minValue() const
 	store_aligned(lr);
 	return lr[0] < lr[1] ? lr[0] : lr[1];
 }
+
+void Sample::replaceLeftChannel(Sample const& in )
+{
+	this->v = _mm_shuffle_pd(this->v, in.v, _MM_SHUFFLE2(1, 0));
+}
+void Sample::replaceRightChannel(Sample const& in)
+{
+	this->v = _mm_shuffle_pd(this->v, in.v, _MM_SHUFFLE2(0, 1));
+}
