@@ -26,7 +26,7 @@ void BitcrushEffect::process(Sample* buffer, size_t numberOfSamples)
 	for (size_t sample = 0; sample < numberOfSamples - groupedSamples; sample += groupedSamples)
 	{
 		Sample averagedSample(0., 0.);
-		for (int i = 0; i < groupedSamples; i++)
+		for (size_t i = 0; i < groupedSamples; i++)
 		{
 			averagedSample += buffer[i + sample] / Sample((double)groupedSamples);
 		}
@@ -34,7 +34,7 @@ void BitcrushEffect::process(Sample* buffer, size_t numberOfSamples)
 		Sample discretizedSample = discretize(averagedSample * Sample(static_cast<double>(steps)));
 		discretizedSample /= Sample(static_cast<double>(steps));
 
-		for (int i = 0; i < groupedSamples; i++) {
+		for (size_t i = 0; i < groupedSamples; i++) {
 			Sample sampleValue = buffer[i + sample];
 			buffer[i + sample] = sampleValue * Sample(1. - drywet.get(sample)) + discretizedSample * Sample(drywet.get(sample));
 		}

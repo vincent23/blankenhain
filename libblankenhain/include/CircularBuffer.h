@@ -15,10 +15,11 @@ public:
 	~CircularBuffer(void);
 	virtual void push(T const& in);
 	virtual T pushpop(T const& in);
-	size_t getSize() const;
+	size_t const& getSize() const;
 	virtual void setSize(size_t size_);
 	virtual T const& get(int iterator = -1);
 	void reset();
+	size_t const& getCurrentIteratorInDelayline() const;
 };
 
 template <typename T>

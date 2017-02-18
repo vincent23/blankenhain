@@ -27,8 +27,8 @@ namespace aux
 	{
 		unsigned int baseNote = aux::frequencyToNearestLowerNote(frequency);
 		unsigned int countSemiTones = maxDetune;
-		float freqLow = aux::noteToFrequency(baseNote == 0u ? 0u : baseNote - countSemiTones);
-		float freqHigh = aux::noteToFrequency(baseNote == 127u ? 127u : baseNote + countSemiTones);
+		float freqLow = aux::noteToFrequency(baseNote == 0u ? 0.f : static_cast<float>(baseNote - countSemiTones));
+		float freqHigh = aux::noteToFrequency(baseNote == 127u ? 127.f : static_cast<float>(baseNote + countSemiTones));
 		if (detune > 0.f)
 			return (freqHigh - frequency) * detune / static_cast<float>(maxDetune) + frequency;
 		else
