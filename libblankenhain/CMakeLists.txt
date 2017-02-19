@@ -59,6 +59,7 @@ prepend(HEADERS "include/"
 	"VolumeEffect.h"
 	"warnings.h"
 	"WavetableInstrument.h"
+	"WidthEffect.h"
 )
 
 prepend(SOURCES "src/"
@@ -105,6 +106,7 @@ prepend(SOURCES "src/"
 	"VoiceState.cpp"
 	"VolumeEffect.cpp"
 	"WavetableInstrument.cpp"
+	"WidthEffect.cpp"
 )
 
 include_directories("include")

@@ -224,3 +224,8 @@ add_plugin("bh_chorus"
 	"ChorusPluginEditor.h"
 )
 
+add_plugin("bh_width"
+	"WidthPlugin.cpp"
+	"WidthPlugin.h"
+)
+
