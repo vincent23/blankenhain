@@ -3,16 +3,49 @@
 #include <emmintrin.h>
 
 FpuState::FpuState() {
-	previousControlRegister = _mm_getcsr();
-
-	// bits: 15 = flush to zero | 6 = denormals are zero
-	// bitwise-OR with exception masks 12:7 (exception flags 5:0)
-	// rounding 14:13, 00 = nearest, 01 = neg, 10 = pos, 11 = to zero
-	const unsigned int mode = 0; // nearest
-	_mm_setcsr(0x8040 | 0x1f80 | (mode << 13));
+	// clear exception flags
+	previousControlRegister = _mm_getcsr() & (~0b111111);
+	_mm_setcsr(
+		1 << 15 | // flush to zero
+		1 << 12 | // precision mask
+		1 << 11 | // underflow mask
+		1 << 10 | // overflow mask
+		1 << 9 | // divide by zero mask
+		1 << 8 | // denormal mask
+		1 << 7 | // invalid operation mask
+		1 << 6
+	);
 }
 
 FpuState::~FpuState() {
-	// clear exception flags before restoring
-	_mm_setcsr(previousControlRegister & (~0x3f));
+#ifdef _LIBBLANKENHAIN_ENABLE_WARNINGS
+	unsigned int flags = _mm_getcsr() & 0b111111;
+	if (flags != 0) {
+		if (flags & (1 << 5)) {
+			// "precision";
+			int x = 0;
+		}
+		else if (flags & (1 << 4)) {
+			// "underflow";
+			int x = 0;
+		}
+		else if (flags & (1 << 3)) {
+			// "overflow";
+			int x = 0;
+		}
+		else if (flags & (1 << 2)) {
+			// "divide by zero";
+			int x = 0;
+		}
+		else if (flags & (1 << 1)) {
+			// "denormal";
+			int x = 0;
+		}
+		else {
+			// "invalid operation";
+			int x = 0;
+		}
+	}
+#endif
+	_mm_setcsr(previousControlRegister);
 }
