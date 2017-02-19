@@ -159,33 +159,32 @@ void gmsynthInstrument::processVoice(VoiceState& voice, unsigned int timeInSampl
 	float release = getInterpolatedParameter(7).get();
 	bool loop = getInterpolatedParameter(8).get() > .5f;
 
+	gmSound* sound = interpolatedSounds[voice.key];
+	if (sound == nullptr) {
+		for (unsigned int sampleIndex = 0; sampleIndex < numberOfSamples; sampleIndex++) {
+			buffer[sampleIndex] = Sample(0);
+		}
+	}
+	else {
+		unsigned int sampleSize = sound->interpolatedBufferSize;
+		loop = loop && sound->isLoopable;
+		for (unsigned int sampleIndex = 0; sampleIndex < numberOfSamples; sampleIndex++) {
+			unsigned int deltaT = (timeInSamples + sampleIndex) - voice.onTime;
 
-	for (unsigned int sampleIndex = 0; sampleIndex < numberOfSamples; sampleIndex++) {
-		unsigned int deltaT = (timeInSamples + sampleIndex) - voice.onTime;
-		unsigned int i = 0u;
-
-		gmSound* sound = interpolatedSounds[voice.key];
-		if (sound != nullptr) {
-			unsigned int sampleSize = sound->interpolatedBufferSize;
-			Sample* sampleBuffer = sound->interpolatedBuffer;
-			if (sound->isLoopable && loop && deltaT > sound->loopStart) {
+			if (loop && deltaT > sound->loopStart) {
 				deltaT -= sound->loopStart;
 				deltaT %= sound->loopLength;
 				deltaT += sound->loopStart;
 			}
 			if (deltaT < sampleSize) {
-				buffer[sampleIndex] = sampleBuffer[deltaT];
+				buffer[sampleIndex] = sound->interpolatedBuffer[deltaT];
 			}
 			else {
 				buffer[sampleIndex] = Sample(0);
 			}
-		}
-		else {
-			buffer[sampleIndex] = Sample(0);
-		}
 
-
-		performAHDSR<Sample>(buffer, voice, timeInSamples, sampleIndex, attack, release, hold, decay, sustain, sustainOn, sustainLevel, holdLevel);
+			performAHDSR<Sample>(buffer, voice, timeInSamples, sampleIndex, attack, release, hold, decay, sustain, sustainOn, sustainLevel, holdLevel);
+		}
 	}
 	nextSample(numberOfSamples);
 }

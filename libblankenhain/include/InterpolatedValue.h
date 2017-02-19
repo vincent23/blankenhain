@@ -18,7 +18,8 @@ public:
 	InterpolatedValue() = default;
 
 	/// gets current interpolated value,
-	T get(unsigned int offset = 0) const;
+	T get() const;
+	T get(unsigned int offset) const;
 
 	/// Skips a number of interpolation steps
 	T next(unsigned int steps = 1);
@@ -26,6 +27,8 @@ public:
 private:
 	T current;
 	T step;
+#ifdef _LIBBLANKENHAIN_ENABLE_WARNINGS
 	/*const*/ unsigned int targetNumSteps;
 	unsigned int currentStep;
+#endif
 };

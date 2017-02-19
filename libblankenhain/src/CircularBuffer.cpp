@@ -105,26 +105,21 @@ void CircularBuffer<T>::setSize(size_t size_)
 };
 
 template <typename T>
-T _vectorcall CircularBuffer<T>::get(int iterator)
+const T& CircularBuffer<T>::get()
 {
-	// returning directly produces an internal compiler error right now
-	T returnValue;
-	if (iterator == -1) returnValue = buffer[currentPosition];
-#ifndef _LIBBLANKENHAIN_ENABLE_WARNINGS
-	else
-	{
-		returnValue = buffer[iterator];
+	return buffer[currentPosition];
+}
+
+template <typename T>
+const T& _vectorcall CircularBuffer<T>::get(unsigned int iterator)
+{
+#ifdef _LIBBLANKENHAIN_ENABLE_WARNINGS
+	if (iterator >= numberOfSamples) {
+		throw "circular buffer access out of bounds\n";
 	}
-#else
-	else if (iterator < static_cast<int>(numberOfSamples))
-	{
-		returnValue = buffer[iterator];
-	}
-	else
-		throw ("circular buffer access out of bounds\n");
 #endif
-	return returnValue;
-};
+	return buffer[iterator];
+}
 
 template <typename T>
 void CircularBuffer<T>::reset(void)

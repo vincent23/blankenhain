@@ -68,7 +68,7 @@ void freeverbEffect::process(Sample* buffer, size_t numberOfSamples)
 
   float damping = getInterpolatedParameter(1).get();
   damping = mode ? 0.f : damping * scaleDamp;
-
+  const Sample currentRoomSize = Sample(mode ? 1.f : (roomSize.get() * scaleRoom) + offsetRoom);
   InterpolatedValue<float>& dry = getInterpolatedParameter(4);
 
   InterpolatedValue<float>& wet = getInterpolatedParameter(5);
@@ -82,7 +82,6 @@ void freeverbEffect::process(Sample* buffer, size_t numberOfSamples)
 
 	for (size_t i = 0; i < numberOfSamples; i++)
 	{
-		const float currentRoomSize = mode ? 1.f : (roomSize.get() * scaleRoom) + offsetRoom;
 
 
 		Sample fInput = buffer[i];
@@ -92,7 +91,7 @@ void freeverbEffect::process(Sample* buffer, size_t numberOfSamples)
 		for (int j = 0; j < nCombs; j++) 
 		{
 		  // Left channel
-		  Sample yn = fInput + (Sample(currentRoomSize) * combLP_[j]->tick(combDelay_[j]->get()));
+		  Sample yn = fInput + (currentRoomSize * combLP_[j]->tick(combDelay_[j]->get()));
 		  combDelay_[j]->pushpop(yn);
 		  out += yn;
 
@@ -107,7 +106,7 @@ void freeverbEffect::process(Sample* buffer, size_t numberOfSamples)
 		  allPassDelay_[j]->pushpop(vn);
 
 		  // calculate output
-		  out = Sample(-1.) * vn + g_plus_one *vn_m;
+		  out = g_plus_one *vn_m - vn;
 
 		}
 

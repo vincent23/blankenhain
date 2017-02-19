@@ -17,7 +17,8 @@ public:
 	virtual T _vectorcall pushpop(T in);
 	size_t getSize() const;
 	virtual void setSize(size_t size_);
-	T _vectorcall get(int iterator = -1);
+	const T& _vectorcall get();
+	const T& _vectorcall get(unsigned int iterator);
 	void reset();
 	size_t getCurrentIteratorInDelayline() const;
 };
