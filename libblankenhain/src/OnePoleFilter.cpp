@@ -4,7 +4,7 @@
 template OnePoleFilter<Sample>;
 
 template <typename T>
-OnePoleFilter<T>::OnePoleFilter(T const& polePosition)
+OnePoleFilter<T>::OnePoleFilter(const T& polePosition)
 {
   gain = T(1.);
   this->setPole(polePosition);
@@ -15,7 +15,7 @@ OnePoleFilter<T>::~OnePoleFilter(void) {};
 
 
 template <typename T>
-T _vectorcall OnePoleFilter<T>::tick(const T& in)
+T _vectorcall OnePoleFilter<T>::tick(T in)
 {
   inputValue = gain * in;
   T lastFrame_ = param_b0 * inputValue - param_a1 * outputValue0;
@@ -25,7 +25,7 @@ T _vectorcall OnePoleFilter<T>::tick(const T& in)
 }
 
 template <typename T>
-void _vectorcall OnePoleFilter<T>::setGain(const T& gain_)
+void _vectorcall OnePoleFilter<T>::setGain(T gain_)
 {
   gain = gain_;
 }
@@ -37,21 +37,21 @@ T _vectorcall OnePoleFilter<T>::getGain() const
 }
 
 template <typename T>
-void _vectorcall OnePoleFilter<T>::setParams(const T& b0, const T& a1)
+void _vectorcall OnePoleFilter<T>::setParams(T b0, T a1)
 {
   this->param_b0 = b0;
   this->param_a1 = a1;
 }
 
 template <typename T>
-void _vectorcall OnePoleFilter<T>::getParams(T & b0, T& a1) const
+void _vectorcall OnePoleFilter<T>::getParams(T& b0, T& a1) const
 {
   b0 = param_b0;
   a1 = param_a1;
 }
 
 template <typename T>
-void _vectorcall OnePoleFilter<T>::setPole(const T& polePosition)
+void _vectorcall OnePoleFilter<T>::setPole(T polePosition)
 {
   param_b0 = (T(1.0) - polePosition);
   param_a1 = T(-1.) * polePosition;

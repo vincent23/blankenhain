@@ -13,13 +13,13 @@ protected:
 public:
 	CircularBuffer(size_t numberOfSamples);
 	~CircularBuffer(void);
-	virtual void _vectorcall push(const T& in);
-	virtual T _vectorcall pushpop(const T& in);
-	const size_t& getSize() const;
+	virtual void _vectorcall push(T in);
+	virtual T _vectorcall pushpop(T in);
+	size_t getSize() const;
 	virtual void setSize(size_t size_);
-	const T& _vectorcall get(int iterator = -1);
+	T _vectorcall get(int iterator = -1);
 	void reset();
-	size_t const& getCurrentIteratorInDelayline() const;
+	size_t getCurrentIteratorInDelayline() const;
 };
 
 template <typename T>
@@ -30,5 +30,5 @@ public:
 	LinearInterpolatedCircularBuffer(size_t numberOfSamples) : CircularBuffer(numberOfSamples) {};
 	void setSize(size_t size_) override final;
 private:
-	T _vectorcall interpolate(const T& valueBegin, const T& valueEnd, float ratio);
+	T _vectorcall interpolate(T valueBegin, T valueEnd, float ratio);
 };

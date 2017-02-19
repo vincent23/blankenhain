@@ -5,6 +5,8 @@
 //
 // Mainly used in reverb
 
+#include "AlignedType.h"
+
 template <typename T>
 class OnePoleFilter : public AlignedType
 {
@@ -16,10 +18,10 @@ protected:
 public:
   OnePoleFilter(const T& polePosition);
   ~OnePoleFilter(void);
-  T _vectorcall tick(const T& in);
-  void _vectorcall setParams(const T& b0, const T& a1);
-  void _vectorcall setGain(T const& gain);
+  T _vectorcall tick(T in);
+  void _vectorcall setParams(T b0, T a1);
+  void _vectorcall setGain(T gain);
   T _vectorcall getGain() const;
   void _vectorcall getParams(T& b0, T& a1) const;
-  void _vectorcall setPole(const T& polePosition);
+  void _vectorcall setPole(T polePosition);
 };

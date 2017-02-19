@@ -2,7 +2,6 @@
 #include "EffectBase.h"
 #include "PluginParameterBundle.h"
 #include "Sample.h"
-#include "Constants.h"
 #include "ImguiEffectEditor.h"
 
 #include <string>
@@ -43,7 +42,6 @@ PluginBase::PluginBase(audioMasterCallback const& audioMaster, EffectBase* effec
 	, speakerArr(nullptr)
 	, effect(effect_)
 	, pluginParameters(new PluginParameterBundle(effect_->getPointerToParameterBundle()))
-	, processBuffer(new Sample[constants::blockSize])
 	, timeSinceLastBPMandPositionUpdate(0u)
 {
 	canDoubleReplacing(false);

@@ -16,7 +16,6 @@ class AlignedType
 {
 protected:
 public:
-	AlignedType() {};
 	void *operator new (unsigned int size);
 	void *operator new[](unsigned int size);
 	void operator delete (void *p) throw();

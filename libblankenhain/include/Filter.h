@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Sample.h"
+#include "AlignedType.h"
 
 // algorithm from https://cytomic.com/files/dsp/SvfLinearTrapOptimised2.pdf
 // TODO we use the bounded version and could compare performance of the unbounded
@@ -24,7 +25,7 @@ public:
 	void setPeak(double frequency, double Q);
 	void setAll(double frequency, double Q);
 
-	T _vectorcall tick(const T& v0);
+	T _vectorcall tick(T v0);
 private:
 	void recomputeCoefficients(double frequency, double Q, double gFactor);
 

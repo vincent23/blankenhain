@@ -37,7 +37,8 @@ protected:
 
 
 
-  const float g_ = 0.5; // allpass coefficient, immutable in FreeVerb
+  const Sample g_ = Sample(0.5f); // allpass coefficient, immutable in FreeVerb
+  const Sample g_plus_one = Sample(1.5f);
 
   Sample lastFrame_;
 

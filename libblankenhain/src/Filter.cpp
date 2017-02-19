@@ -91,7 +91,7 @@ void Filter<T>::setAll(double frequency, double Q)
 }
 
 template <typename T>
-T _vectorcall Filter<T>::tick(const T& v0)
+T _vectorcall Filter<T>::tick(T v0)
 {
 	v3 = v0 - ic2eq;
 	v1 = a1 * ic1eq + a2 * v3;

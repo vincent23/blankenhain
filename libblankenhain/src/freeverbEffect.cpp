@@ -103,11 +103,11 @@ void freeverbEffect::process(Sample* buffer, size_t numberOfSamples)
 		{
 		  // Left channel
 		  Sample vn_m = allPassDelay_[j]->get();
-		  Sample vn = out + (Sample(g_) * vn_m);
+		  Sample vn = out + (g_ * vn_m);
 		  allPassDelay_[j]->pushpop(vn);
 
 		  // calculate output
-		  out = Sample(-1.) * vn + Sample((1.0 + g_))*vn_m;
+		  out = Sample(-1.) * vn + g_plus_one *vn_m;
 
 		}
 

@@ -32,13 +32,13 @@ CircularBuffer<T>::~CircularBuffer(void)
 }
 
 template <typename T>
-const size_t& CircularBuffer<T>::getCurrentIteratorInDelayline() const
+size_t CircularBuffer<T>::getCurrentIteratorInDelayline() const
 {
 	return this->currentPosition;
 }
 
 template <typename T>
-void _vectorcall CircularBuffer<T>::push(const T& in)
+void _vectorcall CircularBuffer<T>::push(T in)
 {
 	buffer[currentPosition] = in;
 	currentPosition++;
@@ -51,7 +51,7 @@ void _vectorcall CircularBuffer<T>::push(const T& in)
 }
 
 template <typename T>
-T _vectorcall CircularBuffer<T>::pushpop(T const& in)
+T _vectorcall CircularBuffer<T>::pushpop(T in)
 {
 	T out = buffer[currentPosition];
 	buffer[currentPosition] = in;
@@ -66,7 +66,7 @@ T _vectorcall CircularBuffer<T>::pushpop(T const& in)
 }
 
 template <typename T>
-const size_t& CircularBuffer<T>::getSize() const
+size_t CircularBuffer<T>::getSize() const
 {
 	return numberOfSamples;
 }
@@ -105,22 +105,25 @@ void CircularBuffer<T>::setSize(size_t size_)
 };
 
 template <typename T>
-T const& _vectorcall CircularBuffer<T>::get(int iterator)
+T _vectorcall CircularBuffer<T>::get(int iterator)
 {
-	if (iterator == -1) return buffer[currentPosition];
+	// returning directly produces an internal compiler error right now
+	T returnValue;
+	if (iterator == -1) returnValue = buffer[currentPosition];
 #ifndef _LIBBLANKENHAIN_ENABLE_WARNINGS
 	else
 	{
-		return buffer[iterator];
+		returnValue = buffer[iterator];
 	}
 #else
 	else if (iterator < static_cast<int>(numberOfSamples))
 	{
-		return buffer[iterator];
+		returnValue = buffer[iterator];
 	}
 	else
 		throw ("circular buffer access out of bounds\n");
 #endif
+	return returnValue;
 };
 
 template <typename T>
@@ -135,7 +138,7 @@ void CircularBuffer<T>::reset(void)
 ////////////////////////////////////////////////////////////////////////////////////////
 
 template <typename T>
-T _vectorcall LinearInterpolatedCircularBuffer<T>::interpolate(const T& valueBegin, const T& valueEnd, float ratio)
+T _vectorcall LinearInterpolatedCircularBuffer<T>::interpolate(T valueBegin, T valueEnd, float ratio)
 {
 	return valueBegin + (valueEnd - valueBegin) * T(ratio);
 }

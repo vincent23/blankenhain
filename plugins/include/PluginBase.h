@@ -2,8 +2,10 @@
 
 #include "audioeffectx.h"
 #include "PluginParameterBundle.h"
-#include "..\..\libblankenhain\include\ParameterBundle.h"
-#include "..\..\libblankenhain\include\EffectBase.h"
+#include "ParameterBundle.h"
+#include "EffectBase.h"
+
+#include "Constants.h"
 
 class PluginParameterBundle;
 class Sample;
@@ -36,7 +38,7 @@ class Sample;
  *
  */
 
-class PluginBase : public AudioEffectX {
+class PluginBase : public AudioEffectX, public AlignedType {
 public:
 	/*
 	 * @param audioMaster: handed through by host
@@ -161,5 +163,5 @@ protected:
 private:
 	unsigned int timeSinceLastBPMandPositionUpdate;
 	VstSpeakerArrangement* speakerArr;
-	Sample* processBuffer;
+	Sample processBuffer[constants::blockSize];
 };

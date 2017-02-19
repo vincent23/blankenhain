@@ -2,6 +2,7 @@
 
 #include "Sample.h"
 #include "InterpolatedValue.h"
+#include "AlignedType.h"
 
 class ParameterBundle;
 

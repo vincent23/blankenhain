@@ -20,14 +20,14 @@ public:
 	EnvelopeFollower();
 	EnvelopeFollower(unsigned int bufferSize);
 	void setTimes(float attack, float release);
-	Sample _vectorcall nextPeakEnvelope(const Sample& in);
-	Sample _vectorcall nextRmsEnvelope(const Sample& in);
+	Sample _vectorcall nextPeakEnvelope(Sample in);
+	Sample _vectorcall nextRmsEnvelope(Sample in);
 	Sample _vectorcall getCurrentEnvelope() const;
 
 private:
-	Sample _vectorcall nextEnvelope(const Sample& envelopeSample);
-	Sample _vectorcall getPeakSample(const Sample& in);
-	Sample _vectorcall getRmsSample(const Sample& in);
+	Sample _vectorcall nextEnvelope(Sample envelopeSample);
+	Sample _vectorcall getPeakSample(Sample in);
+	Sample _vectorcall getRmsSample(Sample in);
 
 	// Stuff for rmsd envelope
 	CircularBuffer<Sample> rmsWindow;
