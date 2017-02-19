@@ -68,22 +68,12 @@ void DelayEffect::process(Sample* buffer, size_t numberOfSamples)
 
 	for (size_t i = 0; i < numberOfSamples; i++)
 	{
-		double avg_ = buffer[i].avgValue();
 		Sample original = buffer[i];
 		Sample line = delayLine.get();
-
-		if (drywet > 0.5)
-		{
-			original *= Sample((1 - drywet) * 2.f);
-		}
-		else line *= Sample(drywet * 2.f);
-
+		buffer[i] = original * Sample(1.f - drywet) + line * Sample(drywet);
 		// Pan
-		aux::performPanning(line, pan * 0.02f);
-
-		buffer[i] = original + line;
-
-		delayLine.push(delayLine.get() * Sample(feedback) + Sample(avg_));
+		aux::performPanning(buffer[i], pan * 0.02f);
+		delayLine.push(delayLine.get() * Sample(feedback) + original);
 	}
 	nextSample(numberOfSamples);
 }
