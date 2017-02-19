@@ -121,10 +121,15 @@ double Sample::minValue() const
 
 void _vectorcall Sample::replaceLeftChannel(Sample in)
 {
-	v = _mm_shuffle_pd(v, in.v, _MM_SHUFFLE2(1, 0));
+	v = _mm_shuffle_pd(in.v, v, _MM_SHUFFLE2(1, 0));
 }
 
 void _vectorcall Sample::replaceRightChannel(Sample in)
 {
-	v = _mm_shuffle_pd(v, in.v, _MM_SHUFFLE2(0, 1));
+	v = _mm_shuffle_pd(v, in.v, _MM_SHUFFLE2(1, 0));
+}
+
+Sample __vectorcall Sample::flippedChannels() const
+{
+	return _mm_shuffle_pd(v, v, _MM_SHUFFLE2(0, 1));
 }

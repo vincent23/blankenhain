@@ -51,6 +51,7 @@ public:
 
 	void _vectorcall replaceLeftChannel(Sample in);
 	void _vectorcall replaceRightChannel(Sample in);
+	Sample __vectorcall flippedChannels() const;
 
 	__m128d v;
 };
