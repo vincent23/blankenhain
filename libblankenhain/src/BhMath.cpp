@@ -103,17 +103,6 @@ namespace BhMath {
 		return result;
 	}
 
-	//via http://martin.ankerl.com/2012/01/25/optimized-approximative-pow-in-c-and-cpp/
-	double fastPow(double a, double b) {
-		union {
-			double d;
-			int x[2];
-		} u = { a };
-		u.x[1] = (int)(b * (u.x[1] - 1072632447) + 1072632447);
-		u.x[0] = 0;
-		return u.d;
-	}
-
 	float sqrt(float x)
 	{
 		__asm

@@ -59,7 +59,7 @@ namespace aux
 			linear = 0.f;
 		else
 			// Use fastPow, tested it, its accurate enough for at least db -> lienar mapping
-			linear = static_cast<float>(BhMath::fastPow(10.f, db / 20.f));
+			linear = BhMath::pow(10.f, db / 20.f);
 
 		return linear;
 	}
