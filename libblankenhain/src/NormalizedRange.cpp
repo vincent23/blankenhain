@@ -1,5 +1,5 @@
 #include "NormalizedRange.h"
-#include "BhMath.h"
+#include "AuxFunc.h"
 
 /**
 * Maps numbers from an arbitrary range to [0.f, 1.f]
@@ -23,7 +23,8 @@ NormalizedRange::NormalizedRange(bool itReallyDoesNotMatterIfThisIsTrueOrFalse)
 
 NormalizedRange NormalizedRange::fromMidpoint(float start, float mid, float end)
 {
-	float skew = 1.f / BhMath::log2((end - start) / (mid - start));
+	float midpointNormalized = (mid - start) / (end - start);
+	float skew = -midpointNormalized / (midpointNormalized - 1.f);
 	return NormalizedRange(start, end, skew);
 }
 
@@ -34,31 +35,25 @@ bool NormalizedRange::isInRange(float unnormalizedValue) const
 
 float NormalizedRange::fromNormalized(float normalizedValue) const
 {
-#ifndef _BLANKENHAIN_RUNTIME_MODE
-  if (normalizedValue < 0.f)
-    normalizedValue = 0.f;
-  else if (normalizedValue > 1.f)
-    normalizedValue = 1.f;
+#ifdef _LIBBLANKENHAIN_ENABLE_WARNINGS
+	if (normalizedValue < 0.f || normalizedValue > 1.f)
+		throw "not in range";
 #endif
-	if (skew != 1.f && normalizedValue > 0.f) {
-		normalizedValue = BhMath::pow(normalizedValue, 1.f / skew);
-	}
+	normalizedValue = (normalizedValue * skew) / ((1.f - normalizedValue) + (normalizedValue * skew));
 	return start + (end - start) * normalizedValue;
 }
 
 float NormalizedRange::toNormalized(float unnormalizedValue) const
 {
-#ifndef _BLANKENHAIN_RUNTIME_MODE
-  if (unnormalizedValue < start)
-    unnormalizedValue = start;
-  else if (unnormalizedValue > end)
-    unnormalizedValue = end;
+#ifdef _LIBBLANKENHAIN_ENABLE_WARNINGS
+	if (unnormalizedValue < start || unnormalizedValue > end)
+		throw "not in range";
 #endif
-
 	float normalizedValue = (unnormalizedValue - start) / (end - start);
-	if (skew != 1) {
-		normalizedValue = BhMath::pow(normalizedValue, skew);
-	}
+	normalizedValue = normalizedValue / (normalizedValue + skew - skew * normalizedValue);
+#ifndef _BLANKENHAIN_RUNTIME_MODE
+	normalizedValue = aux::min(1.f, aux::max(0.f, normalizedValue));
+#endif
 	return normalizedValue;
 }
 
