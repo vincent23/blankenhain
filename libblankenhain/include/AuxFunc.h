@@ -30,5 +30,7 @@ namespace aux
 	float positionToTime(unsigned int samplePosition);
 
 	void performPanning(Sample& sample, float const& panning);
+
+	Sample __vectorcall mixDryWet(Sample dry, Sample wet, float drywet);
 }
 

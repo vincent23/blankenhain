@@ -72,16 +72,7 @@ void ChorusEffect::process(Sample* buffer, size_t numberOfSamples)
 		Sample outval = delayLine.get(static_cast<int>(currentSweepPosition));
 
 		delayLine.push(Sample(feedback) * outval + inval);
-
-		// drywet
-		if (drywet > 0.5)
-		{
-			buffer[i] *= Sample((1 - drywet) * 2.f);
-		}
-		else
-		{
-			outval *= Sample(drywet * 2.f);
-		}
+		outval = aux::mixDryWet(inval, outval, drywet);
 
 		// Pan
 		aux::performPanning(outval, pan * 0.02f);

@@ -70,7 +70,7 @@ void DelayEffect::process(Sample* buffer, size_t numberOfSamples)
 	{
 		Sample original = buffer[i];
 		Sample line = delayLine.get();
-		buffer[i] = original * Sample(1.f - drywet) + line * Sample(drywet);
+		buffer[i] = aux::mixDryWet(original, line, drywet);
 		// Pan
 		aux::performPanning(buffer[i], pan * 0.02f);
 		delayLine.push(delayLine.get() * Sample(feedback) + original);

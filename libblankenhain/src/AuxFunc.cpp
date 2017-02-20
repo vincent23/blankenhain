@@ -117,4 +117,9 @@ namespace aux
 		const float panRight = ((1.f - right) + right * boost) * (1.f - left);
 		sample *= Sample(panLeft, panRight);
 	}
+
+	Sample __vectorcall mixDryWet(Sample dry, Sample wet, float drywet)
+	{
+		return dry + (wet - dry) * Sample(drywet);
+	}
 }
