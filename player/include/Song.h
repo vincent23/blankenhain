@@ -1,14 +1,14 @@
 #pragma once
 
 class SongInfo;
-class GroupDevice;
+class ChainDevice;
 
 class Song
 {
 public:
-	Song(SongInfo& songInfo, GroupDevice& master);
+	Song(SongInfo& songInfo, ChainDevice& master);
 
 private:
 	SongInfo& songInfo;
-	GroupDevice& master;
+	ChainDevice& master;
 };
