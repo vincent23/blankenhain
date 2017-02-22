@@ -1,4 +1,5 @@
 #include "gmsynthInstrumentPluginEditor.h"
+#include "ImguiCustomFunctions.h"
 
 #include "constants.h"
 #include "NormalizedRange.h"
@@ -15,7 +16,7 @@
 #include <windows.h>
 
 gmsynthPluginEditor::gmsynthPluginEditor(PluginBase* plugin_)
-	: ImguiEffectEditor(plugin_, 200, 200)
+	: ImguiEffectEditor(plugin_, 460, 460)
 {
 	gmInstrument** instruments = static_cast<gmsynthInstrumentPlugin*>(plugin_)->instruments;
 	for (unsigned int i = 0; i < 235; i++) {
@@ -29,6 +30,11 @@ void gmsynthPluginEditor::imguiFrame()
 	ImGui::SetNextWindowPos(ImVec2(0, 0));
 	ImGui::SetNextWindowSize(io.DisplaySize);
 	ImGui::Begin("test", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize);
+
+	renderADHSR(plugin, ImVec2(ImGui::GetWindowContentRegionWidth(), 300));
+
+	renderParam(plugin, 8);
+
 	DiscreteParameter const* instrumentParameter = static_cast<DiscreteParameter const*>(plugin.getParameters().getParameter(9));
 	int selectedInstrument = static_cast<int>(instrumentParameter->getValueUnnormalized());
 	if (ImGui::Combo("filter", &selectedInstrument, instrumentNames.data(), instrumentNames.size())) {

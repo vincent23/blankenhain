@@ -20,7 +20,7 @@ gmsynthInstrument::gmsynthInstrument()
 	params->getParameter(5) = new FloatParameter(100.f, NormalizedRange(1.f, 1700.f, 0.3f), "sustain", "ms");
 	params->getParameter(6) = new FloatParameter(1.0f, NormalizedRange(), "sustainLevel", "ratio");
 	params->getParameter(7) = new FloatParameter(100.f, NormalizedRange(1.f, 1700.f, 0.3f), "release", "ms");
-	params->getParameter(8) = new FloatParameter(0.f, NormalizedRange(), "loop", "");
+	params->getParameter(8) = new BoolParameter(false, "loop");
 	//params->getParameter(9) = new FloatParameter(0.f, NormalizedRange(0, 235), "instrument", "");
 	params->getParameter(9) = new DiscreteParameter(235, "instrument");
 
@@ -157,7 +157,7 @@ void gmsynthInstrument::processVoice(VoiceState& voice, unsigned int timeInSampl
 	float sustainLevel = getInterpolatedParameter(6).get();
 	float sustain = getInterpolatedParameter(5).get();
 	float release = getInterpolatedParameter(7).get();
-	bool loop = getInterpolatedParameter(8).get() > .5f;
+	bool loop = getInterpolatedParameter(8).get() == 1.f;
 
 	gmSound* sound = interpolatedSounds[voice.key];
 	if (sound == nullptr) {
