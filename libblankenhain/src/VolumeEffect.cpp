@@ -100,7 +100,7 @@ void VolumeEffect::getModulation(float* modulationValues, size_t sampleOffset)
 		for (unsigned int i = 0u; i < sampleOffset; i++)
 		{
 			if (this->effectUsesTempoData())
-				modulationValues[0] = this->lfo.getSample(sampleOffset + this->tempodata.position, lfoPhase) * lfoAmount + lfoBaseline;
+				modulationValues[0] = this->lfo.getSample(i + this->tempodata.position, lfoPhase) * lfoAmount + lfoBaseline;
 			else
 				modulationValues[0] = this->lfo.getNextSample(lfoPhase) * lfoAmount + lfoBaseline;
 		}
