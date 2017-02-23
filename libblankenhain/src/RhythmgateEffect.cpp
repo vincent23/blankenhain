@@ -102,6 +102,5 @@ void RhythmgateEffect::process(Sample* buffer, size_t numberOfSamples)
 		}
 
 		this->nextSample();
-		tempodata.position++;
 	}
 }
