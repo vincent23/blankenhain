@@ -7,7 +7,7 @@
 //Todo selfmod!
 
 FmInstrument::FmInstrument()
-	: InstrumentBase(99, 1, true), currentSound(nullptr)
+	: InstrumentBase(99, 1, true), currentSound(nullptr), lastCarrierValue(1.f)
 {
 	ParameterBundle* params = getPointerToParameterBundle();
 
