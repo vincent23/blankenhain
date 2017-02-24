@@ -9,7 +9,7 @@ class EqualizerEffect : public EffectBase
 public:
 	EqualizerEffect();
 
-	void process(Sample* buffer, size_t numberOfSamples) override;
+	void process(Sample* buffer, size_t numberOfSamples, size_t currentTime) override;
 
 	static const unsigned int numberOfFilters = 8;
 

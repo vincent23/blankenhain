@@ -19,7 +19,7 @@ DelayEffect::DelayEffect() : EffectBase(7, true), delayLine(size_t(aux::millisec
 
 }
 
-void DelayEffect::process(Sample* buffer, size_t numberOfSamples)
+void DelayEffect::process(Sample* buffer, size_t numberOfSamples, size_t currentTime)
 {
 	float pan = getInterpolatedParameter(0).get();
 	float length = getInterpolatedParameter(1).get();

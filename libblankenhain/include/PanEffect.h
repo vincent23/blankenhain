@@ -7,5 +7,5 @@ class PanEffect : public EffectBase
 public:
 	PanEffect();
 
-	void process(Sample* buffer, size_t numberOfSamples) override;
+	void process(Sample* buffer, size_t numberOfSamples, size_t currentTime) override;
 };

@@ -1,6 +1,6 @@
 #include "MidiBase.h"
 
-void MidiBase::process(Sample* buffer, size_t numberOfSamples)
+void MidiBase::process(Sample* buffer, size_t numberOfSamples, size_t currentTime)
 {
 	this->nextSample(numberOfSamples);
 }

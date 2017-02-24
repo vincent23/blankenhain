@@ -51,7 +51,7 @@ freeverbEffect::~freeverbEffect()
 }
 
 
-void freeverbEffect::process(Sample* buffer, size_t numberOfSamples)
+void freeverbEffect::process(Sample* buffer, size_t numberOfSamples, size_t currentTime)
 {
 	InterpolatedValue<float>& roomSize = getInterpolatedParameter(0);
 	InterpolatedValue<float>& width = getInterpolatedParameter(2);

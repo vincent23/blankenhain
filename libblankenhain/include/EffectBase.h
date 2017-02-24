@@ -64,6 +64,8 @@ public:
 
 	void incrementTempoDataPosition(unsigned int increment);
 
+	unsigned int const& getCurrentTime() const;
+
 protected:
 	/**
 	 * Use this, and only this function, to get access to current parameter values
@@ -83,15 +85,17 @@ protected:
 	* This method must also call nextSample() exactly @a numberOfSamples times.
 	* @param[in,out] buffer The input buffer which is modified by the effect.
 	* @param[in] numberOfSamples The number of samples in @a buffer.
+	* @param[in] currentGlobalTime The blankenhain time when the process function is called
 	*/
-	virtual void process(Sample* buffer, size_t numberOfSamples) = 0;
+	virtual void process(Sample* buffer, size_t numberOfSamples, size_t currentTime) = 0;
 
 	/**
 	 * Holds information about sync with host DAW, BPM and position
 	 */
 	TempoData tempodata;
 
-private:
+private:	
+	unsigned int timeInSamples = 0;
 	ParameterBundle* paramBundle;
 	InterpolatedValue<float>* parameterValues;
 	float* nextModulation;

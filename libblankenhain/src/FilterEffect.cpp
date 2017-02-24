@@ -19,7 +19,7 @@ FilterEffect::FilterEffect() : EffectBase(NUMBER_OF_PARAMETERS)
 	//frequency = new FloatParameter((500.f), "Frequency", 0.5f, NormalizedRange(40.f, 22000.f, 0.3f));
 }
 
-void FilterEffect::process(Sample* buffer, size_t numberOfSamples)
+void FilterEffect::process(Sample* buffer, size_t numberOfSamples, size_t currentTime)
 {
 	float Q = getInterpolatedParameter(0).get();
 	float frequency = getInterpolatedParameter(1).get();

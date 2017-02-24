@@ -13,7 +13,7 @@ WidthEffect::WidthEffect() : EffectBase(1u)
 	(params->getParameter(0)) = new FloatParameter(1.f, NormalizedRange(0.f, 2.f), "width", "");
 }
 
-void WidthEffect::process(Sample* buffer, size_t numberOfSamples)
+void WidthEffect::process(Sample* buffer, size_t numberOfSamples, size_t currentTime)
 {
 	InterpolatedValue<float> width = getInterpolatedParameter(0);
 	for (size_t i = 0; i < numberOfSamples; i++)

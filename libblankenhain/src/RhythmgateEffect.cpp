@@ -21,7 +21,7 @@ RhythmgateEffect::RhythmgateEffect() : EffectBase(20, true)
 
 }
 
-void RhythmgateEffect::process(Sample* buffer, size_t numberOfSamples)
+void RhythmgateEffect::process(Sample* buffer, size_t numberOfSamples, size_t currentTime)
 {
 
 	InterpolatedValue<float>* params[16];

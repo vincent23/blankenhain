@@ -23,7 +23,7 @@ ChorusEffect::ChorusEffect() : EffectBase(11), delayLine(size_t(aux::millisecToS
 	params->getParameter(10) = new BoolParameter(false, "pseudoStereo");
 }
 
-void ChorusEffect::process(Sample* buffer, size_t numberOfSamples)
+void ChorusEffect::process(Sample* buffer, size_t numberOfSamples, size_t currentTime)
 {
 
 	float delay = getInterpolatedParameter(2).get();

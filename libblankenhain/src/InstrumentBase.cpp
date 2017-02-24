@@ -45,7 +45,7 @@ void InstrumentBase::handleNoteEvent(bool isNoteOn, unsigned int key, unsigned i
 			}
 		}
 		if (selectedVoice != nullptr) {
-			selectedVoice->on(timeInSamples, key, velocity);
+			selectedVoice->on(this->getCurrentTime(), key, velocity);
 		}
 	}
 	else {
@@ -59,7 +59,7 @@ void InstrumentBase::handleNoteEvent(bool isNoteOn, unsigned int key, unsigned i
 			}
 		}
 		if (earliestNote != nullptr) {
-			earliestNote->off(timeInSamples);
+			earliestNote->off(this->getCurrentTime());
 		}
 	}
 }
@@ -74,7 +74,7 @@ void InstrumentBase::resetVoices()
 }
 #endif
 
-void InstrumentBase::process(Sample* buffer, size_t numberOfSamples)
+void InstrumentBase::process(Sample* buffer, size_t numberOfSamples, size_t currentTime)
 {
 	for (unsigned int sampleIndex = 0; sampleIndex < numberOfSamples; sampleIndex++) {
 		buffer[sampleIndex] = Sample(0);
@@ -85,7 +85,7 @@ void InstrumentBase::process(Sample* buffer, size_t numberOfSamples)
 		if (voice.isSilent) {
 			continue;
 		}
-		processVoice(voice, timeInSamples, voiceBuffer, numberOfSamples);
+		processVoice(voice, currentTime, voiceBuffer, numberOfSamples);
 		for (unsigned int sampleIndex = 0; sampleIndex < numberOfSamples; sampleIndex++) {
 			Sample& currentSample = voiceBuffer[sampleIndex];
 			// via "normalizeed value" skewing with factor 1.
@@ -100,5 +100,4 @@ void InstrumentBase::process(Sample* buffer, size_t numberOfSamples)
 		}
 	}
 	nextSample(numberOfSamples);
-	timeInSamples += numberOfSamples;
 }

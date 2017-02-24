@@ -92,8 +92,8 @@ void EffectBase::processBlock(Sample* buffer, size_t numberOfSamples)
 			parameterValues[parameterIndex] = InterpolatedValue<float>(previousValue, nextValue, numberOfSamples);
 		}
 	}
-	process(buffer, numberOfSamples);
-
+	process(buffer, numberOfSamples, timeInSamples);
+	timeInSamples += numberOfSamples;
 
 }
 
@@ -126,4 +126,9 @@ void EffectBase::nextSample(unsigned int steps) const
 	for (unsigned int parameterIndex = 0; parameterIndex < getNumberOfParameters(); parameterIndex++) {
 		getInterpolatedParameter(parameterIndex).next(steps);
 	}
+}
+
+unsigned int const& EffectBase::getCurrentTime() const
+{
+	return this->timeInSamples;
 }

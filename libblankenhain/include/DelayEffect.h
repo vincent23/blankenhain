@@ -8,7 +8,7 @@ class DelayEffect : public EffectBase
 public:
 	DelayEffect();
 
-	void process(Sample* buffer, size_t numberOfSamples) override;
+	void process(Sample* buffer, size_t numberOfSamples, size_t currentTime) override;
 
 	void resetDelayLine()
 	{

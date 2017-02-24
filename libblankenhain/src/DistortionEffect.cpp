@@ -14,7 +14,7 @@ DistortionEffect::DistortionEffect() : EffectBase(4)
 	(params->getParameter(3)) = new FloatParameter(0.f, NormalizedRange(0.f, 1.f, 0.3f), "dry/wet", "skewed");
 }
 
-void DistortionEffect::process(Sample* buffer, size_t numberOfSamples)
+void DistortionEffect::process(Sample* buffer, size_t numberOfSamples, size_t currentTime)
 {
 	float inGain = getInterpolatedParameter(0).get();
 	float drywet = getInterpolatedParameter(3).get();

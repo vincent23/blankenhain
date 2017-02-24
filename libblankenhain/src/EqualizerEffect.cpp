@@ -25,7 +25,7 @@ EqualizerEffect::EqualizerEffect() : EffectBase(1 + 5 * numberOfFilters)
 	}
 }
 
-void EqualizerEffect::process(Sample* buffer, size_t numberOfSamples)
+void EqualizerEffect::process(Sample* buffer, size_t numberOfSamples, size_t currentTime)
 {
 	float scale = getInterpolatedParameter(0).get() / 100.f;
 	for (unsigned int filterIndex = 0; filterIndex < numberOfFilters; filterIndex++) {

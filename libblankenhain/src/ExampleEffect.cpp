@@ -19,7 +19,7 @@ ExampleEffect::ExampleEffect() : EffectBase(NUMBER_OF_PARAMETERS), delayLine(siz
 	(params->getParameter(4)) = new FloatParameter(0.f, NormalizedRange(0.f, 100.f, 1.f), "limiterOn", "");
 }
 
-void ExampleEffect::process(Sample* buffer, size_t numberOfSamples)
+void ExampleEffect::process(Sample* buffer, size_t numberOfSamples, size_t currentTime)
 {
 	float ratio = getInterpolatedParameter(0).get();
 	float release = getInterpolatedParameter(1).get();

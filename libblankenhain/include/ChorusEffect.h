@@ -8,7 +8,7 @@ class ChorusEffect : public EffectBase
 public:
 	ChorusEffect();
 
-	void process(Sample* buffer, size_t numberOfSamples) override;
+	void process(Sample* buffer, size_t numberOfSamples, size_t currentTime) override;
     void resetDelayLine()
     {
       this->delayLine.reset();

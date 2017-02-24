@@ -12,7 +12,7 @@ BitcrushEffect::BitcrushEffect() : EffectBase(3)
 	(params->getParameter(2)) = new FloatParameter(100.f, NormalizedRange(0.f, 100.f), "Dry/Wet", "%");
 }
 
-void BitcrushEffect::process(Sample* buffer, size_t numberOfSamples)
+void BitcrushEffect::process(Sample* buffer, size_t numberOfSamples, size_t currentTime)
 {
 
 	InterpolatedValue<float>& bitcrush = getInterpolatedParameter(0);

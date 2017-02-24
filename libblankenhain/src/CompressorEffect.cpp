@@ -20,7 +20,7 @@ CompressorEffect::CompressorEffect()
 	(params->getParameter(7)) = new FloatParameter(1.f, NormalizedRange(0.f, 1.f), "envelope", "peak/rms");
 }
 
-void CompressorEffect::process(Sample* buffer, size_t numberOfSamples)
+void CompressorEffect::process(Sample* buffer, size_t numberOfSamples, size_t currentTime)
 {
 	float attack = getInterpolatedParameter(0).get();
 	float release = getInterpolatedParameter(1).get();

@@ -27,11 +27,10 @@ public:
 #endif
 protected:
 	const unsigned int numberOfVoices;
-	virtual void process(Sample* buffer, size_t numberOfSamples) final;
+	virtual void process(Sample* buffer, size_t numberOfSamples, size_t currentTime) final;
 private:
 	Sample voiceBuffer[constants::blockSize];
 	VoiceState* voices;
-	unsigned int timeInSamples = 0;
 };
 
 template <typename T>

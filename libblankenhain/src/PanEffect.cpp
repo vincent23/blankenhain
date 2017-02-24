@@ -11,7 +11,7 @@ PanEffect::PanEffect() : EffectBase(2u)
 	(params->getParameter(1)) = new FloatParameter(0.f, NormalizedRange(0.f, 1.f), "dummy", "");
 }
 
-void PanEffect::process(Sample* buffer, size_t numberOfSamples)
+void PanEffect::process(Sample* buffer, size_t numberOfSamples, size_t currentTime)
 {
 	InterpolatedValue<float>& panningValue = getInterpolatedParameter(0);
 	for (size_t bufferIteration = 0u; bufferIteration < numberOfSamples; bufferIteration++)

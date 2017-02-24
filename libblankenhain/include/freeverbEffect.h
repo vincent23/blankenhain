@@ -15,7 +15,7 @@ public:
 	// Change the name and define parameters in constructor
 	freeverbEffect();
 	~freeverbEffect(void);
-	void process(Sample* buffer, size_t numberOfSamples) override;
+	void process(Sample* buffer, size_t numberOfSamples, size_t currentTime) override;
 
 protected:
 	// Include optional additional stuff

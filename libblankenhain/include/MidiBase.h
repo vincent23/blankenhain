@@ -11,7 +11,7 @@ public:
 	MidiBase(unsigned int numberOfParameters, bool usesTempoDate = false) : EffectBase(numberOfParameters, usesTempoDate) {};
 	virtual void processMidiEvents(MidiEvent* events, unsigned int& numberOfMidiEvents, unsigned int maxNumEvents, unsigned int numberOfSamples) = 0;
 protected:
-	void process(Sample* buffer, size_t numberOfSamples) final;
+	void process(Sample* buffer, size_t numberOfSamples, size_t currentTime) final;
 	bool startNote(unsigned int key, unsigned int duration);
 	void skipSamples(unsigned int samples);
 	bool advanceToNextStopNote(unsigned int maxSamples, unsigned int& outSamplesAdvanced, unsigned int& outKey);

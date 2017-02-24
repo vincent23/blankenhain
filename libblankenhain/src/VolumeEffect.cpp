@@ -21,7 +21,7 @@ VolumeEffect::VolumeEffect() : EffectBase(10u, true)
 	params->getParameter(9) = new FloatParameter(0.f, NormalizedRange(-1.f, 1.f), "lfoBaseline", "");
 }
 
-void VolumeEffect::process(Sample* buffer, size_t numberOfSamples)
+void VolumeEffect::process(Sample* buffer, size_t numberOfSamples, size_t currentTime)
 {
 	InterpolatedValue<float>& currentVolumeL = getInterpolatedParameter(0);
 	InterpolatedValue<float>& currentVolumeR = getInterpolatedParameter(1);
