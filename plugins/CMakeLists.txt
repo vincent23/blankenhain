@@ -229,3 +229,8 @@ add_plugin("bh_width"
 	"WidthPlugin.h"
 )
 
+add_plugin("bh_noisegate"
+	"NoiseGatePlugin.cpp"
+	"NoiseGatePlugin.h"
+)
+
