@@ -32,7 +32,7 @@ void VolumeEffect::process(Sample* buffer, size_t numberOfSamples, size_t curren
 	{
 		for (size_t bufferIteration = 0; bufferIteration < numberOfSamples; bufferIteration++)
 		{
-			buffer[bufferIteration] = buffer[bufferIteration] * Sample(aux::decibelToLinear(currentVolumeL.get()));
+			buffer[bufferIteration] *= Sample(aux::decibelToLinear(currentVolumeL.get()));
 			nextSample();
 		}
 	}
@@ -45,10 +45,8 @@ void VolumeEffect::process(Sample* buffer, size_t numberOfSamples, size_t curren
 			bufferIteration++
 			)
 		{
-			buffer[bufferIteration].store_aligned(currentBuffer);
-			currentBuffer[0] = currentBuffer[0] * aux::decibelToLinear(currentVolumeL.get());
-			currentBuffer[1] = currentBuffer[1] * aux::decibelToLinear(currentVolumeR.get());
-			buffer[bufferIteration] = Sample::load_aligned(currentBuffer);
+      Sample volumeMultiply(aux::decibelToLinear(currentVolumeL.get()), aux::decibelToLinear(currentVolumeR.get()));
+      buffer[bufferIteration] *= volumeMultiply;
 			nextSample();
 		}
 	}
