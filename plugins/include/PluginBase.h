@@ -164,4 +164,6 @@ private:
 	unsigned int timeSinceLastBPMandPositionUpdate;
 	VstSpeakerArrangement* speakerArr;
 	Sample processBuffer[constants::blockSize];
+
+  unsigned int delayOfEffect = 0;
 };

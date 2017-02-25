@@ -205,6 +205,12 @@ void PluginBase::processReplacing(float** inputs, float** outputs, VstInt32 samp
 		incrementTempoDataPosition(blockLength);
 	}
 	onAfterProcess();
+
+  if (delayOfEffect != effect->getDelay())
+  {
+    this->setInitialDelay(effect->getDelay());
+    bool itWorked = this->ioChanged();
+  }
 }
 
 void PluginBase::setParameter(VstInt32 index, float value)

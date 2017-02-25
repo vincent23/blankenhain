@@ -66,6 +66,8 @@ public:
 
 	unsigned int const& getCurrentTime() const;
 
+  const unsigned int getDelay() const;
+
 protected:
 	/**
 	 * Use this, and only this function, to get access to current parameter values
@@ -93,6 +95,8 @@ protected:
 	 * Holds information about sync with host DAW, BPM and position
 	 */
 	TempoData tempodata;
+
+  unsigned int delayEffectProducesInSamples = 0;
 
 private:	
 	unsigned int timeInSamples = 0;

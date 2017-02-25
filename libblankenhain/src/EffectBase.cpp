@@ -41,6 +41,11 @@ void EffectBase::incrementTempoDataPosition(unsigned int increment)
 	this->tempodata.position += increment;
 }
 
+const unsigned int EffectBase::getDelay() const
+{
+  return this->delayEffectProducesInSamples;
+}
+
 
 void EffectBase::processBlock(Sample* buffer, size_t numberOfSamples)
 {

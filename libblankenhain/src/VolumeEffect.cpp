@@ -38,7 +38,6 @@ void VolumeEffect::process(Sample* buffer, size_t numberOfSamples, size_t curren
 	}
 	else
 	{
-		alignas(16) double currentBuffer[2];
 		for (
 			size_t bufferIteration = 0u;
 			bufferIteration < numberOfSamples;
