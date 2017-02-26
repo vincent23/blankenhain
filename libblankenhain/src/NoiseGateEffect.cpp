@@ -6,31 +6,29 @@
 #include "BhMath.h"
 
 NoiseGateEffect::NoiseGateEffect()
-	: EffectBase(6u, false)
-	, lookaheadBuffer(static_cast<unsigned int>(aux::millisecToSamples(5.1f)))
-	, RMSVolLength(static_cast<unsigned int>(aux::millisecToSamples(50.f)))
+	: EffectBase(5u, false)
+	, lookaheadBuffer(static_cast<unsigned int>(aux::millisecToSamples(60.2f)))
+	, RMSVolLength(static_cast<unsigned int>(aux::millisecToSamples(10.f)))
 	, lastStartTime(1u)
 	, lastStopTime(0u)
 {
 	ParameterBundle* params = getPointerToParameterBundle();
 	(params->getParameter(0)) = new FloatParameter(-6.f, NormalizedRange(-120.f, 0.f, 5.f), "threshold", "dB");
 	(params->getParameter(1)) = new FloatParameter(-119.f, NormalizedRange(-120.f, 0.f, 5.f), "bottom", "dB");
-	(params->getParameter(2)) = new FloatParameter(50.f, NormalizedRange(0.f, 100.f, 5.f), "rmsVolLength", "ms");
-	(params->getParameter(3)) = new FloatParameter(1.f, NormalizedRange(0.05f, 200.f, 0.8f), "attack", "ms");
-	(params->getParameter(4)) = new FloatParameter(1.f, NormalizedRange(0.05f, 200.f, 0.8f), "release", "ms");
-	(params->getParameter(5)) = new FloatParameter(0.f, NormalizedRange(0.0f, 5.f, 0.8f), "lookahead", "ms");
+	(params->getParameter(2)) = new FloatParameter(1.f, NormalizedRange(0.05f, 200.f, 0.8f), "attack", "ms");
+	(params->getParameter(3)) = new FloatParameter(1.f, NormalizedRange(0.05f, 200.f, 0.8f), "release", "ms");
+	(params->getParameter(4)) = new FloatParameter(0.f, NormalizedRange(0.0f, 50.f, 0.8f), "lookahead", "ms");
 }
 
 void NoiseGateEffect::process(Sample* buffer, size_t numberOfSamples, size_t currentTime)
 {
 	const float threshold = aux::decibelToLinear(getInterpolatedParameter(0).get());
 	const float bottom = aux::decibelToLinear(getInterpolatedParameter(1).get());
-	const float attack = aux::millisecToSamples(getInterpolatedParameter(3).get());
-	const float release = aux::millisecToSamples(getInterpolatedParameter(4).get());
-	const float lookahead = aux::millisecToSamples(getInterpolatedParameter(5).get());
+	const float attack = aux::millisecToSamples(getInterpolatedParameter(2).get());
+	const float release = aux::millisecToSamples(getInterpolatedParameter(3).get());
+	const float lookahead = aux::millisecToSamples(getInterpolatedParameter(4).get());
 	const unsigned int lookaheadInSamples = static_cast<unsigned int>(lookahead);
-	const unsigned int delayLineLength = static_cast<unsigned int>(aux::millisecToSamples(getInterpolatedParameter(2).get()))
-		+ lookaheadInSamples;
+	const unsigned int delayLineLength = RMSVolLength + lookaheadInSamples;
 
 	this->delayEffectProducesInSamples = delayLineLength;
 
