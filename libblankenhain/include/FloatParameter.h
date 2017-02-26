@@ -43,11 +43,13 @@ public:
 	// also fine for you, you can call EffectBase::nextSample(unsigned int steps)
 	// at the end of the process function. This will take care of
 	// parameter interpolation.
+	//
+	// TODO: This text actually describes the function nextSample() of EffectBase. REWORK!
 	virtual void next(unsigned int numberOfSamples = 1);
 
 
 protected:
-	InterpolatedValue<float> valueNormalized;
+	BoundrySafeInterpolatedValue<float> valueNormalized;
 
 private:
 	float defaultValueNormalized;

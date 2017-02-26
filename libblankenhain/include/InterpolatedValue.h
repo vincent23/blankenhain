@@ -5,13 +5,19 @@
  * 
  * Use with T = float
  *
- * To skip interpolation steps, use next()
- * To get next interpolated value, use get()
+ * To perform interpolation steps, use next()
+ * To merely "get" the next interpolated value ("take a peek"), without actually ramping up, use get()
  *
- * Stops interpolation when target value is reached.
+ * InterpolatedValue is lean and mean and will not check boundries.
+ * You may well crash the blankenhain by calling next() past the target value.
+ * 
+ * If you need a boundry safe version, where calling next() past the target interpolation value
+ * will do nothing (no overshooting the targetvalue), use BoundrySafeInterpolatedValue.
  **/ 
+
 template <typename T>
-class InterpolatedValue {
+class InterpolatedValue 
+{
 public:
 	InterpolatedValue(T from, T to, unsigned int steps);
 	InterpolatedValue(T singularValue);
@@ -19,16 +25,31 @@ public:
 
 	/// gets current interpolated value,
 	T get() const;
-	T get(unsigned int offset) const;
+	virtual T get(unsigned int offset) const;
 
 	/// Skips a number of interpolation steps
-	T next(unsigned int steps = 1);
+	virtual T next(unsigned int steps = 1);
 
-private:
+protected:
 	T current;
 	T step;
 #ifdef _LIBBLANKENHAIN_ENABLE_WARNINGS
 	/*const*/ unsigned int targetNumSteps;
 	unsigned int currentStep;
 #endif
+};
+
+template <typename T>
+class BoundrySafeInterpolatedValue : public InterpolatedValue<T>
+{
+public:
+	BoundrySafeInterpolatedValue(T from, T to, unsigned int steps);
+	BoundrySafeInterpolatedValue(T singularValue);
+	BoundrySafeInterpolatedValue() = default;
+
+	T get(unsigned int offset = 0u) const override;
+	T next(unsigned int steps = 1u) override;
+protected:
+	unsigned int targetNumSteps;
+	unsigned int currentStep;
 };

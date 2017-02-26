@@ -1,6 +1,7 @@
 #include "InterpolatedValue.h"
 
 template InterpolatedValue<float>;
+template BoundrySafeInterpolatedValue<float>;
 
 template <typename T>
 InterpolatedValue<T>::InterpolatedValue(T from, T to, unsigned int steps)
@@ -23,7 +24,7 @@ InterpolatedValue<T>::InterpolatedValue(T singularValue)
 { }
 
 template <typename T>
-T InterpolatedValue<T>::get() const
+T InterpolatedValue<T>::get(void) const
 {
 	return current;
 }
@@ -51,4 +52,66 @@ T InterpolatedValue<T>::next(unsigned int steps)
 #endif
 	current += step * steps;
 	return current;
+}
+
+
+//////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////
+//////////////												//////////
+//////////////		BOUNDRY CHECKED INTERPOLATED VALUE		//////////
+//////////////												//////////
+//////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////
+
+
+template <typename T>
+BoundrySafeInterpolatedValue<T>::BoundrySafeInterpolatedValue(T from, T to, unsigned int steps)
+	: InterpolatedValue(from, to, steps)
+	, targetNumSteps(steps)
+	, currentStep(0u)
+{ }
+
+template <typename T>
+BoundrySafeInterpolatedValue<T>::BoundrySafeInterpolatedValue(T singularValue)
+	: InterpolatedValue(singularValue)
+	, targetNumSteps(0u)
+	, currentStep(0u)
+{ }
+
+template <typename T>
+T BoundrySafeInterpolatedValue<T>::get(unsigned int offset) const
+{
+	if (currentStep + offset >= targetNumSteps)
+	{
+		return current;
+	}
+	else
+	{
+		return current + offset * step;
+	}
+
+}
+
+template <typename T>
+T BoundrySafeInterpolatedValue<T>::next(unsigned int steps)
+{
+	// Check if we bound overshoot our boundries with this next
+	if (currentStep + steps >= targetNumSteps)
+	{
+		// if we do, check if we ONLY overshoot since this step (and therefore
+		// we need to still ramp up current to its target value)
+		if (currentStep < targetNumSteps)
+		{
+			current += step * (targetNumSteps - currentStep);
+			currentStep = targetNumSteps;
+		}
+		return current;
+	}
+	else
+	{
+		// we dont overshoot, we ramp normally
+		currentStep += steps;
+		current += step * steps;
+		return current;
+	}
 }

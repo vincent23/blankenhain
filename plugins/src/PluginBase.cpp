@@ -210,7 +210,7 @@ void PluginBase::processReplacing(float** inputs, float** outputs, VstInt32 samp
 	{
 		this->delayOfEffect = effect->getDelay();
 		this->setInitialDelay(effect->getDelay());
-		bool itWorked = this->ioChanged();
+		/*bool itWorked = */this->ioChanged();
 	}
 }
 
