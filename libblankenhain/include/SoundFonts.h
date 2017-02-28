@@ -18,7 +18,7 @@ public:
 	{
 		filter.setLowPass(lowPassFreq, lowPassQ);
 	}
-	virtual float getSample(unsigned int time, float phase = 0.f) final
+	virtual float getSample(unsigned int time, OscillatorPhase phase = OscillatorPhase()) final
 	{
 		float value = pulse.getSample(time);
 		return filter.tick(value);
@@ -34,7 +34,7 @@ public:
 	{
 		pulse = PulseSound(static_cast<unsigned int>(aux::millisecToSamples(inMs)));
 	}
-	virtual float getNextSample(float phase = 0.f) final
+	virtual float getNextSample(OscillatorPhase phase = OscillatorPhase()) final
 	{
 		return 0;
 	}
@@ -63,7 +63,7 @@ public:
 	{
 		baseFreq = frequency;
 	};
-	virtual float getSample(unsigned int time, float phase = 0.f) final
+	virtual float getSample(unsigned int time, OscillatorPhase phase = OscillatorPhase()) final
 	{
 		float envValue = env.get(time);
 		float curFreq = baseFreq - baseFreq * (1.f - envValue) * envMult;
@@ -84,7 +84,7 @@ public:
 	{
 		this->env.releaseInMs = envReleaseTimeInMs_;
 	}
-	virtual float getNextSample(float phase = 0.f) final
+	virtual float getNextSample(OscillatorPhase phase = OscillatorPhase()) final
 	{
 		return 0;
 	}

@@ -17,6 +17,56 @@
 #include "BhMath.h"
 
 /**
+* Wrapps a value to range [0; 2pi].
+* Needed for Oscillators.
+* Is able to handle negative values by
+*
+*/
+class OscillatorPhase
+{
+public:
+	OscillatorPhase() : mPhase(0.f) {}
+
+	OscillatorPhase(float in) : mPhase(0.f)
+	{
+		this->set(in);
+	}
+
+
+	const float& getValue() const
+	{
+		return mPhase;
+	};
+
+	void set(float in)
+	{
+		if (in < 0.f)
+		{
+			in = BhMath::fmod(in, length);
+			in += length;
+			mPhase = in;
+		}
+		else
+		{
+			mPhase = in;
+			mPhase = BhMath::fmod(mPhase, length);
+		}
+	};
+
+	const float& incrementBy(float in)
+	{
+		if (in < 0.f)
+			in *= -1;
+		mPhase += in;
+		mPhase = BhMath::fmod(mPhase, length);
+		return getValue();
+	}
+	static const float length;
+private:
+	float mPhase;
+};
+
+/**
  * Interface class for sound generators, processVoice Function will 
  * access sound generating modules through these two calls only.
  * Everything that generates a sound, wether periodic or not,
@@ -34,46 +84,13 @@ public:
 	virtual void setFrequency(float frequency) = 0;
 
 	// This is the prefered way to access a SoundGenerator
-	virtual float getSample(unsigned int time, float phase = 0) = 0;
+	virtual float getSample(unsigned int time, OscillatorPhase phase = OscillatorPhase()) = 0;
 
 	// This is only used in case of glide or time-dependent frequency modulation for example.
-	virtual float getNextSample(float phase = 0) = 0;
+	virtual float getNextSample(OscillatorPhase phase = OscillatorPhase()) = 0;
 };
 
-/**
- * Wrapps a value to range [0; 2pi].
- * Needed for Oscillators
- */
-class OscillatorPhase
-{
-public:
-	OscillatorPhase() : mPhase(0.f){}
 
-	float getValue() const
-	{
-		return mPhase;
-	};
-
-	void set(float in)
-	{
-		if (in < 0.f)
-			in *= -1;
-		mPhase = in;
-		mPhase = BhMath::fmod(mPhase, length);
-	};
-
-	float incrementBy(float in)
-	{
-		if (in < 0.f)
-			in *= -1;
-		mPhase += in;
-		mPhase = BhMath::fmod(mPhase, length);
-		return getValue();
-	}
-	static const float length;
-private:
-	float mPhase;
-};
 
 /**
  * A virtual basic class for periodic (i.e. oscillating) sounds.
@@ -151,12 +168,12 @@ public:
 
     void setMode(NaiveOscillatorMode mode);
 
-	virtual float getSample(unsigned int time, float phase = 0.f) override;
+	virtual float getSample(unsigned int time, OscillatorPhase phase = OscillatorPhase()) override;
 
-	virtual float getNextSample(float phase = 0.f) override;
+	virtual float getNextSample(OscillatorPhase phase = OscillatorPhase()) override;
 
 protected:
-    float naiveWaveformForMode(NaiveOscillatorMode mode, float phase = 0.f);
+    float naiveWaveformForMode(NaiveOscillatorMode mode, OscillatorPhase phase = OscillatorPhase());
 	NaiveOscillatorMode mOscillatorMode;
 };
 
@@ -169,7 +186,7 @@ protected:
 class AdditiveSquareWaveOscillator : public BaseOscillator
 {
 public:
-	virtual float getSample(unsigned int time, float phase = 0.f) final
+	virtual float getSample(unsigned int time, OscillatorPhase phase = OscillatorPhase()) final
 	{
 		float value = 0.f;
 		unsigned int k = 1u;
@@ -187,7 +204,7 @@ public:
 		return value * 4.f / static_cast<float>(constants::pi);
 	}
 
-	virtual float getNextSample(float phase = 0.f) final
+	virtual float getNextSample(OscillatorPhase phase = OscillatorPhase()) final
 	{
 		float value = 0.f;
 		unsigned int k = 1u;
@@ -215,7 +232,7 @@ public:
 class AdditiveTriangleWaveOscillator : public BaseOscillator
 {
 public:
-	virtual float getSample(unsigned int time, float phase = 0.f) final
+	virtual float getSample(unsigned int time, OscillatorPhase phase = OscillatorPhase()) final
 	{
 		float value = 0.f;
 		unsigned int k = 1u;
@@ -233,7 +250,7 @@ public:
 		return value * 8.f / static_cast<float>(constants::pi * constants::pi);
 	}
 
-	virtual float getNextSample(float phase = 0.f) final
+	virtual float getNextSample(OscillatorPhase phase = OscillatorPhase()) final
 	{
 		mPhase.incrementBy(mPhaseIncrement);
 		float value = 0.f;
@@ -263,7 +280,7 @@ public:
 class AdditiveSawtoothWaveOscillator : public BaseOscillator
 {
 public:
-	virtual float getSample(unsigned int time, float phase = 0.f) final
+	virtual float getSample(unsigned int time, OscillatorPhase phase = OscillatorPhase()) final
 	{
 		mPhase.set(static_cast<float>(time) * mPhaseIncrement);
 		float value = 0.f;
@@ -282,7 +299,7 @@ public:
 		return 0.5f - value * ( 1.f / static_cast<float>(constants::pi));
 	}
 
-	virtual float getNextSample(float phase = 0.f) final
+	virtual float getNextSample(OscillatorPhase phase = OscillatorPhase()) final
 	{
 		mPhase.incrementBy(mPhaseIncrement);
 		float value = 0.f;
@@ -333,17 +350,17 @@ public:
 		}
 	}
 
-	virtual float getSample(unsigned int time, float phase = 0.f) final
+	virtual float getSample(unsigned int time, OscillatorPhase phase = OscillatorPhase()) final
 	{
 		mPhase.set(static_cast<float>(time) * mPhaseIncrement);
-		const float positionInWavetable = (mPhase.getValue() + phase) * static_cast<float>(size) / static_cast<float>(2.f * constants::pi);
+		const float positionInWavetable = (mPhase.getValue() + phase.getValue()) * static_cast<float>(size) / static_cast<float>(2.f * constants::pi);
 		return wavetable[static_cast<unsigned int>(positionInWavetable)];
 	}
 
-	virtual float getNextSample(float phase = 0.f) final
+	virtual float getNextSample(OscillatorPhase phase = OscillatorPhase()) final
 	{
 		mPhase.incrementBy(mPhaseIncrement);
-		const float positionInWavetable = ( mPhase.getValue() + phase) * static_cast<float>(size) / static_cast<float>(2.f * constants::pi);
+		const float positionInWavetable = ( mPhase.getValue() + phase.getValue()) * static_cast<float>(size) / static_cast<float>(2.f * constants::pi);
 		return wavetable[static_cast<unsigned int>(positionInWavetable)];
 	}
 };
@@ -381,7 +398,7 @@ public:
 			this->xorshift32();
 	}
 
-	virtual float getSample(unsigned int time, float phase = 0.f) final
+	virtual float getSample(unsigned int time, OscillatorPhase phase = OscillatorPhase()) final
 	{
 		this->xorshift32();
 		while (state > 4000000001 || state == 0u)
@@ -389,7 +406,7 @@ public:
 		return (static_cast<float>(state) - 1.f) / 4000000000.f;
 	}
 
-	virtual float getNextSample(float phase = 0.f) final
+	virtual float getNextSample(OscillatorPhase phase = OscillatorPhase()) final
 	{
 		return this->getSample(0u);
 	}
@@ -414,8 +431,8 @@ public:
 	{
 	};
 
-	virtual float getSample(unsigned int time, float phase = 0.f) final;
-	virtual float getNextSample(float phase = 0.f) final;
+	virtual float getSample(unsigned int time, OscillatorPhase phase = OscillatorPhase()) final;
+	virtual float getNextSample(OscillatorPhase phase = OscillatorPhase()) final;
 private:
 	float poly_blep(float t) const;
 	float lastOutput;
@@ -437,14 +454,14 @@ public:
 	PulseSound(unsigned int pulseLengthInSamples_) : pulseLengthInSamples(pulseLengthInSamples_) {}
 	unsigned int pulseLengthInSamples;
 	virtual void setFrequency(float frequency) final {};
-	virtual float getSample(unsigned int time, float phase = 0.f) final
+	virtual float getSample(unsigned int time, OscillatorPhase phase = OscillatorPhase()) final
 	{
 		if (time <= pulseLengthInSamples)
 			return 1.f;
 		else return 0.f;
 	}
 
-	virtual float getNextSample(float phase = 0.f) final
+	virtual float getNextSample(OscillatorPhase phase = OscillatorPhase()) final
 	{
 		return 0.f;
 	}
