@@ -1,8 +1,13 @@
+//Necessary headers, dont change this
+#include "InterpolatedValue.h"
+#include "ParameterBundle.h"
+
+// Include the header belonging to this effect
 #include "ExampleEffect.h"
 
-#include "ParameterBundle.h"
+// Further includes you might need may be added here:
 #include "AuxFunc.h"
-#include "InterpolatedValue.h"
+//
 
 // Here, enter the number of GUI parameters you want to have
 const unsigned int NUMBER_OF_PARAMETERS = 5u;
@@ -25,12 +30,17 @@ void ExampleEffect::process(Sample* buffer, size_t numberOfSamples, size_t curre
 	float release = getInterpolatedParameter(1).get();
 	float threshold = getInterpolatedParameter(2).get();
 	float attack = getInterpolatedParameter(3).get();
-	bool limiterIsOn = getInterpolatedParameter(4).get() > 0.5 ? true : false;
+	bool limiterIsOn = getInterpolatedParameter(4).get() == 1.f;
 	size_t attackTimeInSamples = size_t(aux::millisecToSamples(attack));
 	delayLine.setSize(attackTimeInSamples);
 	for (size_t i = 0; i < numberOfSamples; i++)
 	{
 		buffer[i] = delayLine.pushpop(buffer[i]);
 	}
+
+	// You absolutely NEED TO CALL nextSample() in the process function
+	// You need to make sure that the appropriate number of interpolation-Iterations
+	// are performed by either calling nextSample(numberOfSamples) once or
+	// nextSample(1) exactly "numberOfSamples" times.
 	nextSample(numberOfSamples);
 }
