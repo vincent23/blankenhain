@@ -125,7 +125,13 @@ const bool DiscreteParameter::canBeModulated() const
 }
 
 DiscreteParameter::DiscreteParameter(unsigned int numberOfValues, BhString name, BhString unit, const float* values, unsigned int defValueIndex)
-	: FloatParameter(values != nullptr ? values[defValueIndex] : 0.f, NormalizedRange(0.f, static_cast<float>(numberOfValues)), name, unit), numberOfPossibleValues(numberOfValues), possibleValues(nullptr)
+	: FloatParameter
+		(values != nullptr ? static_cast<float>(defValueIndex) : 0.f
+		, NormalizedRange(0.f, static_cast<float>(numberOfValues))
+		, name
+		, unit)
+	, numberOfPossibleValues(numberOfValues)
+	, possibleValues(nullptr)
 {
 	possibleValues = new float[numberOfPossibleValues];
 	for (unsigned int i = 0u; i < numberOfPossibleValues; i++)

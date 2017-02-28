@@ -99,7 +99,7 @@ public:
  * @param name: Name of the Parameter
  * @param unit: Unit of the parameter (for example milliseconds or Hz)
  * @param values: Array containing the discrete values the parameter may be set to as floats
- * @param desValueIndex: Index of the default value of the parameter as its place in the float-array "values".
+ * @param desValueIndex: Index of the default value of the parameter as its place in the float-array "values" (starts at zero, ends at numberOfValues - 1).
  *
  * NOTE: If no float* values is specified or nullptr is passed in during construction, a default DiscreteParameter will be constructed-
  * It will contain integers counting up from 0 up to numberOfValues.

@@ -38,7 +38,7 @@ FmInstrument::FmInstrument()
 			numbersOfOsc[accessArray] = static_cast<float>(j + 1);
 		}
 
-		params->getParameter(currentIter + 3) = new DiscreteParameter(numOsc - i - 1, "target", "", numbersOfOsc, numOsc - i - 1);
+		params->getParameter(currentIter + 3) = new DiscreteParameter(numOsc - i - 1, "target", "", numbersOfOsc, numOsc - i - 2);
 		delete[] numbersOfOsc;
 
 		params->getParameter(currentIter + 4) = new FloatParameter(0.f, NormalizedRange(), "selfmodAmount", "amount");
@@ -49,7 +49,7 @@ FmInstrument::FmInstrument()
 		params->getParameter(currentIter + 8) = new BoolParameter(false, "isLFO");
 		params->getParameter(currentIter + 9) = new BoolParameter(false, "tempoSyncOn");
 		float multiplierValues[7] = { 0.0625, 0.125, 0.25, 0.5, 1., 2., 4. };
-		params->getParameter(currentIter + 10) = new DiscreteParameter( 7u, "multiplier", "", multiplierValues);
+		params->getParameter(currentIter + 10) = new DiscreteParameter( 7u, "multiplier", "", multiplierValues, 4u);
 		params->getParameter(currentIter + 11) = new BoolParameter(false, "TrackKey");
 
 		float* trackKeyShiftOptions = new float[9u];
