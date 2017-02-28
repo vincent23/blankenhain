@@ -16,6 +16,7 @@ public:
 	freeverbEffect();
 	~freeverbEffect(void);
 	void process(Sample* buffer, size_t numberOfSamples, size_t currentTime) override;
+	void resetEffect();
 
 protected:
 	// Include optional additional stuff

@@ -50,6 +50,19 @@ freeverbEffect::~freeverbEffect()
 	}
 }
 
+void freeverbEffect::resetEffect()
+{
+	for (size_t i = 0u; static_cast<int>(i) < this->nCombs; i++)
+	{
+		combDelay_[i]->reset();
+		combDelayRight[i]->reset();
+	}
+	for (size_t i = 0u; i < static_cast<size_t>(this->nAllpasses); i++)
+	{
+		allPassDelay_[i]->reset();
+		allPassDelayRight[i]->reset();
+	}
+}
 
 void freeverbEffect::process(Sample* buffer, size_t numberOfSamples, size_t currentTime)
 {
