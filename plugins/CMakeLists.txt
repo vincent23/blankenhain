@@ -226,6 +226,8 @@ add_plugin("bh_chorus"
 add_plugin("bh_width"
 	"WidthPlugin.cpp"
 	"WidthPlugin.h"
+	"WidthPluginEditor.h"
+	"WidthPluginEditor.cpp"
 )
 
 add_plugin("bh_noisegate"
