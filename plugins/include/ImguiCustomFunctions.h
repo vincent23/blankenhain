@@ -5,7 +5,7 @@
 #include "VoiceState.h"
 #include "InstrumentBase.h"
 
-static void renderParam(PluginBase& plugin, unsigned int paramIndex, unsigned int style = 0u)
+static void renderParam(PluginBase& plugin, unsigned int paramIndex, float paramDragSpeed = 0.001f, unsigned int style = 0u)
 {
 	const PluginParameterBundle& bundle = plugin.getParameters();
 	FloatParameter const* param = bundle.getParameter(paramIndex);
@@ -79,7 +79,7 @@ static void renderParam(PluginBase& plugin, unsigned int paramIndex, unsigned in
 		skew = range->getSkew();
 		float* unnormalized = new float;
 		*unnormalized = param->getValueUnnormalized();
-		if (ImGui::DragFloat(param->getName().c_str(), unnormalized, 0.001f, min * 1.002f, max * 0.998f, "%.3f", 1.f / skew))
+		if (ImGui::DragFloat(param->getName().c_str(), unnormalized, paramDragSpeed, min * 1.002f, max * 0.998f, "%.3f", 1.f / skew))
 			plugin.setParameterAutomated(paramIndex, range->toNormalized(*unnormalized));
 		delete unnormalized;
 		ImGui::SameLine();
