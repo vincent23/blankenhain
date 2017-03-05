@@ -11,5 +11,5 @@ public:
 
 	void process(Sample* buffer, size_t numberOfSamples, size_t currentTime) override;
 private:
-	PolyBLEPOscillator lfo;
+	NaiveOscillator lfo;
 };
