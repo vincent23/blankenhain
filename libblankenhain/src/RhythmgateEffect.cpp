@@ -52,7 +52,6 @@ void RhythmgateEffect::process(Sample* buffer, size_t numberOfSamples, size_t cu
 		mult = 2.f;
 
 
-	// attack and release currently not used
 	for (size_t bufferIteration = 0; bufferIteration < numberOfSamples; bufferIteration++)
 	{
 		float quarterNoteLength = (60.f /*seconds in a minute*/ * mult) / tempodata.bpm;

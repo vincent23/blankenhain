@@ -25,6 +25,10 @@ void BitcrushEffect::process(Sample* buffer, size_t numberOfSamples, size_t curr
 	unsigned int groupedSamples = aux::min(static_cast<unsigned int>(aux::max(1.f, downsample * static_cast<float>(numberOfSamples - 1u))), numberOfSamples);
 	int steps = bitcrush;
 
+	// Processing in groups of samples to perform downsampling. 
+	// numberOfSamples can be arbitrary, so first we take care of all "full" groups 
+	// according to our groupsize "groupedSamples".
+
 	for (size_t sample = 0; sample < numberOfSamples - groupedSamples; sample += groupedSamples)
 	{
 		Sample averagedSample(0., 0.);
@@ -48,6 +52,8 @@ void BitcrushEffect::process(Sample* buffer, size_t numberOfSamples, size_t curr
 		}
 	}
 
+	// Take care of the remaining samples
+
 	Sample averagedSample(0., 0.);
 	if (avgDownsample)
 	{
@@ -67,6 +73,7 @@ void BitcrushEffect::process(Sample* buffer, size_t numberOfSamples, size_t curr
 		Sample sampleValue = buffer[i];
 		buffer[i] = sampleValue * Sample(1. - drywet) + discretizedSample * Sample(drywet);
 	}
+
 	nextSample(numberOfSamples);
 }
 
