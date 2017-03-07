@@ -59,9 +59,41 @@ class EffectDevice(Device):
 
 	def emitSource(self, songInfo):
 		deviceName = songInfo.nextDeviceName()
-		# TODO emit parameters
-		songInfo.cppSource.append('EffectDevice {}(nullptr, nullptr);'.format(deviceName))
+		parameterTracksName = self.emitParameterTracksSource(songInfo)
+		songInfo.cppSource.append('EffectDevice {}(nullptr, {});'.format(deviceName, parameterTracksName))
 		return deviceName
+
+	def emitParameterTracksSource(self, songInfo):
+		arrayName = songInfo.currentDeviceName() + '_parameters'
+		parameterTracks = []
+		for parameterIndex, parameter in enumerate(self.parameters):
+			# clip values to start/end
+			songStart = songInfo.songStart
+			songEnd = songInfo.songStart + songInfo.songDuration
+			startIndex = next((i for i, v in enumerate(parameter) if v.time >= songStart), None)
+			afterEndIndex = next((i for i, v in enumerate(parameter) if v.time >= songEnd), len(parameter))
+			samplePositions = []
+			normalizedValues = []
+			if startIndex is None:
+				samplePositions.append(0)
+				normalizedValues.append(parameter[-1].value)
+			else:
+				oneBeforeStart = max(startIndex - 1, 0)
+				oneAfterEnd = afterEndIndex + 1
+				samplePositions.extend((songInfo.beatsToSamples(event.time) for event in parameter[oneBeforeStart:oneAfterEnd]))
+				normalizedValues.extend((event.value for event in parameter[oneBeforeStart:oneAfterEnd]))
+			if samplePositions[0] < 0:
+				if len(parameter) > 1:
+					t = -samplePositions[0] / (samplePositions[1] - samplePositions[0])
+					normalizedValues[0] = normalizedValues[0] * (1 - t) + normalizedValues[1] * t
+				samplePositions[0] = 0
+			positionsName = songInfo.currentDeviceName() + '_parameter_{}_samplePositions'.format(parameterIndex)
+			valuesName = songInfo.currentDeviceName() + '_parameter_{}_values'.format(parameterIndex)
+			songInfo.appendCppArray(positionsName, 'unsigned int', samplePositions)
+			songInfo.appendCppArray(valuesName, 'float', normalizedValues)
+			parameterTracks.append('ParameterTrack({}, {}, {})'.format(len(parameter), positionsName, valuesName))
+		songInfo.appendCppArray(arrayName, 'ParameterTrack', parameterTracks, linebreak=True)
+		return arrayName
 
 class MidiDevice(EffectDevice):
 	def parse(self, deviceXml):
@@ -201,17 +233,22 @@ class SongInfo:
 	def beatsToSamples(self, timeInBeats):
 		timeInBeats -= self.songStart
 		sampleRate = 44100
-		return round(timeInBeats / bpm * 60 * sampleRate)
+		return round(timeInBeats / self.bpm * 60 * sampleRate)
 
-	def appendCppArray(self, name, type, list):
+	def appendCppArray(self, name, type, list, linebreak=False):
 		self.cppSource.append('{} {}[] = {{'.format(type, name))
-		self.cppSource.append(''.join(indented('{},'.format(value) for value in list)))
+		if linebreak:
+			self.cppSource.extend('\t{},'.format(x) for x in list)
+		else:
+			self.cppSource.append('\t' + ', '.join(str(x) for x in list))
 		self.cppSource.append('};')
 	
 	def nextDeviceName(self):
-		name = 'device_{}'.format(self.nextFreeDeviceId)
 		self.nextFreeDeviceId += 1
-		return name
+		return self.currentDeviceName()
+
+	def currentDeviceName(self):
+		return 'device_{}'.format(self.nextFreeDeviceId - 1)
 
 def convert(filename):
 	with gzip.open(filename) as inputFile:
