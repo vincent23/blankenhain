@@ -43,6 +43,10 @@ private:
 
 	float lastOscValues[numOsc];
 	float lastCarrierValue;
+
+	float freqPrev;
+	unsigned int notePrev;
+	unsigned int timeNoteOff;
 public:
 	FmInstrument();
 

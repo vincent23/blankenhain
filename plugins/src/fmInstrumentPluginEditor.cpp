@@ -28,6 +28,7 @@ void FmInstrumentPluginEditor::imguiFrame()
 	renderParam(plugin, 112);
 	renderParam(plugin, 113);
 	renderParam(plugin, 114);
+	renderParam(plugin, 115);
 
 	ImGui::EndChild();
 

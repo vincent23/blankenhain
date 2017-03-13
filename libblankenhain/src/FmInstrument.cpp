@@ -7,7 +7,7 @@
 //Todo selfmod!
 
 FmInstrument::FmInstrument()
-	: InstrumentBase(115, 1, true), currentSound(nullptr), lastCarrierValue(1.f)
+	: InstrumentBase(116, 1, true), currentSound(nullptr), lastCarrierValue(1.f)
 {
 	ParameterBundle* params = getPointerToParameterBundle();
 
@@ -71,6 +71,7 @@ FmInstrument::FmInstrument()
 
 	params->getParameter(114) = new OptionParameter(4u, waveform, "waveform", "");
 
+	params->getParameter(115) = new FloatParameter(0.f, NormalizedRange(0.f, 0.3f), "glide", "");
 
 	for (unsigned int i = 0u; i < numOsc; i++)
 	{
@@ -90,7 +91,21 @@ void FmInstrument::processVoice(VoiceState& voice, unsigned int timeInSamples, S
 	float sustainLevel = getInterpolatedParameter(6).get();
 	float sustain = getInterpolatedParameter(5).get();
 	float release = getInterpolatedParameter(7).get();
-	
+
+	// Portamento stuff
+	float portamento = getInterpolatedParameter(115).get();
+	// If a new note is played, take this as the start time for glide
+	// TODO we can improve this but as this synth only has one voice
+	// Sometimes we will not get NoteOff events, so this crude
+	// check will have to do for now.
+	if (notePrev != voice.key)
+	{
+		notePrev = voice.key;
+		timeNoteOff = voice.onTime;
+	}
+
+	float voiceFreq = aux::noteToFrequency(static_cast<float>(voice.key));
+
 	// reset modulation matrix
 	for (unsigned int i = 0u; i < numOsc; i++)
 		this->mod[i] = FmModulation();
@@ -98,6 +113,32 @@ void FmInstrument::processVoice(VoiceState& voice, unsigned int timeInSamples, S
 	// Modulation Oscs are now evaluated
 	for (unsigned int sampleIndex = 0; sampleIndex < numberOfSamples; sampleIndex++)
 	{
+		//unsigned int deltaT = (timeInSamples + sampleIndex) - voice.onTime;
+		unsigned int timeSinceNoteOff = (timeInSamples + sampleIndex) - timeNoteOff;
+		float currentFreq;
+
+		// If enough glide time has past, set previousFreq to currentFreq and thereby stop gliding
+		if (freqPrev != voiceFreq
+			&& exp(-1.f * timeSinceNoteOff / (constants::sampleRate * portamento)) < 0.0001)
+		{
+			notePrev = voice.key;
+			freqPrev = voiceFreq;
+		}
+
+		// If subsequent note has same freq or portamento is off
+		// There will be no glide
+		if ((portamento == 0.f
+			|| freqPrev == voiceFreq))
+			currentFreq = voiceFreq;
+		else
+			// otherwise we glide
+			// formula via http://stanford.edu/~yanm2/files/mus420b.pdf
+			currentFreq = voiceFreq * (1.f - exp(-1.f * timeSinceNoteOff / (constants::sampleRate * portamento))) +
+			freqPrev * exp(-1.f * timeSinceNoteOff / (constants::sampleRate * portamento));
+
+
+
+
 		unsigned int deltaT = (timeInSamples + sampleIndex) - voice.onTime;
 
 		for (unsigned int i = 0u; i < numOsc - 1u; i++)
@@ -249,7 +290,7 @@ void FmInstrument::processVoice(VoiceState& voice, unsigned int timeInSamples, S
 
 		// Carrier now
 
-		float freq = aux::noteToFrequency(static_cast<float>(voice.key));
+		float freq = currentFreq;
 		float selfModAmount = getInterpolatedParameter(112).get();
 		bool selfModOn = selfModAmount > 1e-15;
 		float selfModtype = getInterpolatedParameter(113).get();
