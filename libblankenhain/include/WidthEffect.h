@@ -14,5 +14,5 @@ public:
 	void getModulation(float* modulationValues, size_t sampleOffset) final;
 
 private:
-	NaiveOscillator lfo;
+	PolyBLEPOscillator lfo;
 };

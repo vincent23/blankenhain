@@ -1,7 +1,7 @@
 #include "WidthEffect.h"
 
 // Change the name and define parameters in constructor
-WidthEffect::WidthEffect() : EffectBase(9u, true), lfo(NaiveOscillator::NaiveOscillatorMode(0), 440.f)
+WidthEffect::WidthEffect() : EffectBase(9u, true), lfo()
 {
 	ParameterBundle* params = getPointerToParameterBundle();
 	// Insert your stuff here
