@@ -72,14 +72,14 @@ void ChorusEffect::process(Sample* buffer, size_t numberOfSamples, size_t curren
 		Sample outval = delayLine.get(static_cast<int>(currentSweepPosition));
 
 		delayLine.push(Sample(feedback) * outval + inval);
-		outval = aux::mixDryWet(inval, outval, drywet);
+
 
 		// Pan
 		aux::performPanning(outval, pan * 0.02f);
 		if (stereoButton)
 			outval.replaceLeftChannel(Sample(-1.f) * outval);
 		//Ghetto Stereo by PhaseShift, maybe TODO use seperate DelayLines for L & R
-
+		outval = aux::mixDryWet(inval, outval, drywet);
 		buffer[i] += outval;
 	}
 
