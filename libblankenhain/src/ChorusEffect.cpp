@@ -58,7 +58,7 @@ void ChorusEffect::process(Sample* buffer, size_t numberOfSamples, size_t curren
 
 	for (unsigned int i = 0; i < numberOfSamples; i++)
 	{
-		float lfoValue = (this->lfo.getNextSample(lfoPhase) + 1.f) / 2.f * lfoAmount;
+		float lfoValue = (this->lfo.getNextSample(lfoPhase) * .5f + 5.f) * lfoAmount;
 		size_t const& position = delayLine.getCurrentIteratorInDelayline();
 		float currentSweepPosition = BhMath::fmod(lfoValue * aux::millisecToSamples(width) + static_cast<float>(position), static_cast<float>(delayLine.getSize()));
 		if (currentSweepPosition < 0.f)
@@ -77,10 +77,9 @@ void ChorusEffect::process(Sample* buffer, size_t numberOfSamples, size_t curren
 		// Pan
 		aux::performPanning(outval, pan * 0.02f);
 		if (stereoButton)
-			outval.replaceLeftChannel(Sample(-1.f) * outval);
+			outval.replaceLeftChannel(-outval);
 		//Ghetto Stereo by PhaseShift, maybe TODO use seperate DelayLines for L & R
-		outval = aux::mixDryWet(inval, outval, drywet);
-		buffer[i] += outval;
+		buffer[i] = aux::mixDryWet(inval, outval, drywet);
 	}
 
 	nextSample(numberOfSamples);
