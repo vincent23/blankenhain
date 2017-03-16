@@ -14,7 +14,6 @@ def eprint(*args, **kwargs):
 class Device:
 	def fromXml(deviceXml):
 		if deviceXml.tag == 'PluginDevice':
-			# TODO look up device and get device type
 			name = deviceXml.find('./PluginDesc/VstPluginInfo/PlugName').get('Value')
 			plugin = config.plugins.get(name)
 			if plugin is None:
@@ -38,7 +37,7 @@ class Device:
 			device = GroupDevice()
 		elif deviceXml.tag == 'MidiPitcher':
 			# TODO implement conversion from ableton pitch shift
-			pass
+			return None
 		else:
 			# ignore unrecognized devices
 			return None
@@ -133,10 +132,6 @@ class EffectDevice(Device):
 		self.inputTrackIndex = index
 
 class MidiDevice(EffectDevice):
-	def parse(self, deviceXml):
-		super().parse(deviceXml)
-		# TODO
-
 	def emitSource(self, songInfo):
 		deviceName = songInfo.nextDeviceName()
 		parameterTracksName = self.emitParameterTracksSource(songInfo)
@@ -148,12 +143,7 @@ class MidiDevice(EffectDevice):
 			deviceName, midiName, parameterTracksName, self.inputTrackIndex, outputTrackIndex))
 		return deviceName
 
-# TODO needs special handling of gm synth to set instrument
 class InstrumentDevice(EffectDevice):
-	def parse(self, deviceXml):
-		super().parse(deviceXml)
-		# TODO
-
 	def emitSource(self, songInfo):
 		deviceName = songInfo.nextDeviceName()
 		parameterTracksName = self.emitParameterTracksSource(songInfo)
@@ -161,6 +151,30 @@ class InstrumentDevice(EffectDevice):
 		songInfo.cppSource.append('{} {};'.format(self.className, instrumentName))
 		songInfo.cppSource.append('InstrumentDevice {}({}, {}, {});'.format(
 			deviceName, instrumentName, parameterTracksName, self.inputTrackIndex))
+		# special handling of gm synth to set instrument
+		if self.className == config.plugins['bh_gm_synth']['class']:
+			# get instrument id from parameter 9
+			# TODO might be slightly wrong
+			instrumentIndex = min(234, round(self.parameters[9][0].value * 235))
+			regions = dls.instruments[instrumentIndex]['regions']
+			regionsName = instrumentName + '_regions'
+			songInfo.cppSource.append('gmSoundRegion {}[{}];'.format(regionsName, len(regions)))
+			for index, region in enumerate(regions):
+				regionName = '{}[{}]'.format(regionsName, index)
+				songInfo.cppSource.append('{}.lowest = {};'.format(regionName, region['lowest']))
+				songInfo.cppSource.append('{}.highest = {};'.format(regionName, region['highest']))
+				songInfo.cppSource.append('{}.rootNote = {};'.format(regionName, region['rootNote']))
+				songInfo.cppSource.append('{}.sampleLength = {};'.format(regionName, region['sampleLength']))
+				songInfo.cppSource.append('{}.startByte = {};'.format(regionName, region['startByte']))
+				if region['isLoopable']:
+					songInfo.cppSource.append('{}.isLoopable = true;'.format(regionName))
+					songInfo.cppSource.append('{}.loopStart = {};'.format(regionName, region['loopStart']))
+					songInfo.cppSource.append('{}.loopLength = {};'.format(regionName, region['loopLength']))
+				else:
+					songInfo.cppSource.append('{}.isLoopable = false;'.format(regionName))
+			gmInstrumentName = instrumentName + '_gm_instrument'
+			songInfo.cppSource.append('gmInstrument {}(nullptr, {}, {});'.format(gmInstrumentName, len(regions), regionsName))
+			songInfo.cppSource.append('{}.loadMidiInstrument({});'.format(instrumentName, gmInstrumentName))
 		return deviceName
 
 class CombinedDevice(Device):
@@ -267,7 +281,7 @@ class Track:
 				for note in notesInTrack:
 					timeInClip = float(note.get('Time'))
 					duration = float(note.get('Duration'))
-					velocity = int(note.get('Velocity'))
+					velocity = round(float(note.get('Velocity')))
 					if velocity == 0:
 						eprint("Warning: note with velocity = 0")
 						continue
