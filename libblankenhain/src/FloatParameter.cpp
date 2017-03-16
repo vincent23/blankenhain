@@ -196,7 +196,8 @@ const unsigned int DiscreteParameter::getNumberOfPossibleValues() const
 
 unsigned int DiscreteParameter::getCurrentNumber() const
 {
-	return static_cast<unsigned int>(getValueNormalized() * static_cast<float>(numberOfPossibleValues));
+	// bias for safer rounding
+	return static_cast<unsigned int>(getValueNormalized() * static_cast<float>(numberOfPossibleValues) + .25f);
 }
 
 float const* DiscreteParameter::getPossibleValue(unsigned int n) const

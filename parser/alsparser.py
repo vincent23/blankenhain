@@ -154,8 +154,10 @@ class InstrumentDevice(EffectDevice):
 		# special handling of gm synth to set instrument
 		if self.className == config.plugins['bh_gm_synth']['class']:
 			# get instrument id from parameter 9
-			# TODO might be slightly wrong
-			instrumentIndex = min(234, round(self.parameters[9][0].value * 235))
+			instrumentIndex = round(self.parameters[9][0].value * 235)
+			if instrumentIndex > 234:
+				eprint('Warning: gm instrument out of range')
+				return deviceName
 			regions = dls.instruments[instrumentIndex]['regions']
 			regionsName = instrumentName + '_regions'
 			songInfo.cppSource.append('gmSoundRegion {}[{}];'.format(regionsName, len(regions)))
