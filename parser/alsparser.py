@@ -16,7 +16,7 @@ class Device:
 		if deviceXml.tag == 'PluginDevice':
 			# TODO look up device and get device type
 			name = deviceXml.find('./PluginDesc/VstPluginInfo/PlugName').get('Value')
-			plugin = config.plugins[name]
+			plugin = config.plugins.get(name)
 			if plugin is None:
 				if name.startswith('bh_'):
 					# device is unknown, but probably it's a blankenhain device
@@ -175,7 +175,7 @@ class ChainDevice(CombinedDevice):
 
 	def parse(self, deviceChainXml):
 		devicesXml = deviceChainXml.findall('./Devices/*[@Id]')
-		self.children = [Device.fromXml(device) for device in devicesXml]
+		self.children = [x for x in (Device.fromXml(device) for device in devicesXml) if x is not None]
 
 	def appendMixer(self, mixerXml):
 		# TODO add volume and pan device
@@ -235,8 +235,33 @@ class Track:
 					timeInClip = float(note.get('Time'))
 					duration = float(note.get('Duration'))
 					velocity = int(note.get('Velocity'))
+					if velocity == 0:
+						eprint("Warning: note with velocity = 0")
+						continue
 					timeInTrack = clipTime + timeInClip
 					self.notes.append(Note(timeInTrack, duration, key, velocity))
+
+	def emitSource(self, songInfo):
+		events = []
+		for note in self.notes:
+			if note.start < songInfo.songStart or note.start > (songInfo.songStart + songInfo.songDuration):
+				continue
+			startInSamples = songInfo.beatsToSamples(note.start)
+			endInSamples = songInfo.beatsToSamples(note.start + note.duration)
+			events.append((startInSamples, note.key, note.velocity))
+			events.append((endInSamples, note.key, 0))
+		events.sort()
+		samplePositions, keys, velocities = zip(*events) if events else ([], [], [])
+		trackName = songInfo.nextTrackName()
+		samplePositionsName = trackName + '_samplePositions'
+		keysName = trackName + '_keys'
+		velocitiesName = trackName + '_velocities'
+		songInfo.appendCppArray(samplePositionsName, 'unsigned int', samplePositions)
+		songInfo.appendCppArray(keysName, 'unsigned int', keys)
+		songInfo.appendCppArray(velocitiesName, 'unsigned int', velocities)
+		songInfo.cppSource.append('MidiTrack {}({}, {}, {}, {});'.format(
+			trackName, len(events), samplePositionsName, keysName, velocitiesName
+		))
 
 class SongInfo:
 	def __init__(self):
@@ -245,6 +270,7 @@ class SongInfo:
 		self.songDuration = 0
 		self.cppSource = []
 		self.nextFreeDeviceId = 0
+		self.nextFreeTrackId = 0
 	
 	def fromXml(songInfoXml):
 		songInfo = SongInfo()
@@ -278,6 +304,13 @@ class SongInfo:
 	def currentDeviceName(self):
 		return 'device_{}'.format(self.nextFreeDeviceId - 1)
 
+	def nextTrackName(self):
+		self.nextFreeTrackId += 1
+		return self.currentTrackName()
+
+	def currentTrackName(self):
+		return 'track_{}'.format(self.nextFreeTrackId - 1)
+
 def convert(filename):
 	with gzip.open(filename) as inputFile:
 		abletonXml = ElementTree.parse(inputFile)
@@ -294,9 +327,12 @@ def convert(filename):
 	# groupTracks = [Track.fromXml(track) for track in groupTracksXml]
 	# returnTracks = [Track.fromXml(track) for track in returnTracksXml]
 	masterTrack = Track.fromXml(masterTrackXml)
-	
+
 	songInfo = SongInfo.fromXml(liveSetXml)
-	
+
+	for midiTrack in midiTracks:
+		midiTrack.emitSource(songInfo)
+
 	# build root device from master root device + group of all tracks
 	rootChain = masterTrack.rootDevice
 	midiTrackGroup = GroupDevice()
