@@ -88,7 +88,9 @@ class EffectDevice(Device):
 	def emitSource(self, songInfo):
 		deviceName = songInfo.nextDeviceName()
 		parameterTracksName = self.emitParameterTracksSource(songInfo)
-		songInfo.cppSource.append('EffectDevice {}(nullptr, {});'.format(deviceName, parameterTracksName))
+		effectName = deviceName + '_effect';
+		songInfo.cppSource.append('{} {};'.format(self.className, effectName));
+		songInfo.cppSource.append('EffectDevice {}({}, {});'.format(deviceName, effectName, parameterTracksName))
 		return deviceName
 
 	def emitParameterTracksSource(self, songInfo):
@@ -128,11 +130,32 @@ class MidiDevice(EffectDevice):
 		super().parse(deviceXml)
 		# TODO
 
+	def emitSource(self, songInfo):
+		deviceName = songInfo.nextDeviceName()
+		parameterTracksName = self.emitParameterTracksSource(songInfo)
+		midiName = deviceName + '_midi';
+		inputTrackIndex = 0
+		outputTrackIndex = 0
+		songInfo.cppSource.append('{} {};'.format(self.className, midiName));
+		songInfo.cppSource.append('MidiDevice {}({}, {}, {}, {});'.format(
+			deviceName, midiName, parameterTracksName, inputTrackIndex, outputTrackIndex))
+		return deviceName
+
 # TODO needs special handling of gm synth to set instrument
 class InstrumentDevice(EffectDevice):
 	def parse(self, deviceXml):
 		super().parse(deviceXml)
 		# TODO
+
+	def emitSource(self, songInfo):
+		deviceName = songInfo.nextDeviceName()
+		parameterTracksName = self.emitParameterTracksSource(songInfo)
+		instrumentName = deviceName + '_instrument';
+		inputTrackIndex = 0
+		songInfo.cppSource.append('{} {};'.format(self.className, instrumentName))
+		songInfo.cppSource.append('InstrumentDevice {}({}, {}, {});'.format(
+			deviceName, instrumentName, parameterTracksName, inputTrackIndex))
+		return deviceName
 
 class CombinedDevice(Device):
 	def __init__(self):
