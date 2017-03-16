@@ -45,6 +45,9 @@ class Device:
 		device.parse(deviceXml)
 		return device
 
+	def setInputTrackIndex(self, index):
+		pass
+
 class ParameterEvent:
 	def __init__(self, time, value):
 		self.time = time
@@ -54,6 +57,7 @@ class EffectDevice(Device):
 	def __init__(self, className):
 		self.parameters = []
 		self.className = className
+		self.inputTrackIndex = 0
 
 	def parse(self, deviceXml):
 		parametersXml = deviceXml.findall('./ParameterList/PluginFloatParameter')
@@ -89,7 +93,7 @@ class EffectDevice(Device):
 		deviceName = songInfo.nextDeviceName()
 		parameterTracksName = self.emitParameterTracksSource(songInfo)
 		effectName = deviceName + '_effect';
-		songInfo.cppSource.append('{} {};'.format(self.className, effectName));
+		songInfo.cppSource.append('{} {};'.format(self.className, effectName))
 		songInfo.cppSource.append('EffectDevice {}({}, {});'.format(deviceName, effectName, parameterTracksName))
 		return deviceName
 
@@ -125,6 +129,9 @@ class EffectDevice(Device):
 		songInfo.appendCppArray(arrayName, 'ParameterTrack', parameterTracks, linebreak=True)
 		return arrayName
 
+	def setInputTrackIndex(self, index):
+		self.inputTrackIndex = index
+
 class MidiDevice(EffectDevice):
 	def parse(self, deviceXml):
 		super().parse(deviceXml)
@@ -134,11 +141,11 @@ class MidiDevice(EffectDevice):
 		deviceName = songInfo.nextDeviceName()
 		parameterTracksName = self.emitParameterTracksSource(songInfo)
 		midiName = deviceName + '_midi';
-		inputTrackIndex = 0
+		# TODO parse routing to figure out the output index
 		outputTrackIndex = 0
-		songInfo.cppSource.append('{} {};'.format(self.className, midiName));
+		songInfo.cppSource.append('{} {};'.format(self.className, midiName))
 		songInfo.cppSource.append('MidiDevice {}({}, {}, {}, {});'.format(
-			deviceName, midiName, parameterTracksName, inputTrackIndex, outputTrackIndex))
+			deviceName, midiName, parameterTracksName, self.inputTrackIndex, outputTrackIndex))
 		return deviceName
 
 # TODO needs special handling of gm synth to set instrument
@@ -150,11 +157,10 @@ class InstrumentDevice(EffectDevice):
 	def emitSource(self, songInfo):
 		deviceName = songInfo.nextDeviceName()
 		parameterTracksName = self.emitParameterTracksSource(songInfo)
-		instrumentName = deviceName + '_instrument';
-		inputTrackIndex = 0
+		instrumentName = deviceName + '_instrument'
 		songInfo.cppSource.append('{} {};'.format(self.className, instrumentName))
 		songInfo.cppSource.append('InstrumentDevice {}({}, {}, {});'.format(
-			deviceName, instrumentName, parameterTracksName, inputTrackIndex))
+			deviceName, instrumentName, parameterTracksName, self.inputTrackIndex))
 		return deviceName
 
 class CombinedDevice(Device):
@@ -167,6 +173,10 @@ class CombinedDevice(Device):
 		arrayName = 'deviceList_{}'.format(songInfo.nextFreeDeviceId)
 		songInfo.appendCppArray(arrayName, 'Device*', deviceNames)
 		return arrayName
+
+	def setInputTrackIndex(self, index):
+		for x in self.children:
+			x.setInputTrackIndex(index)
 
 class GroupDevice(CombinedDevice):
 	# TODO 'on' parameter not supported for group right now
@@ -283,8 +293,7 @@ class Track:
 		songInfo.appendCppArray(keysName, 'unsigned int', keys)
 		songInfo.appendCppArray(velocitiesName, 'unsigned int', velocities)
 		songInfo.cppSource.append('MidiTrack {}({}, {}, {}, {});'.format(
-			trackName, len(events), samplePositionsName, keysName, velocitiesName
-		))
+			trackName, len(events), samplePositionsName, keysName, velocitiesName))
 
 class SongInfo:
 	def __init__(self):
@@ -353,8 +362,9 @@ def convert(filename):
 
 	songInfo = SongInfo.fromXml(liveSetXml)
 
-	for midiTrack in midiTracks:
+	for trackIndex, midiTrack in enumerate(midiTracks):
 		midiTrack.emitSource(songInfo)
+		midiTrack.rootDevice.setInputTrackIndex(trackIndex)
 
 	# build root device from master root device + group of all tracks
 	rootChain = masterTrack.rootDevice
