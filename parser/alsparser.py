@@ -1,3 +1,6 @@
+import dls
+import config
+
 import gzip
 import xml.etree.ElementTree as ElementTree
 import sys
@@ -5,16 +8,40 @@ import sys
 def indented(lines, level=1):
 	return ('\t' * level + line for line in lines)
 
+def eprint(*args, **kwargs):
+	print(*args, file=sys.stderr, **kwargs)
+
 class Device:
 	def fromXml(deviceXml):
 		if deviceXml.tag == 'PluginDevice':
 			# TODO look up device and get device type
 			name = deviceXml.find('./PluginDesc/VstPluginInfo/PlugName').get('Value')
-			device = EffectDevice()
+			plugin = config.plugins[name]
+			if plugin is None:
+				if name.startswith('bh_'):
+					# device is unknown, but probably it's a blankenhain device
+					eprint('Warning: unrecognized device "{}"'.format(name))
+				# ignore unrecognized devices
+				return None
+			pluginType = plugin['type']
+			className = plugin['class']
+			if pluginType == config.instrument:
+				device = InstrumentDevice(className)
+			elif pluginType == config.effect:
+				device = EffectDevice(className)
+			elif pluginType == config.midi:
+				device = MidiDevice(className)
+			else:
+				eprint('Warning: device "{}" has unrecognized type "{}"'.format(name, pluginType))
+				return None
 		elif deviceXml.tag in {'AudioEffectGroupDevice', 'InstrumentGroupDevice'}:
 			device = GroupDevice()
 		elif deviceXml.tag == 'MidiPitcher':
+			# TODO implement conversion from ableton pitch shift
 			pass
+		else:
+			# ignore unrecognized devices
+			return None
 		device.parse(deviceXml)
 		return device
 
@@ -24,8 +51,9 @@ class ParameterEvent:
 		self.value = value
 
 class EffectDevice(Device):
-	def __init__(self):
+	def __init__(self, className):
 		self.parameters = []
+		self.className = className
 
 	def parse(self, deviceXml):
 		parametersXml = deviceXml.findall('./ParameterList/PluginFloatParameter')
