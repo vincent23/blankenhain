@@ -120,6 +120,10 @@ class EffectDevice(Device):
 					t = -samplePositions[0] / (samplePositions[1] - samplePositions[0])
 					normalizedValues[0] = normalizedValues[0] * (1 - t) + normalizedValues[1] * t
 				samplePositions[0] = 0
+			# remove default value if there is automation
+			if len(samplePositions) >= 2 and samplePositions[0] == 0 and samplePositions[1] == 0:
+				samplePositions = samplePositions[1:]
+				normalizedValues = normalizedValues[1:]
 			positionsName = songInfo.currentDeviceName() + '_parameter_{}_samplePositions'.format(parameterIndex)
 			valuesName = songInfo.currentDeviceName() + '_parameter_{}_values'.format(parameterIndex)
 			songInfo.appendCppArray(positionsName, 'unsigned int', samplePositions)
