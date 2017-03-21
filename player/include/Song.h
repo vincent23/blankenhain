@@ -8,7 +8,6 @@ class Song
 public:
 	Song(SongInfo& songInfo, ChainDevice& master);
 
-private:
 	SongInfo& songInfo;
 	ChainDevice& master;
 };

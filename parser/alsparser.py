@@ -188,7 +188,7 @@ class CombinedDevice(Device):
 		self.children = []
 
 	def emitSource(self, songInfo):
-		deviceNames = [device.emitSource(songInfo) for device in self.children]
+		deviceNames = ['&' + device.emitSource(songInfo) for device in self.children]
 		# take the id of the group device to be emitted for device array
 		arrayName = 'deviceList_{}'.format(songInfo.nextFreeDeviceId)
 		songInfo.appendCppArray(arrayName, 'Device*', deviceNames)
@@ -339,6 +339,7 @@ class Track:
 		songInfo.appendCppArray(velocitiesName, 'unsigned int', velocities)
 		songInfo.cppSource.append('MidiTrack {}({}, {}, {}, {});'.format(
 			trackName, len(events), samplePositionsName, keysName, velocitiesName))
+		return trackName
 
 class SongInfo:
 	def __init__(self):
@@ -409,7 +410,7 @@ def convert(filename):
 
 	midiTrackNames = []
 	for trackIndex, midiTrack in enumerate(midiTracks):
-		midiTrackNames.append(midiTrack.emitSource(songInfo))
+		midiTrackNames.append('&' + midiTrack.emitSource(songInfo))
 		midiTrack.rootDevice.setInputTrackIndex(trackIndex)
 
 	# build root device from master root device + group of all tracks

@@ -1,7 +1,9 @@
 #pragma once
 
+class Song;
+
 class BlankenhainPlayer
 {
 public:
-	void play();
+	void play(Song& song);
 };
