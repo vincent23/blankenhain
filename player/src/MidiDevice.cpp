@@ -15,8 +15,8 @@ void MidiDevice::processMidi(SongInfo& songInfo)
 	Sample dummyInput[constants::blockSize];
 	const unsigned int eventBufferSize = 2048;
 	MidiEvent midiEventBuffer[eventBufferSize];
-	MidiTrack& midiInputTrack = songInfo.midiTracks[inputTrackIndex];
-	MidiTrack& midiOutputTrack = songInfo.midiTracks[outputTrackIndex];
+	MidiTrack& midiInputTrack = *(songInfo.midiTracks[inputTrackIndex]);
+	MidiTrack& midiOutputTrack = *(songInfo.midiTracks[outputTrackIndex]);
 	unsigned int maxOutputEvents = midiOutputTrack.numberOfEvents;
 	midiOutputTrack.numberOfEvents = 0;
 	for (unsigned int globalSamplePosition = 0; globalSamplePosition < songInfo.lengthInSamples; globalSamplePosition += constants::blockSize) {

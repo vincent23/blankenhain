@@ -407,8 +407,9 @@ def convert(filename):
 
 	songInfo = SongInfo.fromXml(liveSetXml)
 
+	midiTrackNames = []
 	for trackIndex, midiTrack in enumerate(midiTracks):
-		midiTrack.emitSource(songInfo)
+		midiTrackNames.append(midiTrack.emitSource(songInfo))
 		midiTrack.rootDevice.setInputTrackIndex(trackIndex)
 
 	# build root device from master root device + group of all tracks
@@ -416,7 +417,11 @@ def convert(filename):
 	midiTrackGroup = GroupDevice()
 	midiTrackGroup.children = [midiTrack.rootDevice for midiTrack in midiTracks]
 	rootChain.children.insert(0, midiTrackGroup)
-	rootChain.emitSource(songInfo)
+	masterName = rootChain.emitSource(songInfo)
+
+	songInfo.appendCppArray('midiTracks', 'MidiTrack*', midiTrackNames)
+	songInfo.cppSource.append('SongInfo songInfo(midiTracks, {}, {});'.format(songInfo.bpm, songInfo.beatsToSamples(songInfo.songDuration)))
+	songInfo.cppSource.append('Song song(songInfo, {});'.format(masterName))
 	print('\n'.join(songInfo.cppSource))
 
 def main():

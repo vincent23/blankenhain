@@ -5,9 +5,9 @@ class MidiTrack;
 class SongInfo
 {
 public:
-	SongInfo(MidiTrack* midiTracks, float bpm, unsigned int lengthInSamples);
+	SongInfo(MidiTrack** midiTracks, float bpm, unsigned int lengthInSamples);
 
-	MidiTrack* midiTracks;
+	MidiTrack** midiTracks;
 	float bpm;
 	unsigned int lengthInSamples;
 };
