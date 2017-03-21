@@ -227,9 +227,34 @@ class ChainDevice(CombinedDevice):
 		self.children = [x for x in (Device.fromXml(device) for device in devicesXml) if x is not None]
 
 	def appendMixer(self, mixerXml):
-		# TODO add volume and pan device
 		# pan is called either "Pan" or "Panorama"
-		pass
+		panXml = mixerXml.find('./Pan')
+		if panXml is None:
+			panXml = mixerXml.find('./Panorama')
+		pan = EffectDevice(config.plugins['bh_width']['class'])
+		pan.parameters = [
+			[ParameterEvent(0, 0.5)], # width
+			[], # pan
+			[ParameterEvent(0, 0.5)], # lfoAmount
+			[ParameterEvent(0, 0)], # lfoSpeed
+			[ParameterEvent(0, 0)], # lfoBeatMultiplier
+			[ParameterEvent(0, 0)], # lfoWaveform
+			[ParameterEvent(0, 0)], # lfoTemposync
+			[ParameterEvent(0, 0)], # lfoPhase
+			[ParameterEvent(0, 0)], # lfoBaseline
+			[ParameterEvent(0, 1)]  # on
+		]
+		eventsXml = panXml.findall('./ArrangerAutomation/Events/FloatEvent')
+		pan.parameters[1] = [
+			ParameterEvent(
+				max(0, float(eventXml.get('Time'))),
+				0.5 + 0.5 * float(eventXml.get('Value'))
+			) for eventXml in eventsXml]
+		self.children.append(pan)
+		# TODO append volume device
+		# we have to figure out how ableton maps slider <-> dB
+		# (important for interpolation)
+		# volumeXml = mixerXml.find('Volume')
 	
 	def emitSource(self, songInfo):
 		devicesArrayName = super().emitSource(songInfo)
