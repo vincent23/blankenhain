@@ -11,7 +11,7 @@ float ParameterTrack::getCurrentValueAndAdvance(unsigned int samplePosition)
 	// we alwyas have a point at samplePosition 0 (parser takes care of that)
 
 	// advance currentPointIndex so that it points to the last point that is still before the samplePosition
-	while (currentPointIndex + 1 < numberOfPoints && samplePosition < samplePositions[currentPointIndex + 1]) {
+	while (currentPointIndex + 1 < numberOfPoints && samplePositions[currentPointIndex + 1] < samplePosition) {
 		currentPointIndex++;
 	}
 
@@ -22,7 +22,7 @@ float ParameterTrack::getCurrentValueAndAdvance(unsigned int samplePosition)
 		unsigned int currentPosition = samplePositions[currentPointIndex];
 		unsigned int nextPosition = samplePositions[currentPointIndex + 1];
 		unsigned int delta = nextPosition - currentPosition;
-		unsigned int tSamples = samplePosition - nextPosition;
+		unsigned int tSamples = samplePosition - currentPosition;
 		float t = static_cast<float>(tSamples) / static_cast<float>(delta);
 		return currentValue * (1.f - t) + nextValue * t;
 	}
