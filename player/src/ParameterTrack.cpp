@@ -31,3 +31,11 @@ float ParameterTrack::getCurrentValueAndAdvance(unsigned int samplePosition)
 		return currentValue;
 	}
 }
+
+float ParameterTrack::getCurrentDiscreteValueAndAdvance(unsigned int samplePosition)
+{
+	while (currentPointIndex + 1 < numberOfPoints && samplePositions[currentPointIndex + 1] < samplePosition) {
+		currentPointIndex++;
+	}
+	return normalizedValues[currentPointIndex];
+}
