@@ -3,6 +3,7 @@ project(blankenhain_example)
 
 set(SOURCES
 	"Example.cpp"
+	"Input.inl"
 )
 
 include_directories("../player/include")
