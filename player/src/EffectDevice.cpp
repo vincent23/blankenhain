@@ -9,7 +9,14 @@
 EffectDevice::EffectDevice(EffectBase& effect_, ParameterTrack* parameterValues_)
 	: effect(effect_)
 	, parameterValues(parameterValues_)
-{}
+{
+	ParameterBundle* parameters = effect.getPointerToParameterBundle();
+	for (unsigned int parameterIndex = 0; parameterIndex < effect.getNumberOfParameters(); parameterIndex++)
+	{
+		float targetValue = parameterValues[parameterIndex].getCurrentValueAndAdvance(0);
+		parameters->getParameter(parameterIndex)->setCurrentValueNormalized(targetValue);
+	}
+}
 
 Sample* EffectDevice::process(SongInfo& songInfo, const Sample* input, unsigned int globalSamplePosition)
 {

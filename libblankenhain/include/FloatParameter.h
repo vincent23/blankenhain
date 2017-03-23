@@ -36,6 +36,7 @@ public:
 	virtual float getValueUnnormalized();
 	virtual void setTargetValueNormalized(float normalizedValue);
 	virtual void setTargetValueUnnormalized(float unnormalizedValue);
+	virtual void setCurrentValueNormalized(float normalizedValue);
 
 	// Performs interpolation. Either call this after every
 	// usage of a param if you need VERY current and accurate 

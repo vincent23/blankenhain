@@ -76,6 +76,11 @@ void FloatParameter::setTargetValueUnnormalized(float unnormalizedValue)
 	setTargetValueNormalized(toNormalized(unnormalizedValue));
 }
 
+void FloatParameter::setCurrentValueNormalized(float normalizedValue)
+{
+	valueNormalized = BoundrySafeInterpolatedValue<float>(normalizedValue);
+}
+
 void FloatParameter::next(unsigned int numberOfSamples)
 {
 	valueNormalized.next(numberOfSamples);
