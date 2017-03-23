@@ -367,12 +367,14 @@ class SongInfo:
 		sampleRate = 44100
 		return round(timeInBeats / self.bpm * 60 * sampleRate)
 
-	def appendCppArray(self, name, type, list, linebreak=False):
+	def appendCppArray(self, name, type, values, linebreak=False):
+		if type == 'float':
+			values = ['{:.8f}f'.format(x) for x in values]
 		self.cppSource.append('{} {}[] = {{'.format(type, name))
 		if linebreak:
-			self.cppSource.extend('\t{},'.format(x) for x in list)
+			self.cppSource.extend('\t{},'.format(x) for x in values)
 		else:
-			self.cppSource.append('\t' + ', '.join(str(x) for x in list))
+			self.cppSource.append('\t' + ', '.join(str(x) for x in values))
 		self.cppSource.append('};')
 	
 	def nextDeviceName(self):
