@@ -141,11 +141,6 @@ add_plugin("bh_filter"
 	"FilterPlugin.h"
 )
 
-add_plugin("bh_pan"
-	"PanPlugin.cpp"
-	"PanPlugin.h"
-)
-
 add_plugin("bh_volume"
 	"VolumePlugin.cpp"
 	"VolumePlugin.h"

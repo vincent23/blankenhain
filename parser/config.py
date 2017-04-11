@@ -67,10 +67,6 @@ plugins = {
 		'class': 'NoiseGateEffect',
 		'type': effect
 	},
-	'bh_pan': {
-		'class': 'PanEffect',
-		'type': effect
-	},
 	'bh_pitchshift_midi': {
 		'class': 'pitchshiftMidiEffect',
 		'type': midi
