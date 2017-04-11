@@ -434,6 +434,9 @@ def convert(filename):
 
 	midiTrackNames = []
 	for trackIndex, midiTrack in enumerate(midiTracks):
+		# omit empty tracks
+		if not midiTrack.notes:
+			continue
 		midiTrackNames.append('&' + midiTrack.emitSource(songInfo))
 		midiTrack.rootDevice.setInputTrackIndex(trackIndex)
 
@@ -442,14 +445,16 @@ def convert(filename):
 		childTracks = [midiTrack for midiTrack in midiTracks
 			if midiTrack.outputRouting == routingGroup and midiTrack.trackGroupId == groupTrack.trackId]
 		midiTrackGroup = GroupDevice()
-		midiTrackGroup.children = [track.rootDevice for track in childTracks]
-		groupTrack.rootDevice.children.insert(0, midiTrackGroup)
+		midiTrackGroup.children = [track.rootDevice for track in childTracks if track.rootDevice.children]
+		if midiTrackGroup.children:
+			groupTrack.rootDevice.children.insert(0, midiTrackGroup)
 
-	# build root device from master root device + group of all tracks (routed to master)
+	# build root device from master root device + group of all tracks
 	rootChain = masterTrack.rootDevice
 	midiTrackGroup = GroupDevice()
+	# ignore tracks that don't go to master or have no devices
 	midiTrackGroup.children = [track.rootDevice for track in (midiTracks + groupTracks)
-		if track.outputRouting == routingMaster]
+		if track.outputRouting == routingMaster and track.rootDevice.children]
 	rootChain.children.insert(0, midiTrackGroup)
 	masterName = rootChain.emitSource(songInfo)
 
