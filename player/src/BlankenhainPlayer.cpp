@@ -23,6 +23,13 @@ void BlankenhainPlayer::play(Song& song)
 		{
 			buffer[j] = Sample(0);
 		}
+		for (unsigned int j = 0; j < song.songInfo.numberOfReturnTracks; j++)
+		{
+			for (unsigned int k = 0; k < constants::blockSize; k++)
+			{
+				song.songInfo.sendBuffers[constants::blockSize * j + k] = Sample(0);
+			}
+		}
 		Sample* output = song.master.process(song.songInfo, buffer, i);
 		for (unsigned int j = 0; j < constants::blockSize; j++)
 		{
@@ -67,6 +74,7 @@ void BlankenhainPlayer::play(Song& song)
 	// play
 
 	waveOutWrite(audio_wave_out, &audio_wave_header, sizeof(audio_wave_header));
+
 	while (true);
 
 	delete audioBuffer;

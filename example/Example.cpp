@@ -7,6 +7,8 @@
 #include "GroupDevice.h"
 #include "SongInfo.h"
 #include "Song.h"
+#include "ReturnDevice.h"
+#include "SendDevice.h"
 
 #include "polyblepInstrument.h"
 #include "WidthEffect.h"

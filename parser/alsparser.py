@@ -187,6 +187,37 @@ class InstrumentDevice(EffectDevice):
 			songInfo.cppSource.append('{}.loadMidiInstrument({});'.format(instrumentName, gmInstrumentName))
 		return deviceName
 
+class SendDevice(EffectDevice):
+	def __init__(self):
+		self.parameters = []
+
+	def parse(self, deviceXml):
+		sendsXml = deviceXml.findall('./TrackSendHolder/Send/ArrangerAutomation/Events')
+		for sendXml in sendsXml:
+			eventsXml = sendXml.findall('./FloatEvent')
+			sendEvents = []
+			for eventXml in eventsXml:
+				eventTime = max(0, float(eventXml.get('Time')))
+				value = float(eventXml.get('Value'))
+				sendEvents.append(ParameterEvent(eventTime, value))
+			sendEvents.sort(key=lambda x: x.time)
+			self.parameters.append(sendEvents)
+
+	def emitSource(self, songInfo):
+		deviceName = songInfo.nextDeviceName()
+		parameterTracksName = self.emitParameterTracksSource(songInfo)
+		songInfo.cppSource.append('SendDevice {}({});'.format(deviceName, parameterTracksName))
+		return deviceName
+
+class ReturnDevice(Device):
+	def __init__(self, returnTrackIndex):
+		self.returnTrackIndex = returnTrackIndex
+
+	def emitSource(self, songInfo):
+		deviceName = songInfo.nextDeviceName()
+		songInfo.cppSource.append('ReturnDevice {}({});'.format(deviceName, self.returnTrackIndex))
+		return deviceName
+
 class CombinedDevice(Device):
 	def __init__(self):
 		self.children = []
@@ -263,6 +294,16 @@ class ChainDevice(CombinedDevice):
 		# we have to figure out how ableton maps slider <-> dB
 		# (important for interpolation)
 		# volumeXml = mixerXml.find('Volume')
+
+		# if there are any sends, append a send device
+		sendsXml = mixerXml.findall('./Sends/TrackSendHolder/Send')
+		activeSends = (len(sendXml.findall('./ArrangerAutomation/Events/FloatEvent')) > 1
+			or float(sendXml.find('./ArrangerAutomation/Events/FloatEvent').get('Value')) > 0.00032
+			for sendXml in sendsXml)
+		if any(activeSends):
+			send = SendDevice()
+			send.parse(mixerXml.find('./Sends'))
+			self.children.append(send)
 	
 	def emitSource(self, songInfo):
 		devicesArrayName = super().emitSource(songInfo)
@@ -315,7 +356,6 @@ class Track:
 		trackGroupIdXml = trackXml.find('./TrackGroupId')
 		self.trackGroupId = int(trackGroupIdXml.get('Value'))
 
-		# TODO sends
 		mixerXml = toplevelChainXml.find('./Mixer')
 		self.rootDevice.appendMixer(mixerXml)
 
@@ -433,10 +473,8 @@ def convert(filename):
 	songInfo = SongInfo.fromXml(liveSetXml)
 
 	midiTrackNames = []
-	for trackIndex, midiTrack in enumerate(midiTracks):
-		# omit empty tracks
-		if not midiTrack.notes:
-			continue
+	# omit empty tracks
+	for trackIndex, midiTrack in enumerate((track for track in midiTracks if track.notes)):
 		midiTrackNames.append('&' + midiTrack.emitSource(songInfo))
 		midiTrack.rootDevice.setInputTrackIndex(trackIndex)
 
@@ -449,17 +487,23 @@ def convert(filename):
 		if midiTrackGroup.children:
 			groupTrack.rootDevice.children.insert(0, midiTrackGroup)
 
+	# build return tracks
+	for i, returnTrack in enumerate(returnTracks):
+		returnTrack.rootDevice.children.insert(0, ReturnDevice(i))
+
 	# build root device from master root device + group of all tracks
 	rootChain = masterTrack.rootDevice
 	midiTrackGroup = GroupDevice()
 	# ignore tracks that don't go to master or have no devices
-	midiTrackGroup.children = [track.rootDevice for track in (midiTracks + groupTracks)
-		if track.outputRouting == routingMaster and track.rootDevice.children]
+	midiTrackGroup.children = [track.rootDevice for track in (midiTracks + groupTracks + returnTracks)
+		if (track.outputRouting == routingMaster or track.outputRouting == routingSends) and track.rootDevice.children]
 	rootChain.children.insert(0, midiTrackGroup)
 	masterName = rootChain.emitSource(songInfo)
 
 	songInfo.appendCppArray('midiTracks', 'MidiTrack*', midiTrackNames)
-	songInfo.cppSource.append('SongInfo songInfo(midiTracks, {}, {});'.format(songInfo.bpm, songInfo.beatsToSamples(songInfo.songDuration)))
+	# todo buffer might be too big if we have unused return tracks
+	songInfo.cppSource.append('Sample sendBuffers[constants::blockSize * {}];'.format(len(returnTracks)))
+	songInfo.cppSource.append('SongInfo songInfo(midiTracks, sendBuffers, {}, {}, {});'.format(len(returnTracks), songInfo.bpm, songInfo.beatsToSamples(songInfo.songDuration)))
 	songInfo.cppSource.append('Song song(songInfo, {});'.format(masterName))
 	print('\n'.join(songInfo.cppSource))
 
