@@ -11,6 +11,10 @@ def indented(lines, level=1):
 def eprint(*args, **kwargs):
 	print(*args, file=sys.stderr, **kwargs)
 
+routingMaster = 'master'
+routingSends = 'sends'
+routingGroup = 'group'
+
 class Device:
 	def fromXml(deviceXml):
 		if deviceXml.tag == 'PluginDevice':
@@ -277,7 +281,10 @@ class Note:
 class Track:
 	def __init__(self):
 		self.rootDevice = None
+		self.outputRouting = None
 		self.notes = []
+		self.trackGroupId = -1
+		self.trackId = None
 
 	def fromXml(trackXml):
 		track = Track()
@@ -285,13 +292,28 @@ class Track:
 		return track
 
 	def parse(self, trackXml):
+		trackIdXml = trackXml.get('Id')
+		self.trackId = int(trackIdXml) if trackIdXml is not None else -1
 		toplevelChainXml = trackXml.find('./DeviceChain')
 		if not toplevelChainXml:
 			# we got no device chain, probably this means we are on master
 			toplevelChainXml = trackXml.find('./MasterChain')
+		else:
+			routingXml = toplevelChainXml.find('./AudioOutputRouting/Target')
+			if routingXml.get('Value') == 'AudioOut/Master':
+				self.outputRouting = routingMaster
+			elif routingXml.get('Value') == 'AudioOut/GroupTrack':
+				self.outputRouting = routingGroup
+			elif routingXml.get('Value') == 'AudioOut/None':
+				self.outputRouting = routingSends
+			else:
+				eprint("Unsupported routing: '{}'".format(routingXml.get('Value')))
 
 		deviceChainXml = toplevelChainXml.find('./DeviceChain')
 		self.rootDevice = ChainDevice.fromXml(deviceChainXml)
+
+		trackGroupIdXml = trackXml.find('./TrackGroupId')
+		self.trackGroupId = int(trackGroupIdXml.get('Value'))
 
 		# TODO sends
 		mixerXml = toplevelChainXml.find('./Mixer')
@@ -404,8 +426,8 @@ def convert(filename):
 
 	midiTracks = [Track.fromXml(track) for track in midiTracksXml]
 	# TODO group track and return track support
-	# groupTracks = [Track.fromXml(track) for track in groupTracksXml]
-	# returnTracks = [Track.fromXml(track) for track in returnTracksXml]
+	groupTracks = [Track.fromXml(track) for track in groupTracksXml]
+	returnTracks = [Track.fromXml(track) for track in returnTracksXml]
 	masterTrack = Track.fromXml(masterTrackXml)
 
 	songInfo = SongInfo.fromXml(liveSetXml)
@@ -415,10 +437,19 @@ def convert(filename):
 		midiTrackNames.append('&' + midiTrack.emitSource(songInfo))
 		midiTrack.rootDevice.setInputTrackIndex(trackIndex)
 
-	# build root device from master root device + group of all tracks
+	# build group tracks
+	for groupTrack in groupTracks:
+		childTracks = [midiTrack for midiTrack in midiTracks
+			if midiTrack.outputRouting == routingGroup and midiTrack.trackGroupId == groupTrack.trackId]
+		midiTrackGroup = GroupDevice()
+		midiTrackGroup.children = [track.rootDevice for track in childTracks]
+		groupTrack.rootDevice.children.insert(0, midiTrackGroup)
+
+	# build root device from master root device + group of all tracks (routed to master)
 	rootChain = masterTrack.rootDevice
 	midiTrackGroup = GroupDevice()
-	midiTrackGroup.children = [midiTrack.rootDevice for midiTrack in midiTracks]
+	midiTrackGroup.children = [track.rootDevice for track in (midiTracks + groupTracks)
+		if track.outputRouting == routingMaster]
 	rootChain.children.insert(0, midiTrackGroup)
 	masterName = rootChain.emitSource(songInfo)
 
