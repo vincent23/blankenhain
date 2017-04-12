@@ -36,8 +36,10 @@ Sample* EffectDevice::process(SongInfo& songInfo, const Sample* input, unsigned 
 		ParameterBundle* parameters = effect.getPointerToParameterBundle();
 		for (unsigned int parameterIndex = 0; parameterIndex < effect.getNumberOfParameters(); parameterIndex++)
 		{
-			float targetValue = parameterValues[parameterIndex].getCurrentValueAndAdvance(globalSamplePosition);
-			parameters->getParameter(parameterIndex)->setTargetValueNormalized(targetValue);
+			if (parameterValues[parameterIndex].numberOfPoints > 1) {
+				float targetValue = parameterValues[parameterIndex].getCurrentValueAndAdvance(globalSamplePosition);
+				parameters->getParameter(parameterIndex)->setTargetValueNormalized(targetValue);
+			}
 		}
 		effect.processBlock(outputBuffer, constants::blockSize);
 	}

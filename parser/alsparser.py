@@ -4,12 +4,18 @@ import config
 import gzip
 import xml.etree.ElementTree as ElementTree
 import sys
+import struct
 
 def indented(lines, level=1):
 	return ('\t' * level + line for line in lines)
 
 def eprint(*args, **kwargs):
 	print(*args, file=sys.stderr, **kwargs)
+
+def chunks(l, n):
+    """Yield successive n-sized chunks from l."""
+    for i in range(0, len(l), n):
+        yield l[i:i + n]
 
 routingMaster = 'master'
 routingSends = 'sends'
@@ -28,12 +34,13 @@ class Device:
 				return None
 			pluginType = plugin['type']
 			className = plugin['class']
+			numberOfParameters = plugin['numberOfParameters']
 			if pluginType == config.instrument:
-				device = InstrumentDevice(className)
+				device = InstrumentDevice(className, numberOfParameters)
 			elif pluginType == config.effect:
-				device = EffectDevice(className)
+				device = EffectDevice(className, numberOfParameters)
 			elif pluginType == config.midi:
-				device = MidiDevice(className)
+				device = MidiDevice(className, numberOfParameters)
 			else:
 				eprint('Warning: device "{}" has unrecognized type "{}"'.format(name, pluginType))
 				return None
@@ -57,8 +64,8 @@ class ParameterEvent:
 		self.value = value
 
 class EffectDevice(Device):
-	def __init__(self, className):
-		self.parameters = []
+	def __init__(self, className, numberOfParameters):
+		self.parameters = [None] * numberOfParameters
 		self.className = className
 		self.inputTrackIndex = 0
 
@@ -67,11 +74,9 @@ class EffectDevice(Device):
 		# get the parameter id and make a list of (id, parameterXml) tuples
 		parametersXmlWithId = ((int(parameterXml.find('ParameterId').get('Value')), parameterXml)
 			for parameterXml in parametersXml)
-		# sort by id
-		parametersXmlWithId = sorted(parametersXmlWithId, key=lambda x: x[0])
-		# remove parameters with id = -1 and convert back to list of parameters
-		parametersXml = [parameterXml for id, parameterXml in parametersXmlWithId if id != -1]
-		for parameterXml in parametersXml:
+		for id, parameterXml in parametersXmlWithId:
+			if id == -1:
+				continue
 			eventsXml = parameterXml.findall('./ParameterValue/ArrangerAutomation/Events/FloatEvent')
 			parameterEvents = []
 			for eventXml in eventsXml:
@@ -79,7 +84,16 @@ class EffectDevice(Device):
 				value = float(eventXml.get('Value'))
 				parameterEvents.append(ParameterEvent(eventTime, value))
 			parameterEvents.sort(key=lambda x: x.time)
-			self.parameters.append(parameterEvents)
+			self.parameters[id] = parameterEvents
+
+		bufferXml = deviceXml.find('./PluginDesc/VstPluginInfo/Preset/VstPreset/Buffer')
+		# strip whitespace and cut first 56 chars
+		buffer = ''.join(bufferXml.text.split())[56:]
+		# convert to float
+		bufferFloats = [struct.unpack('<f', bytes.fromhex(x))[0] for x in chunks(buffer, 8)]
+		for id, x in enumerate(self.parameters):
+			if x is None:
+				self.parameters[id] = [ParameterEvent(0, bufferFloats[id])]
 
 		# also convert the special "on" parameter to a float parameter
 		# and add it after the other ones
@@ -270,7 +284,7 @@ class ChainDevice(CombinedDevice):
 		panXml = mixerXml.find('./Pan')
 		if panXml is None:
 			panXml = mixerXml.find('./Panorama')
-		pan = EffectDevice(config.plugins['bh_width']['class'])
+		pan = EffectDevice(config.plugins['bh_width']['class'], config.plugins['bh_width']['numberOfParameters'])
 		pan.parameters = [
 			[ParameterEvent(0, 0.5)], # width
 			[], # pan

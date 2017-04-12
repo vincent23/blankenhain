@@ -17,6 +17,7 @@
 #include "DelayEffect.h"
 #include "freeverbEffect.h"
 #include "VolumeEffect.h"
+#include "EqualizerEffect.h"
 
 int main(int argc, char* argv[]) {
 #include "Input.inl"
