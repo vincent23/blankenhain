@@ -22,6 +22,9 @@ float ParameterTrack::getCurrentValueAndAdvance(unsigned int samplePosition)
 		unsigned int currentPosition = samplePositions[currentPointIndex];
 		unsigned int nextPosition = samplePositions[currentPointIndex + 1];
 		unsigned int delta = nextPosition - currentPosition;
+		if (delta == 0) {
+			return currentValue;
+		}
 		unsigned int tSamples = samplePosition - currentPosition;
 		float t = static_cast<float>(tSamples) / static_cast<float>(delta);
 		return currentValue * (1.f - t) + nextValue * t;
