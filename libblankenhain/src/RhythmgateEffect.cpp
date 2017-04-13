@@ -3,6 +3,7 @@
 #include "ParameterBundle.h"
 #include "InterpolatedValue.h"
 #include "AuxFunc.h"
+#include "BhMath.h"
 
 RhythmgateEffect::RhythmgateEffect() : EffectBase(20, true)
 {
@@ -12,7 +13,13 @@ RhythmgateEffect::RhythmgateEffect() : EffectBase(20, true)
 
 	for (unsigned int i = 0u; i < 16u; i++)
 	{
-		(params->getParameter(i)) = new FloatParameter(1.f, NormalizedRange(), "gate" + std::to_string(i), "");
+		BhString name;
+#ifndef _VC_NODEFAULTLIB
+		name = "gate" + std::to_string(i);
+#else
+		name = nullptr;
+#endif
+		(params->getParameter(i)) = new FloatParameter(1.f, NormalizedRange(), name, "");
 	}
 	(params->getParameter(16u)) = new FloatParameter(0.1f, NormalizedRange(0.1f, 1700.f, 0.23f), "attack", "ms");
 	(params->getParameter(17u)) = new FloatParameter(0.1f, NormalizedRange(0.1f, 1700.f, 0.23f), "release", "ms");
@@ -63,8 +70,8 @@ void RhythmgateEffect::process(Sample* buffer, size_t numberOfSamples, size_t cu
 			if(offset.get() > 0.f)
 				currentSecond += offset.get() / 1000.f;
 
-		float currentPartialBeatInSecond = fmod(currentSecond, wholeBeatLength);
-		float currentPartialSixteenthInSeconds = fmod(currentSecond, sixteenthNoteLength);
+		float currentPartialBeatInSecond = BhMath::fmod(currentSecond, wholeBeatLength);
+		float currentPartialSixteenthInSeconds = BhMath::fmod(currentSecond, sixteenthNoteLength);
 		float crelease = release.get();
 		float cattack = attack.get();
 		unsigned int whichSixteenthAreWeIn = static_cast<unsigned int>(currentPartialBeatInSecond / sixteenthNoteLength);

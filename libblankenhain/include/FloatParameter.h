@@ -1,10 +1,14 @@
 #pragma once
 
-#include <string>
 #include "NormalizedRange.h"
 #include "InterpolatedValue.h"
 
+#ifdef _VC_NODEFAULTLIB
+using BhString = char*;
+#else
+#include <string>
 using BhString = std::string;
+#endif
 
 
 /// Stores a float value, maps to a normalized range (between 0.f and 1.f) from
@@ -54,8 +58,10 @@ protected:
 
 private:
 	float defaultValueNormalized;
+#ifndef _VC_NODEFAULTLIB
 	BhString unit;
 	BhString name;
+#endif
 
 };
 

@@ -9,11 +9,25 @@ EqualizerEffect::EqualizerEffect() : EffectBase(1 + 5 * numberOfFilters)
 	ParameterBundle* params = getPointerToParameterBundle();
 	(params->getParameter(0)) = new FloatParameter(100.f, NormalizedRange(0.f, 200.f), "scale", "%");
 	for (unsigned int filterIndex = 0; filterIndex < numberOfFilters; filterIndex++) {
+		BhString onName, freqName, gainName, qName, typeName;
+#ifndef _VC_NODEFAULTLIB
 		std::string indexStr = std::to_string(filterIndex + 1);
-		(params->getParameter(filterIndex * 5 + 1)) = new FloatParameter(0.f, NormalizedRange(0.f, 1.f), "on" + indexStr, "");
-		(params->getParameter(filterIndex * 5 + 2)) = new FloatParameter(850.f, NormalizedRange::fromMidpoint(20.f, 850.f, 22000.f), "freq" + indexStr, "Hz");
-		(params->getParameter(filterIndex * 5 + 3)) = new FloatParameter(0.f, NormalizedRange(-15.f, 15.f), "gain" + indexStr, "dB");
-		(params->getParameter(filterIndex * 5 + 4)) = new FloatParameter(0.71f, NormalizedRange::fromMidpoint(.1f, 1.34f, 18.f), "Q" + indexStr, "");
+		onName = "on" + indexStr;
+		freqName = "freq" + indexStr;
+		gainName = "gain" + indexStr;
+		qName = "Q" + indexStr;
+		typeName = "type" + indexStr;
+#else
+		onName = nullptr;
+		freqName = nullptr;
+		gainName = nullptr;
+		qName = nullptr;
+		typeName = nullptr;
+#endif
+		(params->getParameter(filterIndex * 5 + 1)) = new FloatParameter(0.f, NormalizedRange(0.f, 1.f), onName, "");
+		(params->getParameter(filterIndex * 5 + 2)) = new FloatParameter(850.f, NormalizedRange::fromMidpoint(20.f, 850.f, 22000.f), freqName, "Hz");
+		(params->getParameter(filterIndex * 5 + 3)) = new FloatParameter(0.f, NormalizedRange(-15.f, 15.f), gainName, "dB");
+		(params->getParameter(filterIndex * 5 + 4)) = new FloatParameter(0.71f, NormalizedRange::fromMidpoint(.1f, 1.34f, 18.f), qName, "");
 		// types:
 		// 0: highpass
 		// 1: low shelf
@@ -21,7 +35,7 @@ EqualizerEffect::EqualizerEffect() : EffectBase(1 + 5 * numberOfFilters)
 		// 3: notch
 		// 4: high shelf
 		// 5: lowpass
-		(params->getParameter(filterIndex * 5 + 5)) = new FloatParameter(0.f, NormalizedRange(0.f, 5.99f), "type" + indexStr, "");
+		(params->getParameter(filterIndex * 5 + 5)) = new FloatParameter(0.f, NormalizedRange(0.f, 5.99f), typeName, "");
 	}
 }
 

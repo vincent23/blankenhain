@@ -119,7 +119,7 @@ void FmInstrument::processVoice(VoiceState& voice, unsigned int timeInSamples, S
 
 		// If enough glide time has past, set previousFreq to currentFreq and thereby stop gliding
 		if (freqPrev != voiceFreq
-			&& exp(-1.f * timeSinceNoteOff / (constants::sampleRate * portamento)) < 0.0001)
+			&& BhMath::exp(-1.f * timeSinceNoteOff / (constants::sampleRate * portamento)) < 0.0001)
 		{
 			notePrev = voice.key;
 			freqPrev = voiceFreq;
@@ -133,8 +133,8 @@ void FmInstrument::processVoice(VoiceState& voice, unsigned int timeInSamples, S
 		else
 			// otherwise we glide
 			// formula via http://stanford.edu/~yanm2/files/mus420b.pdf
-			currentFreq = voiceFreq * (1.f - exp(-1.f * timeSinceNoteOff / (constants::sampleRate * portamento))) +
-			freqPrev * exp(-1.f * timeSinceNoteOff / (constants::sampleRate * portamento));
+			currentFreq = voiceFreq * (1.f - BhMath::exp(-1.f * timeSinceNoteOff / (constants::sampleRate * portamento))) +
+			freqPrev * BhMath::exp(-1.f * timeSinceNoteOff / (constants::sampleRate * portamento));
 
 
 

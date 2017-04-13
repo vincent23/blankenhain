@@ -6,8 +6,10 @@ FloatParameter::FloatParameter(float defaultValueUnnormalized, const NormalizedR
 	: NormalizedRange(range)
 	, defaultValueNormalized(range.toNormalized(defaultValueUnnormalized))
 	, valueNormalized(range.toNormalized(defaultValueUnnormalized))
+#ifndef _VC_NODEFAULTLIB
 	, name(name_)
 	, unit(unit_)
+#endif
 { 
 #ifdef _LIBBLANKENHAIN_ENABLE_WARNINGS
 	if (! range.isInRange(defaultValueUnnormalized))
@@ -52,17 +54,25 @@ float FloatParameter::getValueUnnormalized()
 
 BhString FloatParameter::getName(unsigned int maximumStringLength) const
 {
+#ifndef _VC_NODEFAULTLIB
 	if (maximumStringLength == 0u || name.length() <= maximumStringLength) {
 		return name;
 	}
 	else {
 		return name.substr(0u, maximumStringLength);
 	}
+#else
+	return nullptr;
+#endif
 }
 
 BhString FloatParameter::getUnit() const
 {
+#ifndef _VC_NODEFAULTLIB
 	return unit;
+#else
+	return nullptr;
+#endif
 }
 
 void FloatParameter::setTargetValueNormalized(float normalizedValue)
