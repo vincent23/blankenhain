@@ -18,6 +18,13 @@
 #include "freeverbEffect.h"
 #include "VolumeEffect.h"
 #include "EqualizerEffect.h"
+#include "basedrum1Instrument.h"
+#include "CompressorEffect.h"
+#include "FilterEffect.h"
+#include "ChorusEffect.h"
+#include "FmInstrument.h"
+#include "RhythmgateEffect.h"
+#include "glidePolyblepInstrument.h"
 
 int main(int argc, char* argv[]) {
 #include "Input.inl"

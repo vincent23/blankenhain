@@ -10,6 +10,7 @@
 #include <windows.h>
 #include <mmsystem.h>
 #include <mmreg.h>
+#include <stdio.h>
 
 void BlankenhainPlayer::play(Song& song)
 {
@@ -46,18 +47,18 @@ void BlankenhainPlayer::play(Song& song)
 	const unsigned int bytesPerSecond = sampleRate * blockAlignment;
 	const unsigned int bitsPerSample = sizeof(float) * 8;
 
-	HWAVEOUT audio_wave_out;
-	WAVEHDR audio_wave_header;
-	audio_wave_header = {
-		(LPSTR)audioBuffer,
-		totalBytes,
-		0,
-		0,
-		0,
-		0,
-		0,
-		0
-	};
+	//HWAVEOUT audio_wave_out;
+	//WAVEHDR audio_wave_header;
+	//audio_wave_header = {
+	//	(LPSTR)audioBuffer,
+	//	totalBytes,
+	//	0,
+	//	0,
+	//	0,
+	//	0,
+	//	0,
+	//	0
+	//};
 	WAVEFORMATEX wave_format = {
 		WAVE_FORMAT_IEEE_FLOAT,
 		/* channels        */ 2,
@@ -68,14 +69,22 @@ void BlankenhainPlayer::play(Song& song)
 		/* no extensions   */ 0
 	};
 
-	waveOutOpen(&audio_wave_out, WAVE_MAPPER, &wave_format, NULL, 0, CALLBACK_NULL);
-	waveOutPrepareHeader(audio_wave_out, &audio_wave_header, sizeof(audio_wave_header));
+	//waveOutOpen(&audio_wave_out, WAVE_MAPPER, &wave_format, NULL, 0, CALLBACK_NULL);
+	//waveOutPrepareHeader(audio_wave_out, &audio_wave_header, sizeof(audio_wave_header));
 
 	// play
 
-	waveOutWrite(audio_wave_out, &audio_wave_header, sizeof(audio_wave_header));
+	//waveOutWrite(audio_wave_out, &audio_wave_header, sizeof(audio_wave_header));
 
-	while (true);
+	//while (true);
+
+	FILE* const audio_file = fopen("audio.out", "wb");
+	if (audio_file != NULL) {
+		puts("writing file...");
+		int bytes = fwrite(audioBuffer, sizeof(float), numberOfSamples * 2, audio_file);
+		fclose(audio_file);
+		printf("bytes written: %i\n", bytes);
+	}
 
 	delete audioBuffer;
 }
