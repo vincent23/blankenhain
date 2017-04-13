@@ -5,6 +5,7 @@ import gzip
 import xml.etree.ElementTree as ElementTree
 import sys
 import struct
+import math
 
 def indented(lines, level=1):
 	return ('\t' * level + line for line in lines)
@@ -213,6 +214,13 @@ class SendDevice(EffectDevice):
 			for eventXml in eventsXml:
 				eventTime = max(0, float(eventXml.get('Time')))
 				value = float(eventXml.get('Value'))
+				# map value from linear to db
+				value = 20 * math.log10(value)
+				# map from db to ableton linear
+				if value < -24:
+					value = value**4 * 1.69759896e-07 + value**3 * 3.40300078e-05 + value**2 * 2.58462419e-03 + value * 9.47279067e-02 + 1.59883479
+				else:
+					value = 0.025 * value + 1
 				sendEvents.append(ParameterEvent(eventTime, value))
 			sendEvents.sort(key=lambda x: x.time)
 			self.parameters.append(sendEvents)

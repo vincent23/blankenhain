@@ -20,16 +20,14 @@ void BlankenhainPlayer::play(Song& song)
 	Sample buffer[constants::blockSize];
 	for (unsigned int i = 0; i < numberOfSamples; i += constants::blockSize)
 	{
+		Sample zero(0);
 		for (unsigned int j = 0; j < constants::blockSize; j++)
 		{
-			buffer[j] = Sample(0);
+			buffer[j] = zero;
 		}
-		for (unsigned int j = 0; j < song.songInfo.numberOfReturnTracks; j++)
+		for (unsigned int j = 0; j < song.songInfo.numberOfReturnTracks * constants::blockSize; j++)
 		{
-			for (unsigned int k = 0; k < constants::blockSize; k++)
-			{
-				song.songInfo.sendBuffers[constants::blockSize * j + k] = Sample(0);
-			}
+			song.songInfo.sendBuffers[j] = zero;
 		}
 		Sample* output = song.master.process(song.songInfo, buffer, i);
 		for (unsigned int j = 0; j < constants::blockSize; j++)
