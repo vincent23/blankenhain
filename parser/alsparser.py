@@ -381,19 +381,55 @@ class Track:
 	def parseClips(self, clipsXml):
 		for clipXml in clipsXml:
 			clipTime = float(clipXml.get('Time'))
+			# start of clip in track
+			currentStart = float(clipXml.find('CurrentStart').get('Value'))
+			if clipTime != currentStart:
+				eprint("Warning: clipTime != currentStart")
+			# end of clip in track
+			currentEnd = float(clipXml.find('CurrentEnd').get('Value'))
+			loopXml = clipXml.find('./Loop')
+			# start of loop in clip
+			loopStart = float(loopXml.find('./LoopStart').get('Value'))
+			# end of loop in clip
+			loopEnd = float(loopXml.find('./LoopEnd').get('Value'))
+			loopLength = loopEnd - loopStart
+			# clip start relative to loopStart
+			startRelative = float(loopXml.find('./StartRelative').get('Value'))
+			loopOn = loopXml.find('./LoopOn').get('Value') == 'true'
 			keyTracks = clipXml.findall('./Notes/KeyTracks/KeyTrack')
+
+			timeEps = 1e-6
+			if not loopOn and (startRelative) > timeEps:
+				eprint("Warning: loop is off but startRelative != 0")
 			for keyTrack in keyTracks:
 				key = int(keyTrack.find('./MidiKey').get('Value'))
 				notesInTrack = keyTrack.findall('./Notes/MidiNoteEvent')
 				for note in notesInTrack:
 					timeInClip = float(note.get('Time'))
+					if timeInClip < (loopStart + min(0, startRelative) - timeEps) or timeInClip >= loopEnd:
+						continue
 					duration = float(note.get('Duration'))
 					velocity = round(float(note.get('Velocity')))
 					if velocity == 0:
 						eprint("Warning: note with velocity = 0")
 						continue
-					timeInTrack = clipTime + timeInClip
-					self.notes.append(Note(timeInTrack, duration, key, velocity))
+					# clip duration to loop end
+					duration = min(loopEnd - timeInClip, duration)
+
+					timeInTrack = currentStart + timeInClip - (loopStart + startRelative)
+					if timeInClip < loopStart - timeEps:
+						# before loop
+						self.notes.append(Note(timeInTrack, duration, key, velocity))
+					else:
+						if timeInClip < loopStart + startRelative - timeEps:
+							# only looped
+							# (startRelative is positive, otherwise we would be in the 'before loop' if branch)
+							timeInTrack += loopLength
+						while timeInTrack < currentEnd - timeEps:
+							self.notes.append(Note(timeInTrack, duration, key, velocity))
+							if not loopOn:
+								break
+							timeInTrack += loopLength
 
 	def emitSource(self, songInfo):
 		events = []
