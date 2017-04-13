@@ -133,6 +133,13 @@ void EffectBase::nextSample(unsigned int steps) const
 	}
 }
 
+void EffectBase::nextSample() const
+{
+	for (unsigned int parameterIndex = 0; parameterIndex < getNumberOfParameters(); parameterIndex++) {
+		getInterpolatedParameter(parameterIndex).next();
+	}
+}
+
 unsigned int const& EffectBase::getCurrentTime() const
 {
 	return this->timeInSamples;

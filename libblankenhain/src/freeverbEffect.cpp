@@ -128,6 +128,15 @@ void freeverbEffect::process(Sample* buffer, size_t numberOfSamples, size_t curr
 		combLP_[i]->setParams(Sample(1.0 - damping), Sample(-1.0 * damping));
 	}
 
+	float widthConst = width.get();
+	float wetBefore = aux::decibelToLinear(wet.get());
+	float dryBefore = aux::decibelToLinear(dry.get());
+	nextSample(numberOfSamples);
+	float wetAfter = aux::decibelToLinear(wet.get());
+	float dryAfter = aux::decibelToLinear(dry.get());
+	InterpolatedValue<float> wetDb(wetBefore, wetAfter, numberOfSamples);
+	InterpolatedValue<float> dryDb(dryBefore, dryAfter, numberOfSamples);
+
 	for (size_t i = 0; i < numberOfSamples; i++)
 	{
 		Sample fInput = buffer[i];
@@ -162,10 +171,9 @@ void freeverbEffect::process(Sample* buffer, size_t numberOfSamples, size_t curr
 		}
 
 		// Mix output
-		float wetIn = aux::decibelToLinear(wet.get());
-		Sample wet1(wetIn * (width.get() * .5f + .5f));
-		Sample wet2(wetIn * (.5f - width.get() * .5f));
-		buffer[i] = wet1 * out + wet2 * out.flippedChannels() + buffer[i] * Sample(aux::decibelToLinear(dry.get()));
-		nextSample();
+		float wetIn = wetDb.get();
+		Sample wet1(wetIn * (widthConst * .5f + .5f));
+		Sample wet2(wetIn * (.5f - widthConst * .5f));
+		buffer[i] = wet1 * out + wet2 * out.flippedChannels() + buffer[i] * Sample(dryDb.get());
 	}
 }

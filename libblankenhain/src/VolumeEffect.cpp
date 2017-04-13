@@ -30,23 +30,30 @@ void VolumeEffect::process(Sample* buffer, size_t numberOfSamples, size_t curren
 
 	if (coupling)
 	{
+		float decibelBefore = aux::decibelToLinear(currentVolumeL.get());
+		nextSample(numberOfSamples);
+		float decibelAfter = aux::decibelToLinear(currentVolumeL.get());
+		InterpolatedValue<float> volumeInDecibel(decibelBefore, decibelAfter, numberOfSamples);
 		for (size_t bufferIteration = 0; bufferIteration < numberOfSamples; bufferIteration++)
 		{
-			buffer[bufferIteration] *= Sample(aux::decibelToLinear(currentVolumeL.get()));
-			nextSample();
+			buffer[bufferIteration] *= Sample(volumeInDecibel.get());
+			volumeInDecibel.next();
 		}
 	}
 	else
 	{
-		for (
-			size_t bufferIteration = 0u;
-			bufferIteration < numberOfSamples;
-			bufferIteration++
-			)
+		float decibelBeforeL = aux::decibelToLinear(currentVolumeL.get());
+		float decibelBeforeR = aux::decibelToLinear(currentVolumeR.get());
+		nextSample(numberOfSamples);
+		float decibelAfterL = aux::decibelToLinear(currentVolumeL.get());
+		float decibelAfterR = aux::decibelToLinear(currentVolumeR.get());
+		InterpolatedValue<float> volumeInDecibelL(decibelBeforeL, decibelAfterL, numberOfSamples);
+		InterpolatedValue<float> volumeInDecibelR(decibelBeforeR, decibelAfterR, numberOfSamples);
+		for (size_t bufferIteration = 0u; bufferIteration < numberOfSamples; bufferIteration++)
 		{
-      Sample volumeMultiply(aux::decibelToLinear(currentVolumeL.get()), aux::decibelToLinear(currentVolumeR.get()));
-      buffer[bufferIteration] *= volumeMultiply;
-			nextSample();
+			buffer[bufferIteration] *= Sample(volumeInDecibelL.get(), volumeInDecibelR.get());
+			volumeInDecibelL.next();
+			volumeInDecibelR.next();
 		}
 	}
 }

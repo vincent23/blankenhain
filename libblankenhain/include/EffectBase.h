@@ -80,7 +80,8 @@ protected:
 	 *
 	 * See also: FloatParameter::next(uint). This may be called manually instead of EffectBase::nextSample()
 	 **/
-	void nextSample(unsigned int steps = 1) const;
+	void nextSample(unsigned int steps) const;
+	void nextSample() const;
 
 	/**
 	* Applies the effect to @a numberOfSamples audio samples in @a buffer.
