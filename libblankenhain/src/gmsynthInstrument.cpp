@@ -4,6 +4,8 @@
 #include "FloatParameter.h"
 #include "VoiceState.h"
 #include "gmSound.h"
+#define VC_EXTRALEAN
+#define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 
 gmsynthInstrument::gmsynthInstrument()

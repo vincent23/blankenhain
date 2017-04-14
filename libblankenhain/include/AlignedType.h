@@ -20,5 +20,5 @@ public:
 	void *operator new[](unsigned int size);
 	void operator delete (void *p) throw();
 	void operator delete[](void *p);
-	unsigned int getAlignment();
+	unsigned int getAlignment() const;
 };

@@ -6,11 +6,11 @@
 #include "ChainDevice.h"
 
 #define VC_EXTRALEAN
-//#define WIN32_LEAN_AND_MEAN
+#define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 #include <mmsystem.h>
 #include <mmreg.h>
-#include <stdio.h>
+//#include <stdio.h>
 
 void BlankenhainPlayer::play(Song& song)
 {
@@ -34,8 +34,8 @@ void BlankenhainPlayer::play(Song& song)
 		{
 			alignas(16) double sample[2];
 			output[j].store_aligned(sample);
-			audioBuffer[2 * (i + j)] = sample[0];
-			audioBuffer[2 * (i + j) + 1] = sample[1];
+			audioBuffer[2 * (i + j)] = float(sample[0]);
+			audioBuffer[2 * (i + j) + 1] = float(sample[1]);
 		}
 	}
 
@@ -45,18 +45,18 @@ void BlankenhainPlayer::play(Song& song)
 	const unsigned int bytesPerSecond = sampleRate * blockAlignment;
 	const unsigned int bitsPerSample = sizeof(float) * 8;
 
-	//HWAVEOUT audio_wave_out;
-	//WAVEHDR audio_wave_header;
-	//audio_wave_header = {
-	//	(LPSTR)audioBuffer,
-	//	totalBytes,
-	//	0,
-	//	0,
-	//	0,
-	//	0,
-	//	0,
-	//	0
-	//};
+	HWAVEOUT audio_wave_out;
+	WAVEHDR audio_wave_header;
+	audio_wave_header = {
+		(LPSTR)audioBuffer,
+		totalBytes,
+		0,
+		0,
+		0,
+		0,
+		0,
+		0
+	};
 	WAVEFORMATEX wave_format = {
 		WAVE_FORMAT_IEEE_FLOAT,
 		/* channels        */ 2,
@@ -67,15 +67,16 @@ void BlankenhainPlayer::play(Song& song)
 		/* no extensions   */ 0
 	};
 
-	//waveOutOpen(&audio_wave_out, WAVE_MAPPER, &wave_format, NULL, 0, CALLBACK_NULL);
-	//waveOutPrepareHeader(audio_wave_out, &audio_wave_header, sizeof(audio_wave_header));
+	waveOutOpen(&audio_wave_out, WAVE_MAPPER, &wave_format, NULL, 0, CALLBACK_NULL);
+	waveOutPrepareHeader(audio_wave_out, &audio_wave_header, sizeof(audio_wave_header));
 
 	// play
 
-	//waveOutWrite(audio_wave_out, &audio_wave_header, sizeof(audio_wave_header));
+	waveOutWrite(audio_wave_out, &audio_wave_header, sizeof(audio_wave_header));
 
-	//while (true);
+	while (true);
 
+	/*
 	FILE* const audio_file = fopen("audio.out", "wb");
 	if (audio_file != NULL) {
 		puts("writing file...");
@@ -83,6 +84,7 @@ void BlankenhainPlayer::play(Song& song)
 		fclose(audio_file);
 		printf("bytes written: %i\n", bytes);
 	}
+	*/
 
 	delete audioBuffer;
 }

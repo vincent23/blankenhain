@@ -4,6 +4,10 @@
 #pragma warning(disable: 4324)
 #include <emmintrin.h>
 
+#define VC_EXTRALEAN
+#define WIN32_LEAN_AND_MEAN
+#include <windows.h>
+
 Sample::Sample() : v(_mm_set1_pd(0.))
 { }
 
@@ -27,6 +31,13 @@ Sample _vectorcall Sample::load_aligned(const double* ptr)
 	return _mm_load_pd(ptr);
 }
 
+extern "C" void* __cdecl aligned_malloc(
+	size_t const size,
+	size_t align
+);
+
+extern "C" void __cdecl aligned_free(void* const block);
+
 void* Sample::operator new[](unsigned int size)
 {
 #ifdef _LIBBLANKENHAIN_ENABLE_WARNINGS
@@ -35,7 +46,7 @@ void* Sample::operator new[](unsigned int size)
 		return;
 	}
 #endif
-	return _aligned_malloc(size, 16u);
+	return aligned_malloc(size, 16u);
 }
 
 void Sample::operator delete[](void *p) throw()
@@ -47,7 +58,7 @@ void Sample::operator delete[](void *p) throw()
 		return;
 	}
 #endif
-	_aligned_free(p);
+	aligned_free(p);
 }
 
 void Sample::store_aligned(double* ptr) const

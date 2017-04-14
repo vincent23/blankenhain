@@ -10,3 +10,12 @@ cmake -D PLUGIN_PATH='C:\Where\To\Put\Them\Plugins' ..
 ```
 
 Open `build/blankenhain2.sln`
+
+## Build Configurations
+
+* Plugins
+** RelWithDebInfo
+** Release
+* Player
+** Debug
+** MinSizeRel
