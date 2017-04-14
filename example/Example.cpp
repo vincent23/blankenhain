@@ -1,34 +1,10 @@
-#include "BlankenhainPlayer.h"
-
-#include "MidiTrack.h"
-#include "ParameterTrack.h"
-#include "InstrumentDevice.h"
-#include "ChainDevice.h"
-#include "GroupDevice.h"
-#include "SongInfo.h"
-#include "Song.h"
-#include "ReturnDevice.h"
-#include "SendDevice.h"
-
-#include "polyblepInstrument.h"
-#include "WidthEffect.h"
-#include "gmsynthInstrument.h"
-#include "DistortionEffect.h"
-#include "DelayEffect.h"
-#include "freeverbEffect.h"
-#include "VolumeEffect.h"
-#include "EqualizerEffect.h"
-#include "basedrum1Instrument.h"
-#include "CompressorEffect.h"
-#include "FilterEffect.h"
-#include "ChorusEffect.h"
-#include "FmInstrument.h"
-#include "RhythmgateEffect.h"
-#include "glidePolyblepInstrument.h"
+#include "BhSoundtrack.h"
 
 #define VC_EXTRALEAN
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
+#include <mmsystem.h>
+#include <mmreg.h>
 
 extern "C" {
 	int _fltused = 1;
@@ -44,9 +20,66 @@ WinMain(HINSTANCE Instance,
 	LPSTR CommandLine,
 	int ShowCode)
 {
-#include "Input.inl"
-	BlankenhainPlayer player;
-	player.play(song);
+	unsigned int numberOfSamples = blankenhain::lengthInSamples();
+	float* audioBuffer = new float[numberOfSamples * 2];
+	bool threaded = true;
+	if (threaded) {
+		CreateThread(0, 0, (LPTHREAD_START_ROUTINE)blankenhain::render, audioBuffer, 0, 0);
+		// wait one second
+		Sleep(1000);
+	}
+	else {
+		blankenhain::render(audioBuffer);
+	}
+
+	const unsigned int sampleRate = 44100;
+	const unsigned int blockAlignment = sizeof(float) * 2;
+	const unsigned int totalBytes = numberOfSamples * blockAlignment;
+	const unsigned int bytesPerSecond = sampleRate * blockAlignment;
+	const unsigned int bitsPerSample = sizeof(float) * 8;
+
+	HWAVEOUT audio_wave_out;
+	WAVEHDR audio_wave_header;
+	audio_wave_header = {
+		(LPSTR)audioBuffer,
+		totalBytes,
+		0,
+		0,
+		0,
+		0,
+		0,
+		0
+	};
+	WAVEFORMATEX wave_format = {
+		WAVE_FORMAT_IEEE_FLOAT,
+		/* channels        */ 2,
+		/* samples/second  */ sampleRate,
+		/* bytes/second    */ bytesPerSecond,
+		/* block alignment */ blockAlignment,
+		/* bits/sample     */ bitsPerSample,
+		/* no extensions   */ 0
+	};
+
+	waveOutOpen(&audio_wave_out, WAVE_MAPPER, &wave_format, NULL, 0, CALLBACK_NULL);
+	waveOutPrepareHeader(audio_wave_out, &audio_wave_header, sizeof(audio_wave_header));
+
+	// play
+
+	waveOutWrite(audio_wave_out, &audio_wave_header, sizeof(audio_wave_header));
+
+	Sleep((numberOfSamples / 44100 + 3) * 1000);
+
+	delete audioBuffer;
+
+	/*
+	FILE* const audio_file = fopen("audio.out", "wb");
+	if (audio_file != NULL) {
+	puts("writing file...");
+	int bytes = fwrite(audioBuffer, sizeof(float), numberOfSamples * 2, audio_file);
+	fclose(audio_file);
+	printf("bytes written: %i\n", bytes);
+	}
+	*/
 	return 0;
 }
 

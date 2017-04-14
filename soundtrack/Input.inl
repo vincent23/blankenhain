@@ -900,3 +900,4 @@ MidiTrack* midiTracks[] = {
 Sample sendBuffers[constants::blockSize * 2];
 SongInfo songInfo(midiTracks, sendBuffers, 2, 120.0, 352800);
 Song song(songInfo, device_15);
+#define LENGTH_IN_SAMPLES 352800

@@ -561,8 +561,10 @@ def convert(filename):
 	songInfo.appendCppArray('midiTracks', 'MidiTrack*', midiTrackNames)
 	# todo buffer might be too big if we have unused return tracks
 	songInfo.cppSource.append('Sample sendBuffers[constants::blockSize * {}];'.format(len(returnTracks)))
-	songInfo.cppSource.append('SongInfo songInfo(midiTracks, sendBuffers, {}, {}, {});'.format(len(returnTracks), songInfo.bpm, songInfo.beatsToSamples(songInfo.songDuration)))
+	lengthInSamples = songInfo.beatsToSamples(songInfo.songStart + songInfo.songDuration)
+	songInfo.cppSource.append('SongInfo songInfo(midiTracks, sendBuffers, {}, {}, {});'.format(len(returnTracks), songInfo.bpm, lengthInSamples))
 	songInfo.cppSource.append('Song song(songInfo, {});'.format(masterName))
+	songInfo.cppSource.append('#define LENGTH_IN_SAMPLES {}'.format(lengthInSamples))
 	print('\n'.join(songInfo.cppSource))
 
 def main():

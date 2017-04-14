@@ -5,5 +5,5 @@ class Song;
 class BlankenhainPlayer
 {
 public:
-	void play(Song& song);
+	void play(Song& song, float* buffer);
 };
