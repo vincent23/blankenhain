@@ -230,3 +230,7 @@ add_plugin("bh_noisegate"
 	"NoiseGatePlugin.h"
 )
 
+add_plugin("bh_limiter"
+	"LimiterPlugin.cpp"
+	"LimiterPlugin.h"
+)
