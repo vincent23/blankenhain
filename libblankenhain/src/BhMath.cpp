@@ -81,10 +81,7 @@ namespace BhMath {
 	// for convenience, we implement pow as |x|^y
 	float pow(float x, float y)
 	{
-		x = abs(x);
-		if (x < 1e-8) {
-			return x;
-		}
+		x = abs(x) + 1e-8;
 		float result = 0.f;
 		__asm
 		{
