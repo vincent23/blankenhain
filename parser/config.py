@@ -78,6 +78,11 @@ plugins = {
 		'type': instrument,
 		'numberOfParameters': 10,
 	},
+	'bh_limiter': {
+		'class': 'LimiterEffect',
+		'type': effect,
+		'numberOfParameters': 5,
+	},
 	'bh_noisegate': {
 		'class': 'NoiseGateEffect',
 		'type': effect,
