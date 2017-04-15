@@ -5,7 +5,14 @@ MidiTrack::MidiTrack(unsigned int numberOfEvents_, unsigned int* samplePositions
 	, samplePositions(samplePositions_)
 	, keys(keys_)
 	, velocities(velocities_)
-{}
+{
+	unsigned int last = samplePositions[0];
+	for (unsigned int i = 1; i < numberOfEvents; i++)
+	{
+		samplePositions[i] += last;
+		last = samplePositions[i];
+	}
+}
 
 bool MidiTrack::getNextNote(unsigned int samplePosition, unsigned int nextNoteIndex, unsigned int& keyOut, unsigned int& velocityOut)
 {

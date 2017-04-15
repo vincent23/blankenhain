@@ -27,6 +27,7 @@
 #include "FmInstrument.h"
 #include "RhythmgateEffect.h"
 #include "glidePolyblepInstrument.h"
+#include "LimiterEffect.h"
 
 void blankenhain::render(float* buffer)
 {

@@ -4,7 +4,16 @@ ParameterTrack::ParameterTrack(unsigned int numberOfPoints_, unsigned int* sampl
 	: numberOfPoints(numberOfPoints_)
 	, samplePositions(samplePositions_)
 	, normalizedValues(normalizedValues_)
-{}
+{
+	/*
+	unsigned int last = samplePositions[0];
+	for (unsigned int i = 1; i < numberOfPoints; i++)
+	{
+		samplePositions[i] += last;
+		last = samplePositions[i];
+	}
+	*/
+}
 
 float ParameterTrack::getCurrentValueAndAdvance(unsigned int samplePosition)
 {

@@ -14,6 +14,8 @@ extern "C" int _cdecl _purecall(void) {
 	return 0;
 }
 
+#include <stdio.h>
+
 int CALLBACK
 WinMain(HINSTANCE Instance,
 	HINSTANCE PrevInstance,
@@ -22,56 +24,54 @@ WinMain(HINSTANCE Instance,
 {
 	unsigned int numberOfSamples = blankenhain::lengthInSamples();
 	float* audioBuffer = new float[numberOfSamples * 2];
-	bool threaded = true;
+	bool threaded = false;
 	if (threaded) {
 		CreateThread(0, 0, (LPTHREAD_START_ROUTINE)blankenhain::render, audioBuffer, 0, 0);
 		// wait one second
-		Sleep(1000);
+		//Sleep(100000);
 	}
 	else {
 		blankenhain::render(audioBuffer);
 	}
 
-	const unsigned int sampleRate = 44100;
-	const unsigned int blockAlignment = sizeof(float) * 2;
-	const unsigned int totalBytes = numberOfSamples * blockAlignment;
-	const unsigned int bytesPerSecond = sampleRate * blockAlignment;
-	const unsigned int bitsPerSample = sizeof(float) * 8;
+	//const unsigned int sampleRate = 44100;
+	//const unsigned int blockAlignment = sizeof(float) * 2;
+	//const unsigned int totalBytes = numberOfSamples * blockAlignment;
+	//const unsigned int bytesPerSecond = sampleRate * blockAlignment;
+	//const unsigned int bitsPerSample = sizeof(float) * 8;
 
-	HWAVEOUT audio_wave_out;
-	WAVEHDR audio_wave_header;
-	audio_wave_header = {
-		(LPSTR)audioBuffer,
-		totalBytes,
-		0,
-		0,
-		0,
-		0,
-		0,
-		0
-	};
-	WAVEFORMATEX wave_format = {
-		WAVE_FORMAT_IEEE_FLOAT,
-		/* channels        */ 2,
-		/* samples/second  */ sampleRate,
-		/* bytes/second    */ bytesPerSecond,
-		/* block alignment */ blockAlignment,
-		/* bits/sample     */ bitsPerSample,
-		/* no extensions   */ 0
-	};
+	//HWAVEOUT audio_wave_out;
+	//WAVEHDR audio_wave_header;
+	//audio_wave_header = {
+	//	(LPSTR)audioBuffer,
+	//	totalBytes,
+	//	0,
+	//	0,
+	//	0,
+	//	0,
+	//	0,
+	//	0
+	//};
+	//WAVEFORMATEX wave_format = {
+	//	WAVE_FORMAT_IEEE_FLOAT,
+	//	/* channels        */ 2,
+	//	/* samples/second  */ sampleRate,
+	//	/* bytes/second    */ bytesPerSecond,
+	//	/* block alignment */ blockAlignment,
+	//	/* bits/sample     */ bitsPerSample,
+	//	/* no extensions   */ 0
+	//};
 
-	waveOutOpen(&audio_wave_out, WAVE_MAPPER, &wave_format, NULL, 0, CALLBACK_NULL);
-	waveOutPrepareHeader(audio_wave_out, &audio_wave_header, sizeof(audio_wave_header));
+	//waveOutOpen(&audio_wave_out, WAVE_MAPPER, &wave_format, NULL, 0, CALLBACK_NULL);
+	//waveOutPrepareHeader(audio_wave_out, &audio_wave_header, sizeof(audio_wave_header));
 
-	// play
+	//// play
 
-	waveOutWrite(audio_wave_out, &audio_wave_header, sizeof(audio_wave_header));
+	//waveOutWrite(audio_wave_out, &audio_wave_header, sizeof(audio_wave_header));
 
-	Sleep((numberOfSamples / 44100 + 3) * 1000);
+	//Sleep((numberOfSamples / 44100 + 3) * 1000);
 
-	delete audioBuffer;
 
-	/*
 	FILE* const audio_file = fopen("audio.out", "wb");
 	if (audio_file != NULL) {
 	puts("writing file...");
@@ -79,7 +79,10 @@ WinMain(HINSTANCE Instance,
 	fclose(audio_file);
 	printf("bytes written: %i\n", bytes);
 	}
-	*/
+
+
+	delete audioBuffer;
+
 	return 0;
 }
 
@@ -135,7 +138,7 @@ void memset2(void* dst, unsigned char val, unsigned int count);
 static void initTerm(ePVFV *pfbegin, ePVFV *pfend);
 static void initAtExit();
 static void doAtExit();
-int __cdecl atexit(ePVFV func);
+//int __cdecl atexit(ePVFV func);
 
 
 #pragma data_seg(".CRT$XCA")
@@ -175,6 +178,7 @@ static void doAtExit() {
 	initTerm(g_atExitList, g_atExitList + MAX_ATEXITS);
 }
 
+/*
 int __cdecl atexit(ePVFV func) {
 	// get next free entry in atexist list
 	unsigned int index = 0;
@@ -186,7 +190,7 @@ int __cdecl atexit(ePVFV func) {
 	}
 
 	return -1;
-}
+}*/
 
 void GlobalsStaticsInit() {
 #	ifdef NDEBUG

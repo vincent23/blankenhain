@@ -18,6 +18,13 @@ def chunks(l, n):
     for i in range(0, len(l), n):
         yield l[i:i + n]
 
+def deltaEncoded(l):
+	last = l[0]
+	yield last
+	for x in l[1:]:
+		yield x - last
+		last = x
+
 routingMaster = 'master'
 routingSends = 'sends'
 routingGroup = 'group'
@@ -454,7 +461,7 @@ class Track:
 		samplePositionsName = trackName + '_samplePositions'
 		keysName = trackName + '_keys'
 		velocitiesName = trackName + '_velocities'
-		songInfo.appendCppArray(samplePositionsName, 'unsigned int', samplePositions)
+		songInfo.appendCppArray(samplePositionsName, 'unsigned int', deltaEncoded(samplePositions))
 		songInfo.appendCppArray(keysName, 'unsigned int', keys)
 		songInfo.appendCppArray(velocitiesName, 'unsigned int', velocities)
 		songInfo.cppSource.append('MidiTrack {}({}, {}, {}, {});'.format(
