@@ -179,7 +179,7 @@ void gmsynthInstrument::processVoice(VoiceState& voice, unsigned int timeInSampl
 				deltaT += sound->loopStart;
 			}
 			if (deltaT < sampleSize) {
-				buffer[sampleIndex] = sound->interpolatedBuffer[deltaT];
+				buffer[sampleIndex] = Sample(sound->interpolatedBuffer[deltaT]);
 			}
 			else {
 				buffer[sampleIndex] = Sample(0);

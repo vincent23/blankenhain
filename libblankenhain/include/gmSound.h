@@ -17,7 +17,7 @@ public:
 	gmSound(gmSoundRegion& region, HANDLE h, unsigned int targetNote);
 	~gmSound();
 
-	Sample* interpolatedBuffer;
+	float* interpolatedBuffer;
 	unsigned int interpolatedBufferSize;
 	bool isLoopable;
 	unsigned int loopStart;
