@@ -403,7 +403,7 @@ public:
 		this->xorshift32();
 		while (state > 4000000001 || state == 0u)
 			this->xorshift32();
-		return (static_cast<float>(state) - 1.f) / 4000000000.f;
+		return (((static_cast<float>(state) - 1.f) / 4000000000.f) - 0.5f) * 2.f;
 	}
 
 	virtual float getNextSample(OscillatorPhase phase = OscillatorPhase()) final
