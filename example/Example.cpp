@@ -97,29 +97,57 @@ void WinMainCRTStartup()
 	ExitProcess(Result);
 }
 
+
+#ifdef _DEBUG
+#pragma warning ( push )
+#pragma warning(disable: 4595)
+#endif
+
+#ifdef _DEBUG
+__forceinline
+#endif
 void* __cdecl operator new(unsigned int bytes) {
 	return HeapAlloc(GetProcessHeap(), HEAP_ZERO_MEMORY, bytes);
 }
 
+#ifdef _DEBUG
+__forceinline
+#endif
 void* __cdecl operator new [](unsigned int bytes) {
 	return operator new(bytes);
 }
 
+#ifdef _DEBUG
+__forceinline
+#endif
 void* __cdecl operator new(unsigned int bytes, void* here) {
 	return here;
 }
 
+#ifdef _DEBUG
+__forceinline
+#endif
 void __cdecl operator delete(void* ptr) {
 	if (ptr) HeapFree(GetProcessHeap(), 0, ptr);
 }
 
+#ifdef _DEBUG
+__forceinline
+#endif
 void __cdecl operator delete(void* ptr, unsigned int) {
 	if (ptr) HeapFree(GetProcessHeap(), 0, ptr);
 }
 
+#ifdef _DEBUG
+__forceinline
+#endif
 void __cdecl operator delete [](void* ptr) {
 	operator delete(ptr);
 }
+#ifdef _DEBUG
+#pragma warning (pop)
+#endif
+
 extern "C"
 {
 #pragma function(memset)
