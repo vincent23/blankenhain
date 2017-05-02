@@ -21,6 +21,12 @@ WinMain(HINSTANCE Instance,
 	LPSTR CommandLine,
 	int ShowCode)
 {
+	// Set up FPU according to entire 64k demoscene standards appareantly
+	unsigned short foo = 0u;
+	_asm FSTCW foo
+	unsigned short fcw = 3711;
+	__asm fldcw fcw;
+
 	unsigned int numberOfSamples = blankenhain::lengthInSamples();
 	float* audioBuffer = new float[numberOfSamples * 2];
 	bool threaded = false;
