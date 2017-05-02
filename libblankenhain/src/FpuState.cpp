@@ -2,6 +2,10 @@
 
 #include <emmintrin.h>
 
+#ifndef _LIBBLANKENHAIN_ENABLE_FPU_ROUNDING_CHECK
+//#define  _LIBBLANKENHAIN_ENABLE_FPU_ROUNDING_CHECK
+#endif
+
 FpuState::FpuState() {
 	// clear exception flags
 	previousControlRegister = _mm_getcsr() & (~0b111111);
@@ -48,4 +52,10 @@ FpuState::~FpuState() {
 	}
 #endif
 	_mm_setcsr(previousControlRegister);
+#ifdef  _LIBBLANKENHAIN_ENABLE_FPU_ROUNDING_CHECK
+	unsigned short bar = 0u;
+	_asm FSTCW bar
+	if (bar != 3711)
+		throw "fpu rounding flag wrong";
+#endif
 }

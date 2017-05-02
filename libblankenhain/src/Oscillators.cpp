@@ -123,12 +123,24 @@ float PolyBLEPOscillator::getSample(unsigned int time, OscillatorPhase phase)
 		value += poly_blep(t);
 		float temp = BhMath::fmod(t + 0.5f, 1.f);
 		value -= poly_blep(temp);
+
 		if (mOscillatorMode == OSCILLATOR_MODE_TRIANGLE) {
 			// Leaky integrator: y[n] = A * x[n] + (1 - A) * y[n-1]
 			value = mPhaseIncrement * value + (1.f - mPhaseIncrement) * lastOutput;
 			lastOutput = value;
 		}
 	}
+
+#ifndef _LIBBLANKENHAIN_ENABLE_NANCHECK
+//#define _LIBBLANKENHAIN_ENABLE_NANCHECK
+#endif
+#ifdef _LIBBLANKENHAIN_ENABLE_NANCHECK
+	if (value != value
+		|| mPhase.getValue() != mPhase.getValue()
+		|| t != t)
+		throw "nan detected";
+#endif
+
 	return value;
 }
 
@@ -159,5 +171,14 @@ float PolyBLEPOscillator::getNextSample(OscillatorPhase phase)
 			lastOutput = value;
 		}
 	}
+#ifndef _LIBBLANKENHAIN_ENABLE_NANCHECK
+//#define _LIBBLANKENHAIN_ENABLE_NANCHECK
+#endif
+#ifdef _LIBBLANKENHAIN_ENABLE_NANCHECK
+	if (value != value
+		|| mPhase.getValue() != mPhase.getValue()
+		|| t != t)
+		throw "nan detected";
+#endif
 	return value;
 }

@@ -4,6 +4,17 @@
 #include "InterpolatedValue.h"
 #include "FpuState.h"
 
+#ifndef _LIBBLANKENHAIN_ENABLE_FPU_ROUNDING_CHECK
+//#define  _LIBBLANKENHAIN_ENABLE_FPU_ROUNDING_CHECK
+#endif
+#ifndef _LIBBLANKENHAIN_ENABLE_NANCHECK
+//#define _LIBBLANKENHAIN_ENABLE_NANCHECK
+#endif
+
+#ifdef _LIBBLANKENHAIN_ENABLE_FPU_ROUNDING_CHECK
+//#include <iostream>
+#endif
+
 EffectBase::EffectBase(unsigned int numberOfParameters, bool useTempoData)
 	: tempodata(useTempoData)
 	, paramBundle(new ParameterBundle(numberOfParameters))
@@ -49,7 +60,20 @@ const unsigned int EffectBase::getDelay() const
 
 void EffectBase::processBlock(Sample* buffer, size_t numberOfSamples)
 {
+
+#ifdef  _LIBBLANKENHAIN_ENABLE_FPU_ROUNDING_CHECK
+	unsigned short bar = 0u;
+	_asm FSTCW bar
+	if (bar != 3711)
+	{
+		throw "fpu rounding flag wrong";
+		puts("fpu rounding flag wrong");
+	}
+#endif
+	unsigned short fcw = 3711;
+	__asm fldcw fcw;
 	FpuState fpuState;
+
 
 	// TODO find a better way to do initalization
 	if (!initializedParameters) {
@@ -99,6 +123,26 @@ void EffectBase::processBlock(Sample* buffer, size_t numberOfSamples)
 	}
 	process(buffer, numberOfSamples, timeInSamples);
 	timeInSamples += numberOfSamples;
+
+
+
+	for (unsigned int i = 0u; i < numberOfSamples; ++i)
+	{
+#ifdef _LIBBLANKENHAIN_ENABLE_NANCHECK
+		if (buffer[i].avgValue() != buffer[i].avgValue())
+			throw "nan detected";
+#endif
+	}
+
+#ifdef  _LIBBLANKENHAIN_ENABLE_FPU_ROUNDING_CHECK
+	bar = 0u;
+	_asm FSTCW bar
+	if (bar != 3711)
+	{
+		throw "fpu rounding flag wrong";
+		puts("fpu rounding flag wrong");
+	}
+#endif
 
 }
 

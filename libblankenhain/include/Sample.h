@@ -53,7 +53,12 @@ public:
 	void _vectorcall replaceRightChannel(Sample in);
 	Sample __vectorcall flippedChannels() const;
 
+
+#ifndef _LIBBLANKENHAIN_NO_SSE
 	__m128d v;
+#else
+	double v
+#endif
 };
 
 inline Sample _vectorcall operator+(Sample a, Sample b)
