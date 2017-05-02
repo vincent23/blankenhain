@@ -14,7 +14,6 @@ extern "C" int _cdecl _purecall(void) {
 	return 0;
 }
 
-#include <stdio.h>
 
 int CALLBACK
 WinMain(HINSTANCE Instance,
@@ -29,6 +28,7 @@ WinMain(HINSTANCE Instance,
 		CreateThread(0, 0, (LPTHREAD_START_ROUTINE)blankenhain::render, audioBuffer, 0, 0);
 		// wait one second
 		//Sleep(100000);
+		Sleep(1000);
 	}
 	else {
 		blankenhain::render(audioBuffer);
@@ -72,13 +72,12 @@ WinMain(HINSTANCE Instance,
 	//Sleep((numberOfSamples / 44100 + 3) * 1000);
 
 
-	FILE* const audio_file = fopen("audio.out", "wb");
-	if (audio_file != NULL) {
-	puts("writing file...");
-	int bytes = fwrite(audioBuffer, sizeof(float), numberOfSamples * 2, audio_file);
-	fclose(audio_file);
-	printf("bytes written: %i\n", bytes);
-	}
+	HANDLE outputFile;
+	do {
+		outputFile = CreateFile("audio.out", GENERIC_WRITE, FILE_SHARE_WRITE, NULL, CREATE_NEW, FILE_ATTRIBUTE_NORMAL, NULL);
+	} while (outputFile == INVALID_HANDLE_VALUE);
+	WriteFile(outputFile, audioBuffer, sizeof(float) * numberOfSamples * 2, NULL, NULL);
+	CloseHandle(outputFile);
 
 
 	delete audioBuffer;
