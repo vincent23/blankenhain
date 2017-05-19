@@ -5,8 +5,6 @@
 #include "SongInfo.h"
 #include "ChainDevice.h"
 
-//#include <stdio.h>
-
 void BlankenhainPlayer::play(Song& song, float* audioBuffer)
 {
 	// round blocksize up
