@@ -125,6 +125,9 @@ void WinMainCRTStartup()
 }
 
 
+/////////////////////////////////////////////////////////
+////// C U S T O M   M E M O R Y   H A N D L I N G //////
+/////////////////////////////////////////////////////////
 #ifdef _DEBUG
 #pragma warning ( push )
 #pragma warning(disable: 4595)
@@ -171,6 +174,7 @@ __forceinline
 void __cdecl operator delete [](void* ptr) {
 	operator delete(ptr);
 }
+
 #ifdef _DEBUG
 #pragma warning (pop)
 #endif
@@ -189,24 +193,6 @@ extern "C"
 	}
 }
 
-
-typedef void(__cdecl *ePVFV)();
-
-void memset2(void* dst, unsigned char val, unsigned int count);
-
-#define MAX_ATEXITS 32
-static void initTerm(ePVFV *pfbegin, ePVFV *pfend);
-static void initAtExit();
-static void doAtExit();
-
-
-#pragma data_seg(".CRT$XCA")
-ePVFV __xc_a[] = { nullptr };
-#pragma data_seg(".CRT$XCZ")
-ePVFV __xc_z[] = { nullptr };
-#pragma data_seg() // reset data segment
-
-
 void memset2(void* dst, unsigned char val, unsigned int count) {
 	__asm {
 		mov     eax, dword ptr[val]
@@ -215,37 +201,6 @@ void memset2(void* dst, unsigned char val, unsigned int count) {
 		rep     stosb
 	}
 }
-
-
-static void initTerm(ePVFV *pfbegin, ePVFV *pfend) {
-	while (pfbegin < pfend) {
-		if (*pfbegin) {
-			(**pfbegin)();
-		}
-
-		pfbegin++;
-	}
-}
-
-static ePVFV g_atExitList[MAX_ATEXITS];
-
-static void initAtExit() {
-	memset2(g_atExitList, 0, sizeof(g_atExitList));
-}
-
-static void doAtExit() {
-	initTerm(g_atExitList, g_atExitList + MAX_ATEXITS);
-}
-
-void GlobalsStaticsInit() {
-#	ifdef NDEBUG
-	initAtExit();
-	initTerm(__xc_a, __xc_z);
-#	endif
-}
-
-void GlobalsStaticsFree() {
-#	ifdef NDEBUG
-	doAtExit();
-#	endif
-}
+/////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////
