@@ -101,9 +101,9 @@ protected:
 
 private:	
 	unsigned int timeInSamples = 0;
-	ParameterBundle* paramBundle;
-	InterpolatedValue<float>* parameterValues;
-	float* nextModulation;
+	ParameterBundle* const paramBundle;
+	InterpolatedValue<float>* const parameterValues;
+	float* const nextModulation;
 	bool initializedParameters = false;
 
 };

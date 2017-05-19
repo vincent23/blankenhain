@@ -78,6 +78,11 @@ plugins = {
 		'type': instrument,
 		'numberOfParameters': 10,
 	},
+	'bh_inverse_phase': {
+		'class': 'InversePhaseEffect',
+		'type': effect,
+		'numberOfParameters': 0,
+	},
 	'bh_limiter': {
 		'class': 'LimiterEffect',
 		'type': effect,

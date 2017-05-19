@@ -41,7 +41,7 @@ PluginBase::PluginBase(audioMasterCallback const& audioMaster, EffectBase* effec
 	: AudioEffectX(audioMaster, 1, effect_->getNumberOfParameters())
 	, speakerArr(nullptr)
 	, effect(effect_)
-	, pluginParameters(new PluginParameterBundle(effect_->getPointerToParameterBundle()))
+	, pluginParameters(effect_->getNumberOfParameters() == 0u ? new PluginParameterBundle(&ParameterBundle(0u)) : new PluginParameterBundle(effect_->getPointerToParameterBundle()))
 	, timeSinceLastBPMandPositionUpdate(0u)
 {
 	canDoubleReplacing(false);
@@ -66,10 +66,16 @@ PluginBase::PluginBase(audioMasterCallback const& audioMaster, EffectBase* effec
 PluginBase::~PluginBase()
 {
 	deallocateArrangement(&speakerArr);
-	if (effect != nullptr) delete effect;
-	effect = nullptr;
-	if (pluginParameters != nullptr) delete pluginParameters;
-	pluginParameters = nullptr;
+	if (effect != nullptr)
+	{
+		delete effect;
+		effect = nullptr;
+	}
+	if (pluginParameters != nullptr)
+	{
+		delete pluginParameters;
+		pluginParameters = nullptr;
+	}
 }
 
 
@@ -219,7 +225,8 @@ void PluginBase::setParameter(VstInt32 index, float value)
 	pluginParameters->setPluginParameter(index, value);
 }	///< Called when a parameter changed
 
-float PluginBase::getParameter(VstInt32 index) {
+float PluginBase::getParameter(VstInt32 index) 
+{
 	return pluginParameters->getParameterNormalized(index);
 }
 

@@ -17,23 +17,31 @@
 
 EffectBase::EffectBase(unsigned int numberOfParameters, bool useTempoData)
 	: tempodata(useTempoData)
-	, paramBundle(new ParameterBundle(numberOfParameters))
-	, parameterValues(new InterpolatedValue<float>[numberOfParameters])
-	, nextModulation(new float[numberOfParameters])
-{ }
+	, paramBundle(numberOfParameters == 0 ? nullptr : new ParameterBundle(numberOfParameters))
+	, parameterValues(numberOfParameters == 0 ? nullptr : new InterpolatedValue<float>[numberOfParameters])
+	, nextModulation(numberOfParameters == 0 ? nullptr : new float[numberOfParameters])
+{ 
+
+}
 
 EffectBase::~EffectBase()
 {
-	for (size_t i = 0u; i < paramBundle->getNumberOfParameters(); i++) {
-		if (paramBundle->getParameter(i) != nullptr) delete paramBundle->getParameter(i);
-		paramBundle->getParameter(i) = nullptr;
+	if (paramBundle != nullptr)
+	{
+		for (size_t i = 0u; i < paramBundle->getNumberOfParameters(); i++)
+		{
+			if (paramBundle->getParameter(i) != nullptr)
+				delete paramBundle->getParameter(i);
+
+			paramBundle->getParameter(i) = nullptr;
+		}
+		delete paramBundle;
 	}
-	if (paramBundle != nullptr) delete paramBundle;
-	paramBundle = nullptr;
+
 	if (parameterValues != nullptr) delete[] parameterValues;
-	parameterValues = nullptr;
+
 	if (nextModulation != nullptr) delete[] nextModulation;
-	nextModulation = nullptr;
+
 }
 
 const bool EffectBase::effectUsesTempoData() const
@@ -76,7 +84,8 @@ void EffectBase::processBlock(Sample* buffer, size_t numberOfSamples)
 
 
 	// TODO find a better way to do initalization
-	if (!initializedParameters) {
+	if (!initializedParameters) 
+	{
 		for (unsigned int parameterIndex = 0; parameterIndex < getNumberOfParameters(); parameterIndex++) {
 			float value = paramBundle->getParameter(parameterIndex)->getValueUnnormalized();
 			// this emulates the previous block end, which we set to the unmodulated current parameter value
@@ -153,7 +162,10 @@ ParameterBundle* EffectBase::getPointerToParameterBundle() const
 
 const unsigned int EffectBase::getNumberOfParameters() const
 {
-	return this->paramBundle->getNumberOfParameters();
+	if (this->paramBundle == nullptr)
+		return 0u;
+	else
+		return this->paramBundle->getNumberOfParameters();
 }
 
 // This function is empty as not all effects have modulation

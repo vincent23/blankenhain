@@ -2,8 +2,10 @@
 
 ParameterBundle::ParameterBundle(unsigned int numberOfParameters_) : numberOfParameters(numberOfParameters_)
 {
-	FloatParameter** stuff = new FloatParameter*[numberOfParameters];
-	parameters = stuff;
+	if (numberOfParameters_ != 0u)
+		parameters = new FloatParameter*[numberOfParameters];
+	else
+		parameters = nullptr;
 }
 
 ParameterBundle::ParameterBundle(const ParameterBundle& other)
@@ -20,7 +22,7 @@ ParameterBundle::~ParameterBundle()
 {
 	if (parameters != nullptr)
 	{
-		delete[] * parameters;
+		delete[] *parameters;
 		*parameters = nullptr;
 	}
 }
