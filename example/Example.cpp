@@ -27,63 +27,82 @@ WinMain(HINSTANCE Instance,
 	unsigned short fcw = 3711;
 	__asm fldcw fcw;
 
-	unsigned int numberOfSamples = blankenhain::lengthInSamples();
+	const unsigned int numberOfSamples = blankenhain::lengthInSamples();
 	float* audioBuffer = new float[numberOfSamples * 2];
-	bool threaded = false;
-	if (threaded) {
-		CreateThread(0, 0, (LPTHREAD_START_ROUTINE)blankenhain::render, audioBuffer, 0, 0);
-		// wait one second
-		//Sleep(100000);
-		Sleep(1000);
-	}
-	else {
-		blankenhain::render(audioBuffer);
-	}
+	const bool threaded = false;
+  const bool debug = false;
+  if (!debug)
+  {
+    if (threaded) {
+      CreateThread(0, 0, (LPTHREAD_START_ROUTINE)blankenhain::render, audioBuffer, 0, 0);
+      // wait one second
+      Sleep(1000);
+    }
+    else {
+      blankenhain::render(audioBuffer);
+    }
+  }
+  else
+  {
+    //Sleep(10000);
+    for (unsigned int i = 0u; i < numberOfSamples * 2; i++)
+      audioBuffer[i] = 1.f;
+  }
 
-	//const unsigned int sampleRate = 44100;
-	//const unsigned int blockAlignment = sizeof(float) * 2;
-	//const unsigned int totalBytes = numberOfSamples * blockAlignment;
-	//const unsigned int bytesPerSecond = sampleRate * blockAlignment;
-	//const unsigned int bitsPerSample = sizeof(float) * 8;
-
-	//HWAVEOUT audio_wave_out;
-	//WAVEHDR audio_wave_header;
-	//audio_wave_header = {
-	//	(LPSTR)audioBuffer,
-	//	totalBytes,
-	//	0,
-	//	0,
-	//	0,
-	//	0,
-	//	0,
-	//	0
-	//};
-	//WAVEFORMATEX wave_format = {
-	//	WAVE_FORMAT_IEEE_FLOAT,
-	//	/* channels        */ 2,
-	//	/* samples/second  */ sampleRate,
-	//	/* bytes/second    */ bytesPerSecond,
-	//	/* block alignment */ blockAlignment,
-	//	/* bits/sample     */ bitsPerSample,
-	//	/* no extensions   */ 0
-	//};
-
-	//waveOutOpen(&audio_wave_out, WAVE_MAPPER, &wave_format, NULL, 0, CALLBACK_NULL);
-	//waveOutPrepareHeader(audio_wave_out, &audio_wave_header, sizeof(audio_wave_header));
-
-	//// play
-
-	//waveOutWrite(audio_wave_out, &audio_wave_header, sizeof(audio_wave_header));
-
-	//Sleep((numberOfSamples / 44100 + 3) * 1000);
+  // Write Wav
+  // via http://soundfile.sapp.org/doc/WaveFormat/
+  HANDLE outputFile;
+  do {
+    outputFile = CreateFile("audio16.wav", GENERIC_WRITE, FILE_SHARE_WRITE, NULL, CREATE_NEW, FILE_ATTRIBUTE_NORMAL, NULL);
+  } while (outputFile == INVALID_HANDLE_VALUE);
 
 
-	HANDLE outputFile;
-	do {
-		outputFile = CreateFile("audio.out", GENERIC_WRITE, FILE_SHARE_WRITE, NULL, CREATE_NEW, FILE_ATTRIBUTE_NORMAL, NULL);
-	} while (outputFile == INVALID_HANDLE_VALUE);
-	WriteFile(outputFile, audioBuffer, sizeof(float) * numberOfSamples * 2, NULL, NULL);
-	CloseHandle(outputFile);
+  WriteFile(outputFile, "RIFF", 4, NULL, NULL);
+  const unsigned char c_subchunksize2 = blankenhain::lengthInSamples() * 2 * 2;
+  const unsigned char c_chunksize = 4 + (8 + 16) + (8 + c_subchunksize2);
+  WriteFile(outputFile, &c_chunksize, 4, NULL, NULL);
+  WriteFile(outputFile, "WAVE", 4, NULL, NULL);
+  WriteFile(outputFile, "fmt ", 4, NULL, NULL);
+
+  const unsigned int c_subchunk1size = 16;
+  WriteFile(outputFile, &c_subchunk1size, 4, NULL, NULL);
+  const short s_audioformat = 1;
+  WriteFile(outputFile, &s_audioformat, 2, NULL, NULL);
+  const short s_numchannels = 2;
+  WriteFile(outputFile, &s_numchannels, 2, NULL, NULL);
+  const unsigned int c_samplerate = 44100;
+  WriteFile(outputFile, &c_samplerate, 4, NULL, NULL);
+  const unsigned int c_byterate = 44100 * 2 * 16 / 8;
+  WriteFile(outputFile, &c_byterate, 4, NULL, NULL);
+
+  const short s_blockalign = 4;
+  WriteFile(outputFile, &s_blockalign, 2 , NULL, NULL);
+  const short s_bitspersample = 16;
+  WriteFile(outputFile, &s_bitspersample, 2 , NULL, NULL);
+  WriteFile(outputFile, "data", 4, NULL, NULL);
+  WriteFile(outputFile, &c_subchunksize2, 4, NULL, NULL);
+  
+  __int16* data = new __int16[blankenhain::lengthInSamples() * 2];
+  for (unsigned int i = 0u; i < blankenhain::lengthInSamples() * 2; i = i + 2)
+  {
+    data[i / 2u]                                  = static_cast<__int16>( (audioBuffer[i]     + 1.f) / 0.5f * 65535.f) - 32768;
+    data[i / 2u + blankenhain::lengthInSamples()] = static_cast<__int16>( (audioBuffer[i + 1] + 1.f) / 0.5f * 65535.f) - 32768;
+  }
+  WriteFile(outputFile, data, sizeof(__int16) * blankenhain::lengthInSamples() * 2, NULL, NULL);
+  CloseHandle(outputFile);
+  if (data != nullptr)
+  {
+    delete[] data;
+    data = nullptr;
+  }
+
+  //old code, write raw audio
+	//HANDLE outputFile;
+	//do {
+	//	outputFile = CreateFile("audio.out", GENERIC_WRITE, FILE_SHARE_WRITE, NULL, CREATE_NEW, FILE_ATTRIBUTE_NORMAL, NULL);
+	//} while (outputFile == INVALID_HANDLE_VALUE);
+	//WriteFile(outputFile, audioBuffer, sizeof(float) * numberOfSamples * 2, NULL, NULL);
+	//CloseHandle(outputFile);
 
 
 	delete audioBuffer;
