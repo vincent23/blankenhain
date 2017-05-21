@@ -62,7 +62,14 @@ class Device:
 			# ignore unrecognized devices
 			return None
 		device.parse(deviceXml)
-		return device
+		# Try / Except to check if the device is empty audiEffectRack. if yes, return None
+		try:
+			if device.isCurrentlyEmpty():
+				return None
+			else:
+				return device
+		except:
+			return device
 
 	def setInputTrackIndex(self, index):
 		pass
@@ -267,7 +274,7 @@ class CombinedDevice(Device):
 		for device in self.children:
 			if (device.isOffEntireTime == False):
 				#check if we have a group device as child,
-				# if yes, it might be empty, we need to take care of thath
+				# if yes, it might be empty, we need to take care of that
 				try:
 					if (len(device.children) != 0):
 						deviceNames.append('&' + device.emitSource(songInfo))
@@ -286,6 +293,9 @@ class CombinedDevice(Device):
 	def setInputTrackIndex(self, index):
 		for x in self.children:
 			x.setInputTrackIndex(index)
+			
+	def isCurrentlyEmpty(self):
+		return len(self.children) == 0
 
 class GroupDevice(CombinedDevice):
 	def __init__(self): 
@@ -303,7 +313,8 @@ class GroupDevice(CombinedDevice):
 		for branchXml in branchesXml:
 			deviceChain = ChainDevice.fromXml(branchXml.find(deviceChainName))
 			deviceChain.appendMixer(branchXml.find('MixerDevice'))
-			self.children.append(deviceChain)
+			if not deviceChain.isCurrentlyEmpty():
+				self.children.append(deviceChain)
 
 	def emitSource(self, songInfo):
 		devicesArrayName = super().emitSource(songInfo)
@@ -353,7 +364,13 @@ class ChainDevice(CombinedDevice):
 				max(0, float(eventXml.get('Time'))),
 				0.5 + 0.5 * float(eventXml.get('Value'))
 			) for eventXml in eventsXml]
-		self.children.append(pan)
+
+		# Check if panning is always equal 0 ("middle" / "zeroPanning")
+		# Only append panDevice if necessary
+		if (len(pan.parameters[1]) != 1) or (pan.parameters[1][0].value != 0.5 ):
+			self.children.append(pan)
+		#self.children.append(pan)
+
 		# TODO append volume device
 		# we have to figure out how ableton maps slider <-> dB
 		# (important for interpolation)
