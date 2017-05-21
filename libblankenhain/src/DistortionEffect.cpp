@@ -26,7 +26,7 @@ void DistortionEffect::process(Sample* buffer, size_t numberOfSamples, size_t cu
 	else if (getInterpolatedParameter(2).get() < 0.66666) algo = distortionAlgorithms::DoidicSymmetric;
 	else algo = distortionAlgorithms::DoidicAsymmetric;
 
-	alignas(16) double lr[2];
+	alignas(16) floatType lr[2];
 	//Iterations through nonlinear scaling
 	Sample inGainSample(aux::decibelToLinear(inGain));
 	for (size_t bufferIteration = 0; bufferIteration < numberOfSamples; bufferIteration++)
@@ -74,7 +74,7 @@ void DistortionEffect::process(Sample* buffer, size_t numberOfSamples, size_t cu
 					}
 				}
 			}
-			processed = Sample::load_aligned(lr);
+			processed = Sample(lr[0], lr[1]);
 		}
 		buffer[bufferIteration] = aux::mixDryWet(buffer[bufferIteration], processed, drywet);
 	}

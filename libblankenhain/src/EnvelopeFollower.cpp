@@ -35,15 +35,15 @@ Sample _vectorcall EnvelopeFollower::getCurrentEnvelope() const
 Sample _vectorcall EnvelopeFollower::nextEnvelope(Sample envelopeSample)
 {
 	// TODO do this in a fancy simd way without unpacking
-	alignas(16) double envelopeUnpacked[2];
-	alignas(16) double envelopeSampleUnpacked[2];
+	alignas(16) floatType envelopeUnpacked[2];
+	alignas(16) floatType envelopeSampleUnpacked[2];
 	envelope.store_aligned(envelopeUnpacked);
 	envelopeSample.store_aligned(envelopeSampleUnpacked);
-	alignas(16) double currentGainUnpacked[2];
+	alignas(16) floatType currentGainUnpacked[2];
 	for (unsigned int i = 0; i < 2; i++) {
 		currentGainUnpacked[i] = envelopeUnpacked[i] < envelopeSampleUnpacked[i] ? attackGain : releaseGain;
 	}
-	Sample currentGain = Sample::load_aligned(currentGainUnpacked);
+	Sample currentGain(currentGainUnpacked[0], currentGainUnpacked[1]);
 	envelope = envelopeSample + currentGain * (envelope - envelopeSample);
 	return envelope;
 }

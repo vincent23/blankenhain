@@ -24,7 +24,7 @@ void BlankenhainPlayer::play(Song& song, float* audioBuffer)
 		Sample* output = song.master.process(song.songInfo, buffer, i);
 		for (unsigned int j = 0; j < constants::blockSize; j++)
 		{
-			alignas(16) double sample[2];
+			alignas(16) floatType sample[2];
 			output[j].store_aligned(sample);
 			audioBuffer[2 * (i + j)] = float(sample[0]);
 			audioBuffer[2 * (i + j) + 1] = float(sample[1]);

@@ -114,7 +114,7 @@ WinMain(HINSTANCE Instance,
 		{
 			DWORD dw = GetLastError();
 		}
-		CloseHandle(outputFile);
+
 		if (audioBufferAs16BitInt != nullptr)
 		{
 			delete[] audioBufferAs16BitInt;
@@ -125,13 +125,9 @@ WinMain(HINSTANCE Instance,
 	{
 		// Legacy Feature
 		// Write audio as raw floating point values
-		HANDLE outputFile;
-		do {
-			outputFile = CreateFile(nameOfOutputFile, GENERIC_WRITE, FILE_SHARE_WRITE, NULL, CREATE_NEW, FILE_ATTRIBUTE_NORMAL, NULL);
-		} while (outputFile == INVALID_HANDLE_VALUE);
 		WriteFile(outputFile, audioBuffer, sizeof(float) * numberOfSamples * 2, NULL, NULL);
-		CloseHandle(outputFile);
 	}
+	CloseHandle(outputFile);
 
 	delete audioBuffer;
 	return 0;

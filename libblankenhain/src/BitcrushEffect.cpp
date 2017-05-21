@@ -79,9 +79,9 @@ void BitcrushEffect::process(Sample* buffer, size_t numberOfSamples, size_t curr
 
 Sample BitcrushEffect::discretize(Sample const& sample)
 {
-	alignas(16) double lr[2];
+	alignas(16) floatType lr[2];
 	sample.store_aligned(lr);
-	lr[0] = static_cast<double>(static_cast<int>(lr[0]));
-	lr[1] = static_cast<double>(static_cast<int>(lr[1]));
-	return Sample::load_aligned(lr);
+	lr[0] = static_cast<floatType>(static_cast<int>(lr[0]));
+	lr[1] = static_cast<floatType>(static_cast<int>(lr[1]));
+	return Sample(lr[0], lr[1]);
 }

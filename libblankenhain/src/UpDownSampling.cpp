@@ -84,7 +84,7 @@ Sample* upsampleSpline(Sample* buffer, size_t originalSamples, size_t interpolat
 	d_right = new double[originalSamples];
 
 	// Store Left and Right Samples
-	alignas(16) double tempbuffer[2];
+	alignas(16) floatType tempbuffer[2];
 	for (size_t i = 0; i < originalSamples; i++)
 	{
 		buffer[i].store_aligned(tempbuffer);
