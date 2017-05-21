@@ -50,28 +50,32 @@ WinMain(HINSTANCE Instance,
 
 	const unsigned int numberOfSamples = blankenhain::lengthInSamples();
 	float* audioBuffer = new float[numberOfSamples * 2];
+
 	blankenhain::render(audioBuffer);
+
+
+	HANDLE outputFile;
+	do {
+		outputFile = CreateFile(nameOfOutputFile, GENERIC_WRITE, FILE_SHARE_WRITE, NULL, CREATE_NEW, FILE_ATTRIBUTE_NORMAL, NULL);
+		if (outputFile == INVALID_HANDLE_VALUE)
+		{
+			DWORD error = GetLastError();
+			if (error == 80u)
+			{
+				if (!DeleteFile(nameOfOutputFile))
+				{
+					//error = GetLastError();
+					Sleep(30);
+				}
+			}
+		}
+	} while (outputFile == INVALID_HANDLE_VALUE);
 
 	if (!writeLegacyRAWAudio)
 	{
 		// Write Riff-Wave
 		// via http://soundfile.sapp.org/doc/WaveFormat/
-		HANDLE outputFile;
-		do {
-			outputFile = CreateFile(nameOfOutputFile, GENERIC_WRITE, FILE_SHARE_WRITE, NULL, CREATE_NEW, FILE_ATTRIBUTE_NORMAL, NULL);
-			if (outputFile == INVALID_HANDLE_VALUE)
-			{
-				DWORD error = GetLastError();
-				if (error == 80u)
-				{
-					if (!DeleteFile(nameOfOutputFile))
-					{
-						//error = GetLastError();
-						Sleep(30);
-					}
-				}
-			}
-		} while (outputFile == INVALID_HANDLE_VALUE);
+
 
 
 		WriteFile(outputFile, "RIFF", 4, NULL, NULL);
