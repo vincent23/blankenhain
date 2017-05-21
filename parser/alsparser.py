@@ -66,6 +66,9 @@ class Device:
 
 	def setInputTrackIndex(self, index):
 		pass
+	
+	def __init__(self):
+		self.isOffEntireTime = False
 
 class ParameterEvent:
 	def __init__(self, time, value):
@@ -74,6 +77,7 @@ class ParameterEvent:
 
 class EffectDevice(Device):
 	def __init__(self, className, numberOfParameters):
+		super(EffectDevice, self).__init__()
 		self.parameters = [None] * numberOfParameters
 		self.className = className
 		self.inputTrackIndex = 0
@@ -108,6 +112,9 @@ class EffectDevice(Device):
 		# and add it after the other ones
 		onEventsXml = deviceXml.findall('./On/ArrangerAutomation/Events/BoolEvent')
 		onEvents = []
+		# Check if Effect is Off the entire time:
+		if len(onEventsXml) == 1:
+			self.isOffEntireTime = True if onEventsXml[0].get('Value') == 'false' else False
 		for eventXml in onEventsXml:
 			eventTime = max(0, float(eventXml.get('Time')))
 			onAsFloat = 1.0 if eventXml.get('Value') == 'true' else 0.0
@@ -117,46 +124,48 @@ class EffectDevice(Device):
 
 	def emitSource(self, songInfo):
 		deviceName = songInfo.nextDeviceName()
-		parameterTracksName = self.emitParameterTracksSource(songInfo)
-		effectName = deviceName + '_effect';
-		songInfo.cppSource.append('{} {};'.format(self.className, effectName))
-		songInfo.cppSource.append('EffectDevice {}({}, {});'.format(deviceName, effectName, parameterTracksName))
+		if self.isOffEntireTime == False:
+			parameterTracksName = self.emitParameterTracksSource(songInfo)
+			effectName = deviceName + '_effect';
+			songInfo.cppSource.append('{} {};'.format(self.className, effectName))
+			songInfo.cppSource.append('EffectDevice {}({}, {});'.format(deviceName, effectName, parameterTracksName))
 		return deviceName
 
 	def emitParameterTracksSource(self, songInfo):
 		arrayName = songInfo.currentDeviceName() + '_parameters'
-		parameterTracks = []
-		for parameterIndex, parameter in enumerate(self.parameters):
-			# clip values to start/end
-			songStart = songInfo.songStart
-			songEnd = songInfo.songStart + songInfo.songDuration
-			startIndex = next((i for i, v in enumerate(parameter) if v.time >= songStart), None)
-			afterEndIndex = next((i for i, v in enumerate(parameter) if v.time >= songEnd), len(parameter))
-			samplePositions = []
-			normalizedValues = []
-			if startIndex is None:
-				samplePositions.append(0)
-				normalizedValues.append(parameter[-1].value)
-			else:
-				oneBeforeStart = max(startIndex - 1, 0)
-				oneAfterEnd = afterEndIndex + 1
-				samplePositions.extend((songInfo.beatsToSamples(event.time) for event in parameter[oneBeforeStart:oneAfterEnd]))
-				normalizedValues.extend((event.value for event in parameter[oneBeforeStart:oneAfterEnd]))
-			if samplePositions[0] < 0:
-				if len(parameter) > 1:
-					t = -samplePositions[0] / (samplePositions[1] - samplePositions[0])
-					normalizedValues[0] = normalizedValues[0] * (1 - t) + normalizedValues[1] * t
-				samplePositions[0] = 0
-			# remove default value if there is automation
-			if len(samplePositions) >= 2 and samplePositions[0] == 0 and samplePositions[1] == 0:
-				samplePositions = samplePositions[1:]
-				normalizedValues = normalizedValues[1:]
-			positionsName = songInfo.currentDeviceName() + '_parameter_{}_samplePositions'.format(parameterIndex)
-			valuesName = songInfo.currentDeviceName() + '_parameter_{}_values'.format(parameterIndex)
-			songInfo.appendCppArray(positionsName, 'unsigned int', samplePositions)
-			songInfo.appendCppArray(valuesName, 'float', normalizedValues)
-			parameterTracks.append('ParameterTrack({}, {}, {})'.format(len(parameter), positionsName, valuesName))
-		songInfo.appendCppArray(arrayName, 'ParameterTrack', parameterTracks, linebreak=True)
+		if self.isOffEntireTime == False:
+			parameterTracks = []
+			for parameterIndex, parameter in enumerate(self.parameters):
+				# clip values to start/end
+				songStart = songInfo.songStart
+				songEnd = songInfo.songStart + songInfo.songDuration
+				startIndex = next((i for i, v in enumerate(parameter) if v.time >= songStart), None)
+				afterEndIndex = next((i for i, v in enumerate(parameter) if v.time >= songEnd), len(parameter))
+				samplePositions = []
+				normalizedValues = []
+				if startIndex is None:
+					samplePositions.append(0)
+					normalizedValues.append(parameter[-1].value)
+				else:
+					oneBeforeStart = max(startIndex - 1, 0)
+					oneAfterEnd = afterEndIndex + 1
+					samplePositions.extend((songInfo.beatsToSamples(event.time) for event in parameter[oneBeforeStart:oneAfterEnd]))
+					normalizedValues.extend((event.value for event in parameter[oneBeforeStart:oneAfterEnd]))
+				if samplePositions[0] < 0:
+					if len(parameter) > 1:
+						t = -samplePositions[0] / (samplePositions[1] - samplePositions[0])
+						normalizedValues[0] = normalizedValues[0] * (1 - t) + normalizedValues[1] * t
+					samplePositions[0] = 0
+				# remove default value if there is automation
+				if len(samplePositions) >= 2 and samplePositions[0] == 0 and samplePositions[1] == 0:
+					samplePositions = samplePositions[1:]
+					normalizedValues = normalizedValues[1:]
+				positionsName = songInfo.currentDeviceName() + '_parameter_{}_samplePositions'.format(parameterIndex)
+				valuesName = songInfo.currentDeviceName() + '_parameter_{}_values'.format(parameterIndex)
+				songInfo.appendCppArray(positionsName, 'unsigned int', samplePositions)
+				songInfo.appendCppArray(valuesName, 'float', normalizedValues)
+				parameterTracks.append('ParameterTrack({}, {}, {})'.format(len(parameter), positionsName, valuesName))
+			songInfo.appendCppArray(arrayName, 'ParameterTrack', parameterTracks, linebreak=True)
 		return arrayName
 
 	def setInputTrackIndex(self, index):
@@ -250,13 +259,28 @@ class ReturnDevice(Device):
 
 class CombinedDevice(Device):
 	def __init__(self):
+		super(CombinedDevice, self).__init__()
 		self.children = []
 
 	def emitSource(self, songInfo):
-		deviceNames = ['&' + device.emitSource(songInfo) for device in self.children]
+		deviceNames = []
+		for device in self.children:
+			if (device.isOffEntireTime == False):
+				#check if we have a group device as child,
+				# if yes, it might be empty, we need to take care of thath
+				try:
+					if (len(device.children) != 0):
+						deviceNames.append('&' + device.emitSource(songInfo))
+				except AttributeError:
+					#not a groupdevice as child
+					deviceNames.append('&' + device.emitSource(songInfo))
+
+
 		# take the id of the group device to be emitted for device array
 		arrayName = 'deviceList_{}'.format(songInfo.nextFreeDeviceId)
-		songInfo.appendCppArray(arrayName, 'Device*', deviceNames)
+		# Take care of special case: Empty Combined Device
+		if len(deviceNames) != 0:
+			songInfo.appendCppArray(arrayName, 'Device*', deviceNames)
 		return arrayName
 
 	def setInputTrackIndex(self, index):
@@ -264,6 +288,9 @@ class CombinedDevice(Device):
 			x.setInputTrackIndex(index)
 
 class GroupDevice(CombinedDevice):
+	def __init__(self): 
+		super(GroupDevice, self).__init__()
+
 	# TODO 'on' parameter not supported for group right now
 	def parse(self, deviceXml):
 		branchesXml = deviceXml.findall('./Branches/AudioEffectBranch')
@@ -282,10 +309,17 @@ class GroupDevice(CombinedDevice):
 		devicesArrayName = super().emitSource(songInfo)
 		deviceName = songInfo.nextDeviceName()
 		numberOfDevices = len(self.children)
-		songInfo.cppSource.append('GroupDevice {}({}, {});'.format(deviceName, numberOfDevices, devicesArrayName))
-		return deviceName
+		# Take care of special case: Empty Combined Device
+		if numberOfDevices != 0:
+			songInfo.cppSource.append('GroupDevice {}({}, {});'.format(deviceName, numberOfDevices, devicesArrayName))
+			return deviceName
+		else:
+			return None
 
 class ChainDevice(CombinedDevice):
+	def __init__(self): 
+		super(ChainDevice, self).__init__()
+
 	def fromXml(deviceChainXml):
 		device = ChainDevice()
 		device.parse(deviceChainXml)
@@ -293,7 +327,7 @@ class ChainDevice(CombinedDevice):
 
 	def parse(self, deviceChainXml):
 		devicesXml = deviceChainXml.findall('./Devices/*[@Id]')
-		self.children = [x for x in (Device.fromXml(device) for device in devicesXml) if x is not None]
+		self.children = [x for x in (Device.fromXml(device) for device in devicesXml) if (x is not None) and (x.isOffEntireTime == False)]
 
 	def appendMixer(self, mixerXml):
 		# pan is called either "Pan" or "Panorama"
