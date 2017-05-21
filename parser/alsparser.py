@@ -38,6 +38,7 @@ class Device:
 				if name.startswith('bh_'):
 					# device is unknown, but probably it's a blankenhain device
 					eprint('Warning: unrecognized device "{}"'.format(name))
+					eprint('Did you forget to add it to the config.py file?')
 				# ignore unrecognized devices
 				return None
 			pluginType = plugin['type']
@@ -566,10 +567,16 @@ def convert(filename):
 	masterName = rootChain.emitSource(songInfo)
 
 	songInfo.appendCppArray('midiTracks', 'MidiTrack*', midiTrackNames)
-	# todo buffer might be too big if we have unused return tracks
-	songInfo.cppSource.append('Sample sendBuffers[constants::blockSize * {}];'.format(len(returnTracks)))
-	lengthInSamples = songInfo.beatsToSamples(songInfo.songStart + songInfo.songDuration)
-	songInfo.cppSource.append('SongInfo songInfo(midiTracks, sendBuffers, {}, {}, {});'.format(len(returnTracks), songInfo.bpm, lengthInSamples))
+
+	if len(returnTracks) != 0:
+		# todo buffer might be too big if we have unused return tracks
+		songInfo.cppSource.append('Sample sendBuffers[constants::blockSize * {}];'.format(len(returnTracks)))
+		lengthInSamples = songInfo.beatsToSamples(songInfo.songStart + songInfo.songDuration)
+		songInfo.cppSource.append('SongInfo songInfo(midiTracks, sendBuffers, {}, {}, {});'.format(len(returnTracks), songInfo.bpm, lengthInSamples))
+	else:
+		lengthInSamples = songInfo.beatsToSamples(songInfo.songStart + songInfo.songDuration)
+		songInfo.cppSource.append('SongInfo songInfo(midiTracks, nullptr, 0u, {}, {});'.format(songInfo.bpm, lengthInSamples))
+
 	songInfo.cppSource.append('Song song(songInfo, {});'.format(masterName))
 	songInfo.cppSource.append('#define LENGTH_IN_SAMPLES {}'.format(lengthInSamples))
 	print('\n'.join(songInfo.cppSource))
