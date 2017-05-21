@@ -356,6 +356,7 @@ class Track:
 		self.notes = []
 		self.trackGroupId = -1
 		self.trackId = None
+		self.isOffEntireTime = False
 
 	def fromXml(trackXml):
 		track = Track()
@@ -380,8 +381,16 @@ class Track:
 			else:
 				eprint("Unsupported routing: '{}'".format(routingXml.get('Value')))
 
+
 		deviceChainXml = toplevelChainXml.find('./DeviceChain')
 		self.rootDevice = ChainDevice.fromXml(deviceChainXml)
+
+		# Check if Track is Off the entire time:
+		onEventsXml = trackXml.findall('./DeviceChain/Mixer/Speaker/ArrangerAutomation/Events/BoolEvent')
+		onEvents = []
+		if len(onEventsXml) == 1:
+			eventTime = max(0, float(onEventsXml[0].get('Time')))
+			self.isOffEntireTime = True if onEventsXml[0].get('Value') == 'false' else False
 
 		trackGroupIdXml = trackXml.find('./TrackGroupId')
 		self.trackGroupId = int(trackGroupIdXml.get('Value'))
@@ -448,25 +457,26 @@ class Track:
 							timeInTrack += loopLength
 
 	def emitSource(self, songInfo):
-		events = []
-		for note in self.notes:
-			if note.start < songInfo.songStart or note.start > (songInfo.songStart + songInfo.songDuration):
-				continue
-			startInSamples = songInfo.beatsToSamples(note.start)
-			endInSamples = songInfo.beatsToSamples(note.start + note.duration)
-			events.append((startInSamples, note.key, note.velocity))
-			events.append((endInSamples, note.key, 0))
-		events.sort()
-		samplePositions, keys, velocities = zip(*events) if events else ([], [], [])
-		trackName = songInfo.nextTrackName()
-		samplePositionsName = trackName + '_samplePositions'
-		keysName = trackName + '_keys'
-		velocitiesName = trackName + '_velocities'
-		songInfo.appendCppArray(samplePositionsName, 'unsigned int', deltaEncoded(samplePositions))
-		songInfo.appendCppArray(keysName, 'unsigned int', keys)
-		songInfo.appendCppArray(velocitiesName, 'unsigned int', velocities)
-		songInfo.cppSource.append('MidiTrack {}({}, {}, {}, {});'.format(
-			trackName, len(events), samplePositionsName, keysName, velocitiesName))
+		if self.isOffEntireTime == False:
+			events = []
+			for note in self.notes:
+				if note.start < songInfo.songStart or note.start > (songInfo.songStart + songInfo.songDuration):
+					continue
+				startInSamples = songInfo.beatsToSamples(note.start)
+				endInSamples = songInfo.beatsToSamples(note.start + note.duration)
+				events.append((startInSamples, note.key, note.velocity))
+				events.append((endInSamples, note.key, 0))
+			events.sort()
+			samplePositions, keys, velocities = zip(*events) if events else ([], [], [])
+			trackName = songInfo.nextTrackName()
+			samplePositionsName = trackName + '_samplePositions'
+			keysName = trackName + '_keys'
+			velocitiesName = trackName + '_velocities'
+			songInfo.appendCppArray(samplePositionsName, 'unsigned int', deltaEncoded(samplePositions))
+			songInfo.appendCppArray(keysName, 'unsigned int', keys)
+			songInfo.appendCppArray(velocitiesName, 'unsigned int', velocities)
+			songInfo.cppSource.append('MidiTrack {}({}, {}, {}, {});'.format(
+				trackName, len(events), samplePositionsName, keysName, velocitiesName))
 		return trackName
 
 class SongInfo:
@@ -539,8 +549,8 @@ def convert(filename):
 	songInfo = SongInfo.fromXml(liveSetXml)
 
 	midiTrackNames = []
-	# omit empty tracks
-	for trackIndex, midiTrack in enumerate((track for track in midiTracks if track.notes)):
+	# omit empty tracks and tracks that are off the entire time
+	for trackIndex, midiTrack in enumerate((track for track in midiTracks if track.notes and not track.isOffEntireTime)):
 		midiTrackNames.append('&' + midiTrack.emitSource(songInfo))
 		midiTrack.rootDevice.setInputTrackIndex(trackIndex)
 
@@ -560,9 +570,9 @@ def convert(filename):
 	# build root device from master root device + group of all tracks
 	rootChain = masterTrack.rootDevice
 	midiTrackGroup = GroupDevice()
-	# ignore tracks that don't go to master or have no devices
+	# ignore tracks that don't go to master or have no devices or are turned off 
 	midiTrackGroup.children = [track.rootDevice for track in (midiTracks + groupTracks + returnTracks)
-		if (track.outputRouting == routingMaster or track.outputRouting == routingSends) and track.rootDevice.children]
+		if (track.outputRouting == routingMaster or track.outputRouting == routingSends) and track.rootDevice.children and not track.isOffEntireTime]
 	rootChain.children.insert(0, midiTrackGroup)
 	masterName = rootChain.emitSource(songInfo)
 
