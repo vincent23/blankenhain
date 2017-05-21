@@ -13,7 +13,7 @@
 const char* nameOfOutputFile = "blankenhainWaveWriter.wav";
 
 // Set to true to write RAW floating point audio instead of a wav file
-const bool writeLegacyRAWAudio = false;
+constexpr bool writeLegacyRAWAudio = false;
 
 ////////////////////////////
 ////////////////////////////
@@ -59,6 +59,18 @@ WinMain(HINSTANCE Instance,
 		HANDLE outputFile;
 		do {
 			outputFile = CreateFile(nameOfOutputFile, GENERIC_WRITE, FILE_SHARE_WRITE, NULL, CREATE_NEW, FILE_ATTRIBUTE_NORMAL, NULL);
+			if (outputFile == INVALID_HANDLE_VALUE)
+			{
+				DWORD error = GetLastError();
+				if (error == 80u)
+				{
+					if (!DeleteFile(nameOfOutputFile))
+					{
+						//error = GetLastError();
+						Sleep(30);
+					}
+				}
+			}
 		} while (outputFile == INVALID_HANDLE_VALUE);
 
 
@@ -94,7 +106,10 @@ WinMain(HINSTANCE Instance,
 			__int16 value = static_cast<__int16>((fval + 1.f) / 2.f * 65535.f) - 32768;
 			audioBufferAs16BitInt[i] = value;
 		}
-		WriteFile(outputFile, audioBufferAs16BitInt, sizeof(__int16) * blankenhain::lengthInSamples() * 2, NULL, NULL);
+		if (WriteFile(outputFile, audioBufferAs16BitInt, sizeof(__int16) * blankenhain::lengthInSamples() * 2, NULL, NULL) == false)
+		{
+			DWORD dw = GetLastError();
+		}
 		CloseHandle(outputFile);
 		if (audioBufferAs16BitInt != nullptr)
 		{
