@@ -79,8 +79,8 @@ WinMain(HINSTANCE Instance,
 
 
 		WriteFile(outputFile, "RIFF", 4, NULL, NULL);
-		const unsigned char c_subchunksize2 = blankenhain::lengthInSamples() * 2 * 2;
-		const unsigned char c_chunksize = 4 + (8 + 16) + (8 + c_subchunksize2);
+		const UINT32 c_subchunksize2 = blankenhain::lengthInSamples() * 2 * 2;
+		const UINT32 c_chunksize = 4 + (8 + 16) + (8 + blankenhain::lengthInSamples() * 2 * 2);
 		WriteFile(outputFile, &c_chunksize, 4, NULL, NULL);
 		WriteFile(outputFile, "WAVE", 4, NULL, NULL);
 		WriteFile(outputFile, "fmt ", 4, NULL, NULL);
