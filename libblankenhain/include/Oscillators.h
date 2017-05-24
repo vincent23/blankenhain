@@ -61,7 +61,7 @@ public:
 		mPhase = BhMath::fmod(mPhase, length);
 		return getValue();
 	}
-	static const float length;
+	const float length = 2.f * static_cast<float>(constants::pi);
 private:
 	float mPhase;
 };

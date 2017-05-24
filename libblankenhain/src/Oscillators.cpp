@@ -9,7 +9,7 @@
 
 #include "Oscillators.h"
 
-const float OscillatorPhase::length = 2.f * static_cast<float>(constants::pi);
+//constexpr float OscillatorPhase::length = 2.f * static_cast<float>(constants::pi);
 
 NaiveOscillator::NaiveOscillator() :
 	BaseOscillator(),

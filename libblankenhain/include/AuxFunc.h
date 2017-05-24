@@ -2,6 +2,8 @@
 #include "Constants.h"
 #include "warnings.h"
 #include "Sample.h"
+#include "BhMath.h"
+
 /*
  * Namespace for common conversions 
  * of units and such

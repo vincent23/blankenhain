@@ -193,9 +193,9 @@ void gmsynthInstrument::processVoice(VoiceState& voice, unsigned int timeInSampl
 
 void gmsynthInstrument::loadMidiInstrument(const gmInstrument& instrument)
 {
-	static char paths[] = "\\drivers\x0"
+	char paths[] = "\\drivers\x0"
 		"\\drivers\\etc";
-	static char fileName[] = "\\gm.dls";
+	char fileName[] = "\\gm.dls";
 	char path[256];
 	char *pathsPtr = paths;
 

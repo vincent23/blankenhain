@@ -13,7 +13,7 @@
 const char* nameOfOutputFile = "blankenhainWaveWriter.wav";
 
 // Set to true to write RAW floating point audio instead of a wav file
-constexpr bool writeLegacyRAWAudio = false;
+const bool writeLegacyRAWAudio = false;
 
 ////////////////////////////
 ////////////////////////////
@@ -79,8 +79,8 @@ WinMain(HINSTANCE Instance,
 
 
 		WriteFile(outputFile, "RIFF", 4, NULL, NULL);
-		const UINT32 c_subchunksize2 = blankenhain::lengthInSamples() * 2 * 2;
-		const UINT32 c_chunksize = 4 + (8 + 16) + (8 + blankenhain::lengthInSamples() * 2 * 2);
+		const unsigned int c_subchunksize2 = blankenhain::lengthInSamples() * 2 * 2;
+		const unsigned int c_chunksize = 4 + (8 + 16) + (8 + blankenhain::lengthInSamples() * 2 * 2);
 		WriteFile(outputFile, &c_chunksize, 4, NULL, NULL);
 		WriteFile(outputFile, "WAVE", 4, NULL, NULL);
 		WriteFile(outputFile, "fmt ", 4, NULL, NULL);

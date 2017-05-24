@@ -27,21 +27,22 @@ public:
 	float amVal;
 };
 
+#ifndef _LIBBLANKENHAIN_NUM_OSCS_FM_SYNTH
+#define _LIBBLANKENHAIN_NUM_OSCS_FM_SYNTH 9
+#endif
 
 class FmInstrument : public InstrumentBase
 {
 private:
-	static const unsigned int numOsc = 9u;
-
 	// oscillators
-	PolyBLEPOscillator osc[numOsc];
+	PolyBLEPOscillator osc[_LIBBLANKENHAIN_NUM_OSCS_FM_SYNTH];
 
 	// modulation information for each osc
-	FmModulation mod[numOsc];
+	FmModulation mod[_LIBBLANKENHAIN_NUM_OSCS_FM_SYNTH];
 
 	I_SoundGenerator* currentSound;
 
-	float lastOscValues[numOsc];
+	float lastOscValues[_LIBBLANKENHAIN_NUM_OSCS_FM_SYNTH];
 	float lastCarrierValue;
 
 	float freqPrev;

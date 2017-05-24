@@ -1,5 +1,4 @@
 #include "AuxFunc.h"
-#include "BhMath.h"
 
 // Auxiliary helper functions
 namespace aux
@@ -109,9 +108,10 @@ namespace aux
 	}
 
 
-	const float panningBoost = aux::decibelToLinear(3.f);
+	
 	void performPanning(Sample& sample, float const& panningBetweenMinusOneAndOne)
 	{
+    const float panningBoost = aux::decibelToLinear(3.f);
 		const float left = aux::max(0.f, -panningBetweenMinusOneAndOne);
 		const float right = aux::max(0.f, panningBetweenMinusOneAndOne);
 		const float panLeft = ((1.f - left) + left * panningBoost) * (1.f - right);

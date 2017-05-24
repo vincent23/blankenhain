@@ -11,7 +11,7 @@ public:
 
 	void process(Sample* buffer, size_t numberOfSamples, size_t currentTime) override;
 
-	static const unsigned int numberOfFilters = 8;
+	const unsigned int numberOfFilters = 8;
 
 private:
 	Filter<Sample> filters[8];
