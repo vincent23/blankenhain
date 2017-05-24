@@ -257,6 +257,7 @@ class SendDevice(EffectDevice):
 
 class ReturnDevice(Device):
 	def __init__(self, returnTrackIndex):
+		super(ReturnDevice, self).__init__()
 		self.returnTrackIndex = returnTrackIndex
 
 	def emitSource(self, songInfo):
