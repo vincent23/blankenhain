@@ -21,12 +21,12 @@ DelayEffect::DelayEffect() : EffectBase(7, true), delayLine(size_t(aux::millisec
 
 void DelayEffect::process(Sample* buffer, size_t numberOfSamples, size_t currentTime)
 {
-	float pan = getInterpolatedParameter(0).get();
-	float length = getInterpolatedParameter(1).get();
-	float feedback = getInterpolatedParameter(2).get();
-	float drywet = getInterpolatedParameter(3).get();
-	bool panicButton = getInterpolatedParameter(4).get() == 1.f;
-	bool tempoSync = getInterpolatedParameter(6).get() == 1.f;
+	const float pan = getInterpolatedParameter(0).get();
+	const float length = getInterpolatedParameter(1).get();
+	const float feedback = getInterpolatedParameter(2).get();
+	const float drywet = getInterpolatedParameter(3).get();
+	const bool panicButton = getInterpolatedParameter(4).get() == 1.f;
+	const bool tempoSync = getInterpolatedParameter(6).get() == 1.f;
 
 	if (!tempoSync)
 		delayLine.setSize(static_cast<size_t>(aux::millisecToSamples(length)));
@@ -49,9 +49,9 @@ void DelayEffect::process(Sample* buffer, size_t numberOfSamples, size_t current
 		else
 			beatMultiplier = 4.f;
 
-		float quarterNoteLength = (60.f /*seconds in a minute*/ * beatMultiplier) / tempodata.bpm;
-		float sixteenthNoteLength = quarterNoteLength / 4.f;
-		float wholeBeatLength = sixteenthNoteLength * 16.f;
+		const float quarterNoteLength = (60.f /*seconds in a minute*/ * beatMultiplier) / tempodata.bpm;
+		const float sixteenthNoteLength = quarterNoteLength / 4.f;
+		const float wholeBeatLength = sixteenthNoteLength * 16.f;
 
 		delayLine.setSize(static_cast<size_t>(aux::millisecToSamples(quarterNoteLength * 1000.f/*sec to ms*/)));
 	}
@@ -70,9 +70,8 @@ void DelayEffect::process(Sample* buffer, size_t numberOfSamples, size_t current
 	{
 		Sample original = buffer[i];
 		Sample line = delayLine.get();
+		aux::performPanning(line, pan * 0.02f); // Pan
 		buffer[i] = aux::mixDryWet(original, line, drywet);
-		// Pan
-		aux::performPanning(buffer[i], pan * 0.02f);
 		delayLine.push(delayLine.get() * Sample(feedback) + original);
 	}
 	nextSample(numberOfSamples);
