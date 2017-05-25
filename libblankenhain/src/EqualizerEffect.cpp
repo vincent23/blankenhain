@@ -4,11 +4,11 @@
 #include "InterpolatedValue.h"
 #include "AuxFunc.h"
 
-EqualizerEffect::EqualizerEffect() : EffectBase(1 + 5 * numberOfFilters)
+EqualizerEffect::EqualizerEffect() : EffectBase(1 + 5 * numberOfEqualizerFilters)
 {
 	ParameterBundle* params = getPointerToParameterBundle();
 	(params->getParameter(0)) = new FloatParameter(100.f, NormalizedRange(0.f, 200.f), "scale", "%");
-	for (unsigned int filterIndex = 0; filterIndex < numberOfFilters; filterIndex++) {
+	for (unsigned int filterIndex = 0; filterIndex < numberOfEqualizerFilters; filterIndex++) {
 		BhString onName, freqName, gainName, qName, typeName;
 #ifndef _VC_NODEFAULTLIB
 		std::string indexStr = std::to_string(filterIndex + 1);
@@ -42,7 +42,7 @@ EqualizerEffect::EqualizerEffect() : EffectBase(1 + 5 * numberOfFilters)
 void EqualizerEffect::process(Sample* buffer, size_t numberOfSamples, size_t currentTime)
 {
 	float scale = getInterpolatedParameter(0).get() / 100.f;
-	for (unsigned int filterIndex = 0; filterIndex < numberOfFilters; filterIndex++) {
+	for (unsigned int filterIndex = 0; filterIndex < numberOfEqualizerFilters; filterIndex++) {
 		if (getInterpolatedParameter(filterIndex * 5 + 1).get() < .5f) {
 			// filter is off
 			continue;

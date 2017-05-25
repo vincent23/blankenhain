@@ -4,6 +4,8 @@
 
 #include "Filter.h"
 
+constexpr unsigned int numberOfEqualizerFilters = 8;
+
 class EqualizerEffect : public EffectBase
 {
 public:
@@ -11,7 +13,7 @@ public:
 
 	void process(Sample* buffer, size_t numberOfSamples, size_t currentTime) override;
 
-	const unsigned int numberOfFilters = 8;
+
 
 private:
 	Filter<Sample> filters[8];

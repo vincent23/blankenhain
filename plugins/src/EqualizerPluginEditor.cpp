@@ -74,7 +74,7 @@ void EqualizerPluginEditor::imguiFrame()
 	for (unsigned int i = 0; i < nPoints; i++) {
 		points[i] = 0;
 	}
-	for (unsigned int filterIndex = 0; filterIndex < EqualizerEffect::numberOfFilters; filterIndex++) {
+	for (unsigned int filterIndex = 0; filterIndex < numberOfEqualizerFilters; filterIndex++) {
 		bool off = bundle.getParameterUnnormalized(filterIndex * 5 + 1) < .5;
 		if (off) {
 			continue;
