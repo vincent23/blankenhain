@@ -92,14 +92,15 @@ static void renderParam(PluginBase& plugin, unsigned int paramIndex, float param
 	ImGui::PopID();
 }
 
-static void renderADHSR(PluginBase& plugin, ImVec2 size = ImGui::GetContentRegionAvail(), 
+
+static void renderADHSR(PluginBase& plugin, ImVec2 size = ImGui::GetContentRegionAvail(), TempoData const *const tempoData = nullptr,
 	unsigned int paramAttack = 0u, unsigned int paramHold = 1u, unsigned int paramHoldlevel = 2u,
 	unsigned int paramDecay = 3u, unsigned int paramSustainbool = 4u, unsigned int paramSustain = 5u,
 	unsigned int paramSustainlevel = 6u, unsigned int paramRelease = 7u)
 {
 	ImGui::BeginChild("adsrsub", size, true);
-	const unsigned int nPoints = 250;
-	float points[250];
+	constexpr unsigned int nPoints = 250;
+	float points[nPoints], beats[nPoints];
 
 	PluginParameterBundle const& bundle = plugin.getParameters();
 
@@ -119,14 +120,17 @@ static void renderADHSR(PluginBase& plugin, ImVec2 size = ImGui::GetContentRegio
 		+ bundle.getParameter(paramSustain)->getValueUnnormalized()
 		+ bundle.getParameter(paramRelease)->getValueUnnormalized();
 
-	std::string lengthStr = "Length of visualized curve: " + std::to_string(length) + " ms.";
-	ImGui::Text(lengthStr.c_str());
+
 
 
 	if (length < 1000.f)
 		length = 1000.f;
 	else if (length > 5000.f)
 		length = 5000.f;
+	std::string lengthStr = "Length of visualized curve: " + std::to_string(length) + " ms.";
+	ImGui::Text(lengthStr.c_str());
+
+
 	float incrementForVisualization = length / static_cast<float>(nPoints);
 	VoiceState dummy;
 	dummy.on(0u, 69u, 100u);
@@ -147,11 +151,39 @@ static void renderADHSR(PluginBase& plugin, ImVec2 size = ImGui::GetContentRegio
 
 	ImVec2 availRest = ImGui::GetContentRegionAvail();
 	availRest.x *= 2.f / 3.f;
-	ImGui::PlotLines("##AHDSR", points, nPoints, 0, 0, 0.f, 1.f, availRest);
+
+
+	// Is tempoData supplied?
+	if (tempoData != nullptr)
+	{
+		if (tempoData->usesTempoData)
+		{
+			beats[0u] = 1.f;
+			for (unsigned int i = 1; i < nPoints; i++)
+			{
+				const volatile float currentMs = i * incrementForVisualization;
+				beats[i] = 0.f;
+				const volatile float beatEverySoManyMs = 60000.f / tempoData->bpm;
+				const volatile float currentMsAfterBeat = std::fmod(currentMs, beatEverySoManyMs);
+				if (currentMsAfterBeat < incrementForVisualization)
+					beats[i] = 1.f;
+				else if (std::fmod(currentMs, beatEverySoManyMs / 4.f) < incrementForVisualization)
+					beats[i] = 0.35;
+			}
+			ImGui::PlotLines("##AHDSR", points, nPoints, 0, 0, 0.f, 1.f, ImVec2(availRest.x, availRest.y * 3.f / 4.f ));
+			ImGui::PlotHistogram("##Tempo", beats, nPoints, 0, NULL, 0.0f, 1.0f, ImVec2(availRest.x, availRest.y / 4.f));
+		}
+	}
+	else
+	{
+		ImGui::PlotLines("##AHDSR", points, nPoints, 0, 0, 0.f, 1.f, availRest);
+	}
+
 
 	ImGui::EndChild();
 
 }
+
 
 static void renderLFO(PluginBase& plugin, ImVec2 size = ImGui::GetContentRegionAvail(), 
 	unsigned int paramLFOSpeed = 8u, unsigned int paramLFOAmount = 9u, unsigned int paramLFOWaveform = 10u,

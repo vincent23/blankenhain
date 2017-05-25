@@ -274,6 +274,12 @@ const PluginParameterBundle& PluginBase::getParameters() const
 	return *pluginParameters;
 }
 
+EffectBase const* PluginBase::getEffect() const
+{
+	return this->effect;
+}
+
+
 bool PluginBase::getBPMandPositionFromHost(float& bpm, unsigned int& position)
 {
 	VstTimeInfo* ptr = this->getTimeInfo(kVstTempoValid);

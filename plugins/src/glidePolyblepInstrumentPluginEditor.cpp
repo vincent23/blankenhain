@@ -1,7 +1,6 @@
 #include "glidePolyblepInstrumentPluginEditor.h"
 
 
-
 glidePolyblepInstrumentPluginEditor::glidePolyblepInstrumentPluginEditor(PluginBase* plugin)
 	: ImguiEffectEditor(plugin, 460, 680)
 {
@@ -16,8 +15,13 @@ void glidePolyblepInstrumentPluginEditor::imguiFrame()
 	ImGui::SetNextWindowSize(io.DisplaySize);
 	ImGui::Begin("test", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize);
 
-
-	renderADHSR(plugin, ImVec2(ImGui::GetWindowContentRegionWidth(), 300));
+	const glidePolyblepInstrument* glide = dynamic_cast<const glidePolyblepInstrument*>(this->plugin.getEffect());
+	if (glide)
+	{
+		renderADHSR(plugin, ImVec2(ImGui::GetWindowContentRegionWidth(), 300), &glide->getTempoData());
+	}
+	else
+		renderADHSR(plugin, ImVec2(ImGui::GetWindowContentRegionWidth(), 300));
 	
 
 	renderParam( plugin, 8);

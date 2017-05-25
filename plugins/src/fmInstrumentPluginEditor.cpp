@@ -3,7 +3,7 @@
 
 
 FmInstrumentPluginEditor::FmInstrumentPluginEditor(PluginBase* plugin)
-	: ImguiEffectEditor(plugin, 1000, 700)
+	: ImguiEffectEditor(plugin, 1000, 800)
 {
 }
 
@@ -21,7 +21,14 @@ void FmInstrumentPluginEditor::imguiFrame()
 	// Left: AHDSR
 	// Right: Carrier Waveform and carrier stuff
 
-	renderADHSR(plugin, ImVec2(ImGui::GetWindowContentRegionWidth() * 0.5f, 300));
+	const FmInstrument* fm = dynamic_cast<const FmInstrument*>(this->plugin.getEffect());
+	if (fm)
+	{
+		renderADHSR(plugin, ImVec2(ImGui::GetWindowContentRegionWidth() * 0.5f, 300), &fm->getTempoData());
+	}
+	else
+		renderADHSR(plugin, ImVec2(ImGui::GetWindowContentRegionWidth() * 0.5f, 300));
+
 	ImGui::SameLine();
 
 	ImGui::BeginChild("Carrier", ImVec2(ImGui::GetWindowContentRegionWidth() * 0.48f, 300), true);
@@ -82,9 +89,10 @@ void FmInstrumentPluginEditor::imguiFrame()
 			renderParam(plugin, currentParamInt + 5);
 			renderParam(plugin, currentParamInt + 6);
 
-			ImGui::Separator();
+
 
 		}
+		ImGui::Separator();
 	}
 
 	ImGui::EndChild();
@@ -132,9 +140,8 @@ void FmInstrumentPluginEditor::imguiFrame()
 			renderParam(plugin, currentParamInt + 4);
 			renderParam(plugin, currentParamInt + 5);
 			renderParam(plugin, currentParamInt + 6);
-
-			ImGui::Separator();
 		}
+		ImGui::Separator();
 	}
 
 	ImGui::EndChild();

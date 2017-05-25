@@ -65,6 +65,11 @@ const unsigned int EffectBase::getDelay() const
   return this->delayEffectProducesInSamples;
 }
 
+TempoData const& EffectBase::getTempoData() const
+{
+	return tempodata;
+}
+
 
 void EffectBase::processBlock(Sample* buffer, size_t numberOfSamples)
 {

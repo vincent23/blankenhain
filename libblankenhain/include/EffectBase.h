@@ -67,6 +67,7 @@ public:
 	unsigned int const& getCurrentTime() const;
 
   const unsigned int getDelay() const;
+	TempoData const& getTempoData() const;
 
 protected:
 	/**
