@@ -12,6 +12,7 @@
 #include "RhythmgateEffect.h"
 
 #include "glidePolyblepInstrumentPlugin.h"
+#include "glidePolyblepInstrument.h"
 
 #include <imgui.h>
 #include <cmath>
