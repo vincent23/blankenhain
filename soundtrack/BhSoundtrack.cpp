@@ -31,7 +31,7 @@
 
 void blankenhain::render(float* buffer)
 {
-#include "Input.inl"
+
 
 	//////////////////////////////////////
 	// Set up FPU according to entire 64k demoscene standards appareantly
@@ -41,6 +41,7 @@ void blankenhain::render(float* buffer)
 	const unsigned short fcw = 3711;
 	__asm fldcw fcw;
 	//////////////////////////////////////
+#include "Input.inl"
 
 	BlankenhainPlayer player;
 	player.play(song, buffer);
