@@ -377,7 +377,7 @@ class ChainDevice(CombinedDevice):
 		#(important for interpolation)
 		volumeXml = mixerXml.find('Volume')
 		volume = EffectDevice(config.plugins['bh_abletonMixerVolume']['class'], config.plugins['bh_abletonMixerVolume']['numberOfParameters'])
-		pan.parameters = [ 
+		volume.parameters = [ 
 			[], # volumeValue
 			[ParameterEvent(0, 1)]  # on
 		]
