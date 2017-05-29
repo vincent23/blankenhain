@@ -24,8 +24,8 @@ Sample* EffectDevice::process(SongInfo& songInfo, const Sample* input, unsigned 
 	{
 		outputBuffer[sampleIndex] = input[sampleIndex];
 	}
-	unsigned int onIndex = effect.getNumberOfParameters();
-	bool isOn = parameterValues[onIndex].getCurrentDiscreteValueAndAdvance(globalSamplePosition) > .5f;
+	const unsigned int onIndex = effect.getNumberOfParameters();
+	const bool isOn = parameterValues[onIndex].getCurrentDiscreteValueAndAdvance(globalSamplePosition) > .5f;
 	if (isOn)
 	{
 		if (effect.effectUsesTempoData())

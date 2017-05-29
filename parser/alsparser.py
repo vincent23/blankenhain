@@ -384,13 +384,13 @@ class ChainDevice(CombinedDevice):
 		eventsXml = volumeXml.findall('./ArrangerAutomation/Events/FloatEvent')
 		volume.parameters[0] = [
 			ParameterEvent(
-				max(0, float(eventXml.get('Time'))),
-				float(eventXml.get('Value'))
+				max(0, float(eventXml.get('Time')) ),
+				(float(eventXml.get('Value')) / 2)
 			) for eventXml in eventsXml]
 
-		# Check if volume is always equal to 0 db (equals 1.0 in numbers) ("middle" / "zeroPanning")
-		# Only append panDevice if necessary
-		if (len(volume.parameters[0]) != 1) or (volume.parameters[0][0].value != 1.0 ):
+		# Check if volume is always equal to 0 db (equals 0.5 in numbers)
+		# Only append volumeDevice if necessary
+		if (len(volume.parameters[0]) != 1) or (volume.parameters[0][0].value != 0.5 ):
 			self.children.append(volume)
 
 		# if there are any sends, append a send device
