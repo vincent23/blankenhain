@@ -23,7 +23,12 @@ void AbletonTrackMixerVolumeEffect::process(Sample* buffer, size_t numberOfSampl
 	{
 		float transformedMultiplier = 0.00956 * BhMath::exp(22048.f / 2.f * volume.get() / 4973.87572f) - 0.01101f;
 		transformedMultiplier *= (1.f / 0.78727f);
-		buffer[bufferIteration] *= Sample(transformedMultiplier);
+
+		if (transformedMultiplier > 0.f)
+			buffer[bufferIteration] *= Sample(transformedMultiplier);
+		else
+			buffer[bufferIteration] = Sample(0.f);
+
 		volume.next();
 	}
 }
