@@ -3,17 +3,7 @@
 #include "ParameterBundle.h"
 #include "InterpolatedValue.h"
 #include "FpuState.h"
-
-#ifndef _LIBBLANKENHAIN_ENABLE_FPU_ROUNDING_CHECK
-//#define  _LIBBLANKENHAIN_ENABLE_FPU_ROUNDING_CHECK
-#endif
-#ifndef _LIBBLANKENHAIN_ENABLE_NANCHECK
-//#define _LIBBLANKENHAIN_ENABLE_NANCHECK
-#endif
-
-#ifdef _LIBBLANKENHAIN_ENABLE_FPU_ROUNDING_CHECK
-//#include <iostream>
-#endif
+#include "warnings.h"
 
 EffectBase::EffectBase(unsigned int numberOfParameters, bool useTempoData)
 	: tempodata(useTempoData)

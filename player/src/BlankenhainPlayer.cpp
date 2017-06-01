@@ -4,6 +4,7 @@
 #include "Song.h"
 #include "SongInfo.h"
 #include "ChainDevice.h"
+#include "warnings.h"
 
 void BlankenhainPlayer::play(Song& song, float* audioBuffer)
 {
@@ -29,11 +30,11 @@ void BlankenhainPlayer::play(Song& song, float* audioBuffer)
 			audioBuffer[2 * (i + j)] = float(sample[0]);
 			audioBuffer[2 * (i + j) + 1] = float(sample[1]);
 		}
-//#define _LIBBLANKENHAIN_ENABLE_FPU_ROUNDING_CHECK
 #ifdef  _LIBBLANKENHAIN_ENABLE_FPU_ROUNDING_CHECK
 		unsigned short bar = 0u;
 		_asm FSTCW bar
 		if (bar != 3711)
+			throw "fpu rounding flag wrong";
 #endif
 	}
 

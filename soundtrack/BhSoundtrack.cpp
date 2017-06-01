@@ -1,6 +1,10 @@
+#pragma once
+
 #include "BhSoundtrack.h"
 
 #include "BlankenhainPlayer.h"
+
+#include "warnings.h"
 
 #include "MidiTrack.h"
 #include "ParameterTrack.h"
@@ -31,7 +35,10 @@
 
 void blankenhain::render(float* buffer)
 {
-
+#ifdef _LIBBLANKENHAIN_ENABLE_WARNINGS
+	try
+	{
+#endif
 
 	//////////////////////////////////////
 	// Set up FPU according to entire 64k demoscene standards appareantly
@@ -45,6 +52,15 @@ void blankenhain::render(float* buffer)
 
 	BlankenhainPlayer player;
 	player.play(song, buffer);
+
+#ifdef _LIBBLANKENHAIN_ENABLE_WARNINGS
+
+	}
+	catch (const std::exception& exp)
+	{
+		std::cout << exp.what() << std::endl;
+	}
+#endif
 }
 
 unsigned int blankenhain::lengthInSamples()

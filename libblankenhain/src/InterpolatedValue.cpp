@@ -44,7 +44,8 @@ template <typename T>
 T InterpolatedValue<T>::next(unsigned int steps)
 {
 #ifdef _LIBBLANKENHAIN_ENABLE_WARNINGS
-	if (currentStep + steps >= targetNumSteps)
+	if (currentStep + steps > targetNumSteps
+		&& step != 0.f)
 	{
 		throw "out of bounds";
 	}

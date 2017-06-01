@@ -2,9 +2,6 @@
 
 #include <emmintrin.h>
 
-#ifndef _LIBBLANKENHAIN_ENABLE_FPU_ROUNDING_CHECK
-//#define  _LIBBLANKENHAIN_ENABLE_FPU_ROUNDING_CHECK
-#endif
 
 FpuState::FpuState() {
 	// clear exception flags
@@ -25,29 +22,35 @@ FpuState::~FpuState() {
 #ifdef _LIBBLANKENHAIN_ENABLE_WARNINGS
 	unsigned int flags = _mm_getcsr() & 0b111111;
 	if (flags != 0) {
-		if (flags & (1 << 5)) {
-			// "precision";
-			int x = 0;
-		}
-		else if (flags & (1 << 4)) {
+		//if (flags & (1 << 5)) {
+		//	// "precision";
+		//	int x = 0;
+		//	throw std::runtime_error("FPU-State wrong: precision");
+		//}
+		if (flags & (1 << 4)) {
 			// "underflow";
 			int x = 0;
+			throw std::runtime_error("FPU-State wrong: underflow");
 		}
-		else if (flags & (1 << 3)) {
+		if (flags & (1 << 3)) {
 			// "overflow";
 			int x = 0;
+			throw std::runtime_error("FPU-State wrong: overflow");
 		}
-		else if (flags & (1 << 2)) {
+		if (flags & (1 << 2)) {
 			// "divide by zero";
 			int x = 0;
+			throw std::runtime_error("FPU-State wrong: divide by zero");
 		}
-		else if (flags & (1 << 1)) {
+		if (flags & (1 << 1)) {
 			// "denormal";
 			int x = 0;
+			throw std::runtime_error("FPU-State wrong: denormal");
 		}
 		else {
 			// "invalid operation";
 			int x = 0;
+			throw std::runtime_error("FPU-State wrong: invalid operation");
 		}
 	}
 #endif
@@ -56,6 +59,6 @@ FpuState::~FpuState() {
 	unsigned short bar = 0u;
 	_asm FSTCW bar
 	if (bar != 3711)
-		throw "fpu rounding flag wrong";
+		throw std::runtime_error("fpu rounding flag wrong");
 #endif
 }
