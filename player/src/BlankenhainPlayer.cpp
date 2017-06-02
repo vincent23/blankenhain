@@ -4,7 +4,7 @@
 #include "Song.h"
 #include "SongInfo.h"
 #include "ChainDevice.h"
-#include "warnings.h"
+#include "Options.h"
 
 void BlankenhainPlayer::play(Song& song, float* audioBuffer)
 {

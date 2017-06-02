@@ -1,5 +1,5 @@
 #pragma once
-#include "warnings.h"
+#include "Options.h"
 
 /**
  * Maps numbers from an arbitrary range to [0.f, 1.f]

@@ -35,10 +35,12 @@ bool NormalizedRange::isInRange(float unnormalizedValue) const
 float NormalizedRange::fromNormalized(float normalizedValue) const
 {
 #ifndef _BLANKENHAIN_RUNTIME_MODE
-  if (normalizedValue < 0.f)
-    normalizedValue = 0.f;
-  else if (normalizedValue > 1.f)
-    normalizedValue = 1.f;
+	// Sometimes the ranges subtly over- or undershoot,
+	// for convenience we clamp this in the VST - PluginIns
+	if (normalizedValue < 0.f)
+		normalizedValue = 0.f;
+	else if (normalizedValue > 1.f)
+		normalizedValue = 1.f;
 #endif
 	if (skew != 1.f && normalizedValue > 0.f) {
 		normalizedValue = BhMath::pow(normalizedValue, 1.f / skew);
@@ -49,10 +51,12 @@ float NormalizedRange::fromNormalized(float normalizedValue) const
 float NormalizedRange::toNormalized(float unnormalizedValue) const
 {
 #ifndef _BLANKENHAIN_RUNTIME_MODE
-  if (unnormalizedValue < start)
-    unnormalizedValue = start;
-  else if (unnormalizedValue > end)
-    unnormalizedValue = end;
+	// Sometimes the ranges subtly over- or undershoot,
+	// for convenience we clamp this in the VST - PluginIns
+	if (unnormalizedValue < start)
+		unnormalizedValue = start;
+	else if (unnormalizedValue > end)
+		unnormalizedValue = end;
 #endif
 
 	float normalizedValue = (unnormalizedValue - start) / (end - start);

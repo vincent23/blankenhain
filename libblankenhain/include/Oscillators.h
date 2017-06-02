@@ -15,7 +15,7 @@
 #include "Sample.h"
 #include "AuxFunc.h"
 #include "BhMath.h"
-#include "warnings.h"
+#include "Options.h"
 
 /**
 * Wrapps a value to range [0; 2pi].
