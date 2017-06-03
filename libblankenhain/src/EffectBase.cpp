@@ -179,7 +179,8 @@ InterpolatedValue<float>& EffectBase::getInterpolatedParameter(unsigned int para
 
 void EffectBase::nextSample(unsigned int steps) const
 {
-	for (unsigned int parameterIndex = 0; parameterIndex < getNumberOfParameters(); parameterIndex++) {
+	for (unsigned int parameterIndex = 0; parameterIndex < getNumberOfParameters(); parameterIndex++) 
+	{
 		getInterpolatedParameter(parameterIndex).next(steps);
 	}
 }
