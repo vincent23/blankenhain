@@ -4,7 +4,7 @@
 
 #include "BlankenhainPlayer.h"
 
-#include "warnings.h"
+#include "Options.h"
 
 #include "MidiTrack.h"
 #include "ParameterTrack.h"
@@ -38,13 +38,14 @@ void blankenhain::render(float* buffer)
 #ifdef _LIBBLANKENHAIN_ENABLE_WARNINGS
 	try
 	{
+		std::cout << "Warnings and Checks are enabled. Blankenhain will exit upon error." << std::endl;
 #endif
 
 	//////////////////////////////////////
 	// Set up FPU according to entire 64k demoscene standards appareantly
 	//////////////////////////////////////
 	const unsigned short foo = 0u;
-	_asm FSTCW foo
+	__asm FSTCW foo
 	const unsigned short fcw = 3711;
 	__asm fldcw fcw;
 	//////////////////////////////////////

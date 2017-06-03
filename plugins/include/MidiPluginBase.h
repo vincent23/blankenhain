@@ -5,7 +5,7 @@
 #include "MidiBase.h"
 #include "PluginParameterBundle.h"
 #include <vector>
-#include "warnings.h"
+#include "Options.h"
 #include "Constants.h"
 
 // via https://www.kvraudio.com/forum/viewtopic.php?t=214049

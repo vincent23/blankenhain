@@ -5,7 +5,7 @@
 #include "InstrumentBase.h"
 #include "PluginParameterBundle.h"
 #include <vector>
-#include "warnings.h"
+#include "Options.h"
 #include "Constants.h"
 
 class InstrumentBase;

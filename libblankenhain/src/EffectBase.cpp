@@ -3,7 +3,7 @@
 #include "ParameterBundle.h"
 #include "InterpolatedValue.h"
 #include "FpuState.h"
-#include "warnings.h"
+#include "Options.h"
 
 EffectBase::EffectBase(unsigned int numberOfParameters, bool useTempoData)
 	: tempodata(useTempoData)

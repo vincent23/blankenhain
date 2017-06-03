@@ -1,9 +1,4 @@
 #pragma once
-
-//#define _LIBBLANKENHAIN_NO_SSE
-
-//#define _LIBBLANKENHAIN_USE_SINGE_PRECISION
-
 #ifndef _VC_NODEFAULTLIB
 
 /////////////////////////////////////////////////////
