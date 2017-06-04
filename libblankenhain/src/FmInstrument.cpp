@@ -366,5 +366,4 @@ void FmInstrument::processVoice(VoiceState& voice, unsigned int timeInSamples, S
 		buffer[sampleIndex] = Sample(valueOfCarrier);
 		performAHDSR<Sample>(buffer, voice, timeInSamples, sampleIndex, attack, release, hold, decay, sustain, sustainOn, sustainLevel, holdLevel);
 	}
-	this->nextSample(numberOfSamples);
 }

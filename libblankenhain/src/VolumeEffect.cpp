@@ -23,15 +23,14 @@ VolumeEffect::VolumeEffect() : EffectBase(10u, true)
 
 void VolumeEffect::process(Sample* buffer, size_t numberOfSamples, size_t currentTime)
 {
-	InterpolatedValue<float>& currentVolumeL = getInterpolatedParameter(0);
-	InterpolatedValue<float>& currentVolumeR = getInterpolatedParameter(1);
+	InterpolatedValue<float> const& currentVolumeL = getInterpolatedParameter(0);
+	InterpolatedValue<float> const& currentVolumeR = getInterpolatedParameter(1);
 	bool coupling = getInterpolatedParameter(2).get() > 0.5 ? true : false;
 
 
 	if (coupling)
 	{
 		float decibelBefore = aux::decibelToLinear(currentVolumeL.get());
-		nextSample(numberOfSamples);
 		float decibelAfter = aux::decibelToLinear(currentVolumeL.get());
 		InterpolatedValue<float> volumeInDecibel(decibelBefore, decibelAfter, numberOfSamples);
 		for (size_t bufferIteration = 0; bufferIteration < numberOfSamples; bufferIteration++)
@@ -44,7 +43,6 @@ void VolumeEffect::process(Sample* buffer, size_t numberOfSamples, size_t curren
 	{
 		float decibelBeforeL = aux::decibelToLinear(currentVolumeL.get());
 		float decibelBeforeR = aux::decibelToLinear(currentVolumeR.get());
-		nextSample(numberOfSamples);
 		float decibelAfterL = aux::decibelToLinear(currentVolumeL.get());
 		float decibelAfterR = aux::decibelToLinear(currentVolumeR.get());
 		InterpolatedValue<float> volumeInDecibelL(decibelBeforeL, decibelAfterL, numberOfSamples);

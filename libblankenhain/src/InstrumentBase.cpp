@@ -99,5 +99,4 @@ void InstrumentBase::process(Sample* buffer, size_t numberOfSamples, size_t curr
 			buffer[sampleIndex] += currentSample;
 		}
 	}
-	nextSample(numberOfSamples);
 }

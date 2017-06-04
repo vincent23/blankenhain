@@ -6,7 +6,7 @@ template BoundrySafeInterpolatedValue<float>;
 template <typename T>
 InterpolatedValue<T>::InterpolatedValue(T from, T to, unsigned int steps)
 	: current(from)
-	, step((to - from) / steps)
+	, step((to - from) / static_cast<T>(steps))
 #ifdef _LIBBLANKENHAIN_ENABLE_WARNINGS
 	, targetNumSteps(steps)
 	, currentStep(0u)
@@ -110,7 +110,7 @@ T BoundrySafeInterpolatedValue<T>::next(unsigned int steps)
 	}
 	else
 	{
-		// we dont overshoot, we ramp normally
+		// we dont overshoot, so we ramp normal
 		currentStep += steps;
 		current += step * steps;
 		return current;

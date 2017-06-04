@@ -125,7 +125,7 @@ void EffectBase::processBlock(Sample* buffer, size_t numberOfSamples)
 			throw std::runtime_error("nan detected");
 #endif
 	}
-
+	nextSample(numberOfSamples);
 }
 
 ParameterBundle* EffectBase::getPointerToParameterBundle() const
@@ -149,7 +149,7 @@ void EffectBase::getModulation(float* modulationValues, size_t sampleOffset)
 /**
  * Get interpolated parameter containing unnormalized values.
  */
-InterpolatedValue<float>& EffectBase::getInterpolatedParameter(unsigned int parameterIndex) const
+InterpolatedValue<float> const& EffectBase::getInterpolatedParameter(unsigned int parameterIndex) const
 {
 	// parameterValues contain results of parameter->getValueUnnormalized()
 	return parameterValues[parameterIndex];
@@ -159,14 +159,7 @@ void EffectBase::nextSample(unsigned int steps) const
 {
 	for (unsigned int parameterIndex = 0; parameterIndex < getNumberOfParameters(); parameterIndex++) 
 	{
-		getInterpolatedParameter(parameterIndex).next(steps);
-	}
-}
-
-void EffectBase::nextSample() const
-{
-	for (unsigned int parameterIndex = 0; parameterIndex < getNumberOfParameters(); parameterIndex++) {
-		getInterpolatedParameter(parameterIndex).next();
+		parameterValues[parameterIndex].next(steps);
 	}
 }
 

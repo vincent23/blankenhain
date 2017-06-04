@@ -76,5 +76,4 @@ void EqualizerEffect::process(Sample* buffer, size_t numberOfSamples, size_t cur
 			buffer[sampleIndex] = filter.tick(buffer[sampleIndex]);
 		}
 	}
-	nextSample(numberOfSamples);
 }

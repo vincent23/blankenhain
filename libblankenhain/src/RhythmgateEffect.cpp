@@ -31,18 +31,18 @@ RhythmgateEffect::RhythmgateEffect() : EffectBase(20, true)
 void RhythmgateEffect::process(Sample* buffer, size_t numberOfSamples, size_t currentTime)
 {
 
-	InterpolatedValue<float>* params[16];
+	InterpolatedValue<float> const* params[16];
 	for (unsigned int i = 0u; i < 16u; i++)
 	{
 		params[i] = &getInterpolatedParameter(i);
 	}
 
 
-	InterpolatedValue<float>& attack = getInterpolatedParameter(16u);
-	InterpolatedValue<float>& release = getInterpolatedParameter(17u);
+	InterpolatedValue<float> const& attack = getInterpolatedParameter(16u);
+	InterpolatedValue<float> const& release = getInterpolatedParameter(17u);
 
-	InterpolatedValue<float>& multiplier = getInterpolatedParameter(18u);
-	InterpolatedValue<float>& offset = getInterpolatedParameter(19u);
+	InterpolatedValue<float> const& multiplier = getInterpolatedParameter(18u);
+	InterpolatedValue<float> const& offset = getInterpolatedParameter(19u);
 
 	float mult = 0.0625;
 	if (multiplier.get() < 0.125f)
@@ -106,7 +106,5 @@ void RhythmgateEffect::process(Sample* buffer, size_t numberOfSamples, size_t cu
 		{
 			buffer[bufferIteration] *= Sample(params[whichSixteenthAreWeIn]->get());
 		}
-
-		this->nextSample();
 	}
 }

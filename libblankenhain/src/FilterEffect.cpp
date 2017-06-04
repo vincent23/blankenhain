@@ -50,5 +50,4 @@ void FilterEffect::process(Sample* buffer, size_t numberOfSamples, size_t curren
 			buffer[i] = filter.tick(buffer[i]);
 		}
 	}
-	nextSample(numberOfSamples);
 }
