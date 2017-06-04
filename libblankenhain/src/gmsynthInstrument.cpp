@@ -161,7 +161,7 @@ void gmsynthInstrument::processVoice(VoiceState& voice, unsigned int timeInSampl
 	float sustainLevel = getInterpolatedParameter(6).get();
 	float sustain = getInterpolatedParameter(5).get();
 	float release = getInterpolatedParameter(7).get();
-	bool loop = getInterpolatedParameter(8).get() == 1.f;
+	bool loop = getInterpolatedParameter(8).get() > 0.5f;
 
 	gmSound* sound = interpolatedSounds[voice.key];
 	if (sound == nullptr) {
@@ -190,7 +190,6 @@ void gmsynthInstrument::processVoice(VoiceState& voice, unsigned int timeInSampl
 			performAHDSR<Sample>(buffer, voice, timeInSamples, sampleIndex, attack, release, hold, decay, sustain, sustainOn, sustainLevel, holdLevel);
 		}
 	}
-	nextSample(numberOfSamples);
 }
 
 void gmsynthInstrument::loadMidiInstrument(const gmInstrument& instrument)
