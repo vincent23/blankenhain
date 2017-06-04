@@ -3,7 +3,13 @@
 ParameterBundle::ParameterBundle(unsigned int numberOfParameters_) : numberOfParameters(numberOfParameters_)
 {
 	if (numberOfParameters_ != 0u)
+	{
 		parameters = new FloatParameter*[numberOfParameters];
+		for (unsigned int i = 0u; i < this->numberOfParameters; i++)
+		{
+			parameters[i] = nullptr;
+		}
+	}
 	else
 		parameters = nullptr;
 }
