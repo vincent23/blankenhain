@@ -119,6 +119,7 @@ void FmInstrument::processVoice(VoiceState& voice, unsigned int timeInSamples, S
 
 		// If enough glide time has past, set previousFreq to currentFreq and thereby stop gliding
 		if (freqPrev != voiceFreq
+			&& portamento != 0.f
 			&& BhMath::exp(-1.f * timeSinceNoteOff / (constants::sampleRate * portamento)) < 0.0001)
 		{
 			notePrev = voice.key;
