@@ -3,6 +3,7 @@
 #include "Sample.h"
 #include "InterpolatedValue.h"
 #include "AlignedType.h"
+#include "FpuState.h"
 
 class ParameterBundle;
 
@@ -106,5 +107,6 @@ private:
 	InterpolatedValue<float>* const parameterValues;
 	float* const nextModulation;
 	bool initializedParameters = false;
+	FpuState fpuState;
 
 };

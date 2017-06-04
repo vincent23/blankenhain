@@ -6,6 +6,8 @@
 
 #include "Options.h"
 
+#include "FpuState.h"
+
 #include "MidiTrack.h"
 #include "ParameterTrack.h"
 #include "InstrumentDevice.h"
@@ -42,12 +44,9 @@ void blankenhain::render(float* buffer)
 #endif
 
 	//////////////////////////////////////
-	// Set up FPU according to entire 64k demoscene standards appareantly
+	// Set up FPU 
 	//////////////////////////////////////
-	const unsigned short foo = 0u;
-	__asm FSTCW foo
-	const unsigned short fcw = 3711;
-	__asm fldcw fcw;
+	FpuState fpuState;
 	//////////////////////////////////////
 #include "Input.inl"
 

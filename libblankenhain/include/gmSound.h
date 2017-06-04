@@ -1,5 +1,5 @@
 #pragma once
-
+#include "Options.h"
 #include "gmSoundRegion.h"
 
 using HANDLE = void*;

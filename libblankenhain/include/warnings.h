@@ -12,7 +12,7 @@
 #include <iostream>
 #include <exception>
 #include <iomanip>
-#define _LIBBLANKENHAIN_ENABLE_FPU_ROUNDING_CHECK
+#define _LIBBLANKENHAIN_ENABLE_FPU_CONTROL_WORD_CHECK
 #define _LIBBLANKENHAIN_ENABLE_NANCHECK
 #endif
 #else

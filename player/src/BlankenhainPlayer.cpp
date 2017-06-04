@@ -5,9 +5,12 @@
 #include "SongInfo.h"
 #include "ChainDevice.h"
 #include "Options.h"
+#include "FpuState.h"
 
 void BlankenhainPlayer::play(Song& song, float* audioBuffer)
 {
+	FpuState fpuState;
+
 	// round blocksize up
 	const unsigned int numberOfSamples = ((song.songInfo.lengthInSamples - 1) / constants::blockSize + 1) * constants::blockSize;
 	Sample buffer[constants::blockSize];
@@ -30,12 +33,6 @@ void BlankenhainPlayer::play(Song& song, float* audioBuffer)
 			audioBuffer[2 * (i + j)] = float(sample[0]);
 			audioBuffer[2 * (i + j) + 1] = float(sample[1]);
 		}
-#ifdef  _LIBBLANKENHAIN_ENABLE_FPU_ROUNDING_CHECK
-		unsigned short bar = 0u;
-		_asm FSTCW bar
-		if (bar != 3711)
-			throw "fpu rounding flag wrong";
-#endif
 	}
 
 }

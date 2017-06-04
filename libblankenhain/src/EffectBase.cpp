@@ -10,6 +10,7 @@ EffectBase::EffectBase(unsigned int numberOfParameters, bool useTempoData)
 	, paramBundle(numberOfParameters == 0 ? nullptr : new ParameterBundle(numberOfParameters))
 	, parameterValues(numberOfParameters == 0 ? nullptr : new InterpolatedValue<float>[numberOfParameters])
 	, nextModulation(numberOfParameters == 0 ? nullptr : new float[numberOfParameters])
+	, fpuState()
 { 
 
 }
@@ -63,25 +64,12 @@ TempoData const& EffectBase::getTempoData() const
 
 void EffectBase::processBlock(Sample* buffer, size_t numberOfSamples)
 {
-
-#ifdef  _LIBBLANKENHAIN_ENABLE_FPU_ROUNDING_CHECK
-	unsigned short bar = 0u;
-	_asm FSTCW bar
-	if (bar != 3711)
-	{
-		throw "fpu rounding flag wrong";
-		puts("fpu rounding flag wrong");
-	}
-#endif
-	unsigned short fcw = 3711;
-	__asm fldcw fcw;
 	FpuState fpuState;
-
-
 	// TODO find a better way to do initalization
 	if (!initializedParameters) 
 	{
-		for (unsigned int parameterIndex = 0; parameterIndex < getNumberOfParameters(); parameterIndex++) {
+		for (unsigned int parameterIndex = 0u; parameterIndex < getNumberOfParameters(); parameterIndex++) 
+		{
 			float value = paramBundle->getParameter(parameterIndex)->getValueUnnormalized();
 			// this emulates the previous block end, which we set to the unmodulated current parameter value
 			parameterValues[parameterIndex] = InterpolatedValue<float>(value, value, 1);
@@ -96,7 +84,8 @@ void EffectBase::processBlock(Sample* buffer, size_t numberOfSamples)
 	}
 	getModulation(nextModulation, numberOfSamples);
 
-	for (unsigned int parameterIndex = 0; parameterIndex < getNumberOfParameters(); parameterIndex++) {
+	for (unsigned int parameterIndex = 0; parameterIndex < getNumberOfParameters(); parameterIndex++) 
+	{
 		FloatParameter* parameter = paramBundle->getParameter(parameterIndex);
 		
 		if (!parameter->canBeModulated())
@@ -125,28 +114,17 @@ void EffectBase::processBlock(Sample* buffer, size_t numberOfSamples)
 			parameterValues[parameterIndex] = InterpolatedValue<float>(previousValue, nextValue, numberOfSamples);
 		}
 	}
+
 	process(buffer, numberOfSamples, timeInSamples);
 	timeInSamples += numberOfSamples;
-
-
 
 	for (unsigned int i = 0u; i < numberOfSamples; ++i)
 	{
 #ifdef _LIBBLANKENHAIN_ENABLE_NANCHECK
 		if (buffer[i].avgValue() != buffer[i].avgValue())
-			throw "nan detected";
+			throw std::runtime_error("nan detected");
 #endif
 	}
-
-#ifdef  _LIBBLANKENHAIN_ENABLE_FPU_ROUNDING_CHECK
-	bar = 0u;
-	_asm FSTCW bar
-	if (bar != 3711)
-	{
-		throw "fpu rounding flag wrong";
-		puts("fpu rounding flag wrong");
-	}
-#endif
 
 }
 
