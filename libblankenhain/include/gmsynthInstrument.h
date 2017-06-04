@@ -22,5 +22,5 @@ public:
 	void loadMidiInstrument(const gmInstrument& instrument);
 private:
 
-	gmSound* interpolatedSounds[256];
+	gmSound* interpolatedSounds[128];
 };
