@@ -118,13 +118,13 @@ void EffectBase::processBlock(Sample* buffer, size_t numberOfSamples)
 	process(buffer, numberOfSamples, timeInSamples);
 	timeInSamples += numberOfSamples;
 
+#ifdef _LIBBLANKENHAIN_ENABLE_NANCHECK
 	for (unsigned int i = 0u; i < numberOfSamples; ++i)
 	{
-#ifdef _LIBBLANKENHAIN_ENABLE_NANCHECK
 		if (buffer[i].avgValue() != buffer[i].avgValue())
 			throw std::runtime_error("nan detected");
-#endif
 	}
+#endif
 	nextSample(numberOfSamples);
 }
 

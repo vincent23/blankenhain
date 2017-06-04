@@ -2,17 +2,6 @@
 
 #include <emmintrin.h>
 
-// Function to create denormal and see if exception is raised
-void make_denormal()
-{
-	__m128   denormal;
-	int      den_vec[4] = { 1,1,1,1 };
-	memcpy(&denormal, den_vec, sizeof(int) * 4);
-	denormal = _mm_add_ps(denormal, denormal);
-}
-
-
-
 FpuState::FpuState() {
 	// Save previous controlWord internally
 #ifdef _LIBBLANKENHAIN_ENABLE_FPU_CONTROL_WORD_CHECK
@@ -21,8 +10,11 @@ FpuState::FpuState() {
 	unsigned short tempStorage = 0u;
 	__asm fstcw tempStorage;
 	previousControlRegisterFPU = tempStorage;
-#endif
 	unsigned short fpucontrolword = previousControlRegisterFPU;
+#else
+	unsigned short fpucontrolword = _mm_getcsr();
+#endif
+
 	//fpucontrolword |= 0 << 7
 	//fpucontrolword |= 0 << 0
 	//fpucontrolword |= 1 << 1
@@ -78,7 +70,7 @@ FpuState::~FpuState() {
 	unsigned short controlWord;
 	__asm fstcw controlWord;
 	unsigned int controlWordSSE;
-	controlWordSSE = _mm_getcsr();
+	__asm STMXCSR controlWordSSE;
 
 #ifdef _LIBBLANKENHAIN_ENABLE_FPU_CONTROL_WORD_CHECK
 	// Check if status word is still correct
