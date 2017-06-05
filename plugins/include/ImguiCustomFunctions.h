@@ -168,7 +168,7 @@ static void renderADHSR(PluginBase& plugin, ImVec2 size = ImGui::GetContentRegio
 				if (currentMsAfterBeat < incrementForVisualization)
 					beats[i] = 1.f;
 				else if (std::fmod(currentMs, beatEverySoManyMs / 4.f) < incrementForVisualization)
-					beats[i] = 0.35;
+					beats[i] = 0.35f;
 			}
 			ImGui::PlotLines("##AHDSR", points, nPoints, 0, 0, 0.f, 1.f, ImVec2(availRest.x, availRest.y * 3.f / 4.f ));
 			ImGui::PlotHistogram("##Tempo", beats, nPoints, 0, NULL, 0.0f, 1.0f, ImVec2(availRest.x, availRest.y / 4.f));

@@ -79,6 +79,8 @@ namespace BhMath {
 	}
 
 	// for convenience, we implement pow as |x|^y
+	//
+	// This code raises FPU exception "precision" @TODO
 	float pow(float x, float y)
 	{
 		x = abs(x) + static_cast<float>(1e-8);

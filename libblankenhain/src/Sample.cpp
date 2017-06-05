@@ -67,7 +67,7 @@ void* Sample::operator new[](unsigned int size)
 #ifdef _LIBBLANKENHAIN_ENABLE_WARNINGS
 	if (size == 0) {
 		throw("Alloc of size == 0\n");
-		return;
+		return aligned_malloc(size, 16u);
 	}
 #endif
 	return aligned_malloc(size, 16u);

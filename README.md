@@ -13,9 +13,4 @@ Open `build/blankenhain2.sln`
 
 ## Build Configurations
 
-* Plugins
-** RelWithDebInfo
-** Release
-* Player
-** Debug
-** MinSizeRel
+Build VST plugins as usual. For standalone wavewriter/soundtrack use _noSTL build targets.

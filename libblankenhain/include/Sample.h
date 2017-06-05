@@ -1,9 +1,9 @@
 #pragma once
+#include "Options.h"
+
 #pragma warning(disable: 4324)
 #include <emmintrin.h>
 
-#define _LIBBLANKENHAIN_NO_SSE
-#define _LIBBLANKENHAIN_USE_SINGE_PRECISION
 
 #ifdef _LIBBLANKENHAIN_NO_SSE
 #include "BhMath.h"

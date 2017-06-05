@@ -2,7 +2,6 @@
 
 void MidiBase::process(Sample* buffer, size_t numberOfSamples, size_t currentTime)
 {
-	this->nextSample(numberOfSamples);
 }
 
 bool MidiBase::startNote(unsigned int key, unsigned int duration)

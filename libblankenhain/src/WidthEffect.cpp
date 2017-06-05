@@ -22,8 +22,8 @@ WidthEffect::WidthEffect() : EffectBase(9u, true), lfo()
 
 void WidthEffect::process(Sample* buffer, size_t numberOfSamples, size_t currentTime)
 {
-	InterpolatedValue<float>& width = getInterpolatedParameter(0);
-	InterpolatedValue<float>& panningValue = getInterpolatedParameter(1);
+	InterpolatedValue<float> const& width = getInterpolatedParameter(0);
+	InterpolatedValue<float> const& panningValue = getInterpolatedParameter(1);
 
 	for (size_t i = 0; i < numberOfSamples; i++)
 	{
@@ -35,8 +35,6 @@ void WidthEffect::process(Sample* buffer, size_t numberOfSamples, size_t current
 
 		float panValue = panningValue.get() * .02f;
 		aux::performPanning(buffer[i], panValue);
-
-		nextSample();
 	}
 }
 

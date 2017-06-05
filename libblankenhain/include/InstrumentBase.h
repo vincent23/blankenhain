@@ -67,6 +67,7 @@ void performAHDSR(
 	else
 	{
 		unsigned int deltaToff = (timeInSamples + sampleIndex) - voice.offTime;
+		deltaToff = deltaToff == 0 ? 1 : deltaToff;
 		if (deltaToff < static_cast<unsigned int>(releaseInSamples))
 		{
 			float lastAmplitudeRelative = 1.f;

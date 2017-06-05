@@ -82,6 +82,4 @@ void ChorusEffect::process(Sample* buffer, size_t numberOfSamples, size_t curren
 		buffer[i] = aux::mixDryWet(inval, outval, drywet);
 	}
 
-	nextSample(numberOfSamples);
-
 }

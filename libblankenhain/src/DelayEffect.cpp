@@ -74,5 +74,4 @@ void DelayEffect::process(Sample* buffer, size_t numberOfSamples, size_t current
 		buffer[i] = aux::mixDryWet(original, line, drywet);
 		delayLine.push(delayLine.get() * Sample(feedback) + original);
 	}
-	nextSample(numberOfSamples);
 }

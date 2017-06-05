@@ -1,6 +1,12 @@
+#pragma once
+
 #include "BhSoundtrack.h"
 
 #include "BlankenhainPlayer.h"
+
+#include "Options.h"
+
+#include "FpuState.h"
 
 #include "MidiTrack.h"
 #include "ParameterTrack.h"
@@ -32,20 +38,30 @@
 #include "AbletonTrackMixerVolumeEffect.h"
 void blankenhain::render(float* buffer)
 {
-
+#ifdef _LIBBLANKENHAIN_ENABLE_WARNINGS
+	try
+	{
+		std::cout << "Warnings and Checks are enabled. Blankenhain will exit upon error." << std::endl;
+#endif
 
 	//////////////////////////////////////
-	// Set up FPU according to entire 64k demoscene standards appareantly
+	// Set up FPU 
 	//////////////////////////////////////
-	const unsigned short foo = 0u;
-	_asm FSTCW foo
-	const unsigned short fcw = 3711;
-	__asm fldcw fcw;
+	FpuState fpuState;
 	//////////////////////////////////////
 #include "Input.inl"
 
 	BlankenhainPlayer player;
 	player.play(song, buffer);
+
+#ifdef _LIBBLANKENHAIN_ENABLE_WARNINGS
+
+	}
+	catch (const std::exception& exp)
+	{
+		std::cout << exp.what() << std::endl;
+	}
+#endif
 }
 
 unsigned int blankenhain::lengthInSamples()

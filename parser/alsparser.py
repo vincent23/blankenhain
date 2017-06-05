@@ -228,7 +228,9 @@ class InstrumentDevice(EffectDevice):
 
 class SendDevice(EffectDevice):
 	def __init__(self):
-		self.parameters = []
+		super(EffectDevice, self).__init__()
+		self.parameters = []	
+
 
 	def parse(self, deviceXml):
 		sendsXml = deviceXml.findall('./TrackSendHolder/Send/ArrangerAutomation/Events')

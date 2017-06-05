@@ -73,8 +73,6 @@ void BitcrushEffect::process(Sample* buffer, size_t numberOfSamples, size_t curr
 		Sample sampleValue = buffer[i];
 		buffer[i] = sampleValue * Sample(1. - drywet) + discretizedSample * Sample(drywet);
 	}
-
-	nextSample(numberOfSamples);
 }
 
 Sample BitcrushEffect::discretize(Sample const& sample)

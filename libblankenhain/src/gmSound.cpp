@@ -21,10 +21,12 @@ gmSound::gmSound(gmSoundRegion& region, HANDLE h, unsigned int targetNote)
 		DWORD dwBytesRead;
 		bool status = ReadFile(h, rawSample, region.sampleLength, &dwBytesRead, NULL) == 1;
 	}
+#ifdef _LIBBLANKENHAIN_ENABLE_WARNINGS
 	else {
-		// TODO remove this in release
 		DWORD error = GetLastError();
+		throw std::runtime_error(std::string("Error in GmSound nr. " + error));
 	}
+#endif
 
 	float* rootBuffer = new float[inputSampleLength];
 	for (unsigned int i = 0u; i < inputSampleLength; i++)

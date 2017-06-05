@@ -1,4 +1,5 @@
 #include "BhSoundtrack.h"
+#pragma once
 #define VC_EXTRALEAN
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
@@ -39,14 +40,7 @@ WinMain(HINSTANCE Instance,
 	LPSTR CommandLine,
 	int ShowCode)
 {
-	//////////////////////////////////////
-	// Set up FPU according to entire 64k demoscene standards appareantly
-	//////////////////////////////////////
-	const unsigned short foo = 0u;
-	_asm FSTCW foo
-	const unsigned short fcw = 3711;
-	__asm fldcw fcw;
-	//////////////////////////////////////
+
 
 	const unsigned int numberOfSamples = blankenhain::lengthInSamples();
 	float* audioBuffer = new float[numberOfSamples * 2];
@@ -75,9 +69,6 @@ WinMain(HINSTANCE Instance,
 	{
 		// Write Riff-Wave
 		// via http://soundfile.sapp.org/doc/WaveFormat/
-
-
-
 		WriteFile(outputFile, "RIFF", 4, NULL, NULL);
 		const unsigned int c_subchunksize2 = blankenhain::lengthInSamples() * 2 * 2;
 		const unsigned int c_chunksize = 4 + (8 + 16) + (8 + blankenhain::lengthInSamples() * 2 * 2);

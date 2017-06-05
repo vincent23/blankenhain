@@ -12,6 +12,5 @@ void InversePhaseEffect::process(Sample* buffer, size_t numberOfSamples, size_t 
 	{
 		Sample& in = buffer[i];
 		in *= Sample(-1.);
-		nextSample();
 	}
 }

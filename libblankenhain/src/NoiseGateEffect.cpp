@@ -85,6 +85,5 @@ void NoiseGateEffect::process(Sample* buffer, size_t numberOfSamples, size_t cur
 			}
 		}
 		currentTime++;
-		nextSample();
 	}
 }

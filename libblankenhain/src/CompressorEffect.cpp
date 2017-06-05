@@ -25,10 +25,10 @@ void CompressorEffect::process(Sample* buffer, size_t numberOfSamples, size_t cu
 	float attack = getInterpolatedParameter(0).get();
 	float release = getInterpolatedParameter(1).get();
 	bool rms = getInterpolatedParameter(7).get() >= .5f;
-	InterpolatedValue<float>& threshold = getInterpolatedParameter(2);
-	InterpolatedValue<float>& ratio = getInterpolatedParameter(3);
-	InterpolatedValue<float>& knee = getInterpolatedParameter(4);
-	InterpolatedValue<float>& makeupGain = getInterpolatedParameter(6);
+	InterpolatedValue<float> const& threshold = getInterpolatedParameter(2);
+	InterpolatedValue<float> const& ratio = getInterpolatedParameter(3);
+	InterpolatedValue<float> const& knee = getInterpolatedParameter(4);
+	InterpolatedValue<float> const& makeupGain = getInterpolatedParameter(6);
 	float lookahead = getInterpolatedParameter(5).get();
 
 	lookaheadDelay.setSize(static_cast<unsigned int>(aux::millisecToSamples(lookahead)));
@@ -46,7 +46,6 @@ void CompressorEffect::process(Sample* buffer, size_t numberOfSamples, size_t cu
 		Sample delayed = lookaheadDelay.pushpop(buffer[i]);
 		delayed *= Sample(aux::decibelToLinear(dbGain));;
 		buffer[i] = delayed;
-		nextSample();
 	}
 }
 

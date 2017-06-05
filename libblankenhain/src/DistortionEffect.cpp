@@ -78,5 +78,4 @@ void DistortionEffect::process(Sample* buffer, size_t numberOfSamples, size_t cu
 		}
 		buffer[bufferIteration] = aux::mixDryWet(buffer[bufferIteration], processed, drywet);
 	}
-	nextSample(numberOfSamples);
 }

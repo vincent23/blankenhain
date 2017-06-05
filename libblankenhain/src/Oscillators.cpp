@@ -1,15 +1,13 @@
-//
 // via http://www.martin-finke.de/blog/articles/audio-plugins-018-polyblep-oscillator/
 //  Oscillator.cpp
 //  SpaceBass
 //
 //  Created by Martin on 08.04.14.
-//
-//
+// Heavily modified
+
 
 #include "Oscillators.h"
 
-//constexpr float OscillatorPhase::length = 2.f * static_cast<float>(constants::pi);
 
 NaiveOscillator::NaiveOscillator() :
 	BaseOscillator(),
@@ -131,9 +129,6 @@ float PolyBLEPOscillator::getSample(unsigned int time, OscillatorPhase phase)
 		}
 	}
 
-#ifndef _LIBBLANKENHAIN_ENABLE_NANCHECK
-//#define _LIBBLANKENHAIN_ENABLE_NANCHECK
-#endif
 #ifdef _LIBBLANKENHAIN_ENABLE_NANCHECK
 	if (value != value
 		|| mPhase.getValue() != mPhase.getValue()

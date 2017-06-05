@@ -201,7 +201,7 @@ void PluginBase::processReplacing(float** inputs, float** outputs, VstInt32 samp
 		for (unsigned sampleOffset = 0; sampleOffset < blockLength; sampleOffset++) 
 		{
 			unsigned int samplePosition = blockOffset + sampleOffset;
-			alignas(16) double outputSample[2];
+			alignas(16) floatType outputSample[2];
 			processBuffer[sampleOffset].store_aligned(outputSample);
 			outputs[0][samplePosition] = float(outputSample[0]);
 			outputs[1][samplePosition] = float(outputSample[1]);

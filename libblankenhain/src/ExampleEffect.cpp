@@ -37,10 +37,4 @@ void ExampleEffect::process(Sample* buffer, size_t numberOfSamples, size_t curre
 	{
 		buffer[i] = delayLine.pushpop(buffer[i]);
 	}
-
-	// You absolutely NEED TO CALL nextSample() in the process function
-	// You need to make sure that the appropriate number of interpolation-Iterations
-	// are performed by either calling nextSample(numberOfSamples) once or
-	// nextSample(1) exactly "numberOfSamples" times.
-	nextSample(numberOfSamples);
 }

@@ -31,7 +31,7 @@ glidePolyblepInstrument::glidePolyblepInstrument()
 	params->getParameter(16) = new FloatParameter(0.f, NormalizedRange(0.f, 2.f * 3.14159265359f), "lfoPhase", "");
 	params->getParameter(17) = new FloatParameter(0.f, NormalizedRange(-1.f, 1.f), "lfoBaseline", "");
 
-	// Lfo einfach in getModulation schreiben. Hier sin() machen und auf detune drauf schreiben. weiß noch nicht ganz was dann passiert, aber wird schon passen
+	// Lfo einfach in getModulation schreiben. Hier sin() machen und auf detune drauf schreiben. weiï¿½ noch nicht ganz was dann passiert, aber wird schon passen
 	// Der lfo einach von fmSynth kopieren.
 
 	freqPrev = 0.f;
@@ -45,7 +45,6 @@ glidePolyblepInstrument::~glidePolyblepInstrument()
 
 void glidePolyblepInstrument::processVoice(VoiceState& voice, unsigned int timeInSamples, Sample* buffer, unsigned int numberOfSamples)
 {
-
 	float attack = getInterpolatedParameter(0).get();
 	float hold = getInterpolatedParameter(1).get();
 	float holdLevel = getInterpolatedParameter(2).get();
@@ -95,7 +94,8 @@ void glidePolyblepInstrument::processVoice(VoiceState& voice, unsigned int timeI
 		float currentFreq;
 
 		// If enough glide time has past, set previousFreq to currentFreq and thereby stop gliding
-		if (freqPrev != voiceFreq
+		if (portamento != 0.f
+			&& freqPrev != voiceFreq
 			&& BhMath::exp(-1.f * timeSinceNoteOff / (constants::sampleRate * portamento)) < 0.0001)
 		{
 			notePrev = voice.key;

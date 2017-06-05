@@ -3,23 +3,14 @@
 #include "ParameterBundle.h"
 #include "InterpolatedValue.h"
 #include "FpuState.h"
-
-#ifndef _LIBBLANKENHAIN_ENABLE_FPU_ROUNDING_CHECK
-//#define  _LIBBLANKENHAIN_ENABLE_FPU_ROUNDING_CHECK
-#endif
-#ifndef _LIBBLANKENHAIN_ENABLE_NANCHECK
-//#define _LIBBLANKENHAIN_ENABLE_NANCHECK
-#endif
-
-#ifdef _LIBBLANKENHAIN_ENABLE_FPU_ROUNDING_CHECK
-//#include <iostream>
-#endif
+#include "Options.h"
 
 EffectBase::EffectBase(unsigned int numberOfParameters, bool useTempoData)
 	: tempodata(useTempoData)
 	, paramBundle(numberOfParameters == 0 ? nullptr : new ParameterBundle(numberOfParameters))
 	, parameterValues(numberOfParameters == 0 ? nullptr : new InterpolatedValue<float>[numberOfParameters])
 	, nextModulation(numberOfParameters == 0 ? nullptr : new float[numberOfParameters])
+	, fpuState()
 { 
 
 }
@@ -73,25 +64,12 @@ TempoData const& EffectBase::getTempoData() const
 
 void EffectBase::processBlock(Sample* buffer, size_t numberOfSamples)
 {
-
-#ifdef  _LIBBLANKENHAIN_ENABLE_FPU_ROUNDING_CHECK
-	unsigned short bar = 0u;
-	_asm FSTCW bar
-	if (bar != 3711)
-	{
-		throw "fpu rounding flag wrong";
-		puts("fpu rounding flag wrong");
-	}
-#endif
-	unsigned short fcw = 3711;
-	__asm fldcw fcw;
 	FpuState fpuState;
-
-
 	// TODO find a better way to do initalization
 	if (!initializedParameters) 
 	{
-		for (unsigned int parameterIndex = 0; parameterIndex < getNumberOfParameters(); parameterIndex++) {
+		for (unsigned int parameterIndex = 0u; parameterIndex < getNumberOfParameters(); parameterIndex++) 
+		{
 			float value = paramBundle->getParameter(parameterIndex)->getValueUnnormalized();
 			// this emulates the previous block end, which we set to the unmodulated current parameter value
 			parameterValues[parameterIndex] = InterpolatedValue<float>(value, value, 1);
@@ -106,7 +84,8 @@ void EffectBase::processBlock(Sample* buffer, size_t numberOfSamples)
 	}
 	getModulation(nextModulation, numberOfSamples);
 
-	for (unsigned int parameterIndex = 0; parameterIndex < getNumberOfParameters(); parameterIndex++) {
+	for (unsigned int parameterIndex = 0; parameterIndex < getNumberOfParameters(); parameterIndex++) 
+	{
 		FloatParameter* parameter = paramBundle->getParameter(parameterIndex);
 		
 		if (!parameter->canBeModulated())
@@ -135,29 +114,18 @@ void EffectBase::processBlock(Sample* buffer, size_t numberOfSamples)
 			parameterValues[parameterIndex] = InterpolatedValue<float>(previousValue, nextValue, numberOfSamples);
 		}
 	}
+
 	process(buffer, numberOfSamples, timeInSamples);
 	timeInSamples += numberOfSamples;
 
-
-
+#ifdef _LIBBLANKENHAIN_ENABLE_NANCHECK
 	for (unsigned int i = 0u; i < numberOfSamples; ++i)
 	{
-#ifdef _LIBBLANKENHAIN_ENABLE_NANCHECK
 		if (buffer[i].avgValue() != buffer[i].avgValue())
-			throw "nan detected";
-#endif
-	}
-
-#ifdef  _LIBBLANKENHAIN_ENABLE_FPU_ROUNDING_CHECK
-	bar = 0u;
-	_asm FSTCW bar
-	if (bar != 3711)
-	{
-		throw "fpu rounding flag wrong";
-		puts("fpu rounding flag wrong");
+			throw std::runtime_error("nan detected");
 	}
 #endif
-
+	nextSample(numberOfSamples);
 }
 
 ParameterBundle* EffectBase::getPointerToParameterBundle() const
@@ -181,7 +149,7 @@ void EffectBase::getModulation(float* modulationValues, size_t sampleOffset)
 /**
  * Get interpolated parameter containing unnormalized values.
  */
-InterpolatedValue<float>& EffectBase::getInterpolatedParameter(unsigned int parameterIndex) const
+InterpolatedValue<float> const& EffectBase::getInterpolatedParameter(unsigned int parameterIndex) const
 {
 	// parameterValues contain results of parameter->getValueUnnormalized()
 	return parameterValues[parameterIndex];
@@ -189,15 +157,9 @@ InterpolatedValue<float>& EffectBase::getInterpolatedParameter(unsigned int para
 
 void EffectBase::nextSample(unsigned int steps) const
 {
-	for (unsigned int parameterIndex = 0; parameterIndex < getNumberOfParameters(); parameterIndex++) {
-		getInterpolatedParameter(parameterIndex).next(steps);
-	}
-}
-
-void EffectBase::nextSample() const
-{
-	for (unsigned int parameterIndex = 0; parameterIndex < getNumberOfParameters(); parameterIndex++) {
-		getInterpolatedParameter(parameterIndex).next();
+	for (unsigned int parameterIndex = 0; parameterIndex < getNumberOfParameters(); parameterIndex++) 
+	{
+		parameterValues[parameterIndex].next(steps);
 	}
 }
 
