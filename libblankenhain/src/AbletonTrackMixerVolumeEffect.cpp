@@ -13,16 +13,17 @@ AbletonTrackMixerVolumeEffect::AbletonTrackMixerVolumeEffect() : EffectBase(1u, 
 
 void AbletonTrackMixerVolumeEffect::process(Sample* buffer, size_t numberOfSamples, size_t currentTime)
 {
-	InterpolatedValue<float>& currentVolumeAsMultiplier = getInterpolatedParameter(0);
+	InterpolatedValue<float> const& currentVolumeAsMultiplier = getInterpolatedParameter(0);
 
 	const float valueBefore = currentVolumeAsMultiplier.get();
-	nextSample(numberOfSamples);
-	const float valueAfter = currentVolumeAsMultiplier.get();
-	InterpolatedValue<float> volume(valueBefore, valueAfter, numberOfSamples);
+	const float valueAfter = currentVolumeAsMultiplier.get(numberOfSamples);
+	InterpolatedValue<float> volume(valueBefore, valueBefore, numberOfSamples); // TODO
+	//InterpolatedValue<float> volume(valueBefore, valueAfter, numberOfSamples); // TODO
 	for (size_t bufferIteration = 0; bufferIteration < numberOfSamples; bufferIteration++)
 	{
-		float transformedMultiplier = 0.00956 * BhMath::exp(22048.f / 2.f * volume.get() / 4973.87572f) - 0.01101f;
-		transformedMultiplier *= (1.f / 0.78727f);
+		//float transformedMultiplier = 0.00956 * BhMath::exp(22048.f / 2.f * volume.get() / 4973.87572f) - 0.01101f;
+		float transformedMultiplier = 0.00624 * BhMath::exp(((22048.f / 2.f * volume.get()) + 2124.69956) / 4973.87572f) - 0.01101f;
+		transformedMultiplier *= (1.f / 0.78727f) * aux::decibelToLinear(6.f);
 
 		if (transformedMultiplier > 0.f)
 			buffer[bufferIteration] *= Sample(transformedMultiplier);

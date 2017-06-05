@@ -444,7 +444,9 @@ private:
  *
  * _______*******______
  *
-* (Sounds like shit)
+ * (Sounds like shit)
+ *
+ * If pulseLength is initialized to 0, the length is infinite (pulse will continue as long as note plays
  *
  * Useful for drum synthesis and control logic.
  */
@@ -457,7 +459,9 @@ public:
 	virtual void setFrequency(float frequency) final {};
 	virtual float getSample(unsigned int time, OscillatorPhase phase = OscillatorPhase()) final
 	{
-		if (time <= pulseLengthInSamples)
+		if (pulseLengthInSamples == 0u)
+			return 1.f;
+		else if (time <= pulseLengthInSamples)
 			return 1.f;
 		else return 0.f;
 	}
@@ -466,5 +470,11 @@ public:
 	{
 		return 0.f;
 	}
+
+	void setPulseLength(unsigned int const& lengthIn)
+	{
+		this->pulseLengthInSamples = lengthIn;
+	}
+
 };
 
