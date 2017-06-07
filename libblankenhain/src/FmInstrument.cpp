@@ -9,27 +9,27 @@
 FmInstrument::FmInstrument()
 	: InstrumentBase(116, 1, true), currentSound(nullptr), lastCarrierValue(1.f)
 {
-	ParameterBundle* params = getPointerToParameterBundle();
+	ParameterBundle& params = getParameterBundle();
 
 	// envelope global
-	params->getParameter(0) = new FloatParameter(50.f, NormalizedRange(1.f, 1700.f, 0.3f), "attack", "ms");
-	params->getParameter(1) = new FloatParameter(100.f, NormalizedRange(1.f, 1700.f, 0.3f), "hold", "ms");
-	params->getParameter(2) = new FloatParameter(1.f, NormalizedRange(), "holdlevel", "ratio");
-	params->getParameter(3) = new FloatParameter(100.f, NormalizedRange(1.f, 1700.f, 0.3f), "decay", "ms");
-	params->getParameter(4) = new BoolParameter(false, "sustainBool");
-	params->getParameter(5) = new FloatParameter(100.f, NormalizedRange(1.f, 1700.f, 0.3f), "sustain", "ms");
-	params->getParameter(6) = new FloatParameter(1.0f, NormalizedRange(), "sustainLevel", "ratio");
-	params->getParameter(7) = new FloatParameter(100.f, NormalizedRange(1.f, 1700.f, 0.3f), "release", "ms");
+	params.getParameter(0) = new FloatParameter(50.f, NormalizedRange(1.f, 1700.f, 0.3f), "attack", "ms");
+	params.getParameter(1) = new FloatParameter(100.f, NormalizedRange(1.f, 1700.f, 0.3f), "hold", "ms");
+	params.getParameter(2) = new FloatParameter(1.f, NormalizedRange(), "holdlevel", "ratio");
+	params.getParameter(3) = new FloatParameter(100.f, NormalizedRange(1.f, 1700.f, 0.3f), "decay", "ms");
+	params.getParameter(4) = new BoolParameter(false, "sustainBool");
+	params.getParameter(5) = new FloatParameter(100.f, NormalizedRange(1.f, 1700.f, 0.3f), "sustain", "ms");
+	params.getParameter(6) = new FloatParameter(1.0f, NormalizedRange(), "sustainLevel", "ratio");
+	params.getParameter(7) = new FloatParameter(100.f, NormalizedRange(1.f, 1700.f, 0.3f), "release", "ms");
 
 
 	// Modulation Oscillators
 	for (unsigned int i = 0u; i < 8; i++)
 	{
 		unsigned int currentIter = 8u + i * 13;
-		params->getParameter(currentIter + 0) = new FloatParameter(440.f, NormalizedRange(33.f, 16000.f, 0.25), "freq", "hz");
+		params.getParameter(currentIter + 0) = new FloatParameter(440.f, NormalizedRange(33.f, 16000.f, 0.25), "freq", "hz");
 		BhString names[3] = { "FM", "PM", "AM" };
-		params->getParameter(currentIter + 1) = new OptionParameter(3u, names, "modType", "");
-		params->getParameter(currentIter + 2) = new FloatParameter(0.f, NormalizedRange(), "modAmount", "amount");
+		params.getParameter(currentIter + 1) = new OptionParameter(3u, names, "modType", "");
+		params.getParameter(currentIter + 2) = new FloatParameter(0.f, NormalizedRange(), "modAmount", "amount");
 
 		float* numbersOfOsc = new float[_LIBBLANKENHAIN_NUM_OSCS_FM_SYNTH - i];
 		for (unsigned int j = i; j < _LIBBLANKENHAIN_NUM_OSCS_FM_SYNTH - 1; j++)
@@ -38,19 +38,19 @@ FmInstrument::FmInstrument()
 			numbersOfOsc[accessArray] = static_cast<float>(j + 1);
 		}
 
-		params->getParameter(currentIter + 3) = new DiscreteParameter(_LIBBLANKENHAIN_NUM_OSCS_FM_SYNTH - i - 1, "target", "", numbersOfOsc, _LIBBLANKENHAIN_NUM_OSCS_FM_SYNTH - i - 2);
+		params.getParameter(currentIter + 3) = new DiscreteParameter(_LIBBLANKENHAIN_NUM_OSCS_FM_SYNTH - i - 1, "target", "", numbersOfOsc, _LIBBLANKENHAIN_NUM_OSCS_FM_SYNTH - i - 2);
 		delete[] numbersOfOsc;
 
-		params->getParameter(currentIter + 4) = new FloatParameter(0.f, NormalizedRange(), "selfmodAmount", "amount");
+		params.getParameter(currentIter + 4) = new FloatParameter(0.f, NormalizedRange(), "selfmodAmount", "amount");
 		BhString waveform[4] = { "Sine", "Saw", "Square", "Triangle" };
-		params->getParameter(currentIter + 5) = new OptionParameter(3u, names, "SelfmodType", "");
-		params->getParameter(currentIter + 6) = new OptionParameter(4u, waveform, "waveform", "");
-		params->getParameter(currentIter + 7) = new BoolParameter(false, "isOn");
-		params->getParameter(currentIter + 8) = new BoolParameter(false, "isLFO");
-		params->getParameter(currentIter + 9) = new BoolParameter(false, "tempoSyncOn");
+		params.getParameter(currentIter + 5) = new OptionParameter(3u, names, "SelfmodType", "");
+		params.getParameter(currentIter + 6) = new OptionParameter(4u, waveform, "waveform", "");
+		params.getParameter(currentIter + 7) = new BoolParameter(false, "isOn");
+		params.getParameter(currentIter + 8) = new BoolParameter(false, "isLFO");
+		params.getParameter(currentIter + 9) = new BoolParameter(false, "tempoSyncOn");
 		float multiplierValues[7] = { 0.0625, 0.125, 0.25, 0.5, 1., 2., 4. };
-		params->getParameter(currentIter + 10) = new DiscreteParameter( 7u, "multiplier", "", multiplierValues, 4u);
-		params->getParameter(currentIter + 11) = new BoolParameter(false, "TrackKey");
+		params.getParameter(currentIter + 10) = new DiscreteParameter( 7u, "multiplier", "", multiplierValues, 4u);
+		params.getParameter(currentIter + 11) = new BoolParameter(false, "TrackKey");
 
 		float* trackKeyShiftOptions = new float[9u];
 		for (unsigned int j = 0u; j < 9u; j++)
@@ -58,7 +58,7 @@ FmInstrument::FmInstrument()
 			trackKeyShiftOptions[j] = static_cast<float>(-4 + static_cast<int>(j));
 		}
 
-		params->getParameter(currentIter + 12) = new DiscreteParameter(9u, "TrackKeyShift","", trackKeyShiftOptions, 4u);
+		params.getParameter(currentIter + 12) = new DiscreteParameter(9u, "TrackKeyShift","", trackKeyShiftOptions, 4u);
 		delete[] trackKeyShiftOptions;
 
 	}
@@ -66,12 +66,10 @@ FmInstrument::FmInstrument()
 	BhString names[3] = { "FM", "PM", "AM" };
 	BhString waveform[4] = { "Sine", "Saw", "Square", "Triangle" };
 	//Carrier
-	params->getParameter(112) = new FloatParameter(0.f, NormalizedRange(), "selfmodAmount", "amount");
-	params->getParameter(113) = new OptionParameter(3u, names, "SelfmodType", "");
-
-	params->getParameter(114) = new OptionParameter(4u, waveform, "waveform", "");
-
-	params->getParameter(115) = new FloatParameter(0.f, NormalizedRange(0.f, 0.3f), "glide", "");
+	params.getParameter(112) = new FloatParameter(0.f, NormalizedRange(), "selfmodAmount", "amount");
+	params.getParameter(113) = new OptionParameter(3u, names, "SelfmodType", "");
+	params.getParameter(114) = new OptionParameter(4u, waveform, "waveform", "");
+	params.getParameter(115) = new FloatParameter(0.f, NormalizedRange(0.f, 0.3f), "glide", "");
 
 	for (unsigned int i = 0u; i < _LIBBLANKENHAIN_NUM_OSCS_FM_SYNTH; i++)
 	{

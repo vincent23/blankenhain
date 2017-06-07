@@ -7,17 +7,17 @@
 polyblepInstrument::polyblepInstrument()
 	: InstrumentBase(9, 4)
 {
-	ParameterBundle* params = getPointerToParameterBundle();
+	ParameterBundle& params = getParameterBundle();
 
-	params->getParameter(0) = new FloatParameter(50.f, NormalizedRange(0.1f, 1700.f, 0.3f), "attack", "ms");
-	params->getParameter(1) = new FloatParameter(100.f, NormalizedRange(1.f, 1700.f, 0.3f), "hold", "ms");
-	params->getParameter(2) = new FloatParameter(1.f, NormalizedRange(), "holdlevel", "ratio");
-	params->getParameter(3) = new FloatParameter(100.f, NormalizedRange(1.f, 1700.f, 0.3f), "decay", "ms");
-	params->getParameter(4) = new FloatParameter(0.f, NormalizedRange(), "sustainBool", "bool");
-	params->getParameter(5) = new FloatParameter(100.f, NormalizedRange(1.f, 1700.f, 0.3f), "sustain", "ms");
-	params->getParameter(6) = new FloatParameter(1.0f, NormalizedRange(), "sustainLevel", "ratio");
-	params->getParameter(7) = new FloatParameter(100.f, NormalizedRange(1.f, 1700.f, 0.3f), "release", "ms");
-	params->getParameter(8) = new FloatParameter(0.f, NormalizedRange(0.f, 3.9f), "osc", "");
+	params.getParameter(0) = new FloatParameter(50.f, NormalizedRange(0.1f, 1700.f, 0.3f), "attack", "ms");
+	params.getParameter(1) = new FloatParameter(100.f, NormalizedRange(1.f, 1700.f, 0.3f), "hold", "ms");
+	params.getParameter(2) = new FloatParameter(1.f, NormalizedRange(), "holdlevel", "ratio");
+	params.getParameter(3) = new FloatParameter(100.f, NormalizedRange(1.f, 1700.f, 0.3f), "decay", "ms");
+	params.getParameter(4) = new FloatParameter(0.f, NormalizedRange(), "sustainBool", "bool");
+	params.getParameter(5) = new FloatParameter(100.f, NormalizedRange(1.f, 1700.f, 0.3f), "sustain", "ms");
+	params.getParameter(6) = new FloatParameter(1.0f, NormalizedRange(), "sustainLevel", "ratio");
+	params.getParameter(7) = new FloatParameter(100.f, NormalizedRange(1.f, 1700.f, 0.3f), "release", "ms");
+	params.getParameter(8) = new FloatParameter(0.f, NormalizedRange(0.f, 3.9f), "osc", "");
 
 }
 

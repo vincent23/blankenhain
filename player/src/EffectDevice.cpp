@@ -10,11 +10,11 @@ EffectDevice::EffectDevice(EffectBase& effect_, ParameterTrack* parameterValues_
 	: effect(effect_)
 	, parameterValues(parameterValues_)
 {
-	ParameterBundle* parameters = effect.getPointerToParameterBundle();
+	ParameterBundle& parameters = effect.getParameterBundle();
 	for (unsigned int parameterIndex = 0; parameterIndex < effect.getNumberOfParameters(); parameterIndex++)
 	{
 		float targetValue = parameterValues[parameterIndex].getCurrentValueAndAdvance(0);
-		parameters->getParameter(parameterIndex)->setCurrentValueNormalized(targetValue);
+		parameters.getParameter(parameterIndex)->setCurrentValueNormalized(targetValue);
 	}
 }
 
@@ -33,12 +33,12 @@ Sample* EffectDevice::process(SongInfo& songInfo, const Sample* input, unsigned 
 			effect.setTempoData(songInfo.bpm, globalSamplePosition);
 		}
 
-		ParameterBundle* parameters = effect.getPointerToParameterBundle();
+		ParameterBundle& parameters = effect.getParameterBundle();
 		for (unsigned int parameterIndex = 0; parameterIndex < effect.getNumberOfParameters(); parameterIndex++)
 		{
 			if (parameterValues[parameterIndex].numberOfPoints > 1) {
 				float targetValue = parameterValues[parameterIndex].getCurrentValueAndAdvance(globalSamplePosition);
-				parameters->getParameter(parameterIndex)->setTargetValueNormalized(targetValue);
+				parameters.getParameter(parameterIndex)->setTargetValueNormalized(targetValue);
 			}
 		}
 		effect.processBlock(outputBuffer, constants::blockSize);

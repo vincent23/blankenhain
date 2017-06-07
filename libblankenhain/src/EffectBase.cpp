@@ -7,7 +7,7 @@
 
 EffectBase::EffectBase(unsigned int numberOfParameters, bool useTempoData)
 	: tempodata(useTempoData)
-	, paramBundle(numberOfParameters == 0 ? nullptr : new ParameterBundle(numberOfParameters))
+	, paramBundle(numberOfParameters)
 	, interpolatedParameters(numberOfParameters)
 	, nextModulation(numberOfParameters == 0 ? nullptr : new float[numberOfParameters])
 	, fpuState()
@@ -17,20 +17,7 @@ EffectBase::EffectBase(unsigned int numberOfParameters, bool useTempoData)
 
 EffectBase::~EffectBase()
 {
-	if (paramBundle != nullptr)
-	{
-		for (size_t i = 0u; i < paramBundle->getNumberOfParameters(); i++)
-		{
-			if (paramBundle->getParameter(i) != nullptr)
-				delete paramBundle->getParameter(i);
-
-			paramBundle->getParameter(i) = nullptr;
-		}
-		delete paramBundle;
-	}
-
 	if (nextModulation != nullptr) delete[] nextModulation;
-
 }
 
 const bool EffectBase::effectUsesTempoData() const
@@ -71,7 +58,7 @@ void EffectBase::processBlock(Sample* buffer, size_t numberOfSamples)
 	{
 		for (unsigned int parameterIndex = 0u; parameterIndex < getNumberOfParameters(); parameterIndex++) 
 		{
-			float value = paramBundle->getParameter(parameterIndex)->getValueUnnormalized();
+			float value = paramBundle.getParameter(parameterIndex)->getValueUnnormalized();
 			// this emulates the previous block end, which we set to the unmodulated current parameter value
 			interpolatedParameters.setCurrent(parameterIndex, value);
 		}
@@ -87,7 +74,7 @@ void EffectBase::processBlock(Sample* buffer, size_t numberOfSamples)
 
 	for (unsigned int parameterIndex = 0; parameterIndex < getNumberOfParameters(); parameterIndex++) 
 	{
-		FloatParameter* parameter = paramBundle->getParameter(parameterIndex);
+		FloatParameter* parameter = paramBundle.getParameter(parameterIndex);
 		
 		if (!parameter->canBeModulated())
 		{
@@ -128,17 +115,14 @@ void EffectBase::processBlock(Sample* buffer, size_t numberOfSamples)
 	interpolatedParameters.next(numberOfSamples);
 }
 
-ParameterBundle* EffectBase::getPointerToParameterBundle() const
+ParameterBundle& EffectBase::getParameterBundle()
 {
 	return (this->paramBundle);
 }
 
 const unsigned int EffectBase::getNumberOfParameters() const
 {
-	if (this->paramBundle == nullptr)
-		return 0u;
-	else
-		return this->paramBundle->getNumberOfParameters();
+	return this->paramBundle.getNumberOfParameters();
 }
 
 // This function is empty as not all effects have modulation

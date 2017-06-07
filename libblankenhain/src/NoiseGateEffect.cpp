@@ -12,12 +12,12 @@ NoiseGateEffect::NoiseGateEffect()
 	, lastStartTime(1u)
 	, lastStopTime(0u)
 {
-	ParameterBundle* params = getPointerToParameterBundle();
-	(params->getParameter(0)) = new FloatParameter(-6.f, NormalizedRange(-120.f, 0.f, 5.f), "threshold", "dB");
-	(params->getParameter(1)) = new FloatParameter(-119.f, NormalizedRange(-120.f, 0.f, 5.f), "bottom", "dB");
-	(params->getParameter(2)) = new FloatParameter(1.f, NormalizedRange(0.05f, 200.f, 0.8f), "attack", "ms");
-	(params->getParameter(3)) = new FloatParameter(1.f, NormalizedRange(0.05f, 200.f, 0.8f), "release", "ms");
-	(params->getParameter(4)) = new FloatParameter(0.f, NormalizedRange(0.0f, 50.f, 0.8f), "lookahead", "ms");
+	ParameterBundle& params = getParameterBundle();
+	params.getParameter(0) = new FloatParameter(-6.f, NormalizedRange(-120.f, 0.f, 5.f), "threshold", "dB");
+	params.getParameter(1) = new FloatParameter(-119.f, NormalizedRange(-120.f, 0.f, 5.f), "bottom", "dB");
+	params.getParameter(2) = new FloatParameter(1.f, NormalizedRange(0.05f, 200.f, 0.8f), "attack", "ms");
+	params.getParameter(3) = new FloatParameter(1.f, NormalizedRange(0.05f, 200.f, 0.8f), "release", "ms");
+	params.getParameter(4) = new FloatParameter(0.f, NormalizedRange(0.0f, 50.f, 0.8f), "lookahead", "ms");
 }
 
 void NoiseGateEffect::process(Sample* buffer, size_t numberOfSamples, size_t currentTime)

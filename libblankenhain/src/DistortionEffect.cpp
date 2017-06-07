@@ -7,11 +7,11 @@
 
 DistortionEffect::DistortionEffect() : EffectBase(4)
 {
-	ParameterBundle* params = getPointerToParameterBundle();
-	(params->getParameter(0)) = new FloatParameter(0.f, NormalizedRange(-12.f, 12.f, 1.f), "inGain", "dB");
-	(params->getParameter(1)) = new FloatParameter(0.f, NormalizedRange(0.f, 10.f, 1.f), "iterations", "");
-	(params->getParameter(2)) = new FloatParameter(1.f, NormalizedRange(), "algorithm", "");
-	(params->getParameter(3)) = new FloatParameter(0.f, NormalizedRange(0.f, 1.f, 0.3f), "dry/wet", "skewed");
+	ParameterBundle& params = getParameterBundle();
+	params.getParameter(0) = new FloatParameter(0.f, NormalizedRange(-12.f, 12.f, 1.f), "inGain", "dB");
+	params.getParameter(1) = new FloatParameter(0.f, NormalizedRange(0.f, 10.f, 1.f), "iterations", "");
+	params.getParameter(2) = new FloatParameter(1.f, NormalizedRange(), "algorithm", "");
+	params.getParameter(3) = new FloatParameter(0.f, NormalizedRange(0.f, 1.f, 0.3f), "dry/wet", "skewed");
 }
 
 void DistortionEffect::process(Sample* buffer, size_t numberOfSamples, size_t currentTime)

@@ -8,12 +8,12 @@ const unsigned int NUMBER_OF_PARAMETERS = 4u;
 
 FilterEffect::FilterEffect() : EffectBase(NUMBER_OF_PARAMETERS)
 {
-	ParameterBundle* params = getPointerToParameterBundle();
+	ParameterBundle& params = getParameterBundle();
 	// Insert your stuff here
-	(params->getParameter(0)) = new FloatParameter(0.7f, NormalizedRange::fromMidpoint(0.1f, 0.7f, 10.f), "Q", "");
-	(params->getParameter(1)) = new FloatParameter(120.f, NormalizedRange::fromMidpoint(20.f, 850.f, 22000.f), "frequency", "Hz");
-	(params->getParameter(2)) = new FloatParameter(0.f, NormalizedRange(0.f, 1.f, 1.f), "style", "");
-	(params->getParameter(3)) = new FloatParameter(1.01f, NormalizedRange(0.f, 2.9999f, 1.f), "rolloff", "");
+	params.getParameter(0) = new FloatParameter(0.7f, NormalizedRange::fromMidpoint(0.1f, 0.7f, 10.f), "Q", "");
+	params.getParameter(1) = new FloatParameter(120.f, NormalizedRange::fromMidpoint(20.f, 850.f, 22000.f), "frequency", "Hz");
+	params.getParameter(2) = new FloatParameter(0.f, NormalizedRange(0.f, 1.f, 1.f), "style", "");
+	params.getParameter(3) = new FloatParameter(1.01f, NormalizedRange(0.f, 2.9999f, 1.f), "rolloff", "");
 
 	//resonance = new FloatParameter(0.5, "Resonance", 0.5f, NormalizedRange(0.f, 5.f));
 	//frequency = new FloatParameter((500.f), "Frequency", 0.5f, NormalizedRange(40.f, 22000.f, 0.3f));

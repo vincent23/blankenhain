@@ -28,8 +28,16 @@ ParameterBundle::~ParameterBundle()
 {
 	if (parameters != nullptr)
 	{
-		delete[] *parameters;
-		*parameters = nullptr;
+		for (size_t i = 0u; i < numberOfParameters; i++)
+		{
+			if (getParameter(i) != nullptr) {
+				delete getParameter(i);
+			}
+			getParameter(i) = nullptr;
+		}
+
+		delete[] parameters;
+		parameters = nullptr;
 	}
 }
 

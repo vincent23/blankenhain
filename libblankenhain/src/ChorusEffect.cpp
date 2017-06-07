@@ -8,19 +8,19 @@
 ChorusEffect::ChorusEffect() : EffectBase(11), delayLine(size_t(aux::millisecToSamples(2502u)))
 {
 	wasPaniced = false;
-	ParameterBundle* params = getPointerToParameterBundle();
-	params->getParameter(0) = new FloatParameter(0.f, NormalizedRange(0.f, 1.f), "lfoAmount", "");
-	(params->getParameter(1)) = new FloatParameter(0.0001f, NormalizedRange(0.0001f, 1.f, 0.2f), "width", "%");
-	(params->getParameter(2)) = new FloatParameter(15.f, NormalizedRange(1.f, 50.f, 0.2f), "delay", "ms");
-	(params->getParameter(3)) = new FloatParameter(0.0f, NormalizedRange(0.0f, 1.f), "feedback", "%");
-	(params->getParameter(4)) = new FloatParameter(0.f, NormalizedRange(), "drywet", "");
-	(params->getParameter(5)) = new BoolParameter(false, "PANIC!");
+	ParameterBundle& params = getParameterBundle();
+	params.getParameter(0) = new FloatParameter(0.f, NormalizedRange(0.f, 1.f), "lfoAmount", "");
+	params.getParameter(1) = new FloatParameter(0.0001f, NormalizedRange(0.0001f, 1.f, 0.2f), "width", "%");
+	params.getParameter(2) = new FloatParameter(15.f, NormalizedRange(1.f, 50.f, 0.2f), "delay", "ms");
+	params.getParameter(3) = new FloatParameter(0.0f, NormalizedRange(0.0f, 1.f), "feedback", "%");
+	params.getParameter(4) = new FloatParameter(0.f, NormalizedRange(), "drywet", "");
+	params.getParameter(5) = new BoolParameter(false, "PANIC!");
 	BhString names[5] = { "sine", "saw", "square", "triangle", "noise" };
-	params->getParameter(6) = new OptionParameter(4u, names, "lfoWaveform", "");
-	params->getParameter(7) = new FloatParameter(0.f, NormalizedRange(0.f, 2.f * constants::pi), "lfoPhase", "");
-	(params->getParameter(8)) = new FloatParameter(0.f, NormalizedRange(-50.f, 50.f), "pan", "");
-	params->getParameter(9) = new FloatParameter(5.f, NormalizedRange(0.01f, 100.f, 0.3f), "lfoSpeed", "ms");
-	params->getParameter(10) = new BoolParameter(false, "pseudoStereo");
+	params.getParameter(6) = new OptionParameter(4u, names, "lfoWaveform", "");
+	params.getParameter(7) = new FloatParameter(0.f, NormalizedRange(0.f, 2.f * constants::pi), "lfoPhase", "");
+	params.getParameter(8) = new FloatParameter(0.f, NormalizedRange(-50.f, 50.f), "pan", "");
+	params.getParameter(9) = new FloatParameter(5.f, NormalizedRange(0.01f, 100.f, 0.3f), "lfoSpeed", "ms");
+	params.getParameter(10) = new BoolParameter(false, "pseudoStereo");
 }
 
 void ChorusEffect::process(Sample* buffer, size_t numberOfSamples, size_t currentTime)

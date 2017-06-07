@@ -4,8 +4,7 @@
 #include "InterpolatedValue.h"
 #include "AlignedType.h"
 #include "FpuState.h"
-
-class ParameterBundle;
+#include "ParameterBundle.h"
 
 /**
  * Container for bpm and position. Accquired at the beginning of every processReplacing funtion.
@@ -38,7 +37,7 @@ public:
 	void  processBlock(Sample* buffer, size_t numberOfSamples);
 
 	/// Helper functions
-	ParameterBundle* getPointerToParameterBundle() const;
+	ParameterBundle& getParameterBundle();
 	const unsigned int getNumberOfParameters() const;
 
 
@@ -95,7 +94,7 @@ protected:
 
 private:
 	unsigned int timeInSamples = 0;
-	ParameterBundle* const paramBundle;
+	ParameterBundle paramBundle;
 	float* const nextModulation;
 	bool initializedParameters = false;
 	FpuState fpuState;
