@@ -67,16 +67,16 @@ public:
 
 	unsigned int const& getCurrentTime() const;
 
-  const unsigned int getDelay() const;
+	const unsigned int getDelay() const;
 	TempoData const& getTempoData() const;
 
 protected:
 	/**
-	 * Use this, and only this function, to get access to current parameter values
+	 * access to current parameter values
 	 */
-	InterpolatedValue<float> const& getInterpolatedParameter(unsigned int parameterIndex) const;
+	InterpolatedValueBlock interpolatedParameters;
 
-	
+
 	/**
 	* Applies the effect to @a numberOfSamples audio samples in @a buffer.
 	* This method must also call nextSample() exactly @a numberOfSamples times.
@@ -91,26 +91,12 @@ protected:
 	 */
 	TempoData tempodata;
 
-  unsigned int delayEffectProducesInSamples = 0;
+	unsigned int delayEffectProducesInSamples = 0;
 
-private:	
-
-	/**
-	* Adjusts parameter interpolation by moving ALL of their interpolation foreward
-	* Call as shorthand when your synth doesnt need current values of the parameters but only approximate ones.
-	*
-	* See also: FloatParameter::next(uint). This may be called manually instead of EffectBase::nextSample()
-	**/
-	void nextSample(unsigned int steps) const;
-
-
+private:
 	unsigned int timeInSamples = 0;
 	ParameterBundle* const paramBundle;
-	InterpolatedValue<float>* const parameterValues;
 	float* const nextModulation;
 	bool initializedParameters = false;
 	FpuState fpuState;
-
-
-
 };

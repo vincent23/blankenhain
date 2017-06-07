@@ -41,16 +41,16 @@ EqualizerEffect::EqualizerEffect() : EffectBase(1 + 5 * numberOfEqualizerFilters
 
 void EqualizerEffect::process(Sample* buffer, size_t numberOfSamples, size_t currentTime)
 {
-	float scale = getInterpolatedParameter(0).get() / 100.f;
+	float scale = interpolatedParameters.get(0) / 100.f;
 	for (unsigned int filterIndex = 0; filterIndex < numberOfEqualizerFilters; filterIndex++) {
-		if (getInterpolatedParameter(filterIndex * 5 + 1).get() < .5f) {
+		if (interpolatedParameters.get(filterIndex * 5 + 1) < .5f) {
 			// filter is off
 			continue;
 		}
-		float frequency = getInterpolatedParameter(filterIndex * 5 + 2).get();
-		float gain = getInterpolatedParameter(filterIndex * 5 + 3).get() * scale;
-		float Q = getInterpolatedParameter(filterIndex * 5 + 4).get();
-		int type = (int)getInterpolatedParameter(filterIndex * 5 + 5).get();
+		float frequency = interpolatedParameters.get(filterIndex * 5 + 2);
+		float gain = interpolatedParameters.get(filterIndex * 5 + 3) * scale;
+		float Q = interpolatedParameters.get(filterIndex * 5 + 4);
+		int type = (int)interpolatedParameters.get(filterIndex * 5 + 5);
 		Filter<Sample>& filter = filters[filterIndex];
 		switch (type) {
 		case 0:

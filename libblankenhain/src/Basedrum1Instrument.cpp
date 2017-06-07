@@ -37,39 +37,39 @@ basedrum1Instrument::~basedrum1Instrument()
 void basedrum1Instrument::processVoice(VoiceState& voice, unsigned int timeInSamples, Sample* buffer, unsigned int numberOfSamples)
 {
 
-	float attack = getInterpolatedParameter(0).get();
-	float hold = getInterpolatedParameter(1).get();
-	float holdLevel = getInterpolatedParameter(2).get();
-	float decay = getInterpolatedParameter(3).get();
-	bool sustainOn = getInterpolatedParameter(4).get() > 0.5 ? true : false;
-	float sustainLevel = getInterpolatedParameter(6).get();
-	float sustain = getInterpolatedParameter(5).get();
-	float release = getInterpolatedParameter(7).get();
-	unsigned int oscMode = static_cast<unsigned int>(getInterpolatedParameter(8).get());
+	float attack = interpolatedParameters.get(0);
+	float hold = interpolatedParameters.get(1);
+	float holdLevel = interpolatedParameters.get(2);
+	float decay = interpolatedParameters.get(3);
+	bool sustainOn = interpolatedParameters.get(4) > 0.5 ? true : false;
+	float sustainLevel = interpolatedParameters.get(6);
+	float sustain = interpolatedParameters.get(5);
+	float release = interpolatedParameters.get(7);
+	unsigned int oscMode = static_cast<unsigned int>(interpolatedParameters.get(8));
 
 	this->drm2.setFrequency(aux::noteToFrequency(static_cast<float>(voice.key)));
 
 	if (oscMode == 0u)
 	{
 
-		if (drm1_lowpassfreq != getInterpolatedParameter(9).get())
+		if (drm1_lowpassfreq != interpolatedParameters.get(9))
 		{
-			drm1_lowpassfreq = getInterpolatedParameter(9).get();
+			drm1_lowpassfreq = interpolatedParameters.get(9);
 			this->drm1.setLowPass(drm1_lowpassfreq, drm1_lowpassq);
 		}
-		if (drm1_lowpassq != getInterpolatedParameter(10).get())
+		if (drm1_lowpassq != interpolatedParameters.get(10))
 		{
-			drm1_lowpassq = getInterpolatedParameter(10).get();
+			drm1_lowpassq = interpolatedParameters.get(10);
 			this->drm1.setLowPass(drm1_lowpassfreq, drm1_lowpassq);
 		}
-		if (drm1_pulselength != getInterpolatedParameter(11).get())
+		if (drm1_pulselength != interpolatedParameters.get(11))
 		{
-			drm1_pulselength = getInterpolatedParameter(11).get();
+			drm1_pulselength = interpolatedParameters.get(11);
 			this->drm1.setPuleLength(drm1_pulselength);
 		}
-		if (drm1_pulselength != getInterpolatedParameter(11).get())
+		if (drm1_pulselength != interpolatedParameters.get(11))
 		{
-			drm1_pulselength = getInterpolatedParameter(11).get();
+			drm1_pulselength = interpolatedParameters.get(11);
 			this->drm1.setPuleLength(drm1_pulselength);
 		}
 
@@ -77,8 +77,8 @@ void basedrum1Instrument::processVoice(VoiceState& voice, unsigned int timeInSam
 	}
 	else
 	{
-		this->drm2.setEnvMult(getInterpolatedParameter(12).get());
-		this->drm2.setEnvRelease(getInterpolatedParameter(13).get());
+		this->drm2.setEnvMult(interpolatedParameters.get(12));
+		this->drm2.setEnvRelease(interpolatedParameters.get(13));
 
 		this->currentGenerator = &drm2;
 

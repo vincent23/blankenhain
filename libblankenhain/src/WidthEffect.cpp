@@ -22,43 +22,43 @@ WidthEffect::WidthEffect() : EffectBase(9u, true), lfo()
 
 void WidthEffect::process(Sample* buffer, size_t numberOfSamples, size_t currentTime)
 {
-	InterpolatedValue<float> const& width = getInterpolatedParameter(0);
-	InterpolatedValue<float> const& panningValue = getInterpolatedParameter(1);
+	float width = interpolatedParameters.get(0);
+	float panningValue = interpolatedParameters.get(1);
 
 	for (size_t i = 0; i < numberOfSamples; i++)
 	{
 		Sample in = buffer[i];
 		Sample inFlipped = in.flippedChannels();
-		Sample widthAsSample = Sample(width.get());
+		Sample widthAsSample = Sample(width);
 		Sample avg = in * Sample(.5) + inFlipped * Sample(.5);
 		buffer[i] = avg * (Sample(1) - widthAsSample) + in * widthAsSample;
 
-		float panValue = panningValue.get() * .02f;
+		float panValue = panningValue * .02f;
 		aux::performPanning(buffer[i], panValue);
 	}
 }
 
 void WidthEffect::getModulation(float* modulationValues, size_t sampleOffset)
 {
-	float lfoAmount = getInterpolatedParameter(2).get();
+	float lfoAmount = interpolatedParameters.get(2);
 
 	// Perform LFO on volumeL
 	if (lfoAmount != 0.f)
 	{
-		float lfoBaseline = getInterpolatedParameter(8).get();
+		float lfoBaseline = interpolatedParameters.get(8);
 
-		float lfoWaveform = getInterpolatedParameter(5).get();
-		bool lfoTempoSync = getInterpolatedParameter(6).get() == 1.f;
+		float lfoWaveform = interpolatedParameters.get(5);
+		bool lfoTempoSync = interpolatedParameters.get(6) == 1.f;
 		this->lfo.setMode(NaiveOscillator::NaiveOscillatorMode(static_cast<unsigned int>(lfoWaveform)));
-		float lfoPhase = getInterpolatedParameter(7).get();
+		float lfoPhase = interpolatedParameters.get(7);
 		if (!lfoTempoSync)
 		{
-			float lfoSpeed = getInterpolatedParameter(3).get();
+			float lfoSpeed = interpolatedParameters.get(3);
 			this->lfo.setFrequency(lfoSpeed);
 		}
 		else
 		{
-			float lfoMult = getInterpolatedParameter(4).get();
+			float lfoMult = interpolatedParameters.get(4);
 			if (lfoMult < 0.125f)
 				lfoMult = 0.0625;
 			else if (lfoMult < 0.25)

@@ -17,10 +17,10 @@ BitcrushEffect::BitcrushEffect() : EffectBase(4)
 
 void BitcrushEffect::process(Sample* buffer, size_t numberOfSamples, size_t currentTime)
 {
-	const unsigned int bitcrush = static_cast<unsigned int>(getInterpolatedParameter(0).get());
-	const float downsample = getInterpolatedParameter(1).get();
-	const float drywet = getInterpolatedParameter(2).get();
-	const bool avgDownsample = getInterpolatedParameter(3).get() == 1.f;
+	const unsigned int bitcrush = static_cast<unsigned int>(interpolatedParameters.get(0));
+	const float downsample = interpolatedParameters.get(1);
+	const float drywet = interpolatedParameters.get(2);
+	const bool avgDownsample = interpolatedParameters.get(3) == 1.f;
 
 	unsigned int groupedSamples = aux::min(static_cast<unsigned int>(aux::max(1.f, downsample * static_cast<float>(numberOfSamples - 1u))), numberOfSamples);
 	int steps = bitcrush;

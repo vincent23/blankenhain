@@ -33,15 +33,15 @@ wavetableInstrument::~wavetableInstrument()
 void wavetableInstrument::processVoice(VoiceState& voice, unsigned int timeInSamples, Sample* buffer, unsigned int numberOfSamples)
 {
 
-	float attack = getInterpolatedParameter(0).get();
-	float hold = getInterpolatedParameter(1).get();
-	float holdLevel = getInterpolatedParameter(2).get();
-	float decay = getInterpolatedParameter(3).get();
-	bool sustainOn = getInterpolatedParameter(4).get() > 0.5 ? true : false;
-	float sustainLevel = getInterpolatedParameter(6).get();
-	float sustain = getInterpolatedParameter(5).get();
-	float release = getInterpolatedParameter(7).get();
-	unsigned int oscMode = static_cast<unsigned int>(getInterpolatedParameter(8).get());
+	float attack = interpolatedParameters.get(0);
+	float hold = interpolatedParameters.get(1);
+	float holdLevel = interpolatedParameters.get(2);
+	float decay = interpolatedParameters.get(3);
+	bool sustainOn = interpolatedParameters.get(4) > 0.5 ? true : false;
+	float sustainLevel = interpolatedParameters.get(6);
+	float sustain = interpolatedParameters.get(5);
+	float release = interpolatedParameters.get(7);
+	unsigned int oscMode = static_cast<unsigned int>(interpolatedParameters.get(8));
 
 	// oscMode 0: WaveTable Square
 	// oscMode 1: WaveTable Triangle

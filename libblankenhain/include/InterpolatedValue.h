@@ -54,3 +54,31 @@ protected:
 	unsigned int targetNumSteps;
 	unsigned int currentStep;
 };
+
+class InterpolatedValueBlock
+{
+public:
+	InterpolatedValueBlock(unsigned int numberOfParameters);
+	~InterpolatedValueBlock();
+
+	/// gets current interpolated value,
+	float get(unsigned int index) const;
+	float get(unsigned int index, unsigned int offset) const;
+
+	void setCurrent(unsigned int index, float value);
+	void setTarget(unsigned int index, float to);
+	void setSteps(unsigned int steps);
+
+	/// Skips a number of interpolation steps
+	void next(unsigned int steps = 1);
+
+protected:
+	float* current;
+	float* step;
+	float inverseNumberOfSteps;
+	unsigned int numberOfParameters;
+#ifdef _LIBBLANKENHAIN_ENABLE_WARNINGS
+	/*const*/ unsigned int targetNumSteps;
+	unsigned int currentStep;
+#endif
+};

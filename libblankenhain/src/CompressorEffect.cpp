@@ -22,14 +22,14 @@ CompressorEffect::CompressorEffect()
 
 void CompressorEffect::process(Sample* buffer, size_t numberOfSamples, size_t currentTime)
 {
-	float attack = getInterpolatedParameter(0).get();
-	float release = getInterpolatedParameter(1).get();
-	bool rms = getInterpolatedParameter(7).get() >= .5f;
-	InterpolatedValue<float> const& threshold = getInterpolatedParameter(2);
-	InterpolatedValue<float> const& ratio = getInterpolatedParameter(3);
-	InterpolatedValue<float> const& knee = getInterpolatedParameter(4);
-	InterpolatedValue<float> const& makeupGain = getInterpolatedParameter(6);
-	float lookahead = getInterpolatedParameter(5).get();
+	float attack = interpolatedParameters.get(0);
+	float release = interpolatedParameters.get(1);
+	bool rms = interpolatedParameters.get(7) >= .5f;
+	float threshold = interpolatedParameters.get(2);
+	float ratio = interpolatedParameters.get(3);
+	float knee = interpolatedParameters.get(4);
+	float makeupGain = interpolatedParameters.get(6);
+	float lookahead = interpolatedParameters.get(5);
 
 	lookaheadDelay.setSize(static_cast<unsigned int>(aux::millisecToSamples(lookahead)));
 
@@ -42,7 +42,7 @@ void CompressorEffect::process(Sample* buffer, size_t numberOfSamples, size_t cu
 			envelope.nextPeakEnvelope(buffer[i]);
 		}
 		float dbIn = static_cast<float>(envelope.getCurrentEnvelope().maxValue());
-		float dbGain = makeupGain.get() + static_cast<float>(compressorGain(threshold.get(), ratio.get(), knee.get(), dbIn));
+		float dbGain = makeupGain + static_cast<float>(compressorGain(threshold, ratio, knee, dbIn));
 		Sample delayed = lookaheadDelay.pushpop(buffer[i]);
 		delayed *= Sample(aux::decibelToLinear(dbGain));;
 		buffer[i] = delayed;
