@@ -19,12 +19,12 @@ RhythmgateEffect::RhythmgateEffect() : EffectBase(20, true)
 #else
 		name = nullptr;
 #endif
-		(params.getParameter(i)) = new FloatParameter(1.f, NormalizedRange(), name, "");
+		params.initParameter(i, new FloatParameter(1.f, NormalizedRange(), name, ""));
 	}
-	params.getParameter(16u) = new FloatParameter(0.1f, NormalizedRange(0.1f, 1700.f, 0.23f), "attack", "ms");
-	params.getParameter(17u) = new FloatParameter(0.1f, NormalizedRange(0.1f, 1700.f, 0.23f), "release", "ms");
-	params.getParameter(18u) = new FloatParameter(1.f, NormalizedRange(0.0625f, 2.f, 0.23f), "multiplier", "");
-	params.getParameter(19u) = new FloatParameter(0.f, NormalizedRange(0.f, 6000.f, 0.37f), "offset", "ms");
+	params.initParameter(16u, new FloatParameter(0.1f, NormalizedRange(0.1f, 1700.f, 0.23f), "attack", "ms"));
+	params.initParameter(17u, new FloatParameter(0.1f, NormalizedRange(0.1f, 1700.f, 0.23f), "release", "ms"));
+	params.initParameter(18u, new FloatParameter(1.f, NormalizedRange(0.0625f, 2.f, 0.23f), "multiplier", ""));
+	params.initParameter(19u, new FloatParameter(0.f, NormalizedRange(0.f, 6000.f, 0.37f), "offset", "ms"));
 }
 
 void RhythmgateEffect::process(Sample* buffer, size_t numberOfSamples, size_t currentTime)

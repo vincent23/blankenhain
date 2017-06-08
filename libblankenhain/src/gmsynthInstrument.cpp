@@ -13,17 +13,17 @@ gmsynthInstrument::gmsynthInstrument()
 {
 	ParameterBundle& params = getParameterBundle();
 
-	params.getParameter(0) = new FloatParameter(0.06f, NormalizedRange(0.05f, 1700.f, 0.3f), "attack", "ms");
-	params.getParameter(1) = new FloatParameter(100.f, NormalizedRange(1.f, 1700.f, 0.3f), "hold", "ms");
-	params.getParameter(2) = new FloatParameter(1.f, NormalizedRange(), "holdlevel", "ratio");
-	params.getParameter(3) = new FloatParameter(100.f, NormalizedRange(1.f, 1700.f, 0.3f), "decay", "ms");
-	params.getParameter(4) = new BoolParameter(false, "sustainBool");
-	params.getParameter(5) = new FloatParameter(100.f, NormalizedRange(1.f, 1700.f, 0.3f), "sustain", "ms");
-	params.getParameter(6) = new FloatParameter(1.0f, NormalizedRange(), "sustainLevel", "ratio");
-	params.getParameter(7) = new FloatParameter(100.f, NormalizedRange(1.f, 1700.f, 0.3f), "release", "ms");
-	params.getParameter(8) = new BoolParameter(false, "loop");
-	//params->getParameter(9) = new FloatParameter(0.f, NormalizedRange(0, 235), "instrument", "");
-	params.getParameter(9) = new DiscreteParameter(235, "instrument");
+	params.initParameter(0, new FloatParameter(0.06f, NormalizedRange(0.05f, 1700.f, 0.3f), "attack", "ms"));
+	params.initParameter(1, new FloatParameter(100.f, NormalizedRange(1.f, 1700.f, 0.3f), "hold", "ms"));
+	params.initParameter(2, new FloatParameter(1.f, NormalizedRange(), "holdlevel", "ratio"));
+	params.initParameter(3, new FloatParameter(100.f, NormalizedRange(1.f, 1700.f, 0.3f), "decay", "ms"));
+	params.initParameter(4, new BoolParameter(false, "sustainBool"));
+	params.initParameter(5, new FloatParameter(100.f, NormalizedRange(1.f, 1700.f, 0.3f), "sustain", "ms"));
+	params.initParameter(6, new FloatParameter(1.0f, NormalizedRange(), "sustainLevel", "ratio"));
+	params.initParameter(7, new FloatParameter(100.f, NormalizedRange(1.f, 1700.f, 0.3f), "release", "ms"));
+	params.initParameter(8, new BoolParameter(false, "loop"));
+	//params.initParameter(9, new FloatParameter(0.f, NormalizedRange(0, 235), "instrument", ""));
+	params.initParameter(9, new DiscreteParameter(235, "instrument"));
 
 	for (unsigned int i = 0; i < 128; i++) 
 	{

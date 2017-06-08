@@ -11,7 +11,7 @@ pitchshiftMidiEffect::pitchshiftMidiEffect()
 	for (unsigned int i = 0u; i < 128u; i++)
 		whichNotesAreOn[i] = false;
 
-	params.getParameter(0) = new FloatParameter(0.f, NormalizedRange(-12.f, 12.f), "shift", "semitones");
+	params.initParameter(0, new FloatParameter(0.f, NormalizedRange(-12.f, 12.f), "shift", "semitones"));
 }
 
 void pitchshiftMidiEffect::processMidiEvents(MidiEvent* events, unsigned int& numberOfMidiEvents, unsigned int maxNumEvents, unsigned int numberOfSamples)

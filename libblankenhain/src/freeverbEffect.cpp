@@ -10,12 +10,12 @@ freeverbEffect::freeverbEffect() : EffectBase(NUMBER_OF_PARAMETERS)
 	ParameterBundle& params = getParameterBundle();
 
 	// Insert your stuff here
-	params.getParameter(0) = new FloatParameter(0.75f, NormalizedRange(), "roomSize", "");
-	params.getParameter(1) = new FloatParameter(0.25f, NormalizedRange(), "damping", "");
-	params.getParameter(2) = new FloatParameter(0.f, NormalizedRange(), "width", "");
-	params.getParameter(3) = new FloatParameter(0.f, NormalizedRange(true), "mode", "bool");
-	params.getParameter(4) = new FloatParameter(-6.f, NormalizedRange(-120.f, 0.f, 5.f), "dry", "dB");
-	params.getParameter(5) = new FloatParameter(-60.f, NormalizedRange(-120.f, 0.f, 5.f), "wet", "dB");
+	params.initParameter(0, new FloatParameter(0.75f, NormalizedRange(), "roomSize", ""));
+	params.initParameter(1, new FloatParameter(0.25f, NormalizedRange(), "damping", ""));
+	params.initParameter(2, new FloatParameter(0.f, NormalizedRange(), "width", ""));
+	params.initParameter(3, new FloatParameter(0.f, NormalizedRange(true), "mode", "bool"));
+	params.initParameter(4, new FloatParameter(-6.f, NormalizedRange(-120.f, 0.f, 5.f), "dry", "dB"));
+	params.initParameter(5, new FloatParameter(-60.f, NormalizedRange(-120.f, 0.f, 5.f), "wet", "dB"));
 
 	///////////////////////
 	// More stuff //

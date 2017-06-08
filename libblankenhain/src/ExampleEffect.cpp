@@ -17,11 +17,11 @@ ExampleEffect::ExampleEffect() : EffectBase(NUMBER_OF_PARAMETERS), delayLine(siz
 {
 	ParameterBundle& params = getParameterBundle();
 	// Insert your stuff here
-	params.getParameter(0) = new FloatParameter(1.f, NormalizedRange(0.01f, 12.f, 1.f), "ratio", "");
-	params.getParameter(1) = new FloatParameter(10.f, NormalizedRange(0.2f, 15.f, 0.5f), "release", "ms");
-	params.getParameter(2) = new FloatParameter(0.f, NormalizedRange(-48.f, 0.f, 4.5f), "threshold", "dB");
-	params.getParameter(3) = new FloatParameter(10.f, NormalizedRange(0.2f, 35.f, 1.f), "attack", "ms");
-	params.getParameter(4) = new FloatParameter(0.f, NormalizedRange(0.f, 100.f, 1.f), "limiterOn", "");
+	params.initParameter(0, new FloatParameter(1.f, NormalizedRange(0.01f, 12.f, 1.f), "ratio", ""));
+	params.initParameter(1, new FloatParameter(10.f, NormalizedRange(0.2f, 15.f, 0.5f), "release", "ms"));
+	params.initParameter(2, new FloatParameter(0.f, NormalizedRange(-48.f, 0.f, 4.5f), "threshold", "dB"));
+	params.initParameter(3, new FloatParameter(10.f, NormalizedRange(0.2f, 35.f, 1.f), "attack", "ms"));
+	params.initParameter(4, new FloatParameter(0.f, NormalizedRange(0.f, 100.f, 1.f), "limiterOn", ""));
 }
 
 void ExampleEffect::process(Sample* buffer, size_t numberOfSamples, size_t currentTime)

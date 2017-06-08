@@ -8,7 +8,7 @@ ArpMidiEffect::ArpMidiEffect()
 {
 	ParameterBundle& params = getParameterBundle();
 
-	params.getParameter(0) = new FloatParameter(0.f, NormalizedRange(-12.f, 12.f), "shift", "semitones");
+	params.initParameter(0, new FloatParameter(0.f, NormalizedRange(-12.f, 12.f), "shift", "semitones"));
 }
 
 void ArpMidiEffect::processMidiEvents(MidiEvent* events, unsigned int& numberOfMidiEvents, unsigned int maxNumEvents, unsigned int numberOfSamples)

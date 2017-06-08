@@ -15,7 +15,7 @@ using BhString = std::string;
 /// an arbitrary range given during construction. Normalized values are always in the range [0 <= value <=1]. Is also able to perform interpolation
 /// via setTargetValue() and next() functions. Stores name and unit of the parameter.
 /// Unnormalized Values are according to the specified range
-class FloatParameter : public NormalizedRange
+class FloatParameter
 {
 public:
 	FloatParameter(float defaultValueUnnormalized, const NormalizedRange& range, BhString name, BhString unit);
@@ -53,11 +53,11 @@ public:
 	virtual void next(unsigned int numberOfSamples = 1);
 
 
-protected:
-	BoundrySafeInterpolatedValue<float> valueNormalized;
+	const NormalizedRange range;
+	BoundrySafeInterpolatedValue<float>* valueNormalized;
 
 private:
-	float defaultValueNormalized;
+	const float defaultValueNormalized;
 #ifndef _VC_NODEFAULTLIB
 	BhString unit;
 	BhString name;

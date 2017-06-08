@@ -10,11 +10,11 @@ LimiterEffect::LimiterEffect()
 	, lookaheadDelay(static_cast<unsigned int>(constants::sampleRate * 1e-3)) // constant lookahead of 1 ms
 {
 	ParameterBundle& params = getParameterBundle();
-	params.getParameter(0) = new FloatParameter(1.f, NormalizedRange::fromMidpoint(0.01f, 3.f, 1000.f), "attack", "ms");
-	params.getParameter(1) = new FloatParameter(20.f, NormalizedRange::fromMidpoint(1.f, 55.f, 3000.f), "release", "ms");
-	params.getParameter(2) = new FloatParameter(0.f, NormalizedRange(-66.f, 6.f), "threshold", "dB");
-	params.getParameter(3) = new FloatParameter(1.f, NormalizedRange::fromMidpoint(aux::samplesToMillisec(2u), 1.f, 20.f), "lookahead", "ms");
-	params.getParameter(4) = new FloatParameter(0.f, NormalizedRange(-36.f, 36.f), "makeup", "dB");
+	params.initParameter(0, new FloatParameter(1.f, NormalizedRange::fromMidpoint(0.01f, 3.f, 1000.f), "attack", "ms"));
+	params.initParameter(1, new FloatParameter(20.f, NormalizedRange::fromMidpoint(1.f, 55.f, 3000.f), "release", "ms"));
+	params.initParameter(2, new FloatParameter(0.f, NormalizedRange(-66.f, 6.f), "threshold", "dB"));
+	params.initParameter(3, new FloatParameter(1.f, NormalizedRange::fromMidpoint(aux::samplesToMillisec(2u), 1.f, 20.f), "lookahead", "ms"));
+	params.initParameter(4, new FloatParameter(0.f, NormalizedRange(-36.f, 36.f), "makeup", "dB"));
 }
 
 //#pragma optimize( "gsty", off )

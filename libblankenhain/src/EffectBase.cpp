@@ -97,7 +97,7 @@ void EffectBase::processBlock(Sample* buffer, size_t numberOfSamples)
 			else if (normalizedNextValueModulated > 1.f)
 				normalizedNextValueModulated = 1.f;
 
-			float nextValue = parameter->fromNormalized(normalizedNextValueModulated);
+			float nextValue = parameter->range.fromNormalized(normalizedNextValueModulated);
 			interpolatedParameters.setTarget(parameterIndex, nextValue);
 		}
 	}

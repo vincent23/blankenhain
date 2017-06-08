@@ -8,14 +8,14 @@ DelayEffect::DelayEffect() : EffectBase(7, true), delayLine(size_t(aux::millisec
 {
 	wasPaniced = false;
 	ParameterBundle& params = getParameterBundle();
-	params.getParameter(0) = new FloatParameter(0.f, NormalizedRange(-50.f, 50.f), "pan", "");
-	params.getParameter(1) = new FloatParameter(100.f, NormalizedRange(1.f, 2500.f, 0.3f), "length", "ms");
-	params.getParameter(2) = new FloatParameter(0.f, NormalizedRange(0.f, 1.5f), "feedback", "");
-	params.getParameter(3) = new FloatParameter(1.f, NormalizedRange(), "drywet", "");
-	params.getParameter(4) = new BoolParameter(false, "PANIC!");
+	params.initParameter(0, new FloatParameter(0.f, NormalizedRange(-50.f, 50.f), "pan", ""));
+	params.initParameter(1, new FloatParameter(100.f, NormalizedRange(1.f, 2500.f, 0.3f), "length", "ms"));
+	params.initParameter(2, new FloatParameter(0.f, NormalizedRange(0.f, 1.5f), "feedback", ""));
+	params.initParameter(3, new FloatParameter(1.f, NormalizedRange(), "drywet", ""));
+	params.initParameter(4, new BoolParameter(false, "PANIC!"));
 	float multiplierValues[7] = { 0.0625, 0.125, 0.25, 0.5, 1., 2., 4. };
-	params.getParameter(5) = new DiscreteParameter(7u, "beatMultiplier", "", multiplierValues);
-	params.getParameter(6) = new BoolParameter(false, "lfoTemposync");
+	params.initParameter(5, new DiscreteParameter(7u, "beatMultiplier", "", multiplierValues));
+	params.initParameter(6, new BoolParameter(false, "lfoTemposync"));
 
 }
 

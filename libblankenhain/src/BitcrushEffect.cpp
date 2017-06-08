@@ -9,10 +9,10 @@ BitcrushEffect::BitcrushEffect() : EffectBase(4)
 {
 	ParameterBundle& params = getParameterBundle();
 
-	params.getParameter(0) = new FloatParameter(100.f, NormalizedRange(1.f, 100.f, 0.15f), "Bitcrush", "");
-	params.getParameter(1) = new FloatParameter(0.f, NormalizedRange(), "Downsample", "");
-	params.getParameter(2) = new FloatParameter(0.f, NormalizedRange(), "Dry/Wet", "%");
-	params.getParameter(3) = new BoolParameter(true, "averageDownsampling");
+	params.initParameter(0, new FloatParameter(100.f, NormalizedRange(1.f, 100.f, 0.15f), "Bitcrush", ""));
+	params.initParameter(1, new FloatParameter(0.f, NormalizedRange(), "Downsample", ""));
+	params.initParameter(2, new FloatParameter(0.f, NormalizedRange(), "Dry/Wet", "%"));
+	params.initParameter(3, new BoolParameter(true, "averageDownsampling"));
 }
 
 void BitcrushEffect::process(Sample* buffer, size_t numberOfSamples, size_t currentTime)
