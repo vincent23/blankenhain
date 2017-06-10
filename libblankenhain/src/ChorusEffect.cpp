@@ -26,19 +26,19 @@ ChorusEffect::ChorusEffect() : EffectBase(11), delayLine(size_t(aux::millisecToS
 void ChorusEffect::process(Sample* buffer, size_t numberOfSamples, size_t currentTime)
 {
 
-	float delay = getInterpolatedParameter(2).get();
-	float width = getInterpolatedParameter(1).get() * delay;
-	float feedback = getInterpolatedParameter(3).get();
-	float drywet = getInterpolatedParameter(4).get();
-	bool panicButton = getInterpolatedParameter(5).get() == 1.f;
-	bool stereoButton = getInterpolatedParameter(10).get() == 1.f;
-	float pan = getInterpolatedParameter(8).get();
+	float delay = interpolatedParameters.get(2);
+	float width = interpolatedParameters.get(1) * delay;
+	float feedback = interpolatedParameters.get(3);
+	float drywet = interpolatedParameters.get(4);
+	bool panicButton = interpolatedParameters.get(5) == 1.f;
+	bool stereoButton = interpolatedParameters.get(10) == 1.f;
+	float pan = interpolatedParameters.get(8);
 
-	float lfoAmount = getInterpolatedParameter(0).get();
-	float lfoWaveform = getInterpolatedParameter(6).get();
+	float lfoAmount = interpolatedParameters.get(0);
+	float lfoWaveform = interpolatedParameters.get(6);
 	this->lfo.setMode(NaiveOscillator::NaiveOscillatorMode(static_cast<unsigned int>(lfoWaveform)));
-	float lfoPhase = getInterpolatedParameter(7).get();
-	float lfoSpeed = getInterpolatedParameter(9).get();
+	float lfoPhase = interpolatedParameters.get(7);
+	float lfoSpeed = interpolatedParameters.get(9);
 	this->lfo.setFrequency(lfoSpeed);
 
 	delayLine.setSize(static_cast<size_t>(aux::millisecToSamples(delay)));

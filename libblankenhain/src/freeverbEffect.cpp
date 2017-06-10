@@ -110,16 +110,16 @@ void freeverbEffect::resetEffect()
  */
 void freeverbEffect::process(Sample* buffer, size_t numberOfSamples, size_t currentTime)
 {
-	InterpolatedValue<float> const& roomSize = getInterpolatedParameter(0);
-	InterpolatedValue<float> const& width = getInterpolatedParameter(2);
+	float roomSize = interpolatedParameters.get(0);
+	float width = interpolatedParameters.get(2);
 
-	const bool mode = getInterpolatedParameter(3).get() > 0.5 ? true : false;
+	const bool mode = interpolatedParameters.get(3) > 0.5 ? true : false;
 
-	float damping = getInterpolatedParameter(1).get();
+	float damping = interpolatedParameters.get(1);
 	damping = mode ? 0.f : damping * scaleDamp;
-	const Sample currentRoomSize = Sample(mode ? 1.f : (roomSize.get() * scaleRoom) + offsetRoom);
-	InterpolatedValue<float> const& dry = getInterpolatedParameter(4);
-	InterpolatedValue<float> const& wet = getInterpolatedParameter(5);
+	const Sample currentRoomSize = Sample(mode ? 1.f : (roomSize * scaleRoom) + offsetRoom);
+	InterpolatedValue<float> const& dry = interpolatedParameters.get(4);
+	InterpolatedValue<float> const& wet = interpolatedParameters.get(5);
 
 
 	// set low pass filter for delay output
@@ -128,7 +128,7 @@ void freeverbEffect::process(Sample* buffer, size_t numberOfSamples, size_t curr
 		combLP_[i]->setParams(Sample(1.0 - damping), Sample(-1.0 * damping));
 	}
 
-	float widthConst = width.get();
+	float widthConst = width;
 	float wetBefore = aux::decibelToLinear(wet.get());
 	float dryBefore = aux::decibelToLinear(dry.get());
 	float wetAfter = aux::decibelToLinear(wet.get(numberOfSamples));

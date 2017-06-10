@@ -23,15 +23,15 @@ VolumeEffect::VolumeEffect() : EffectBase(10u, true)
 
 void VolumeEffect::process(Sample* buffer, size_t numberOfSamples, size_t currentTime)
 {
-	InterpolatedValue<float> const& currentVolumeL = getInterpolatedParameter(0);
-	InterpolatedValue<float> const& currentVolumeR = getInterpolatedParameter(1);
-	bool coupling = getInterpolatedParameter(2).get() > 0.5 ? true : false;
+	float currentVolumeL = interpolatedParameters.get(0);
+	float currentVolumeR = interpolatedParameters.get(1);
+	bool coupling = interpolatedParameters.get(2) > 0.5 ? true : false;
 
 
 	if (coupling)
 	{
-		float decibelBefore = aux::decibelToLinear(currentVolumeL.get());
-		float decibelAfter = aux::decibelToLinear(currentVolumeL.get());
+		float decibelBefore = aux::decibelToLinear(currentVolumeL);
+		float decibelAfter = aux::decibelToLinear(currentVolumeL);
 		InterpolatedValue<float> volumeInDecibel(decibelBefore, decibelAfter, numberOfSamples);
 		for (size_t bufferIteration = 0; bufferIteration < numberOfSamples; bufferIteration++)
 		{
@@ -41,10 +41,10 @@ void VolumeEffect::process(Sample* buffer, size_t numberOfSamples, size_t curren
 	}
 	else
 	{
-		float decibelBeforeL = aux::decibelToLinear(currentVolumeL.get());
-		float decibelBeforeR = aux::decibelToLinear(currentVolumeR.get());
-		float decibelAfterL = aux::decibelToLinear(currentVolumeL.get());
-		float decibelAfterR = aux::decibelToLinear(currentVolumeR.get());
+		float decibelBeforeL = aux::decibelToLinear(currentVolumeL);
+		float decibelBeforeR = aux::decibelToLinear(currentVolumeR);
+		float decibelAfterL = aux::decibelToLinear(currentVolumeL);
+		float decibelAfterR = aux::decibelToLinear(currentVolumeR);
 		InterpolatedValue<float> volumeInDecibelL(decibelBeforeL, decibelAfterL, numberOfSamples);
 		InterpolatedValue<float> volumeInDecibelR(decibelBeforeR, decibelAfterR, numberOfSamples);
 		for (size_t bufferIteration = 0u; bufferIteration < numberOfSamples; bufferIteration++)
@@ -58,25 +58,25 @@ void VolumeEffect::process(Sample* buffer, size_t numberOfSamples, size_t curren
 
 void VolumeEffect::getModulation(float* modulationValues, size_t sampleOffset)
 {
-	float lfoAmount = getInterpolatedParameter(3).get();
+	float lfoAmount = interpolatedParameters.get(3);
 
 	// Perform LFO on volumeL
 	if (lfoAmount != 0.f)
 	{
-		float lfoBaseline = getInterpolatedParameter(9).get();
+		float lfoBaseline = interpolatedParameters.get(9);
 
-		float lfoWaveform = getInterpolatedParameter(6).get();
-		bool lfoTempoSync = getInterpolatedParameter(7).get() == 1.f;
+		float lfoWaveform = interpolatedParameters.get(6);
+		bool lfoTempoSync = interpolatedParameters.get(7) == 1.f;
 		this->lfo.setMode(NaiveOscillator::NaiveOscillatorMode(static_cast<unsigned int>(lfoWaveform)));
-		float lfoPhase = getInterpolatedParameter(8).get();
+		float lfoPhase = interpolatedParameters.get(8);
 		if (!lfoTempoSync)
 		{
-			float lfoSpeed = getInterpolatedParameter(4).get();
+			float lfoSpeed = interpolatedParameters.get(4);
 			this->lfo.setFrequency(lfoSpeed);
 		}
 		else
 		{
-			float lfoMult = getInterpolatedParameter(5).get();
+			float lfoMult = interpolatedParameters.get(5);
 			if (lfoMult < 0.125f)
 				lfoMult = 0.0625;
 			else if (lfoMult < 0.25)

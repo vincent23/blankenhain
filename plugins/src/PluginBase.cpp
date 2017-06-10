@@ -179,6 +179,7 @@ void PluginBase::processReplacing(float** inputs, float** outputs, VstInt32 samp
 {
 	updateTempoData();
 
+	// Assumes Buffer is bigger or equal to constants::parameterInterpolationLength
 	this->pluginParameters->updateParameters();
 	const unsigned int sampleFrames = static_cast<unsigned int>(sampleFrames_);
 	for (unsigned int blockOffset = 0; blockOffset < sampleFrames; blockOffset += constants::blockSize) 

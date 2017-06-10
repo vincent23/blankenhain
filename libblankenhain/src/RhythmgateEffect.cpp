@@ -31,31 +31,31 @@ RhythmgateEffect::RhythmgateEffect() : EffectBase(20, true)
 void RhythmgateEffect::process(Sample* buffer, size_t numberOfSamples, size_t currentTime)
 {
 
-	InterpolatedValue<float> const* params[16];
+	float params[16];
 	for (unsigned int i = 0u; i < 16u; i++)
 	{
-		params[i] = &getInterpolatedParameter(i);
+		params[i] = interpolatedParameters.get(i);
 	}
 
 
-	InterpolatedValue<float> const& attack = getInterpolatedParameter(16u);
-	InterpolatedValue<float> const& release = getInterpolatedParameter(17u);
+	float attack = interpolatedParameters.get(16u);
+	float release = interpolatedParameters.get(17u);
 
-	InterpolatedValue<float> const& multiplier = getInterpolatedParameter(18u);
-	InterpolatedValue<float> const& offset = getInterpolatedParameter(19u);
+	float multiplier = interpolatedParameters.get(18u);
+	float offset = interpolatedParameters.get(19u);
 
 	float mult = 0.0625;
-	if (multiplier.get() < 0.125f)
+	if (multiplier < 0.125f)
 		mult = 0.0625;
-	else if (multiplier.get() < 0.25)
+	else if (multiplier < 0.25)
 		mult = 0.125f;
-	else if (multiplier.get() < 0.5)
+	else if (multiplier < 0.5)
 		mult = 0.25;
-	else if (multiplier.get() < 1.f)
+	else if (multiplier < 1.f)
 		mult = 0.5;
-	else if (multiplier.get() < 1.5f)
+	else if (multiplier < 1.5f)
 		mult = 1.f;
-	else if (multiplier.get() >= 1.5)
+	else if (multiplier >= 1.5)
 		mult = 2.f;
 
 
@@ -66,14 +66,14 @@ void RhythmgateEffect::process(Sample* buffer, size_t numberOfSamples, size_t cu
 		float wholeBeatLength = sixteenthNoteLength * 16.f;
 		float currentSecond = static_cast<float>(tempodata.position) / constants::sampleRate;
 
-		if (offset.get() != 0.f)
-			if(offset.get() > 0.f)
-				currentSecond += offset.get() / 1000.f;
+		if (offset != 0.f)
+			if(offset > 0.f)
+				currentSecond += offset / 1000.f;
 
 		float currentPartialBeatInSecond = BhMath::fmod(currentSecond, wholeBeatLength);
 		float currentPartialSixteenthInSeconds = BhMath::fmod(currentSecond, sixteenthNoteLength);
-		float crelease = release.get();
-		float cattack = attack.get();
+		float crelease = release;
+		float cattack = attack;
 		unsigned int whichSixteenthAreWeIn = static_cast<unsigned int>(currentPartialBeatInSecond / sixteenthNoteLength);
 		whichSixteenthAreWeIn = whichSixteenthAreWeIn == 0u ? 15u : whichSixteenthAreWeIn - 1u;
 
@@ -88,23 +88,23 @@ void RhythmgateEffect::process(Sample* buffer, size_t numberOfSamples, size_t cu
 		unsigned int nextSixteenth = whichSixteenthAreWeIn == 15u ? 0u : whichSixteenthAreWeIn + 1u;
 
 
-		if (params[lastSixteenth]->get() > params[whichSixteenthAreWeIn]->get()
+		if (params[lastSixteenth] > params[whichSixteenthAreWeIn]
 			&& currentPartialSixteenthInSeconds * 1000.f < crelease)
 		{
 			float releaseFrac = (currentPartialSixteenthInSeconds * 1000.f / crelease);
-			float cmult = params[lastSixteenth]->get() + releaseFrac * (params[whichSixteenthAreWeIn]->get() - params[lastSixteenth]->get());
+			float cmult = params[lastSixteenth] + releaseFrac * (params[whichSixteenthAreWeIn] - params[lastSixteenth]);
 			buffer[bufferIteration] *= Sample(cmult);
 		}
-		else if (params[nextSixteenth]->get() > params[whichSixteenthAreWeIn]->get()
+		else if (params[nextSixteenth] > params[whichSixteenthAreWeIn]
 			&& (sixteenthNoteLength - currentPartialSixteenthInSeconds) * 1000.f < cattack)
 		{
 			float attackFrac = 1.f - ((sixteenthNoteLength - currentPartialSixteenthInSeconds) * 1000.f) / cattack;
-			float cmult = params[whichSixteenthAreWeIn]->get() + attackFrac * (params[nextSixteenth]->get() - params[whichSixteenthAreWeIn]->get());
+			float cmult = params[whichSixteenthAreWeIn] + attackFrac * (params[nextSixteenth] - params[whichSixteenthAreWeIn]);
 			buffer[bufferIteration] *= Sample(cmult);
 		}
 		else
 		{
-			buffer[bufferIteration] *= Sample(params[whichSixteenthAreWeIn]->get());
+			buffer[bufferIteration] *= Sample(params[whichSixteenthAreWeIn]);
 		}
 	}
 }

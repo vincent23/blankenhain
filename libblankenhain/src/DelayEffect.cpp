@@ -21,18 +21,18 @@ DelayEffect::DelayEffect() : EffectBase(7, true), delayLine(size_t(aux::millisec
 
 void DelayEffect::process(Sample* buffer, size_t numberOfSamples, size_t currentTime)
 {
-	const float pan = getInterpolatedParameter(0).get();
-	const float length = getInterpolatedParameter(1).get();
-	const float feedback = getInterpolatedParameter(2).get();
-	const float drywet = getInterpolatedParameter(3).get();
-	const bool panicButton = getInterpolatedParameter(4).get() == 1.f;
-	const bool tempoSync = getInterpolatedParameter(6).get() == 1.f;
+	const float pan = interpolatedParameters.get(0);
+	const float length = interpolatedParameters.get(1);
+	const float feedback = interpolatedParameters.get(2);
+	const float drywet = interpolatedParameters.get(3);
+	const bool panicButton = interpolatedParameters.get(4) == 1.f;
+	const bool tempoSync = interpolatedParameters.get(6) == 1.f;
 
 	if (!tempoSync)
 		delayLine.setSize(static_cast<size_t>(aux::millisecToSamples(length)));
 	else
 	{
-		float beatMultiplier = getInterpolatedParameter(5).get();
+		float beatMultiplier = interpolatedParameters.get(5);
 
 		if (beatMultiplier < 0.125f)
 			beatMultiplier = 0.0625;

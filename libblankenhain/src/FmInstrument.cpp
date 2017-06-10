@@ -83,17 +83,17 @@ FmInstrument::FmInstrument()
 
 void FmInstrument::processVoice(VoiceState& voice, unsigned int timeInSamples, Sample* buffer, unsigned int numberOfSamples)
 {
-	float attack = getInterpolatedParameter(0).get();
-	float hold = getInterpolatedParameter(1).get();
-	float holdLevel = getInterpolatedParameter(2).get();
-	float decay = getInterpolatedParameter(3).get();
-	bool sustainOn = getInterpolatedParameter(4).get() > 0.5 ? true : false;
-	float sustainLevel = getInterpolatedParameter(6).get();
-	float sustain = getInterpolatedParameter(5).get();
-	float release = getInterpolatedParameter(7).get();
+	float attack = interpolatedParameters.get(0);
+	float hold = interpolatedParameters.get(1);
+	float holdLevel = interpolatedParameters.get(2);
+	float decay = interpolatedParameters.get(3);
+	bool sustainOn = interpolatedParameters.get(4) > 0.5 ? true : false;
+	float sustainLevel = interpolatedParameters.get(6);
+	float sustain = interpolatedParameters.get(5);
+	float release = interpolatedParameters.get(7);
 
 	// Portamento stuff
-	float portamento = getInterpolatedParameter(115).get();
+	float portamento = interpolatedParameters.get(115);
 	// If a new note is played, take this as the start time for glide
 	// TODO we can improve this but as this synth only has one voice
 	// Sometimes we will not get NoteOff events, so this crude
@@ -144,22 +144,22 @@ void FmInstrument::processVoice(VoiceState& voice, unsigned int timeInSamples, S
 
 		for (unsigned int i = 0u; i < _LIBBLANKENHAIN_NUM_OSCS_FM_SYNTH - 1u; i++)
 		{
-			float amount = getInterpolatedParameter(8 + i * 13 + 2).get();
-			bool isOn = getInterpolatedParameter(8 + i * 13 + 7).get() == 1.f;
+			float amount = interpolatedParameters.get(8 + i * 13 + 2);
+			bool isOn = interpolatedParameters.get(8 + i * 13 + 7) == 1.f;
 			if (isOn)
 			{
-				float freq = getInterpolatedParameter(8 + i * 13 + 0).get();
-				const float modType = getInterpolatedParameter(8 + i * 13 + 1).get();
-				const float target = getInterpolatedParameter(8 + i * 13 + 3).get();
-				const float selfModAmount = getInterpolatedParameter(8 + i * 13 + 4).get() * 0.0001f;
+				float freq = interpolatedParameters.get(8 + i * 13 + 0);
+				const float modType = interpolatedParameters.get(8 + i * 13 + 1);
+				const float target = interpolatedParameters.get(8 + i * 13 + 3);
+				const float selfModAmount = interpolatedParameters.get(8 + i * 13 + 4) * 0.0001f;
 				const bool selfModOn = selfModAmount > 0.0000000001f;
-				const float selfModtype = getInterpolatedParameter(8 + i * 13 + 5).get();
-				const float waveFormType = getInterpolatedParameter(8 + i * 13 + 6).get();
-				const bool isLFO = getInterpolatedParameter(8 + i * 13 + 8).get() == 1.f;
-				const bool tempoSync = getInterpolatedParameter(8 + i * 13 + 9).get() == 1.f;
-				float tempoSyncVal = getInterpolatedParameter(8 + i * 13 + 10).get();
-				const bool keyFreqTrack = getInterpolatedParameter(8 + i * 13 + 11).get() == 1.f;
-				const float keyFreqOctave = getInterpolatedParameter(8 + i * 13 + 12).get();
+				const float selfModtype = interpolatedParameters.get(8 + i * 13 + 5);
+				const float waveFormType = interpolatedParameters.get(8 + i * 13 + 6);
+				const bool isLFO = interpolatedParameters.get(8 + i * 13 + 8) == 1.f;
+				const bool tempoSync = interpolatedParameters.get(8 + i * 13 + 9) == 1.f;
+				float tempoSyncVal = interpolatedParameters.get(8 + i * 13 + 10);
+				const bool keyFreqTrack = interpolatedParameters.get(8 + i * 13 + 11) == 1.f;
+				const float keyFreqOctave = interpolatedParameters.get(8 + i * 13 + 12);
 
 
 				float freqMultiplierFM = 1.f;
@@ -292,10 +292,10 @@ void FmInstrument::processVoice(VoiceState& voice, unsigned int timeInSamples, S
 		// Carrier now
 
 		float freq = currentFreq;
-		float selfModAmount = getInterpolatedParameter(112).get();
+		float selfModAmount = interpolatedParameters.get(112);
 		bool selfModOn = selfModAmount > 1e-15;
-		float selfModtype = getInterpolatedParameter(113).get();
-		float waveFormType = getInterpolatedParameter(114).get();
+		float selfModtype = interpolatedParameters.get(113);
+		float waveFormType = interpolatedParameters.get(114);
 
 		float freqMultiplierFM = 1.f;
 		float freqAdditionPM = 0.f;

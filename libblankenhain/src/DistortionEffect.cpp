@@ -16,14 +16,14 @@ DistortionEffect::DistortionEffect() : EffectBase(4)
 
 void DistortionEffect::process(Sample* buffer, size_t numberOfSamples, size_t currentTime)
 {
-	float inGain = getInterpolatedParameter(0).get();
-	float drywet = getInterpolatedParameter(3).get();
-	size_t iterations = static_cast<size_t>(getInterpolatedParameter(1).get());
+	float inGain = interpolatedParameters.get(0);
+	float drywet = interpolatedParameters.get(3);
+	size_t iterations = static_cast<size_t>(interpolatedParameters.get(1));
 
 
 	distortionAlgorithms algo;
-	if (getInterpolatedParameter(2).get() < 0.3333) algo = distortionAlgorithms::ArayaAndSuyama;
-	else if (getInterpolatedParameter(2).get() < 0.66666) algo = distortionAlgorithms::DoidicSymmetric;
+	if (interpolatedParameters.get(2) < 0.3333) algo = distortionAlgorithms::ArayaAndSuyama;
+	else if (interpolatedParameters.get(2) < 0.66666) algo = distortionAlgorithms::DoidicSymmetric;
 	else algo = distortionAlgorithms::DoidicAsymmetric;
 
 	alignas(16) floatType lr[2];

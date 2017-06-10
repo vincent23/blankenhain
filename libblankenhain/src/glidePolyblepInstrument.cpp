@@ -45,17 +45,17 @@ glidePolyblepInstrument::~glidePolyblepInstrument()
 
 void glidePolyblepInstrument::processVoice(VoiceState& voice, unsigned int timeInSamples, Sample* buffer, unsigned int numberOfSamples)
 {
-	float attack = getInterpolatedParameter(0).get();
-	float hold = getInterpolatedParameter(1).get();
-	float holdLevel = getInterpolatedParameter(2).get();
-	float decay = getInterpolatedParameter(3).get();
-	bool sustainOn = getInterpolatedParameter(4).get() > 0.5 ? true : false;
-	float sustainLevel = getInterpolatedParameter(6).get();
-	float sustain = getInterpolatedParameter(5).get();
-	float release = getInterpolatedParameter(7).get();
-	unsigned int oscMode = static_cast<unsigned int>(getInterpolatedParameter(8).get());
-	float portamento = getInterpolatedParameter(9).get();
-	float detune = getInterpolatedParameter(12).get();
+	float attack = interpolatedParameters.get(0);
+	float hold = interpolatedParameters.get(1);
+	float holdLevel = interpolatedParameters.get(2);
+	float decay = interpolatedParameters.get(3);
+	bool sustainOn = interpolatedParameters.get(4) > 0.5 ? true : false;
+	float sustainLevel = interpolatedParameters.get(6);
+	float sustain = interpolatedParameters.get(5);
+	float release = interpolatedParameters.get(7);
+	unsigned int oscMode = static_cast<unsigned int>(interpolatedParameters.get(8));
+	float portamento = interpolatedParameters.get(9);
+	float detune = interpolatedParameters.get(12);
 	// oscMode 0: polyBLEP Sine
 	// oscMode 1: polyBLEP Sawtooth
 	// oscMode 2: polyBLEP Square
@@ -122,25 +122,25 @@ void glidePolyblepInstrument::processVoice(VoiceState& voice, unsigned int timeI
 
 void glidePolyblepInstrument::getModulation(float* modulationValues, size_t sampleOffset)
 {
-	float lfoAmount = getInterpolatedParameter(10).get();
+	float lfoAmount = interpolatedParameters.get(10);
 
 	// Perform LFO on detune
 	if (lfoAmount != 0.f)
 	{
-		float lfoBaseline = getInterpolatedParameter(17).get();
+		float lfoBaseline = interpolatedParameters.get(17);
 
-		float lfoWaveform = getInterpolatedParameter(14).get();
-		bool lfoTempoSync = getInterpolatedParameter(15).get() == 1.f;
+		float lfoWaveform = interpolatedParameters.get(14);
+		bool lfoTempoSync = interpolatedParameters.get(15) == 1.f;
 		this->lfo.setMode(NaiveOscillator::NaiveOscillatorMode(static_cast<unsigned int>(lfoWaveform)));
-		float lfoPhase = getInterpolatedParameter(16).get();
+		float lfoPhase = interpolatedParameters.get(16);
 		if (!lfoTempoSync)
 		{
-			float lfoSpeed = getInterpolatedParameter(11).get();
+			float lfoSpeed = interpolatedParameters.get(11);
 			this->lfo.setFrequency(lfoSpeed);
 		}
 		else
 		{
-			float lfoMult = getInterpolatedParameter(13).get();
+			float lfoMult = interpolatedParameters.get(13);
 			if (lfoMult < 0.125f)
 				lfoMult = 0.0625;
 			else if (lfoMult < 0.25)

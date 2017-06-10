@@ -18,7 +18,7 @@ pitchshiftMidiEffect::pitchshiftMidiEffect()
 void pitchshiftMidiEffect::processMidiEvents(MidiEvent* events, unsigned int& numberOfMidiEvents, unsigned int maxNumEvents, unsigned int numberOfSamples)
 {
 	// calculate new shift
-	int shift = static_cast<int>(getInterpolatedParameter(0).get());
+	int shift = static_cast<int>(interpolatedParameters.get(0));
 
 	// Send noteOff for all notes still on when pitch changes
 	// otherwise they WILL NEVER STOP SOUNDING AND IT IS HORRIBLE!!!

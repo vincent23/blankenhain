@@ -22,11 +22,11 @@ NoiseGateEffect::NoiseGateEffect()
 
 void NoiseGateEffect::process(Sample* buffer, size_t numberOfSamples, size_t currentTime)
 {
-	const float threshold = aux::decibelToLinear(getInterpolatedParameter(0).get());
-	const float bottom = aux::decibelToLinear(getInterpolatedParameter(1).get());
-	const float attack = aux::millisecToSamples(getInterpolatedParameter(2).get());
-	const float release = aux::millisecToSamples(getInterpolatedParameter(3).get());
-	const float lookahead = aux::millisecToSamples(getInterpolatedParameter(4).get());
+	const float threshold = aux::decibelToLinear(interpolatedParameters.get(0));
+	const float bottom = aux::decibelToLinear(interpolatedParameters.get(1));
+	const float attack = aux::millisecToSamples(interpolatedParameters.get(2));
+	const float release = aux::millisecToSamples(interpolatedParameters.get(3));
+	const float lookahead = aux::millisecToSamples(interpolatedParameters.get(4));
 	const unsigned int lookaheadInSamples = static_cast<unsigned int>(lookahead);
 	const unsigned int delayLineLength = RMSVolLength + lookaheadInSamples;
 

@@ -21,11 +21,11 @@ LimiterEffect::LimiterEffect()
 
 void LimiterEffect::process(Sample* buffer, size_t numberOfSamples, size_t currentTime)
 {
-	float attack = getInterpolatedParameter(0).get();
-	float release = getInterpolatedParameter(1).get();
-	InterpolatedValue<float> const& threshold = getInterpolatedParameter(2);
-	InterpolatedValue<float> const& makeupGain = getInterpolatedParameter(4);
-	float lookahead = getInterpolatedParameter(3).get();
+	float attack = interpolatedParameters.get(0);
+	float release = interpolatedParameters.get(1);
+	float threshold = interpolatedParameters.get(2);
+	float makeupGain = interpolatedParameters.get(4);
+	float lookahead = interpolatedParameters.get(3);
 
 	lookaheadDelay.setSize(static_cast<unsigned int>(aux::millisecToSamples(lookahead)));
 
@@ -35,10 +35,10 @@ void LimiterEffect::process(Sample* buffer, size_t numberOfSamples, size_t curre
 		envelope.nextPeakEnvelope(buffer[i]);
 		float dbIn = aux::linearToDecibel(static_cast<float>(envelope.getCurrentEnvelope().maxValue()));
 		float dbGain = 0.f;
-		if (threshold.get() > dbIn)
-			dbGain = makeupGain.get();
+		if (threshold > dbIn)
+			dbGain = makeupGain;
 		else
-			dbGain = makeupGain.get() - (dbIn - threshold.get());
+			dbGain = makeupGain - (dbIn - threshold);
 		Sample delayed = lookaheadDelay.pushpop(buffer[i]);
 		delayed *= Sample(aux::decibelToLinear(dbGain));
 		buffer[i] = delayed;

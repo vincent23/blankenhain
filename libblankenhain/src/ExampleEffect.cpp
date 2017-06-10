@@ -26,11 +26,11 @@ ExampleEffect::ExampleEffect() : EffectBase(NUMBER_OF_PARAMETERS), delayLine(siz
 
 void ExampleEffect::process(Sample* buffer, size_t numberOfSamples, size_t currentTime)
 {
-	float ratio = getInterpolatedParameter(0).get();
-	float release = getInterpolatedParameter(1).get();
-	float threshold = getInterpolatedParameter(2).get();
-	float attack = getInterpolatedParameter(3).get();
-	bool limiterIsOn = getInterpolatedParameter(4).get() == 1.f;
+	float ratio = interpolatedParameters.get(0);
+	float release = interpolatedParameters.get(1);
+	float threshold = interpolatedParameters.get(2);
+	float attack = interpolatedParameters.get(3);
+	bool limiterIsOn = interpolatedParameters.get(4) == 1.f;
 	size_t attackTimeInSamples = size_t(aux::millisecToSamples(attack));
 	delayLine.setSize(attackTimeInSamples);
 	for (size_t i = 0; i < numberOfSamples; i++)

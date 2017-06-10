@@ -8,7 +8,7 @@
 EffectBase::EffectBase(unsigned int numberOfParameters, bool useTempoData)
 	: tempodata(useTempoData)
 	, paramBundle(numberOfParameters == 0 ? nullptr : new ParameterBundle(numberOfParameters))
-	, parameterValues(numberOfParameters == 0 ? nullptr : new InterpolatedValue<float>[numberOfParameters])
+	, interpolatedParameters(numberOfParameters)
 	, nextModulation(numberOfParameters == 0 ? nullptr : new float[numberOfParameters])
 	, fpuState()
 { 
@@ -28,8 +28,6 @@ EffectBase::~EffectBase()
 		}
 		delete paramBundle;
 	}
-
-	if (parameterValues != nullptr) delete[] parameterValues;
 
 	if (nextModulation != nullptr) delete[] nextModulation;
 
@@ -65,6 +63,9 @@ TempoData const& EffectBase::getTempoData() const
 void EffectBase::processBlock(Sample* buffer, size_t numberOfSamples)
 {
 	FpuState fpuState;
+
+	interpolatedParameters.setSteps(numberOfSamples);
+
 	// TODO find a better way to do initalization
 	if (!initializedParameters) 
 	{
@@ -72,7 +73,7 @@ void EffectBase::processBlock(Sample* buffer, size_t numberOfSamples)
 		{
 			float value = paramBundle->getParameter(parameterIndex)->getValueUnnormalized();
 			// this emulates the previous block end, which we set to the unmodulated current parameter value
-			parameterValues[parameterIndex] = InterpolatedValue<float>(value, value, 1);
+			interpolatedParameters.setCurrent(parameterIndex, value);
 		}
 		initializedParameters = true;
 	}
@@ -91,7 +92,8 @@ void EffectBase::processBlock(Sample* buffer, size_t numberOfSamples)
 		if (!parameter->canBeModulated())
 		{
 			// No or modulation for Bool / Discrete / Option Param
-			parameterValues[parameterIndex] = InterpolatedValue<float>(parameter->getValueUnnormalized());
+			float value = parameter->getValueUnnormalized();
+			interpolatedParameters.setCurrent(parameterIndex, value);
 		}
 		else
 		{
@@ -108,10 +110,8 @@ void EffectBase::processBlock(Sample* buffer, size_t numberOfSamples)
 			else if (normalizedNextValueModulated > 1.f)
 				normalizedNextValueModulated = 1.f;
 
-
-			float previousValue = parameterValues[parameterIndex].get();
 			float nextValue = parameter->fromNormalized(normalizedNextValueModulated);
-			parameterValues[parameterIndex] = InterpolatedValue<float>(previousValue, nextValue, numberOfSamples);
+			interpolatedParameters.setTarget(parameterIndex, nextValue);
 		}
 	}
 
@@ -125,7 +125,7 @@ void EffectBase::processBlock(Sample* buffer, size_t numberOfSamples)
 			throw std::runtime_error("nan detected");
 	}
 #endif
-	nextSample(numberOfSamples);
+	interpolatedParameters.next(numberOfSamples);
 }
 
 ParameterBundle* EffectBase::getPointerToParameterBundle() const
@@ -145,23 +145,6 @@ const unsigned int EffectBase::getNumberOfParameters() const
 // (virtual void would be overkill)
 void EffectBase::getModulation(float* modulationValues, size_t sampleOffset)
 { }
-
-/**
- * Get interpolated parameter containing unnormalized values.
- */
-InterpolatedValue<float> const& EffectBase::getInterpolatedParameter(unsigned int parameterIndex) const
-{
-	// parameterValues contain results of parameter->getValueUnnormalized()
-	return parameterValues[parameterIndex];
-}
-
-void EffectBase::nextSample(unsigned int steps) const
-{
-	for (unsigned int parameterIndex = 0; parameterIndex < getNumberOfParameters(); parameterIndex++) 
-	{
-		parameterValues[parameterIndex].next(steps);
-	}
-}
 
 unsigned int const& EffectBase::getCurrentTime() const
 {
