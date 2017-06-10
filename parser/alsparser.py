@@ -375,9 +375,25 @@ class ChainDevice(CombinedDevice):
 		#self.children.append(pan)
 
 		# TODO append volume device
-		# we have to figure out how ableton maps slider <-> dB
-		# (important for interpolation)
-		# volumeXml = mixerXml.find('Volume')
+		#we have to figure out how ableton maps slider <-> dB
+		#(important for interpolation)
+		volumeXml = mixerXml.find('Volume')
+		volume = EffectDevice(config.plugins['bh_abletonMixerVolume']['class'], config.plugins['bh_abletonMixerVolume']['numberOfParameters'])
+		volume.parameters = [ 
+			[], # volumeValue
+			[ParameterEvent(0, 1)]  # on
+		]
+		eventsXml = volumeXml.findall('./ArrangerAutomation/Events/FloatEvent')
+		volume.parameters[0] = [
+			ParameterEvent(
+				max(0, float(eventXml.get('Time')) ),
+				(float(eventXml.get('Value')) / 2)
+			) for eventXml in eventsXml]
+
+		# Check if volume is always equal to 0 db (equals 0.5 in numbers)
+		# Only append volumeDevice if necessary
+		if (len(volume.parameters[0]) != 1) or (volume.parameters[0][0].value != 0.5 ):
+			self.children.append(volume)
 
 		# if there are any sends, append a send device
 		sendsXml = mixerXml.findall('./Sends/TrackSendHolder/Send')

@@ -11,6 +11,7 @@ function(prepend var prefix)
 endfunction(prepend)
 
 prepend(HEADERS "include/"
+	"AbletonTrackMixerVolumeEffect.h"
 	"AlignedType.h"
 	"ArpMidiEffect.h"
 	"AuxFunc.h"
@@ -66,6 +67,7 @@ prepend(HEADERS "include/"
 )
 
 prepend(SOURCES "src/"
+	"AbletonTrackMixerVolumeEffect.cpp"
 	"AlignedType.cpp"
 	"ArpMidiEffect.cpp"
 	"AuxFunc.cpp"

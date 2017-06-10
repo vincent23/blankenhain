@@ -9,6 +9,7 @@ class ExampleInstrument : public InstrumentBase
 private:
 	NaiveOscillator osc;
 	NoiseOscillator nosc;
+	PulseSound pulse;
 	I_SoundGenerator* currentSound;
 public:
 	ExampleInstrument();

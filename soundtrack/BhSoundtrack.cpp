@@ -35,6 +35,9 @@
 #include "glidePolyblepInstrument.h"
 #include "LimiterEffect.h"
 
+#include "ExampleInstrument.h"
+#include "AbletonTrackMixerVolumeEffect.h"
+
 void blankenhain::render(float* buffer)
 {
 #ifdef _LIBBLANKENHAIN_ENABLE_WARNINGS
