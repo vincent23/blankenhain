@@ -25,15 +25,15 @@ ExampleInstrument::ExampleInstrument()
 void ExampleInstrument::processVoice(VoiceState& voice, unsigned int timeInSamples, Sample* buffer, unsigned int numberOfSamples)
 {
 
-	const float attack = getInterpolatedParameter(0).get();
-	const float hold = getInterpolatedParameter(1).get();
-	const float holdLevel = getInterpolatedParameter(2).get();
-	const float decay = getInterpolatedParameter(3).get();
-	const bool sustainOn = getInterpolatedParameter(4).get() > 0.5 ? true : false;
-	const float sustainLevel = getInterpolatedParameter(6).get();
-	const float sustain = getInterpolatedParameter(5).get();
-	const float release = getInterpolatedParameter(7).get();
-	const unsigned int mode = static_cast<unsigned int>(getInterpolatedParameter(8).get());
+	const float attack = interpolatedParameters.get(0u, 0u);
+	const float hold = interpolatedParameters.get(1u);
+	const float holdLevel = interpolatedParameters.get(2u);
+	const float decay = interpolatedParameters.get(3u);
+	const bool sustainOn = interpolatedParameters.get(4u) > 0.5 ? true : false;
+	const float sustainLevel = interpolatedParameters.get(6u);
+	const float sustain = interpolatedParameters.get(5u);
+	const float release = interpolatedParameters.get(7u);
+	const unsigned int mode = static_cast<unsigned int>(interpolatedParameters.get(8u));
 	
 	this->osc.setFrequency(aux::noteToFrequency(static_cast<float>(voice.key)));
 

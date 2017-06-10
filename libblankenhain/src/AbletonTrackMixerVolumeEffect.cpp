@@ -13,10 +13,8 @@ AbletonTrackMixerVolumeEffect::AbletonTrackMixerVolumeEffect() : EffectBase(1u, 
 
 void AbletonTrackMixerVolumeEffect::process(Sample* buffer, size_t numberOfSamples, size_t currentTime)
 {
-	InterpolatedValue<float> const& currentVolumeAsMultiplier = getInterpolatedParameter(0);
-
-	const float valueBefore = currentVolumeAsMultiplier.get();
-	const float valueAfter = currentVolumeAsMultiplier.get(numberOfSamples);
+	const float valueBefore = interpolatedParameters.get(0u,0u);
+	const float valueAfter = interpolatedParameters.get(0u, numberOfSamples);
 	InterpolatedValue<float> volume(valueBefore, valueAfter, numberOfSamples);
 	for (size_t bufferIteration = 0; bufferIteration < numberOfSamples; bufferIteration++)
 	{
