@@ -17,19 +17,32 @@ void AbletonTrackMixerVolumeEffect::process(Sample* buffer, size_t numberOfSampl
 
 	const float valueBefore = currentVolumeAsMultiplier.get();
 	const float valueAfter = currentVolumeAsMultiplier.get(numberOfSamples);
-	InterpolatedValue<float> volume(valueBefore, valueBefore, numberOfSamples); // TODO
-	//InterpolatedValue<float> volume(valueBefore, valueAfter, numberOfSamples); // TODO
+	InterpolatedValue<float> volume(valueBefore, valueAfter, numberOfSamples);
 	for (size_t bufferIteration = 0; bufferIteration < numberOfSamples; bufferIteration++)
 	{
-		//float transformedMultiplier = 0.00956 * BhMath::exp(22048.f / 2.f * volume.get() / 4973.87572f) - 0.01101f;
-		float transformedMultiplier = 0.00624 * BhMath::exp(((22048.f / 2.f * volume.get()) + 2124.69956) / 4973.87572f) - 0.01101f;
-		transformedMultiplier *= (1.f / 0.78727f) * aux::decibelToLinear(6.f);
+		Sample multiplier;
 
-		if (transformedMultiplier > 0.f)
-			buffer[bufferIteration] *= Sample(transformedMultiplier);
+		float fvol = volume.get();
+		if (fvol > 1.f)
+		{
+			float mult = -6.02413 + 2.71507e-4 * ((fvol - 1.f) * 22050.f);
+			multiplier = Sample(aux::decibelToLinear(mult + 6.f));
+		}
+		else if (fvol >= 0.5f)
+		{
+			float mult2 = -16.05759 + 24.23926 * fvol - 8.20311 * fvol * (fvol);
+			multiplier = Sample(aux::decibelToLinear(mult2));
+		}
 		else
-			buffer[bufferIteration] = Sample(0.f);
-
+		{
+			float x = (fvol * 22050.f);
+			float mult = -67.17493 + 0.00855 * x - 4.70518e-7 * x * x + 1.01315e-11 * x * x * x;
+			mult += 12.f;
+			if (mult > -6.f)
+				mult = -6.f;
+			multiplier = Sample(aux::decibelToLinear(mult));
+		}
+		buffer[bufferIteration] *= multiplier;
 		volume.next();
 	}
 }
