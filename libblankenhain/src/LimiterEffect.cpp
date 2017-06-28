@@ -7,7 +7,8 @@
 
 LimiterEffect::LimiterEffect()
 	: EffectBase(5u)
-	, lookaheadDelay(static_cast<unsigned int>(constants::sampleRate * 1e-3)) // constant lookahead of 1 ms
+	// , lookaheadDelay(static_cast<unsigned int>(constants::sampleRate * 1e-3)) // constant lookahead of 1 ms
+	, lookaheadDelay(64u) // constant lookahead of 1 ms
 {
 	ParameterBundle& params = getParameterBundle();
 	params.initParameter(0, new FloatParameter(1.f, NormalizedRange::fromMidpoint(0.01f, 3.f, 1000.f), "attack", "ms"));
@@ -27,7 +28,8 @@ void LimiterEffect::process(Sample* buffer, size_t numberOfSamples, size_t curre
 	float makeupGain = interpolatedParameters.get(4);
 	float lookahead = interpolatedParameters.get(3);
 
-	lookaheadDelay.setSize(static_cast<unsigned int>(aux::millisecToSamples(lookahead)));
+	//lookaheadDelay.setSize(static_cast<unsigned int>(aux::millisecToSamples(lookahead)));
+	unsigned int lookaheadDelayLength = static_cast<unsigned int>(aux::millisecToSamples(lookahead));
 
 	envelope.setTimes(attack, release);
 	for (unsigned int i = 0; i < numberOfSamples; i++) 
@@ -39,7 +41,9 @@ void LimiterEffect::process(Sample* buffer, size_t numberOfSamples, size_t curre
 			dbGain = makeupGain;
 		else
 			dbGain = makeupGain - (dbIn - threshold);
-		Sample delayed = lookaheadDelay.pushpop(buffer[i]);
+		// Sample delayed = lookaheadDelay.pushpop(buffer[i]);
+		Sample delayed = lookaheadDelay.get(lookaheadDelayLength);
+		lookaheadDelay.push(buffer[i]);
 		delayed *= Sample(aux::decibelToLinear(dbGain));
 		buffer[i] = delayed;
 	}

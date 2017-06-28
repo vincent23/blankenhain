@@ -13,6 +13,6 @@ public:
 
 protected:
 	// Include optional additional stuff
-	CircularBuffer<Sample> delayLine;
+	//CircularBuffer<Sample> delayLine;
 	Sample envelope;
 };

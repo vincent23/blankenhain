@@ -16,5 +16,5 @@ public:
 	}
 protected:
 	bool wasPaniced;
-	LinearInterpolatedCircularBuffer<Sample> delayLine;
+	CircularBuffer<Sample> delayLine;
 };

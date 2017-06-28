@@ -7,7 +7,8 @@
 
 NoiseGateEffect::NoiseGateEffect()
 	: EffectBase(5u, false)
-	, lookaheadBuffer(static_cast<unsigned int>(aux::millisecToSamples(60.2f)))
+	//, lookaheadBuffer(static_cast<unsigned int>(aux::millisecToSamples(60.2f)))
+	, lookaheadBuffer(1 << 12)
 	, RMSVolLength(static_cast<unsigned int>(aux::millisecToSamples(10.f)))
 	, lastStartTime(1u)
 	, lastStopTime(0u)
@@ -32,12 +33,14 @@ void NoiseGateEffect::process(Sample* buffer, size_t numberOfSamples, size_t cur
 
 	this->delayEffectProducesInSamples = delayLineLength;
 
-	lookaheadBuffer.setSize(delayLineLength);
+	// lookaheadBuffer.setSize(delayLineLength);
 	
 
 	for (size_t bufferIteration = 0u; bufferIteration < numberOfSamples; bufferIteration++)
 	{
-		Sample BufferOut = lookaheadBuffer.pushpop(buffer[bufferIteration]);
+		//Sample BufferOut = lookaheadBuffer.pushpop(buffer[bufferIteration]);
+		lookaheadBuffer.push(buffer[bufferIteration]);
+		Sample BufferOut = lookaheadBuffer.get(delayLineLength);
 		RMSkeeper -= BufferOut * BufferOut;
 		RMSkeeper += buffer[bufferIteration] * buffer[bufferIteration];
 

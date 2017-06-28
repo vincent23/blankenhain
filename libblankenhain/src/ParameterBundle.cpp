@@ -62,7 +62,7 @@ FloatParameter* ParameterBundle::getParameter(unsigned int in) const
 void ParameterBundle::initParameter(unsigned int index, FloatParameter* parameter)
 {
 #ifdef _LIBBLANKENHAIN_ENABLE_WARNINGS
-	if (in >= this->numberOfParameters)
+	if (index >= this->numberOfParameters)
 		throw ("out of range: number of parameters\n");
 #endif
 	parameters[index] = parameter;

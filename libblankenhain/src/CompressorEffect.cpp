@@ -7,7 +7,8 @@
 
 CompressorEffect::CompressorEffect()
 	: EffectBase(8u)
-	, lookaheadDelay(static_cast<unsigned int>(constants::sampleRate * 1e-3)) // constant lookahead of 1 ms
+	//, lookaheadDelay(static_cast<unsigned int>(constants::sampleRate * 1e-3)) // constant lookahead of 1 ms
+	, lookaheadDelay(64u)
 {
 	ParameterBundle& params = getParameterBundle();
 	params.initParameter(0, new FloatParameter(1.f, NormalizedRange::fromMidpoint(0.01f, 3.f, 1000.f), "attack", "ms"));
@@ -31,7 +32,8 @@ void CompressorEffect::process(Sample* buffer, size_t numberOfSamples, size_t cu
 	float makeupGain = interpolatedParameters.get(6);
 	float lookahead = interpolatedParameters.get(5);
 
-	lookaheadDelay.setSize(static_cast<unsigned int>(aux::millisecToSamples(lookahead)));
+	// lookaheadDelay.setSize(static_cast<unsigned int>(aux::millisecToSamples(lookahead)));
+	unsigned int lookaheadDelayLength = static_cast<unsigned int>(aux::millisecToSamples(lookahead));
 
 	envelope.setTimes(attack, release);
 	for (unsigned int i = 0; i < numberOfSamples; i++) {
@@ -43,7 +45,9 @@ void CompressorEffect::process(Sample* buffer, size_t numberOfSamples, size_t cu
 		}
 		float dbIn = static_cast<float>(envelope.getCurrentEnvelope().maxValue());
 		float dbGain = makeupGain + static_cast<float>(compressorGain(threshold, ratio, knee, dbIn));
-		Sample delayed = lookaheadDelay.pushpop(buffer[i]);
+		//Sample delayed = lookaheadDelay.pushpop(buffer[i]);
+		Sample delayed = lookaheadDelay.get(lookaheadDelayLength);
+		lookaheadDelay.push(buffer[i]);
 		delayed *= Sample(aux::decibelToLinear(dbGain));;
 		buffer[i] = delayed;
 	}

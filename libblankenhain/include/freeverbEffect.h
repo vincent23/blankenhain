@@ -14,7 +14,6 @@ class freeverbEffect : public EffectBase
 public:
 	// Change the name and define parameters in constructor
 	freeverbEffect();
-	~freeverbEffect(void);
 	void process(Sample* buffer, size_t numberOfSamples, size_t currentTime) override;
 	void resetEffect();
 
@@ -37,13 +36,17 @@ protected:
 	const Sample g_ = Sample(0.5f); // allpass coefficient, immutable in FreeVerb
 
 	// LBFC: Lowpass Feedback Comb Filters
-	CircularBuffer<Sample>* combDelay_[8];
-	CircularBuffer<Sample>* combDelayRight[8];
+	CircularBuffer<float> combDelay_l[8];
+	CircularBuffer<float> combDelay_r[8];
 
-	OnePoleFilter<Sample>* combLP_[8];
+	OnePoleFilter<Sample> combLP_[8];
 
 	// AP: Allpass Filters
-	CircularBuffer<Sample>* allPassDelay_[4];
-	CircularBuffer<Sample>* allPassDelayRight[4];
+	CircularBuffer<float> allPassDelay_l[4];
+	CircularBuffer<float> allPassDelay_r[4];
 
+private:
+	static OnePoleFilter<Sample> getCombLP();
+	static CircularBuffer<float> getCombDelay();
+	static CircularBuffer<float> getAllPassDelay();
 };

@@ -56,6 +56,10 @@ Sample _vectorcall EnvelopeFollower::getPeakSample(Sample in)
 Sample _vectorcall EnvelopeFollower::getRmsSample(Sample in)
 {
 	Sample inSquared = in * in;
-	total += inSquared - rmsWindow.pushpop(inSquared);
-	return (total / Sample(static_cast<double>(rmsWindow.getSize()))).sqrt();
+	total += inSquared - rmsWindow.get(128u);
+	rmsWindow.push(inSquared);
+	return (total / Sample(128.f)).sqrt();
+	//total += inSquared - rmsWindow.pushpop(inSquared);
+	//return (total / Sample(static_cast<double>(rmsWindow.getSize()))).sqrt();
+
 }

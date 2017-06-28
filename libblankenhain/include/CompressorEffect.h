@@ -17,5 +17,5 @@ public:
 
 private:
 	EnvelopeFollower envelope;
-	LinearInterpolatedCircularBuffer<Sample> lookaheadDelay;
+	CircularBuffer<Sample> lookaheadDelay;
 };

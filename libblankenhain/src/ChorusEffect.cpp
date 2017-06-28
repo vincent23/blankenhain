@@ -5,7 +5,10 @@
 #include "AuxFunc.h"
 #include <algorithm>
 
-ChorusEffect::ChorusEffect() : EffectBase(11), delayLine(size_t(aux::millisecToSamples(2502u)))
+ChorusEffect::ChorusEffect()
+	: EffectBase(11)
+	//, delayLine(size_t(aux::millisecToSamples(2502u)))
+	, delayLine(1 << 17)
 {
 	wasPaniced = false;
 	ParameterBundle& params = getParameterBundle();
@@ -41,7 +44,8 @@ void ChorusEffect::process(Sample* buffer, size_t numberOfSamples, size_t curren
 	float lfoSpeed = interpolatedParameters.get(9);
 	this->lfo.setFrequency(lfoSpeed);
 
-	delayLine.setSize(static_cast<size_t>(aux::millisecToSamples(delay)));
+	//delayLine.setSize(static_cast<size_t>(aux::millisecToSamples(delay)));
+	unsigned int delayLength = static_cast<unsigned int>(aux::millisecToSamples(delay));
 
 	// Panic
 	if (panicButton && !wasPaniced)
@@ -55,7 +59,7 @@ void ChorusEffect::process(Sample* buffer, size_t numberOfSamples, size_t curren
 	}
 
 
-
+	/*
 	for (unsigned int i = 0; i < numberOfSamples; i++)
 	{
 		float lfoValue = (this->lfo.getNextSample(lfoPhase) * .5f + 5.f) * lfoAmount;
@@ -81,5 +85,5 @@ void ChorusEffect::process(Sample* buffer, size_t numberOfSamples, size_t curren
 		//Ghetto Stereo by PhaseShift, maybe TODO use seperate DelayLines for L & R
 		buffer[i] = aux::mixDryWet(inval, outval, drywet);
 	}
-
+	*/
 }

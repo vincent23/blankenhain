@@ -13,7 +13,7 @@
 const unsigned int NUMBER_OF_PARAMETERS = 5u;
 
 // Change the name and define parameters in constructor
-ExampleEffect::ExampleEffect() : EffectBase(NUMBER_OF_PARAMETERS), delayLine(size_t(aux::millisecToSamples(2502u)))
+ExampleEffect::ExampleEffect() : EffectBase(NUMBER_OF_PARAMETERS)//, delayLine(size_t(aux::millisecToSamples(2502u)))
 {
 	ParameterBundle& params = getParameterBundle();
 	// Insert your stuff here
@@ -32,9 +32,9 @@ void ExampleEffect::process(Sample* buffer, size_t numberOfSamples, size_t curre
 	float attack = interpolatedParameters.get(3);
 	bool limiterIsOn = interpolatedParameters.get(4) == 1.f;
 	size_t attackTimeInSamples = size_t(aux::millisecToSamples(attack));
-	delayLine.setSize(attackTimeInSamples);
+	//delayLine.setSize(attackTimeInSamples);
 	for (size_t i = 0; i < numberOfSamples; i++)
 	{
-		buffer[i] = delayLine.pushpop(buffer[i]);
+		//buffer[i] = delayLine.pushpop(buffer[i]);
 	}
 }

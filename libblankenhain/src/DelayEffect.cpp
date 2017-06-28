@@ -4,7 +4,10 @@
 #include "InterpolatedValue.h"
 #include "AuxFunc.h"
 
-DelayEffect::DelayEffect() : EffectBase(7, true), delayLine(size_t(aux::millisecToSamples(2502u)))
+DelayEffect::DelayEffect()
+	: EffectBase(7, true)
+	//, delayLine(size_t(aux::millisecToSamples(2502u)))
+	, delayLine(1 << 17)
 {
 	wasPaniced = false;
 	ParameterBundle& params = getParameterBundle();
@@ -28,8 +31,10 @@ void DelayEffect::process(Sample* buffer, size_t numberOfSamples, size_t current
 	const bool panicButton = interpolatedParameters.get(4) == 1.f;
 	const bool tempoSync = interpolatedParameters.get(6) == 1.f;
 
+	float delayLength;
 	if (!tempoSync)
-		delayLine.setSize(static_cast<size_t>(aux::millisecToSamples(length)));
+		//delayLine.setSize(static_cast<size_t>(aux::millisecToSamples(length)));
+		delayLength = aux::millisecToSamples(length);
 	else
 	{
 		float beatMultiplier = interpolatedParameters.get(5);
@@ -53,7 +58,8 @@ void DelayEffect::process(Sample* buffer, size_t numberOfSamples, size_t current
 		const float sixteenthNoteLength = quarterNoteLength / 4.f;
 		const float wholeBeatLength = sixteenthNoteLength * 16.f;
 
-		delayLine.setSize(static_cast<size_t>(aux::millisecToSamples(quarterNoteLength * 1000.f/*sec to ms*/)));
+		//delayLine.setSize(static_cast<size_t>(aux::millisecToSamples(quarterNoteLength * 1000.f/*sec to ms*/)));
+		delayLength = aux::millisecToSamples(quarterNoteLength * 1000.f /* sec to ms */);
 	}
 
 	if (panicButton && !wasPaniced)
@@ -69,9 +75,9 @@ void DelayEffect::process(Sample* buffer, size_t numberOfSamples, size_t current
 	for (size_t i = 0; i < numberOfSamples; i++)
 	{
 		Sample original = buffer[i];
-		Sample line = delayLine.get();
+		Sample line = delayLine.getInterpolated(delayLength);
 		aux::performPanning(line, pan * 0.02f); // Pan
 		buffer[i] = aux::mixDryWet(original, line, drywet);
-		delayLine.push(delayLine.get() * Sample(feedback) + original);
+		delayLine.push(line * Sample(feedback) + original);
 	}
 }
