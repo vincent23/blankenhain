@@ -35,9 +35,7 @@ public:
 	// you should prefer using their custom
 	// functions to change the param rather than these
 	float getValueNormalized() const;
-	float getValueNormalized();
 	virtual float getValueUnnormalized() const;
-	virtual float getValueUnnormalized();
 	virtual void setTargetValueNormalized(float normalizedValue);
 	virtual void setTargetValueUnnormalized(float unnormalizedValue);
 	virtual void setCurrentValueNormalized(float normalizedValue);

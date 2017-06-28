@@ -36,17 +36,7 @@ float FloatParameter::getValueNormalized() const
 	return valueNormalized->get();
 }
 
-float FloatParameter::getValueNormalized()
-{
-	return valueNormalized->get();
-}
-
 float FloatParameter::getValueUnnormalized() const
-{
-	return range.fromNormalized(getValueNormalized());
-}
-
-float FloatParameter::getValueUnnormalized()
 {
 	return range.fromNormalized(getValueNormalized());
 }
