@@ -12,7 +12,9 @@ FilterEffect::FilterEffect() : EffectBase(NUMBER_OF_PARAMETERS, true)
 	// Insert your stuff here
 	(params->getParameter(0)) = new FloatParameter(0.7f, NormalizedRange::fromMidpoint(0.1f, 0.7f, 10.f), "Q", "");
 	(params->getParameter(1)) = new FloatParameter(120.f, NormalizedRange::fromMidpoint(20.f, 850.f, 22000.f), "frequency", "Hz");
-	(params->getParameter(2)) = new FloatParameter(0.f, NormalizedRange(0.f, 1.f, 1.f), "style", "");
+	BhString filterStyles[4] = { "HighPass", "LowPass", "BandPass", "Notch" };
+	//(params->getParameter(2)) = new FloatParameter(0.f, NormalizedRange(0.f, 1.f, 1.f), "style", "");
+	params->getParameter(2) = new OptionParameter(4u, filterStyles, "FilterStyles", "");
 	(params->getParameter(3)) = new FloatParameter(1.01f, NormalizedRange(0.f, 2.9999f, 1.f), "rolloff", "");
 
 	params->getParameter(4) = new FloatParameter(0.f, NormalizedRange(-1.f, 1.f), "lfoAmount", "");
@@ -44,13 +46,13 @@ void FilterEffect::process(Sample* buffer, size_t numberOfSamples, size_t curren
 
 	for (unsigned int filterIndex = 0; static_cast<int>(filterIndex) < numberOfFilters; filterIndex++) {
 		Filter<Sample>& filter = filters[filterIndex];
-		if (style < 0.25) {
+		if (style < 0.5f) {
 			filter.setHighPass(frequency, Q);
 		}
-		else if (style < 0.5) {
+		else if (style < 1.5f) {
 			filter.setLowPass(frequency, Q);
 		}
-		else if (style < 0.75) {
+		else if (style < 2.5f) {
 			filter.setBandPass(frequency, Q);
 		}
 		else {
