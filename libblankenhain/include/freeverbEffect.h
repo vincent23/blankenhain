@@ -24,8 +24,8 @@ protected:
 	const unsigned int nAllpasses = 4;
 	const unsigned int stereoSpread = 23;
 	// Delay line lengths for 44100Hz sampling rate.
-	unsigned int cDelayLengths[8] = { 1617, 1557, 1491, 1422, 1356, 1277, 1188, 1116 };
-	unsigned int aDelayLengths[4] = { 225, 556, 441, 341 };
+	const unsigned int cDelayLengths[8] = { 1617, 1557, 1491, 1422, 1356, 1277, 1188, 1116 };
+	const unsigned int aDelayLengths[4] = { 225, 556, 441, 341 };
 
 	// Set static delay line lengths
 	const float fixedGain = 0.015f;

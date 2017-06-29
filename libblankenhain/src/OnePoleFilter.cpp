@@ -13,17 +13,6 @@ OnePoleFilter<T>::OnePoleFilter(const T& polePosition)
 template <typename T>
 OnePoleFilter<T>::~OnePoleFilter(void) {};
 
-
-template <typename T>
-T _vectorcall OnePoleFilter<T>::tick(T in)
-{
-  inputValue = gain * in;
-  T lastFrame_ = param_b0 * inputValue - param_a1 * outputValue0;
-  outputValue0 = lastFrame_;
-
-  return outputValue0;
-}
-
 template <typename T>
 void _vectorcall OnePoleFilter<T>::setGain(T gain_)
 {

@@ -91,17 +91,6 @@ void Filter<T>::setAll(double frequency, double Q)
 }
 
 template <typename T>
-T _vectorcall Filter<T>::tick(T v0)
-{
-	v3 = v0 - ic2eq;
-	v1 = a1 * ic1eq + a2 * v3;
-	v2 = ic2eq + a2 * ic1eq + a3 * v3;
-	ic1eq = v1 * T(2.) - ic1eq;
-	ic2eq = v2 * T(2.) - ic2eq;
-	return m0 * v0 + m1 * v1 + m2 * v2;
-}
-
-template <typename T>
 void Filter<T>::recomputeCoefficients(double frequency, double Q, double gFactor)
 {
 	double g_ = static_cast<double>(BhMath::tan(constants::pi * static_cast<float>(frequency) / constants::sampleRate)) * gFactor;
