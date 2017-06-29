@@ -20,7 +20,7 @@ EffectDevice::EffectDevice(EffectBase& effect_, ParameterTrack* parameterValues_
 
 Sample* EffectDevice::process(SongInfo& songInfo, const Sample* input, unsigned int globalSamplePosition)
 {
-	for (unsigned int sampleIndex = 0; sampleIndex < constants::parameterInterpolationLength; sampleIndex++)
+	for (unsigned int sampleIndex = 0; sampleIndex < constants::blockSize; sampleIndex++)
 	{
 		outputBuffer[sampleIndex] = input[sampleIndex];
 	}
@@ -41,7 +41,7 @@ Sample* EffectDevice::process(SongInfo& songInfo, const Sample* input, unsigned 
 				parameters.getParameter(parameterIndex)->setTargetValueNormalized(targetValue);
 			}
 		}
-		effect.processBlock(outputBuffer, constants::parameterInterpolationLength);
+		effect.processBlock(outputBuffer, constants::blockSize);
 	}
 	return outputBuffer;
 }

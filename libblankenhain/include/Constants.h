@@ -10,7 +10,7 @@
  namespace constants {
 	constexpr unsigned int blockSize = 16;
 
-	constexpr unsigned int parameterInterpolationLength = 16;
+	constexpr unsigned int parameterInterpolationLength = 256;
 
 	constexpr float pi = 3.14159265359f;
 

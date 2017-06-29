@@ -3,7 +3,7 @@
 #include "Constants.h"
 
 Device::Device()
-	: outputBuffer(new Sample[constants::parameterInterpolationLength])
+	: outputBuffer(new Sample[constants::blockSize])
 {}
 
 Device::~Device()

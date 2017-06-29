@@ -17,7 +17,7 @@ ParameterTrack::ParameterTrack(unsigned int numberOfPoints_, unsigned int* sampl
 
 float ParameterTrack::getCurrentValueAndAdvance(unsigned int samplePosition)
 {
-	// we always have a point at samplePosition 0 (parser takes care of that)
+	// we alwyas have a point at samplePosition 0 (parser takes care of that)
 
 	// advance currentPointIndex so that it points to the last point that is still before the samplePosition
 	while (currentPointIndex + 1 < numberOfPoints && samplePositions[currentPointIndex + 1] < samplePosition) {
