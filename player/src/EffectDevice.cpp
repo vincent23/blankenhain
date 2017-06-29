@@ -20,12 +20,12 @@ EffectDevice::EffectDevice(EffectBase& effect_, ParameterTrack* parameterValues_
 
 Sample* EffectDevice::process(SongInfo& songInfo, const Sample* input, unsigned int globalSamplePosition)
 {
-	for (unsigned int sampleIndex = 0; sampleIndex < constants::blockSize; sampleIndex++)
+	for (unsigned int sampleIndex = 0; sampleIndex < constants::parameterInterpolationLength; sampleIndex++)
 	{
 		outputBuffer[sampleIndex] = input[sampleIndex];
 	}
-	unsigned int onIndex = effect.getNumberOfParameters();
-	bool isOn = parameterValues[onIndex].getCurrentDiscreteValueAndAdvance(globalSamplePosition) > .5f;
+	const unsigned int onIndex = effect.getNumberOfParameters();
+	const bool isOn = parameterValues[onIndex].getCurrentDiscreteValueAndAdvance(globalSamplePosition) > .5f;
 	if (isOn)
 	{
 		if (effect.effectUsesTempoData())
@@ -41,7 +41,7 @@ Sample* EffectDevice::process(SongInfo& songInfo, const Sample* input, unsigned 
 				parameters.getParameter(parameterIndex)->setTargetValueNormalized(targetValue);
 			}
 		}
-		effect.processBlock(outputBuffer, constants::blockSize);
+		effect.processBlock(outputBuffer, constants::parameterInterpolationLength);
 	}
 	return outputBuffer;
 }

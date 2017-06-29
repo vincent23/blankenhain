@@ -4,7 +4,7 @@
 
 Sample* GroupDevice::process(SongInfo& songInfo, const Sample* input, unsigned int globalSamplePosition)
 {
-	for (unsigned int samplePosition = 0; samplePosition < constants::blockSize; samplePosition++)
+	for (unsigned int samplePosition = 0; samplePosition < constants::parameterInterpolationLength; samplePosition++)
 	{
 		outputBuffer[samplePosition] = Sample(0);
 	}
@@ -12,7 +12,7 @@ Sample* GroupDevice::process(SongInfo& songInfo, const Sample* input, unsigned i
 	{
 		Device& device = *(devices[deviceIndex]);
 		Sample* output = device.process(songInfo, input, globalSamplePosition);
-		for (unsigned int samplePosition = 0; samplePosition < constants::blockSize; samplePosition++)
+		for (unsigned int samplePosition = 0; samplePosition < constants::parameterInterpolationLength; samplePosition++)
 		{
 			outputBuffer[samplePosition] += output[samplePosition];
 		}

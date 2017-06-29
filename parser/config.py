@@ -3,6 +3,11 @@ instrument = 'instrument'
 effect = 'effect'
 
 plugins = {
+	'bh_abletonMixerVolume': {
+		'class': 'AbletonTrackMixerVolumeEffect',
+		'type': effect,
+		'numberOfParameters': 1,
+	},
 	'bh_arp': {
 		'class': 'ArpMidiEffect',
 		'type': midi,

@@ -65,12 +65,12 @@ void basedrum1Instrument::processVoice(VoiceState& voice, unsigned int timeInSam
 		if (drm1_pulselength != interpolatedParameters.get(11))
 		{
 			drm1_pulselength = interpolatedParameters.get(11);
-			this->drm1.setPuleLength(drm1_pulselength);
+			this->drm1.setPulseLength(drm1_pulselength);
 		}
 		if (drm1_pulselength != interpolatedParameters.get(11))
 		{
 			drm1_pulselength = interpolatedParameters.get(11);
-			this->drm1.setPuleLength(drm1_pulselength);
+			this->drm1.setPulseLength(drm1_pulselength);
 		}
 
 		this->currentGenerator = &drm1;

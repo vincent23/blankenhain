@@ -30,9 +30,9 @@ public:
 	{
 		filter.setLowPass(58.f, 5.);
 	}
-	void setPuleLength(float inMs)
+	void setPulseLength(float inMs)
 	{
-		pulse = PulseSound(static_cast<unsigned int>(aux::millisecToSamples(inMs)));
+		pulse.setPulseLength(static_cast<unsigned int>(aux::millisecToSamples(inMs)));
 	}
 	virtual float getNextSample(OscillatorPhase phase = OscillatorPhase()) final
 	{

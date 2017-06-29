@@ -66,7 +66,7 @@ BhString FloatParameter::getUnit() const
 
 void FloatParameter::setTargetValueNormalized(float normalizedValue)
 {
-	unsigned int interpolationLength = constants::parameterInterpolationLength;
+	constexpr unsigned int interpolationLength = constants::parameterInterpolationLength;
 	*valueNormalized = BoundrySafeInterpolatedValue<float>(this->getValueNormalized(), normalizedValue, interpolationLength);
 }
 

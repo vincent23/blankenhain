@@ -49,19 +49,29 @@ void performAHDSR(
 
 	if (voice.isOn)
 	{
-		if (deltaTinSamples <= attackInSamples)
-			buffer[sampleIndex] *= T((deltaTinSamples / attackInSamples) * normalizedHoldLevel);
-		else if (deltaTinSamples < attackInSamples + holdInSamples)
+		if (attackInSamples != 0.f)
 		{
-			buffer[sampleIndex] *= T(normalizedHoldLevel);
-		}
-		else if (deltaTinSamples < attackInSamples + holdInSamples + decayInSamples)
-			buffer[sampleIndex] *= T((normalizedSustainLevel - normalizedHoldLevel) / decayInSamples * (deltaTinSamples - attackInSamples - holdInSamples) + normalizedHoldLevel);
-		else
-		{
-			buffer[sampleIndex] *= T(normalizedSustainLevel);
-			if (useSustainEvenIfNoteStillOn && deltaTinSamples > attackInSamples + holdInSamples + decayInSamples + sustainInSamples)
-				voice.off(timeInSamples + sampleIndex);
+			if (deltaTinSamples <= attackInSamples)
+			{
+				buffer[sampleIndex] *= T((deltaTinSamples / attackInSamples) * normalizedHoldLevel);
+			}
+			else if (deltaTinSamples < attackInSamples + holdInSamples)
+			{
+				buffer[sampleIndex] *= T(normalizedHoldLevel);
+			}
+			else if (deltaTinSamples < attackInSamples + holdInSamples + decayInSamples)
+			{
+				if(decayInSamples != 0.f)
+					buffer[sampleIndex] *= T((normalizedSustainLevel - normalizedHoldLevel) / decayInSamples * (deltaTinSamples - attackInSamples - holdInSamples) + normalizedHoldLevel);
+				else
+					buffer[sampleIndex] *= T(normalizedHoldLevel);
+			}
+			else
+			{
+				buffer[sampleIndex] *= T(normalizedSustainLevel);
+				if (useSustainEvenIfNoteStillOn && deltaTinSamples > attackInSamples + holdInSamples + decayInSamples + sustainInSamples)
+					voice.off(timeInSamples + sampleIndex);
+			}
 		}
 	}
 	else
@@ -76,7 +86,8 @@ void performAHDSR(
 				lastAmplitudeRelative = deltaTinSamples / attackInSamples * normalizedHoldLevel;
 			else if (deltaTinSamples <= attackInSamples + holdInSamples)
 				lastAmplitudeRelative = normalizedHoldLevel;
-			else if (deltaTinSamples < attackInSamples + decayInSamples + holdInSamples)
+			else if (deltaTinSamples < attackInSamples + decayInSamples + holdInSamples
+				&& decayInSamples != 0.f)
 				lastAmplitudeRelative = (normalizedSustainLevel - normalizedHoldLevel) / decayInSamples * (deltaTinSamples - attackInSamples - holdInSamples) + normalizedHoldLevel;
 			else
 				lastAmplitudeRelative = normalizedSustainLevel;
