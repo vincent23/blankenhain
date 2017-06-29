@@ -61,7 +61,7 @@ plugins = {
 	'bh_filter': {
 		'class': 'FilterEffect',
 		'type': effect,
-		'numberOfParameters': 4,
+		'numberOfParameters': 11,
 	},
 	'bh_fm_synth': {
 		'class': 'FmInstrument',

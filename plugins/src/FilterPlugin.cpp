@@ -6,6 +6,7 @@ FilterPlugin::FilterPlugin(audioMasterCallback audioMaster)
 	: PluginBase(audioMaster, new FilterEffect)
 {
 	setUniqueID('bhFi');
+	setEditor(new FilterPluginEditor(this));
 }
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster)

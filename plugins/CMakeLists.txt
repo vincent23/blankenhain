@@ -139,6 +139,8 @@ add_plugin("bh_example"
 add_plugin("bh_filter"
 	"FilterPlugin.cpp"
 	"FilterPlugin.h"
+	"FilterPluginEditor.cpp"
+	"FilterPluginEditor.h"
 )
 
 add_plugin("bh_volume"
