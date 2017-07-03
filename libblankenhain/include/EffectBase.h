@@ -38,7 +38,7 @@ public:
 
 	/// Helper functions
 	ParameterBundle& getParameterBundle();
-	const unsigned int getNumberOfParameters() const;
+	unsigned int getNumberOfParameters() const;
 
 
 	/**

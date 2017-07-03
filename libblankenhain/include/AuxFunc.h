@@ -49,25 +49,25 @@ namespace aux
 		if (linear < 0.f)
 			throw ("linear volume was negative value\n");
 #endif
-		float db;
+		float db = 20.f * BhMath::log10(linear);
 
-		if (linear != 0.0f)
-			db = 20.0f * static_cast<float>(BhMath::log10(linear));
-		else
-			db = -144.0f;  // effectively minus infinity
+		//if (linear != 0.0f)
+		//	db = 20.0f * static_cast<float>(BhMath::log10(linear));
+		//else
+		//	db = -144.0f;  // effectively minus infinity
 
 		return db;
 	}
 
 	inline float decibelToLinear(float db)
 	{
-		float linear;
+		float linear = BhMath::exp2(0.1660964047443681f * db);
 
-		if (db < -144.0f)
-			linear = 0.f;
-		else
+		//if (db < -144.0f)
+		//	linear = 0.f;
+		//else
 			// Use fastPow, tested it, its accurate enough for at least db -> lienar mapping
-			linear = BhMath::pow(10.f, db / 20.f);
+			// linear = BhMath::pow(10.f, db / 20.f);
 
 		return linear;
 	}

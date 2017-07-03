@@ -120,7 +120,7 @@ ParameterBundle& EffectBase::getParameterBundle()
 	return (this->paramBundle);
 }
 
-const unsigned int EffectBase::getNumberOfParameters() const
+unsigned int EffectBase::getNumberOfParameters() const
 {
 	return this->paramBundle.getNumberOfParameters();
 }
