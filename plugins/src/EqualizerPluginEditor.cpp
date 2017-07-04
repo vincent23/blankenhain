@@ -40,32 +40,32 @@ void EqualizerPluginEditor::imguiFrame()
 		// TODO
 		plugin.setParameterAutomated(item * 5 + 1, isOn ? .75f : .25f);
 	}
-	NormalizedRange const* frequencyRange = bundle.getParameter(2);
+	const NormalizedRange& frequencyRange = bundle.getParameter(2)->getRange();
 	float unnormalizedFrequency = bundle.getParameterUnnormalized(item * 5 + 2);
-	float frequencyMin = frequencyRange->getStart();
-	float frequencyMax = frequencyRange->getEnd();
-	float frequencySkew = frequencyRange->getSkew();
+	float frequencyMin = frequencyRange.getStart();
+	float frequencyMax = frequencyRange.getEnd();
+	float frequencySkew = frequencyRange.getSkew();
 	if (ImGui::DragFloat("frequency", &unnormalizedFrequency, .01f, frequencyMin, frequencyMax, "%.3f", 1 / frequencySkew))
 	{
-		plugin.setParameterAutomated(item * 5 + 2, frequencyRange->toNormalized(unnormalizedFrequency));
+		plugin.setParameterAutomated(item * 5 + 2, frequencyRange.toNormalized(unnormalizedFrequency));
 	}
-	NormalizedRange const* gainRange = bundle.getParameter(3);
+	const NormalizedRange& gainRange = bundle.getParameter(3)->getRange();
 	float unnormalizedGain = bundle.getParameterUnnormalized(item * 5 + 3);
-	float gainMin = gainRange->getStart();
-	float gainMax = gainRange->getEnd();
-	float gainSkew = gainRange->getSkew();
+	float gainMin = gainRange.getStart();
+	float gainMax = gainRange.getEnd();
+	float gainSkew = gainRange.getSkew();
 	if (ImGui::DragFloat("Gain", &unnormalizedGain, .1f, gainMin, gainMax, "%.3f", 1 / gainSkew))
 	{
-		plugin.setParameterAutomated(item * 5 + 3, gainRange->toNormalized(unnormalizedGain));
+		plugin.setParameterAutomated(item * 5 + 3, gainRange.toNormalized(unnormalizedGain));
 	}
-	NormalizedRange const* qRange = bundle.getParameter(4);
+	const NormalizedRange& qRange = bundle.getParameter(4)->getRange();;
 	float unnormalizedQ = bundle.getParameterUnnormalized(item * 5 + 4);
-	float qMin = qRange->getStart();
-	float qMax = qRange->getEnd();
-	float qSkew = qRange->getSkew();
+	float qMin = qRange.getStart();
+	float qMax = qRange.getEnd();
+	float qSkew = qRange.getSkew();
 	if (ImGui::DragFloat("Q", &unnormalizedQ, .01f, qMin, qMax, "%.3f", 1 / qSkew))
 	{
-		plugin.setParameterAutomated(item * 5 + 4, qRange->toNormalized(unnormalizedQ));
+		plugin.setParameterAutomated(item * 5 + 4, qRange.toNormalized(unnormalizedQ));
 	}
 	int type = (int)bundle.getParameterUnnormalized(item * 5 + 5);
 	if (ImGui::Combo("type", &type, "High pass\0Low shelf\0Bell\0Notch\0High shelf\0Low pass\0\0")) {
@@ -87,7 +87,7 @@ void EqualizerPluginEditor::imguiFrame()
 		double gk = g * k;
 		int type = (int)bundle.getParameterUnnormalized(filterIndex * 5 + 5);
 		for (unsigned int i = 0; i < nPoints; i++) {
-			double frequency = frequencyRange->fromNormalized((float)i / (nPoints - 1));
+			double frequency = frequencyRange.fromNormalized((float)i / (nPoints - 1));
 			// TODO move angular frequency conversion to a common place
 			double omega = frequency * constants::pi / nyquist;
 			//double omega = ((double)i / (nPoints - 1)) * constants::pi;

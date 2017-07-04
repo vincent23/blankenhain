@@ -68,19 +68,18 @@ static void renderParam(PluginBase& plugin, unsigned int paramIndex, float param
 	}
 	else
 	{
-		const NormalizedRange* range = nullptr;
 		float min = 0.f;
 		float max = 0.f;
 		float skew = 0.f;
 
-		range = param;
-		min = range->getStart();
-		max = range->getEnd();
-		skew = range->getSkew();
+		const NormalizedRange& range = param->getRange();
+		min = range.getStart();
+		max = range.getEnd();
+		skew = range.getSkew();
 		float* unnormalized = new float;
 		*unnormalized = param->getValueUnnormalized();
 		if (ImGui::DragFloat(param->getName().c_str(), unnormalized, paramDragSpeed, min * 1.002f, max * 0.998f, "%.3f", 1.f / skew))
-			plugin.setParameterAutomated(paramIndex, range->toNormalized(*unnormalized));
+			plugin.setParameterAutomated(paramIndex, range.toNormalized(*unnormalized));
 		delete unnormalized;
 		ImGui::SameLine();
 		if (ImGui::Button("Reset"))

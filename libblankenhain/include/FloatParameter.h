@@ -26,6 +26,7 @@ public:
 	float getDefaultValueNormalized() const;
 	BhString getName(unsigned int maximumStringLength = 0u) const;
 	BhString getUnit() const;
+	const NormalizedRange& getRange() const;
 
 	// This may be overriden by children to prevent interpolation
 	virtual void setToDefaultValue();

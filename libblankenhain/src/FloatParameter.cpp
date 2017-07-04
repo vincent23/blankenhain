@@ -64,6 +64,11 @@ BhString FloatParameter::getUnit() const
 #endif
 }
 
+const NormalizedRange& FloatParameter::getRange() const
+{
+	return range;
+}
+
 void FloatParameter::setTargetValueNormalized(float normalizedValue)
 {
 	constexpr unsigned int interpolationLength = constants::parameterInterpolationLength;
