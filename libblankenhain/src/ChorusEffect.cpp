@@ -5,22 +5,25 @@
 #include "AuxFunc.h"
 #include <algorithm>
 
-ChorusEffect::ChorusEffect() : EffectBase(11), delayLine(size_t(aux::millisecToSamples(2502u)))
+ChorusEffect::ChorusEffect()
+	: EffectBase(11)
+	//, delayLine(size_t(aux::millisecToSamples(2502u)))
+	, delayLine(1 << 17)
 {
 	wasPaniced = false;
-	ParameterBundle* params = getPointerToParameterBundle();
-	params->getParameter(0) = new FloatParameter(0.f, NormalizedRange(0.f, 1.f), "lfoAmount", "");
-	(params->getParameter(1)) = new FloatParameter(0.0001f, NormalizedRange(0.0001f, 1.f, 0.2f), "width", "%");
-	(params->getParameter(2)) = new FloatParameter(15.f, NormalizedRange(1.f, 50.f, 0.2f), "delay", "ms");
-	(params->getParameter(3)) = new FloatParameter(0.0f, NormalizedRange(0.0f, 1.f), "feedback", "%");
-	(params->getParameter(4)) = new FloatParameter(0.f, NormalizedRange(), "drywet", "");
-	(params->getParameter(5)) = new BoolParameter(false, "PANIC!");
+	ParameterBundle& params = getParameterBundle();
+	params.initParameter(0, new FloatParameter(0.f, NormalizedRange(0.f, 1.f), "lfoAmount", ""));
+	params.initParameter(1, new FloatParameter(0.0001f, NormalizedRange(0.0001f, 1.f, 0.2f), "width", "%"));
+	params.initParameter(2, new FloatParameter(15.f, NormalizedRange(1.f, 50.f, 0.2f), "delay", "ms"));
+	params.initParameter(3, new FloatParameter(0.0f, NormalizedRange(0.0f, 1.f), "feedback", "%"));
+	params.initParameter(4, new FloatParameter(0.f, NormalizedRange(), "drywet", ""));
+	params.initParameter(5, new BoolParameter(false, "PANIC!"));
 	BhString names[5] = { "sine", "saw", "square", "triangle", "noise" };
-	params->getParameter(6) = new OptionParameter(4u, names, "lfoWaveform", "");
-	params->getParameter(7) = new FloatParameter(0.f, NormalizedRange(0.f, 2.f * constants::pi), "lfoPhase", "");
-	(params->getParameter(8)) = new FloatParameter(0.f, NormalizedRange(-50.f, 50.f), "pan", "");
-	params->getParameter(9) = new FloatParameter(5.f, NormalizedRange(0.01f, 100.f, 0.3f), "lfoSpeed", "ms");
-	params->getParameter(10) = new BoolParameter(false, "pseudoStereo");
+	params.initParameter(6, new OptionParameter(4u, names, "lfoWaveform", ""));
+	params.initParameter(7, new FloatParameter(0.f, NormalizedRange(0.f, 2.f * constants::pi), "lfoPhase", ""));
+	params.initParameter(8, new FloatParameter(0.f, NormalizedRange(-50.f, 50.f), "pan", ""));
+	params.initParameter(9, new FloatParameter(5.f, NormalizedRange(0.01f, 100.f, 0.3f), "lfoSpeed", "ms"));
+	params.initParameter(10, new BoolParameter(false, "pseudoStereo"));
 }
 
 void ChorusEffect::process(Sample* buffer, size_t numberOfSamples, size_t currentTime)
@@ -41,7 +44,8 @@ void ChorusEffect::process(Sample* buffer, size_t numberOfSamples, size_t curren
 	float lfoSpeed = interpolatedParameters.get(9);
 	this->lfo.setFrequency(lfoSpeed);
 
-	delayLine.setSize(static_cast<size_t>(aux::millisecToSamples(delay)));
+	//delayLine.setSize(static_cast<size_t>(aux::millisecToSamples(delay)));
+	unsigned int delayLength = static_cast<unsigned int>(aux::millisecToSamples(delay));
 
 	// Panic
 	if (panicButton && !wasPaniced)
@@ -55,7 +59,7 @@ void ChorusEffect::process(Sample* buffer, size_t numberOfSamples, size_t curren
 	}
 
 
-
+	/*
 	for (unsigned int i = 0; i < numberOfSamples; i++)
 	{
 		float lfoValue = (this->lfo.getNextSample(lfoPhase) * .5f + 5.f) * lfoAmount;
@@ -81,5 +85,5 @@ void ChorusEffect::process(Sample* buffer, size_t numberOfSamples, size_t curren
 		//Ghetto Stereo by PhaseShift, maybe TODO use seperate DelayLines for L & R
 		buffer[i] = aux::mixDryWet(inval, outval, drywet);
 	}
-
+	*/
 }

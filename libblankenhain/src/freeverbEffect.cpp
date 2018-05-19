@@ -1,72 +1,57 @@
 #pragma once
 #include "freeverbEffect.h"
 
-// Here, enter the number of GUI parameters you want to have
-const unsigned int NUMBER_OF_PARAMETERS = 6u;
-
-// Change the name and define parameters in constructor
-freeverbEffect::freeverbEffect() : EffectBase(NUMBER_OF_PARAMETERS)
+// TODO improve initialization (maybe some template magic?)
+freeverbEffect::freeverbEffect() : EffectBase(6u)
+, combLP_{ getCombLP(),getCombLP(),getCombLP(),getCombLP(),getCombLP(),getCombLP(),getCombLP(),getCombLP() }
+, combDelay_l{ getCombDelay(),getCombDelay(),getCombDelay(),getCombDelay(),getCombDelay(),getCombDelay(),getCombDelay(),getCombDelay() }
+, combDelay_r{ getCombDelay(),getCombDelay(),getCombDelay(),getCombDelay(),getCombDelay(),getCombDelay(),getCombDelay(),getCombDelay() }
+, allPassDelay_l{ getAllPassDelay(),getAllPassDelay(),getAllPassDelay(),getAllPassDelay() }
+, allPassDelay_r{ getAllPassDelay(),getAllPassDelay(),getAllPassDelay(),getAllPassDelay() }
 {
-	ParameterBundle* params = getPointerToParameterBundle();
-
+	ParameterBundle& params = getParameterBundle();
 
 	// Insert your stuff here
-	(params->getParameter(0)) = new FloatParameter(0.75f, NormalizedRange(), "roomSize", "");
-	(params->getParameter(1)) = new FloatParameter(0.25f, NormalizedRange(), "damping", "");
-	(params->getParameter(2)) = new FloatParameter(0.f, NormalizedRange(), "width", "");
-	(params->getParameter(3)) = new FloatParameter(0.f, NormalizedRange(true), "mode", "bool");
-	(params->getParameter(4)) = new FloatParameter(-6.f, NormalizedRange(-120.f, 0.f, 5.f), "dry", "dB");
-	(params->getParameter(5)) = new FloatParameter(-60.f, NormalizedRange(-120.f, 0.f, 5.f), "wet", "dB");
-
-	///////////////////////
-	// More stuff //
-
-	for (size_t i = 0u; static_cast<int>(i) < this->nCombs; i++)
-	{
-		combDelay_[i] = new CircularBuffer<Sample>(cDelayLengths[i]);
-		combDelayRight[i] = new CircularBuffer<Sample>(stereoSpread);
-		combLP_[i] = new OnePoleFilter<Sample>(Sample(0.5));
-	}
-	for (size_t i = 0u; i < static_cast<size_t>(this->nAllpasses); i++)
-	{
-		allPassDelay_[i] = new CircularBuffer<Sample>(aDelayLengths[i]);
-		allPassDelayRight[i] = new CircularBuffer<Sample>(stereoSpread);
-	}
-
+	params.initParameter(0, new FloatParameter(0.75f, NormalizedRange(), "roomSize", ""));
+	params.initParameter(1, new FloatParameter(0.25f, NormalizedRange(), "damping", ""));
+	params.initParameter(2, new FloatParameter(0.f, NormalizedRange(), "width", ""));
+	params.initParameter(3, new FloatParameter(0.f, NormalizedRange(true), "mode", "bool"));
+	params.initParameter(4, new FloatParameter(-6.f, NormalizedRange(-120.f, 0.f, 5.f), "dry", "dB"));
+	params.initParameter(5, new FloatParameter(-60.f, NormalizedRange(-120.f, 0.f, 5.f), "wet", "dB"));
 }
 
-freeverbEffect::~freeverbEffect()
+OnePoleFilter<Sample> freeverbEffect::getCombLP()
 {
-	for (unsigned int i = 0u; i < this->nCombs; i++)
-	{
-		delete combDelay_[i];
-		delete combLP_[i];
-		delete combDelayRight[i];
-	}
-	for (unsigned int i = 0u; i < this->nAllpasses; i++)
-	{
-		delete allPassDelay_[i];
-		delete allPassDelayRight[i];
-	}
+	return OnePoleFilter<Sample>(Sample(0.5));
+}
+
+CircularBuffer<float> freeverbEffect::getCombDelay()
+{
+	return CircularBuffer<float>(2048u);
+}
+
+CircularBuffer<float> freeverbEffect::getAllPassDelay()
+{
+	return CircularBuffer<float>(1024u);
 }
 
 void freeverbEffect::resetEffect()
 {
 	for (size_t i = 0u; static_cast<int>(i) < this->nCombs; i++)
 	{
-		combDelay_[i]->reset();
-		combDelayRight[i]->reset();
+		combDelay_l[i].reset();
+		combDelay_r[i].reset();
 	}
 	for (size_t i = 0u; i < static_cast<size_t>(this->nAllpasses); i++)
 	{
-		allPassDelay_[i]->reset();
-		allPassDelayRight[i]->reset();
+		allPassDelay_l[i].reset();
+		allPassDelay_r[i].reset();
 	}
 }
 
 /*
  * The algorithm is taken and modified from STK::freeverb.
- * 
+ *
  * The Synthesis ToolKit in C++ (STK) is a set of open source audio
  * signal processing and algorithmic synthesis classes written in the
  * C++ programming language. STK was designed to facilitate rapid
@@ -77,12 +62,12 @@ void freeverbEffect::resetEffect()
  * and Windows computer platforms. Generic, non-realtime support has
  * been tested under NeXTStep, Sun, and other platforms and should
  * work with any standard C++ compiler.
- * 
+ *
  * STK WWW site: http://ccrma.stanford.edu/software/stk/
- * 
+ *
  * The Synthesis ToolKit in C++ (STK)
  * Copyright (c) 1995--2016 Perry R. Cook and Gary P. Scavone
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining
  * a copy of this software and associated documentation files (the
  * "Software"), to deal in the Software without restriction, including
@@ -90,15 +75,15 @@ void freeverbEffect::resetEffect()
  * distribute, sublicense, and/or sell copies of the Software, and to
  * permit persons to whom the Software is furnished to do so, subject to
  * the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be
  * included in all copies or substantial portions of the Software.
- * 
+ *
  * Any person wishing to distribute modifications to the Software is
  * asked to send the modifications to the original developer so that they
  * can be incorporated into the canonical version.  This is, however, not
  * a binding provision of this license.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
  * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -106,7 +91,7 @@ void freeverbEffect::resetEffect()
  * CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
  * TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- * 
+ *
  */
 void freeverbEffect::process(Sample* buffer, size_t numberOfSamples, size_t currentTime)
 {
@@ -125,7 +110,7 @@ void freeverbEffect::process(Sample* buffer, size_t numberOfSamples, size_t curr
 	// set low pass filter for delay output
 	for (unsigned int i = 0; i < nCombs; i++)
 	{
-		combLP_[i]->setParams(Sample(1.0 - damping), Sample(-1.0 * damping));
+		combLP_[i].setParams(Sample(1.0 - damping), Sample(-1.0 * damping));
 	}
 
 	float widthConst = width;
@@ -136,43 +121,55 @@ void freeverbEffect::process(Sample* buffer, size_t numberOfSamples, size_t curr
 	InterpolatedValue<float> wetDb(wetBefore, wetAfter, numberOfSamples);
 	InterpolatedValue<float> dryDb(dryBefore, dryAfter, numberOfSamples);
 
-	for (size_t i = 0; i < numberOfSamples; i++)
+	Sample input[constants::blockSize];
+	for (unsigned int i = 0; i < numberOfSamples; i++) {
+		input[i] = buffer[i];
+		buffer[i] = Sample(0);
+	}
+
+	// Parallel LBCF filters
+	alignas(16) double lr[2];
+	for (unsigned int j = 0; j < nCombs; j++)
 	{
-		Sample fInput = buffer[i];
-		Sample out(0.0);
-
-		// Parallel LBCF filters
-		for (unsigned int j = 0; j < nCombs; j++)
+		for (size_t i = 0; i < numberOfSamples; i++)
 		{
 			// Left channel
-			Sample delayed = combDelay_[j]->get();
-			Sample delayedRight = combDelayRight[j]->get();
-			delayed.replaceRightChannel(delayedRight);
-			Sample yn = fInput + (currentRoomSize * combLP_[j]->tick(delayed));
-			Sample intermediate = combDelay_[j]->pushpop(yn);
-			combDelayRight[j]->push(intermediate);
-			out += yn;
+			float delayedLeft = combDelay_l[j].get(cDelayLengths[j]);
+			float delayedRight = combDelay_r[j].get(cDelayLengths[j] + 23);
+			Sample delayed(delayedLeft, delayedRight);
+			Sample yn = input[i] + (currentRoomSize * combLP_[j].tick(delayed));
+			yn.store_aligned(lr);
+			combDelay_l[j].push(static_cast<float>(lr[0]));
+			combDelay_r[j].push(static_cast<float>(lr[1]));
+			buffer[i] += yn;
 		}
+	}
 
-		// Series allpass filters
-		for (unsigned int j = 0; j < nAllpasses; j++)
+	// Series allpass filters
+	for (unsigned int j = 0; j < nAllpasses; j++)
+	{
+		for (size_t i = 0; i < numberOfSamples; i++)
 		{
 			// Left channel
-			Sample vn_m = allPassDelay_[j]->get();
-			Sample vn_m_right = allPassDelayRight[j]->get();
-			vn_m.replaceRightChannel(vn_m_right);
-			Sample vn = out + g_ * vn_m;
-			Sample intermediate = allPassDelay_[j]->pushpop(vn);
-			allPassDelayRight[j]->push(intermediate);
+			float vn_m_left = allPassDelay_l[j].get(aDelayLengths[j]);
+			float vn_m_right = allPassDelay_r[j].get(aDelayLengths[j] + 23);
+			Sample vn_m(vn_m_left, vn_m_right);
+			Sample vn = buffer[i] + g_ * vn_m;
+			vn.store_aligned(lr);
+			allPassDelay_l[j].push(static_cast<float>(lr[0]));
+			allPassDelay_r[j].push(static_cast<float>(lr[1]));
 
 			// calculate output
-			out = vn_m - out;
+			buffer[i] = vn_m - buffer[i];
 		}
+	}
 
+	for (size_t i = 0; i < numberOfSamples; i++)
+	{
 		// Mix output
 		float wetIn = wetDb.get();
 		Sample wet1(wetIn * (widthConst * .5f + .5f));
 		Sample wet2(wetIn * (.5f - widthConst * .5f));
-		buffer[i] = wet1 * out + wet2 * out.flippedChannels() + buffer[i] * Sample(dryDb.get());
+		buffer[i] = wet1 * buffer[i] + wet2 * buffer[i].flippedChannels() + input[i] * Sample(dryDb.get());
 	}
 }

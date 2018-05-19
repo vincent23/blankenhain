@@ -13,19 +13,19 @@ Sample* SendDevice::process(SongInfo& songInfo, const Sample* input, unsigned in
 {
 	for (unsigned int returnTrackIndex = 0; returnTrackIndex < songInfo.numberOfReturnTracks; returnTrackIndex++)
 	{
-		Sample* sendBuffer = songInfo.sendBuffers + constants::parameterInterpolationLength * returnTrackIndex;
+		Sample* sendBuffer = songInfo.sendBuffers + constants::blockSize * returnTrackIndex;
 		float send = parameterValues[returnTrackIndex].getCurrentValueAndAdvance(globalSamplePosition);
 		float sendDb = sendToDb(send);
 		float sendValueBefore = aux::decibelToLinear(sendDb);
 		float sendValueAfter = aux::decibelToLinear(sendToDb(parameterValues[returnTrackIndex].getCurrentValueAndAdvance(globalSamplePosition + constants::blockSize)));
-		InterpolatedValue<float> sendLinear(sendValueBefore, sendValueAfter, constants::parameterInterpolationLength);
-		for (unsigned int samplePosition = 0; samplePosition < constants::parameterInterpolationLength; samplePosition++)
+		InterpolatedValue<float> sendLinear(sendValueBefore, sendValueAfter, constants::blockSize);
+		for (unsigned int samplePosition = 0; samplePosition < constants::blockSize; samplePosition++)
 		{
 			sendBuffer[samplePosition] += Sample(sendLinear.get()) * input[samplePosition];
 			sendLinear.next();
 		}
 	}
-	for (unsigned int sampleIndex = 0; sampleIndex < constants::parameterInterpolationLength; sampleIndex++)
+	for (unsigned int sampleIndex = 0; sampleIndex < constants::blockSize; sampleIndex++)
 	{
 		outputBuffer[sampleIndex] = input[sampleIndex];
 	}

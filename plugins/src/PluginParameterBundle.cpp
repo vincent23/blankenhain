@@ -2,13 +2,13 @@
 
 #include "ParameterBundle.h"
 
-PluginParameterBundle::PluginParameterBundle(ParameterBundle* params)
-	: currentParametersFromHost(std::vector<std::atomic<float>>(params->getNumberOfParameters()))
+PluginParameterBundle::PluginParameterBundle(ParameterBundle& params)
+	: currentParametersFromHost(std::vector<std::atomic<float>>(params.getNumberOfParameters()))
 	, parameterBundle(params)
 {
 	for (unsigned int i = 0u; i < currentParametersFromHost.size(); i++)
 	{
-		currentParametersFromHost[i] = params->getParameter(i)->getDefaultValueNormalized();
+		currentParametersFromHost[i] = params.getParameter(i)->getDefaultValueNormalized();
 	}
 };
 
@@ -22,7 +22,7 @@ void PluginParameterBundle::updateParameters()
 {
 	for (unsigned int i = 0; i < currentParametersFromHost.size(); i++)
 	{
-		(parameterBundle)->getParameter(i)->setTargetValueNormalized(currentParametersFromHost[i]);
+		parameterBundle.getParameter(i)->setTargetValueNormalized(currentParametersFromHost[i]);
 	}
 };
 
@@ -34,7 +34,7 @@ unsigned int PluginParameterBundle::getNumberOfParameters() const
 std::string PluginParameterBundle::getParameterName(unsigned int const& in) const
 {
 	if (in > currentParametersFromHost.size()) return "error argument too big";
-	else return (parameterBundle)->getParameter(in)->getName();
+	else return parameterBundle.getParameter(in)->getName();
 };
 
 float PluginParameterBundle::getParameterNormalized(unsigned int const& index) const
@@ -44,19 +44,19 @@ float PluginParameterBundle::getParameterNormalized(unsigned int const& index) c
 
 float PluginParameterBundle::getParameterUnnormalized(unsigned int const& index) const
 {
-	return this->parameterBundle->getParameter(index)->fromNormalized(this->currentParametersFromHost[index]);
+	return this->parameterBundle.getParameter(index)->getRange().fromNormalized(this->currentParametersFromHost[index]);
 }
 
 const FloatParameter* PluginParameterBundle::getParameter(unsigned int const& index) const
 {
 	if (index > this->currentParametersFromHost.size()) throw "argument to big";
-	return this->parameterBundle->getParameter(index);
+	return this->parameterBundle.getParameter(index);
 }
 
 
 std::string PluginParameterBundle::getParameterUnit(unsigned int const& index) const
 {
-	return parameterBundle->getParameter(index)->getUnit();
+	return parameterBundle.getParameter(index)->getUnit();
 }
 
 //const ParameterBundle& PluginParameterBundle::getParameterBundle() const

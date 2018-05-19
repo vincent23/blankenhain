@@ -6,19 +6,19 @@
 
 VolumeEffect::VolumeEffect() : EffectBase(10u, true)
 {
-	ParameterBundle* params = getPointerToParameterBundle();
-	(params->getParameter(0)) = new FloatParameter(0.f, NormalizedRange(-120.f, 12.f, 5.f), "volumeL", "dB");
-	(params->getParameter(1)) = new FloatParameter(0.f, NormalizedRange(-120.f, 12.f, 5.f), "volumeR", "dB");
-	(params->getParameter(2)) = new FloatParameter(1.f, NormalizedRange(), "coupling", "bool");
+	ParameterBundle& params = getParameterBundle();
+	params.initParameter(0, new FloatParameter(0.f, NormalizedRange(-120.f, 12.f, 5.f), "volumeL", "dB"));
+	params.initParameter(1, new FloatParameter(0.f, NormalizedRange(-120.f, 12.f, 5.f), "volumeR", "dB"));
+	params.initParameter(2, new FloatParameter(1.f, NormalizedRange(), "coupling", "bool"));
 	BhString names[4] = { "sine", "saw", "square", "triangle" };
-	params->getParameter(3) = new FloatParameter(0.f, NormalizedRange(-1.f, 1.f), "lfoAmount", "");
-	params->getParameter(4) = new FloatParameter(0.0055f, NormalizedRange(0.005f, 20.f, 0.325f), "lfoSpeed", "");
+	params.initParameter(3, new FloatParameter(0.f, NormalizedRange(-1.f, 1.f), "lfoAmount", ""));
+	params.initParameter(4, new FloatParameter(0.0055f, NormalizedRange(0.005f, 20.f, 0.325f), "lfoSpeed", ""));
 	float multiplierValues[7] = { 0.0625, 0.125, 0.25, 0.5, 1., 2., 4. };
-	params->getParameter(5) = new DiscreteParameter(7u, "lfoBeatMultiplier", "", multiplierValues);
-	params->getParameter(6) = new OptionParameter(4u, names, "lfoWaveform", "");
-	params->getParameter(7) = new BoolParameter(false, "lfoTemposync");
-	params->getParameter(8) = new FloatParameter(0.f, NormalizedRange(0.f, 2.f * 3.14159265359f), "lfoPhase", "");
-	params->getParameter(9) = new FloatParameter(0.f, NormalizedRange(-1.f, 1.f), "lfoBaseline", "");
+	params.initParameter(5, new DiscreteParameter(7u, "lfoBeatMultiplier", "", multiplierValues));
+	params.initParameter(6, new OptionParameter(4u, names, "lfoWaveform", ""));
+	params.initParameter(7, new BoolParameter(false, "lfoTemposync"));
+	params.initParameter(8, new FloatParameter(0.f, NormalizedRange(0.f, 2.f * 3.14159265359f), "lfoPhase", ""));
+	params.initParameter(9, new FloatParameter(0.f, NormalizedRange(-1.f, 1.f), "lfoBaseline", ""));
 }
 
 void VolumeEffect::process(Sample* buffer, size_t numberOfSamples, size_t currentTime)

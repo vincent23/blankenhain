@@ -25,7 +25,7 @@
 class PluginParameterBundle
 {
 public:
-	PluginParameterBundle(ParameterBundle* params);
+	PluginParameterBundle(ParameterBundle& params);
 
 	void setPluginParameter(unsigned int const& in, float const& normalizedValue);
 	/**
@@ -56,5 +56,5 @@ public:
 private:
 	std::vector<std::atomic<float>> currentParametersFromHost;
 
-	ParameterBundle* parameterBundle;
+	ParameterBundle& parameterBundle;
 };

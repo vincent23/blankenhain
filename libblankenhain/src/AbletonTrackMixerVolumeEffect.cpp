@@ -6,9 +6,9 @@
 
 AbletonTrackMixerVolumeEffect::AbletonTrackMixerVolumeEffect() : EffectBase(1u, false)
 {
-	ParameterBundle* params = getPointerToParameterBundle();
+	ParameterBundle& params = getParameterBundle();
 	// Note, volume in xml file is between 0 and 2 appareantly
-	(params->getParameter(0)) = new FloatParameter(0.f, NormalizedRange(0.f,2.f), "volumeFromXMLFile", "linear");
+	params.initParameter(0, new FloatParameter(0.f, NormalizedRange(0.f,2.f), "volumeFromXMLFile", "linear"));
 }
 
 void AbletonTrackMixerVolumeEffect::process(Sample* buffer, size_t numberOfSamples, size_t currentTime)

@@ -2,6 +2,7 @@
 
 #include "Constants.h"
 #include "BhMath.h"
+#include "AuxFunc.h"
 
 template Filter<Sample>;
 template Filter<float>;
@@ -45,7 +46,8 @@ void Filter<T>::setNotch(double frequency, double Q)
 template <typename T>
 void Filter<T>::setBell(double frequency, double Q, double gainInDb)
 {
-	double A = static_cast<double>(BhMath::pow(10, static_cast<float>(gainInDb / 40.)));
+	//double A = static_cast<double>(BhMath::pow(10, static_cast<float>(gainInDb / 40.)));
+	double A = aux::decibelToLinear(gainInDb * 0.5f);
 	recomputeCoefficients(frequency, Q * A, 1);
 	m0 = T(1);
 	m1 = T(k * T(A * A - 1));
@@ -55,7 +57,8 @@ void Filter<T>::setBell(double frequency, double Q, double gainInDb)
 template <typename T>
 void Filter<T>::setLowShelf(double frequency, double Q, double gainInDb)
 {
-	double A = static_cast<double>(BhMath::pow(10.f, static_cast<float>(gainInDb) / 40.f));
+	// double A = static_cast<double>(BhMath::pow(10.f, static_cast<float>(gainInDb) / 40.f));
+	double A = aux::decibelToLinear(gainInDb * 0.5f);
 	recomputeCoefficients(frequency, Q, 1. / BhMath::sqrt(static_cast<float>(A)));
 	m0 = T(1);
 	m1 = k * T(A - 1);
@@ -65,7 +68,8 @@ void Filter<T>::setLowShelf(double frequency, double Q, double gainInDb)
 template <typename T>
 void Filter<T>::setHighShelf(double frequency, double Q, double gainInDb)
 {
-	double A = static_cast<double>(BhMath::pow(10.f, static_cast<float>(gainInDb) / 40.f));
+	//double A = static_cast<double>(BhMath::pow(10.f, static_cast<float>(gainInDb) / 40.f));
+	double A = aux::decibelToLinear(gainInDb * 0.5f);
 	recomputeCoefficients(frequency, Q, BhMath::sqrt(static_cast<float>(A)));
 	m0 = T(A * A);
 	m1 = k * T((1 - A) * A);
@@ -88,17 +92,6 @@ void Filter<T>::setAll(double frequency, double Q)
 	m0 = T(1);
 	m1 = T(-2) * k;
 	m2 = T(0);
-}
-
-template <typename T>
-T _vectorcall Filter<T>::tick(T v0)
-{
-	v3 = v0 - ic2eq;
-	v1 = a1 * ic1eq + a2 * v3;
-	v2 = ic2eq + a2 * ic1eq + a3 * v3;
-	ic1eq = v1 * T(2.) - ic1eq;
-	ic2eq = v2 * T(2.) - ic2eq;
-	return m0 * v0 + m1 * v1 + m2 * v2;
 }
 
 template <typename T>

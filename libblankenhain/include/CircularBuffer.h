@@ -4,32 +4,37 @@
 template <typename T>
 class CircularBuffer
 {
-protected:
-	T* buffer;
-	size_t numberOfSamples;
-	size_t maxNumberOfSamples;
-	size_t oldNumberOfSamples;
-	size_t currentPosition;
 public:
-	CircularBuffer(size_t numberOfSamples);
-	~CircularBuffer(void);
-	virtual void _vectorcall push(T in);
-	virtual T _vectorcall pushpop(T in);
-	size_t getSize() const;
-	virtual void setSize(size_t size_);
-	const T& _vectorcall get();
-	const T& _vectorcall get(unsigned int iterator);
-	void reset();
-	size_t getCurrentIteratorInDelayline() const;
-};
+	// length must be power of two
+	CircularBuffer(unsigned int length);
+	~CircularBuffer();
 
-template <typename T>
-class LinearInterpolatedCircularBuffer
-	: public CircularBuffer<T>
-{
-public:
-	LinearInterpolatedCircularBuffer(size_t numberOfSamples) : CircularBuffer(numberOfSamples) {};
-	void setSize(size_t size_) override final;
+	void push(const T& in) {
+		unsigned int newPosition = (currentPosition + 1) & (length - 1);
+		buffer[newPosition] = in;
+		currentPosition = newPosition;
+	}
+
+	T get(unsigned int delaySamples) {
+		// unsigned overflow will wrap around
+		unsigned int tapPosition = (currentPosition - delaySamples) & (length - 1);
+		return buffer[tapPosition];
+	}
+
+	T getInterpolated(float delaySamples) {
+#ifdef _LIBBLANKENHAIN_ENABLE_WARNINGS
+		if (delaySamples < 0.f) {
+			throw "negative delay value";
+		}
+#endif
+		unsigned int delaySamplesInteger = static_cast<unsigned int>(delaySamples);
+		float fractionalPart = delaySamples - delaySamplesInteger; // probably not the most accurate way of doing this
+		return T(1.f - fractionalPart) * get(delaySamples) + T(fractionalPart) * get(delaySamplesInteger + 1);
+	}
+	void reset();
+
 private:
-	T _vectorcall interpolate(T valueBegin, T valueEnd, float ratio);
+	T* const buffer;
+	const unsigned int length;
+	unsigned int currentPosition;
 };

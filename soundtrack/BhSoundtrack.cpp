@@ -68,5 +68,5 @@ void blankenhain::render(float* buffer)
 
 unsigned int blankenhain::lengthInSamples()
 {
-	return ((LENGTH_IN_SAMPLES - 1) / constants::parameterInterpolationLength + 1) * constants::parameterInterpolationLength;
+	return ((LENGTH_IN_SAMPLES - 1) / constants::blockSize + 1) * constants::blockSize;
 }

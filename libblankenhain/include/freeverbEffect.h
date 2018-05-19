@@ -14,7 +14,6 @@ class freeverbEffect : public EffectBase
 public:
 	// Change the name and define parameters in constructor
 	freeverbEffect();
-	~freeverbEffect(void);
 	void process(Sample* buffer, size_t numberOfSamples, size_t currentTime) override;
 	void resetEffect();
 
@@ -25,8 +24,8 @@ protected:
 	const unsigned int nAllpasses = 4;
 	const unsigned int stereoSpread = 23;
 	// Delay line lengths for 44100Hz sampling rate.
-	unsigned int cDelayLengths[8] = { 1617, 1557, 1491, 1422, 1356, 1277, 1188, 1116 };
-	unsigned int aDelayLengths[4] = { 225, 556, 441, 341 };
+	const unsigned int cDelayLengths[8] = { 1617, 1557, 1491, 1422, 1356, 1277, 1188, 1116 };
+	const unsigned int aDelayLengths[4] = { 225, 556, 441, 341 };
 
 	// Set static delay line lengths
 	const float fixedGain = 0.015f;
@@ -37,13 +36,17 @@ protected:
 	const Sample g_ = Sample(0.5f); // allpass coefficient, immutable in FreeVerb
 
 	// LBFC: Lowpass Feedback Comb Filters
-	CircularBuffer<Sample>* combDelay_[8];
-	CircularBuffer<Sample>* combDelayRight[8];
+	CircularBuffer<float> combDelay_l[8];
+	CircularBuffer<float> combDelay_r[8];
 
-	OnePoleFilter<Sample>* combLP_[8];
+	OnePoleFilter<Sample> combLP_[8];
 
 	// AP: Allpass Filters
-	CircularBuffer<Sample>* allPassDelay_[4];
-	CircularBuffer<Sample>* allPassDelayRight[4];
+	CircularBuffer<float> allPassDelay_l[4];
+	CircularBuffer<float> allPassDelay_r[4];
 
+private:
+	static OnePoleFilter<Sample> getCombLP();
+	static CircularBuffer<float> getCombDelay();
+	static CircularBuffer<float> getAllPassDelay();
 };

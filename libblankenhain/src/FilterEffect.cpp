@@ -8,7 +8,7 @@ const unsigned int NUMBER_OF_PARAMETERS = 11u;
 
 FilterEffect::FilterEffect() : EffectBase(NUMBER_OF_PARAMETERS, true)
 {
-	ParameterBundle* params = getPointerToParameterBundle();
+	ParameterBundle& params = getParameterBundle();
 	// Insert your stuff here
 	(params->getParameter(0)) = new FloatParameter(0.7f, NormalizedRange::fromMidpoint(0.1f, 0.7f, 10.f), "Q", "");
 	(params->getParameter(1)) = new FloatParameter(120.f, NormalizedRange::fromMidpoint(20.f, 850.f, 22000.f), "frequency", "Hz");

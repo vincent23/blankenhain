@@ -2,10 +2,9 @@
 
 #include "Constants.h"
 
-FloatParameter::FloatParameter(float defaultValueUnnormalized, const NormalizedRange& range, BhString name_, BhString unit_)
-	: NormalizedRange(range)
-	, defaultValueNormalized(range.toNormalized(defaultValueUnnormalized))
-	, valueNormalized(range.toNormalized(defaultValueUnnormalized))
+FloatParameter::FloatParameter(float defaultValueUnnormalized, const NormalizedRange& range_, BhString name_, BhString unit_)
+	: range(range_)
+	, defaultValueNormalized(range_.toNormalized(defaultValueUnnormalized))
 #ifndef _VC_NODEFAULTLIB
 	, name(name_)
 	, unit(unit_)
@@ -24,7 +23,7 @@ float FloatParameter::getDefaultValueNormalized() const {
 void FloatParameter::setToDefaultValue()
 {
 	unsigned int interpolationLength = constants::parameterInterpolationLength;
-	valueNormalized = BoundrySafeInterpolatedValue<float>(this->getValueNormalized(), this->defaultValueNormalized, interpolationLength);
+	*valueNormalized = BoundrySafeInterpolatedValue<float>(this->getValueNormalized(), this->defaultValueNormalized, interpolationLength);
 }
 
 const bool FloatParameter::canBeModulated() const
@@ -34,22 +33,12 @@ const bool FloatParameter::canBeModulated() const
 
 float FloatParameter::getValueNormalized() const
 {
-	return valueNormalized.get();
-}
-
-float FloatParameter::getValueNormalized()
-{
-	return valueNormalized.get();
+	return valueNormalized->get();
 }
 
 float FloatParameter::getValueUnnormalized() const
 {
-	return fromNormalized(getValueNormalized());
-}
-
-float FloatParameter::getValueUnnormalized()
-{
-	return fromNormalized(getValueNormalized());
+	return range.fromNormalized(getValueNormalized());
 }
 
 BhString FloatParameter::getName(unsigned int maximumStringLength) const
@@ -75,25 +64,30 @@ BhString FloatParameter::getUnit() const
 #endif
 }
 
+const NormalizedRange& FloatParameter::getRange() const
+{
+	return range;
+}
+
 void FloatParameter::setTargetValueNormalized(float normalizedValue)
 {
 	constexpr unsigned int interpolationLength = constants::parameterInterpolationLength;
-	valueNormalized = BoundrySafeInterpolatedValue<float>(this->getValueNormalized(), normalizedValue, interpolationLength);
+	*valueNormalized = BoundrySafeInterpolatedValue<float>(this->getValueNormalized(), normalizedValue, interpolationLength);
 }
 
 void FloatParameter::setTargetValueUnnormalized(float unnormalizedValue)
 {
-	setTargetValueNormalized(toNormalized(unnormalizedValue));
+	setTargetValueNormalized(range.toNormalized(unnormalizedValue));
 }
 
 void FloatParameter::setCurrentValueNormalized(float normalizedValue)
 {
-	valueNormalized = BoundrySafeInterpolatedValue<float>(normalizedValue);
+	*valueNormalized = BoundrySafeInterpolatedValue<float>(normalizedValue);
 }
 
 void FloatParameter::next(unsigned int numberOfSamples)
 {
-	valueNormalized.next(numberOfSamples);
+	valueNormalized->next(numberOfSamples);
 }
 
 BoolParameter::BoolParameter(bool defaultValue, BhString name)
@@ -101,7 +95,7 @@ BoolParameter::BoolParameter(bool defaultValue, BhString name)
 
 void BoolParameter::setTargetValueNormalized(float normalizedValue)
 {
-	valueNormalized = BoundrySafeInterpolatedValue<float>(normalizedValue);
+	*valueNormalized = BoundrySafeInterpolatedValue<float>(normalizedValue);
 }
 
 void BoolParameter::next(unsigned int numberOfSamples)
@@ -116,17 +110,17 @@ void BoolParameter::setTargetValueUnnormalized(float unnormalizedValue)
 
 bool BoolParameter::getValue() const
 {
-	return this->valueNormalized.get() == 1.f;
+	return this->valueNormalized->get() == 1.f;
 }
 
 void BoolParameter::flip()
 {
-	valueNormalized = BoundrySafeInterpolatedValue<float>((this->valueNormalized.get() == 1.f) ? 0.f : 1.f);
+	*valueNormalized = BoundrySafeInterpolatedValue<float>((this->valueNormalized->get() == 1.f) ? 0.f : 1.f);
 }
 
 void BoolParameter::setValue(bool value)
 {
-	valueNormalized = BoundrySafeInterpolatedValue<float>(value);
+	*valueNormalized = BoundrySafeInterpolatedValue<float>(value);
 }
 
 const bool BoolParameter::canBeModulated() const
@@ -165,7 +159,7 @@ DiscreteParameter::~DiscreteParameter()
 
 void DiscreteParameter::setToDefaultValue()
 {
-	valueNormalized = BoundrySafeInterpolatedValue<float>(this->getDefaultValueNormalized());
+	*valueNormalized = BoundrySafeInterpolatedValue<float>(this->getDefaultValueNormalized());
 }
 
 float DiscreteParameter::getValueUnnormalized() const
@@ -196,7 +190,7 @@ void DiscreteParameter::setTargetValueUnnormalized(float unnormalizedValue)
 
 void DiscreteParameter::setTargetValueNormalized(float normalizedValue)
 {
-	valueNormalized = BoundrySafeInterpolatedValue<float>(normalizedValue);
+	*valueNormalized = BoundrySafeInterpolatedValue<float>(normalizedValue);
 }
 
 void DiscreteParameter::next(unsigned int numberOfSamples)

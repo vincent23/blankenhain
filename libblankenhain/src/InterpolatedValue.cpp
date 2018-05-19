@@ -205,7 +205,7 @@ void InterpolatedValueBlock::next(unsigned int steps)
 {
 #ifdef _LIBBLANKENHAIN_ENABLE_WARNINGS
 	if (currentStep + steps > targetNumSteps
-		&& step != 0.f)
+		&& steps != 0)
 	{
 		throw "steps out of bounds";
 	}

@@ -4,18 +4,21 @@
 #include "InterpolatedValue.h"
 #include "AuxFunc.h"
 
-DelayEffect::DelayEffect() : EffectBase(7, true), delayLine(size_t(aux::millisecToSamples(2502u)))
+DelayEffect::DelayEffect()
+	: EffectBase(7, true)
+	//, delayLine(size_t(aux::millisecToSamples(2502u)))
+	, delayLine(1 << 17)
 {
 	wasPaniced = false;
-	ParameterBundle* params = getPointerToParameterBundle();
-	(params->getParameter(0)) = new FloatParameter(0.f, NormalizedRange(-50.f, 50.f), "pan", "");
-	(params->getParameter(1)) = new FloatParameter(100.f, NormalizedRange(1.f, 2500.f, 0.3f), "length", "ms");
-	(params->getParameter(2)) = new FloatParameter(0.f, NormalizedRange(0.f, 1.5f), "feedback", "");
-	(params->getParameter(3)) = new FloatParameter(1.f, NormalizedRange(), "drywet", "");
-	(params->getParameter(4)) = new BoolParameter(false, "PANIC!");
+	ParameterBundle& params = getParameterBundle();
+	params.initParameter(0, new FloatParameter(0.f, NormalizedRange(-50.f, 50.f), "pan", ""));
+	params.initParameter(1, new FloatParameter(100.f, NormalizedRange(1.f, 2500.f, 0.3f), "length", "ms"));
+	params.initParameter(2, new FloatParameter(0.f, NormalizedRange(0.f, 1.5f), "feedback", ""));
+	params.initParameter(3, new FloatParameter(1.f, NormalizedRange(), "drywet", ""));
+	params.initParameter(4, new BoolParameter(false, "PANIC!"));
 	float multiplierValues[7] = { 0.0625, 0.125, 0.25, 0.5, 1., 2., 4. };
-	params->getParameter(5) = new DiscreteParameter(7u, "beatMultiplier", "", multiplierValues);
-	params->getParameter(6) = new BoolParameter(false, "lfoTemposync");
+	params.initParameter(5, new DiscreteParameter(7u, "beatMultiplier", "", multiplierValues));
+	params.initParameter(6, new BoolParameter(false, "lfoTemposync"));
 
 }
 
@@ -28,8 +31,10 @@ void DelayEffect::process(Sample* buffer, size_t numberOfSamples, size_t current
 	const bool panicButton = interpolatedParameters.get(4) == 1.f;
 	const bool tempoSync = interpolatedParameters.get(6) == 1.f;
 
+	float delayLength;
 	if (!tempoSync)
-		delayLine.setSize(static_cast<size_t>(aux::millisecToSamples(length)));
+		//delayLine.setSize(static_cast<size_t>(aux::millisecToSamples(length)));
+		delayLength = aux::millisecToSamples(length);
 	else
 	{
 		float beatMultiplier = interpolatedParameters.get(5);
@@ -53,7 +58,8 @@ void DelayEffect::process(Sample* buffer, size_t numberOfSamples, size_t current
 		const float sixteenthNoteLength = quarterNoteLength / 4.f;
 		const float wholeBeatLength = sixteenthNoteLength * 16.f;
 
-		delayLine.setSize(static_cast<size_t>(aux::millisecToSamples(quarterNoteLength * 1000.f/*sec to ms*/)));
+		//delayLine.setSize(static_cast<size_t>(aux::millisecToSamples(quarterNoteLength * 1000.f/*sec to ms*/)));
+		delayLength = aux::millisecToSamples(quarterNoteLength * 1000.f /* sec to ms */);
 	}
 
 	if (panicButton && !wasPaniced)
@@ -69,9 +75,9 @@ void DelayEffect::process(Sample* buffer, size_t numberOfSamples, size_t current
 	for (size_t i = 0; i < numberOfSamples; i++)
 	{
 		Sample original = buffer[i];
-		Sample line = delayLine.get();
+		Sample line = delayLine.getInterpolated(delayLength);
 		aux::performPanning(line, pan * 0.02f); // Pan
 		buffer[i] = aux::mixDryWet(original, line, drywet);
-		delayLine.push(delayLine.get() * Sample(feedback) + original);
+		delayLine.push(line * Sample(feedback) + original);
 	}
 }

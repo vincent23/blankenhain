@@ -13,8 +13,17 @@ public:
 
 	const unsigned int getNumberOfParameters() const;
 
-	FloatParameter*& getParameter(unsigned int const& in) const;
+	FloatParameter* getParameter(unsigned int in) const;
+	void initParameter(unsigned int index, FloatParameter* parameter);
+
+	const NormalizedRange& getRange(unsigned int index) const;
+	BoundrySafeInterpolatedValue<float>& getNormalizedValue(unsigned int index);
+	bool canBeModulated(unsigned int index);
+
 private:
 	const unsigned int numberOfParameters;
 	FloatParameter** parameters;
+	NormalizedRange* ranges;
+	bool* canBeModulatedValues;
+	BoundrySafeInterpolatedValue<float>* normalizedValues;
 };

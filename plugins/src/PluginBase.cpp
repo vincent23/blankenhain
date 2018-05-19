@@ -41,7 +41,7 @@ PluginBase::PluginBase(audioMasterCallback const& audioMaster, EffectBase* effec
 	: AudioEffectX(audioMaster, 1, effect_->getNumberOfParameters())
 	, speakerArr(nullptr)
 	, effect(effect_)
-	, pluginParameters(effect_->getNumberOfParameters() == 0u ? new PluginParameterBundle(&ParameterBundle(0u)) : new PluginParameterBundle(effect_->getPointerToParameterBundle()))
+	, pluginParameters(new PluginParameterBundle(effect_->getParameterBundle()))
 	, timeSinceLastBPMandPositionUpdate(0u)
 {
 	canDoubleReplacing(false);
@@ -137,9 +137,9 @@ bool PluginBase::string2parameter(VstInt32 index, char* text)
 	if (vstIndex < this->getParameters().getNumberOfParameters())
 	{
 		float floatValueUnnormalized = static_cast<float>(atof(text));
-		if (pluginParameters->getParameter(vstIndex)->isInRange(floatValueUnnormalized))
+		if (pluginParameters->getParameter(vstIndex)->getRange().isInRange(floatValueUnnormalized))
 		{
-			float floatValueNormalized = pluginParameters->getParameter(vstIndex)->toNormalized(floatValueUnnormalized);
+			float floatValueNormalized = pluginParameters->getParameter(vstIndex)->getRange().toNormalized(floatValueUnnormalized);
 			this->pluginParameters->setPluginParameter(vstIndex, floatValueNormalized);
 
 			return true;
@@ -179,7 +179,6 @@ void PluginBase::processReplacing(float** inputs, float** outputs, VstInt32 samp
 {
 	updateTempoData();
 
-	// Assumes Buffer is bigger or equal to constants::parameterInterpolationLength
 	this->pluginParameters->updateParameters();
 	const unsigned int sampleFrames = static_cast<unsigned int>(sampleFrames_);
 	for (unsigned int blockOffset = 0; blockOffset < sampleFrames; blockOffset += constants::blockSize) 

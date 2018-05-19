@@ -10,7 +10,7 @@ Sample* ChainDevice::process(SongInfo& songInfo, const Sample* input, unsigned i
 		Device& device = *(devices[deviceIndex]);
 		previousOutput = device.process(songInfo, previousOutput, globalSamplePosition);
 	}
-	for (unsigned int samplePosition = 0; samplePosition < constants::parameterInterpolationLength; samplePosition++)
+	for (unsigned int samplePosition = 0; samplePosition < constants::blockSize; samplePosition++)
 	{
 		outputBuffer[samplePosition] = previousOutput[samplePosition];
 	}
