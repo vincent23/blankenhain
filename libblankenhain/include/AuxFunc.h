@@ -112,18 +112,18 @@ namespace aux
 
 	inline void performPanning(Sample& sample, float const& panningBetweenMinusOneAndOne)
 	{
-		/*
+		///*
 		const float panningBoost = 1.41253754462;//  aux::decibelToLinear(3.f);
 		const float left = aux::max(0.f, -panningBetweenMinusOneAndOne);
 		const float right = aux::max(0.f, panningBetweenMinusOneAndOne);
 		const float panLeft = ((1.f - left) + left * panningBoost) * (1.f - right);
 		const float panRight = ((1.f - right) + right * panningBoost) * (1.f - left);
 		sample *= Sample(panLeft, panRight);
-		*/
-		Sample panning(-panningBetweenMinusOneAndOne, panningBetweenMinusOneAndOne);
-		panning = _mm_max_pd(panning.v, _mm_set1_pd(0));
-		Sample one(1);
-		panning = (one + panning * Sample(0.41253754462)) * (one - panning.flippedChannels());
+		//*/
+		//Sample panning(-panningBetweenMinusOneAndOne, panningBetweenMinusOneAndOne);
+		//panning = _mm_max_pd(panning.v, _mm_set1_pd(0));
+		//Sample one(1);
+		//panning = (one + panning * Sample(0.41253754462)) * (one - panning.flippedChannels());
 	}
 
 	inline Sample __vectorcall mixDryWet(Sample dry, Sample wet, float drywet)
