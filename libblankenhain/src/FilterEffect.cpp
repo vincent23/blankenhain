@@ -10,22 +10,21 @@ FilterEffect::FilterEffect() : EffectBase(NUMBER_OF_PARAMETERS, true)
 {
 	ParameterBundle& params = getParameterBundle();
 	// Insert your stuff here
-	(params->getParameter(0)) = new FloatParameter(0.7f, NormalizedRange::fromMidpoint(0.1f, 0.7f, 10.f), "Q", "");
-	(params->getParameter(1)) = new FloatParameter(120.f, NormalizedRange::fromMidpoint(20.f, 850.f, 22000.f), "frequency", "Hz");
+	params.initParameter(0, new FloatParameter(0.7f, NormalizedRange::fromMidpoint(0.1f, 0.7f, 10.f), "Q", ""));
+	params.initParameter(1, new FloatParameter(120.f, NormalizedRange::fromMidpoint(20.f, 850.f, 22000.f), "frequency", "Hz"));
 	BhString filterStyles[4] = { "HighPass", "LowPass", "BandPass", "Notch" };
-	//(params->getParameter(2)) = new FloatParameter(0.f, NormalizedRange(0.f, 1.f, 1.f), "style", "");
-	params->getParameter(2) = new OptionParameter(4u, filterStyles, "FilterStyles", "");
-	(params->getParameter(3)) = new FloatParameter(1.01f, NormalizedRange(0.f, 2.9999f, 1.f), "rolloff", "");
+	params.initParameter(2,new OptionParameter(4u, filterStyles, "FilterStyles", ""));
+	params.initParameter(3,new FloatParameter(1.01f, NormalizedRange(0.f, 2.9999f, 1.f), "rolloff", ""));
 
-	params->getParameter(4) = new FloatParameter(0.f, NormalizedRange(-1.f, 1.f), "lfoAmount", "");
-	params->getParameter(5) = new FloatParameter(0.0055f, NormalizedRange(0.005f, 20.f, 0.325f), "lfoSpeed", "");
+	params.initParameter(4,new FloatParameter(0.f, NormalizedRange(-1.f, 1.f), "lfoAmount", ""));
+	params.initParameter(5,new FloatParameter(0.0055f, NormalizedRange(0.005f, 20.f, 0.325f), "lfoSpeed", ""));
 	float multiplierValues[7] = { 0.0625, 0.125, 0.25, 0.5, 1., 2., 4. };
-	params->getParameter(6) = new DiscreteParameter(7u, "lfoBeatMultiplier", "", multiplierValues);
+	params.initParameter(6,new DiscreteParameter(7u, "lfoBeatMultiplier", "", multiplierValues));
 	BhString names[4] = { "sine", "saw", "square", "triangle" };
-	params->getParameter(7) = new OptionParameter(4u, names, "lfoWaveform", "");
-	params->getParameter(8) = new BoolParameter(false, "lfoTemposync");
-	params->getParameter(9) = new FloatParameter(0.f, NormalizedRange(0.f, 2.f * 3.14159265359f), "lfoPhase", "");
-	params->getParameter(10) = new FloatParameter(0.f, NormalizedRange(-1.f, 1.f), "lfoBaseline", "");
+	params.initParameter(7,new OptionParameter(4u, names, "lfoWaveform", ""));
+	params.initParameter(8,new BoolParameter(false, "lfoTemposync"));
+	params.initParameter(9,new FloatParameter(0.f, NormalizedRange(0.f, 2.f * 3.14159265359f), "lfoPhase", ""));
+	params.initParameter(10,new FloatParameter(0.f, NormalizedRange(-1.f, 1.f), "lfoBaseline", ""));
 
 	//resonance = new FloatParameter(0.5, "Resonance", 0.5f, NormalizedRange(0.f, 5.f));
 	//frequency = new FloatParameter((500.f), "Frequency", 0.5f, NormalizedRange(40.f, 22000.f, 0.3f));
