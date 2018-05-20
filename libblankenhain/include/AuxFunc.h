@@ -113,7 +113,7 @@ namespace aux
 	inline void performPanning(Sample& sample, float const& panningBetweenMinusOneAndOne)
 	{
 		///*
-		const float panningBoost = 1.41253754462;//  aux::decibelToLinear(3.f);
+		const float panningBoost = 1.41253754462f;//  aux::decibelToLinear(3.f);
 		const float left = aux::max(0.f, -panningBetweenMinusOneAndOne);
 		const float right = aux::max(0.f, panningBetweenMinusOneAndOne);
 		const float panLeft = ((1.f - left) + left * panningBoost) * (1.f - right);
