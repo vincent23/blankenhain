@@ -17,11 +17,11 @@ void DelayPluginEditor::imguiFrame()
 	ImGui::Begin("test", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize);
 
 
-	renderParam( plugin, 0);
+	renderParam(plugin, 0);
 
-	renderParam( plugin, 1);
+	renderParam(plugin, 1,0.0007f);
 
-	renderParam( plugin, 2);
+	renderParam(plugin, 2);
 	renderParam(plugin, 3);
 	renderParam(plugin, 4);
 	renderParam(plugin, 5);

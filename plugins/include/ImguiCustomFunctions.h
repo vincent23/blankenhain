@@ -5,7 +5,7 @@
 #include "VoiceState.h"
 #include "InstrumentBase.h"
 
-static void renderParam(PluginBase& plugin, unsigned int paramIndex, float paramDragSpeed = 0.001f, unsigned int style = 0u)
+static void renderParam(PluginBase& plugin, unsigned int paramIndex, float paramDragSpeed = 1.f)
 {
 	const PluginParameterBundle& bundle = plugin.getParameters();
 	FloatParameter const* param = bundle.getParameter(paramIndex);
@@ -76,11 +76,14 @@ static void renderParam(PluginBase& plugin, unsigned int paramIndex, float param
 		min = range.getStart();
 		max = range.getEnd();
 		skew = range.getSkew();
-		float* unnormalized = new float;
-		*unnormalized = param->getValueUnnormalized();
-		if (ImGui::DragFloat(param->getName().c_str(), unnormalized, paramDragSpeed, min * 1.002f, max * 0.998f, "%.3f", 1.f / skew))
-			plugin.setParameterAutomated(paramIndex, range.toNormalized(*unnormalized));
-		delete unnormalized;
+		float unnormalized = param->getValueUnnormalized();
+		
+		float normalizedParamDragSpeed = paramDragSpeed * 0.001f / 2.f * (max - min); 
+		// Relative to range, if paramDragSpeed == 1 && (max - min) == 2, then legacy bh2 "default" behaviour is yielded.
+		
+		if (ImGui::DragFloat(param->getName().c_str(), &unnormalized, normalizedParamDragSpeed, min * 1.002f, max * 0.998f, "%.3f", 1.f / skew))
+			plugin.setParameterAutomated(paramIndex, range.toNormalized(unnormalized));
+
 		ImGui::SameLine();
 		if (ImGui::Button("Reset"))
 		{
