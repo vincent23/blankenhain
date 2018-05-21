@@ -6,7 +6,7 @@
 #include <algorithm>
 
 ChorusEffect::ChorusEffect()
-	: EffectBase(10)
+	: EffectBase(12,true)
 	//, delayLine(size_t(aux::millisecToSamples(2502u)))
 	, delayLine(1 << 17)
 {
@@ -24,6 +24,9 @@ ChorusEffect::ChorusEffect()
 	params.initParameter(8, new FloatParameter(0.f, NormalizedRange(-50.f, 50.f), "pan", ""));
 	params.initParameter(9, new FloatParameter(5.f, NormalizedRange(0.005f, 1.f, 0.3f), "lfoSpeed", "Hz"));
 	params.initParameter(1, new BoolParameter(false, "pseudoStereo"));
+	params.initParameter(10, new BoolParameter(false, "tempoSyncOn"));
+	float multiplierValues[7] = { 0.0625, 0.125, 0.25, 0.5, 1., 2., 4. };
+	params.initParameter(11, new DiscreteParameter(7u, "multiplier", "", multiplierValues, 4u));
 }
 
 void ChorusEffect::process(Sample* buffer, size_t numberOfSamples, size_t currentTime)
@@ -33,7 +36,7 @@ void ChorusEffect::process(Sample* buffer, size_t numberOfSamples, size_t curren
 	const float feedback = interpolatedParameters.get(3);
 	const float drywet = interpolatedParameters.get(4);
 	const bool panicButton = interpolatedParameters.get(5) == 1.f;
-	const bool stereoButton = interpolatedParameters.get(10) == 1.f;
+	const bool stereoButton = interpolatedParameters.get(1) == 1.f;
 	const float pan = interpolatedParameters.get(8);
 	
 	const float lfoAmount = interpolatedParameters.get(0);
@@ -41,7 +44,34 @@ void ChorusEffect::process(Sample* buffer, size_t numberOfSamples, size_t curren
 	this->lfo.setMode(NaiveOscillator::NaiveOscillatorMode(static_cast<unsigned int>(lfoWaveform)));
 	const float lfoPhase = interpolatedParameters.get(7);
 	const float lfoSpeed = interpolatedParameters.get(9);
-	this->lfo.setFrequency(lfoSpeed);
+
+	const bool tempoSync = interpolatedParameters.get(10) == 1.f;
+	float tempoSyncVal = interpolatedParameters.get(11);
+
+	float lfofreq = lfoSpeed;
+	if (tempoSync)
+	{
+		if (tempoSyncVal < 0.125f)
+			tempoSyncVal = 0.0625;
+		else if (tempoSyncVal < 0.25)
+			tempoSyncVal = 0.125f;
+		else if (tempoSyncVal < 0.5)
+			tempoSyncVal = 0.25;
+		else if (tempoSyncVal < 1.f)
+			tempoSyncVal = 0.5;
+		else if (tempoSyncVal < 1.5f)
+			tempoSyncVal = 1.f;
+		else if (tempoSyncVal >= 1.5)
+			tempoSyncVal = 2.f;
+
+		float quarterNoteLength = (60.f /*seconds in a minute*/ * tempoSyncVal) / tempodata.bpm;
+		float sixteenthNoteLength = quarterNoteLength / 4.f;
+		float wholeBeatLength = sixteenthNoteLength * 16.f;
+		lfofreq = 1.f / wholeBeatLength;
+	}
+
+
+	this->lfo.setFrequency(lfofreq);
 
 	const unsigned int delayLength = static_cast<unsigned int>(aux::millisecToSamples(delay));
 

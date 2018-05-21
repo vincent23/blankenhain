@@ -23,7 +23,7 @@ FmInstrument::FmInstrument()
 
 
 	// Modulation Oscillators
-	for (unsigned int i = 0u; i < 8; i++)
+	for (unsigned int i = 0u; i < _LIBBLANKENHAIN_NUM_OSCS_FM_SYNTH - 1u; i++)
 	{
 		unsigned int currentIter = 8u + i * 13;
 		params.initParameter(currentIter + 0, new FloatParameter(440.f, NormalizedRange(33.f, 16000.f, 0.25), "freq", "hz"));

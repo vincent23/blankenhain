@@ -23,6 +23,9 @@ void ChorusPluginEditor::imguiFrame()
 	ImGui::Begin("test", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize);
 
 
+	const PluginParameterBundle& bundle = plugin.getParameters();
+	float tempoSyncOn = bundle.getParameterUnnormalized(10);
+
 	renderParam(plugin, 0);
 
 	renderParam(plugin, 1);
@@ -35,6 +38,9 @@ void ChorusPluginEditor::imguiFrame()
 	renderParam(plugin, 7);
 	renderParam(plugin, 8);
 	renderParam(plugin, 9);
+	renderParam(plugin, 10);
+	if (tempoSyncOn == 1.f)
+		renderParam(plugin, 11);
 
 	ImGui::End();
 }
