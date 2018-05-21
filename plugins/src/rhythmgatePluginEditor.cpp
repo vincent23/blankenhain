@@ -30,7 +30,7 @@ void RhythmgatePluginEditor::imguiFrame()
 	const PluginParameterBundle& bundle = plugin.getParameters();
 	static int item = 0;
 
-	const NormalizedRange& const range = bundle.getParameter(0u)->getRange();
+	const NormalizedRange& range = bundle.getParameter(0u)->getRange();
 	float min = range.getStart();
 	float max = range.getEnd();
 	float skew = range.getSkew();
