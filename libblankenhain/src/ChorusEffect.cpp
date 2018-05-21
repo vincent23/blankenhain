@@ -14,7 +14,7 @@ ChorusEffect::ChorusEffect()
 	ParameterBundle& params = getParameterBundle();
 	params.initParameter(0, new FloatParameter(0.f, NormalizedRange(0.f, 1.f), "lfoAmount", ""));
 	params.initParameter(1, new FloatParameter(0.0001f, NormalizedRange(0.0001f, 1.f, 0.2f), "width", "%"));
-	params.initParameter(2, new FloatParameter(15.f, NormalizedRange(1.f, 50.f, 0.2f), "delay", "ms"));
+	params.initParameter(2, new FloatParameter(15.f, NormalizedRange(0.5f, 50.f, 0.2f), "delay", "ms"));
 	params.initParameter(3, new FloatParameter(0.0f, NormalizedRange(0.0f, 1.f), "feedback", "%"));
 	params.initParameter(4, new FloatParameter(0.f, NormalizedRange(), "drywet", ""));
 	params.initParameter(5, new BoolParameter(false, "PANIC!"));
@@ -42,8 +42,6 @@ void ChorusEffect::process(Sample* buffer, size_t numberOfSamples, size_t curren
 	this->lfo.setMode(NaiveOscillator::NaiveOscillatorMode(static_cast<unsigned int>(lfoWaveform)));
 	float lfoPhase = interpolatedParameters.get(7);
 	float lfoSpeed = interpolatedParameters.get(9);
-	this->lfo.setFrequency(lfoSpeed);
-
 	//delayLine.setSize(static_cast<size_t>(aux::millisecToSamples(delay)));
 	unsigned int delayLength = static_cast<unsigned int>(aux::millisecToSamples(delay));
 
@@ -59,20 +57,20 @@ void ChorusEffect::process(Sample* buffer, size_t numberOfSamples, size_t curren
 	}
 
 
-	/*
+	
 	for (unsigned int i = 0; i < numberOfSamples; i++)
 	{
-		float lfoValue = (this->lfo.getNextSample(lfoPhase) * .5f + 5.f) * lfoAmount;
-		size_t const& position = delayLine.getCurrentIteratorInDelayline();
-		float currentSweepPosition = BhMath::fmod(lfoValue * aux::millisecToSamples(width) + static_cast<float>(position), static_cast<float>(delayLine.getSize()));
-		if (currentSweepPosition < 0.f)
-		{
-			currentSweepPosition += static_cast<float>(delayLine.getSize());
-		}
+		float lfoValue = (this->lfo.getNextSample(lfoPhase)) * lfoAmount;
+		//size_t const& position = delayLine.getCurrentIteratorInDelayline();
+		float currentSweepPosition = ( - (lfoValue + 1.f) / 2. * aux::millisecToSamples(width) + delay);
+		currentSweepPosition = currentSweepPosition < 0 ? 0 : currentSweepPosition;
+		
+		
+		
 		Sample inval = buffer[i];
 
 
-		// TODO: Linear Interpolation
+		// TODO: Activate Linear Interpolation
 		Sample outval = delayLine.get(static_cast<int>(currentSweepPosition));
 
 		delayLine.push(Sample(feedback) * outval + inval);
@@ -85,5 +83,5 @@ void ChorusEffect::process(Sample* buffer, size_t numberOfSamples, size_t curren
 		//Ghetto Stereo by PhaseShift, maybe TODO use seperate DelayLines for L & R
 		buffer[i] = aux::mixDryWet(inval, outval, drywet);
 	}
-	*/
+	
 }
