@@ -33,4 +33,5 @@ void CircularBuffer<T>::reset(void)
 	{
 		buffer[i] = T();
 	}
+	currentPosition = 0u;
 }
