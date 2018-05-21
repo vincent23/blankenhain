@@ -28,7 +28,7 @@ public:
 		}
 #endif
 		unsigned int delaySamplesInteger = static_cast<unsigned int>(delaySamples);
-		float fractionalPart = delaySamples - delaySamplesInteger; // probably not the most accurate way of doing this
+		float fractionalPart = delaySamples - static_cast<float>(delaySamplesInteger); // probably not the most accurate way of doing this
 		return T(1.f - fractionalPart) * get(delaySamples) + T(fractionalPart) * get(delaySamplesInteger + 1);
 	}
 	void reset();

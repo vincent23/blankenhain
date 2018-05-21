@@ -47,7 +47,7 @@ template <typename T>
 void Filter<T>::setBell(double frequency, double Q, double gainInDb)
 {
 	//double A = static_cast<double>(BhMath::pow(10, static_cast<float>(gainInDb / 40.)));
-	double A = aux::decibelToLinear(gainInDb * 0.5f);
+	double A = aux::decibelToLinear(gainInDb * 0.5);
 	recomputeCoefficients(frequency, Q * A, 1);
 	m0 = T(1);
 	m1 = T(k * T(A * A - 1));
@@ -58,7 +58,7 @@ template <typename T>
 void Filter<T>::setLowShelf(double frequency, double Q, double gainInDb)
 {
 	// double A = static_cast<double>(BhMath::pow(10.f, static_cast<float>(gainInDb) / 40.f));
-	double A = aux::decibelToLinear(gainInDb * 0.5f);
+	double A = aux::decibelToLinear(gainInDb * 0.5);
 	recomputeCoefficients(frequency, Q, 1. / BhMath::sqrt(static_cast<float>(A)));
 	m0 = T(1);
 	m1 = k * T(A - 1);
@@ -69,7 +69,7 @@ template <typename T>
 void Filter<T>::setHighShelf(double frequency, double Q, double gainInDb)
 {
 	//double A = static_cast<double>(BhMath::pow(10.f, static_cast<float>(gainInDb) / 40.f));
-	double A = aux::decibelToLinear(gainInDb * 0.5f);
+	double A = aux::decibelToLinear(gainInDb * 0.5);
 	recomputeCoefficients(frequency, Q, BhMath::sqrt(static_cast<float>(A)));
 	m0 = T(A * A);
 	m1 = k * T((1 - A) * A);
