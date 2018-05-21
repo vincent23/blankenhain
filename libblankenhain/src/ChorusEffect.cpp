@@ -6,15 +6,15 @@
 #include <algorithm>
 
 ChorusEffect::ChorusEffect()
-	: EffectBase(11)
+	: EffectBase(10)
 	//, delayLine(size_t(aux::millisecToSamples(2502u)))
 	, delayLine(1 << 17)
 {
 	wasPaniced = false;
 	ParameterBundle& params = getParameterBundle();
 	params.initParameter(0, new FloatParameter(0.f, NormalizedRange(0.f, 1.f), "lfoAmount", ""));
-	params.initParameter(1, new FloatParameter(0.0001f, NormalizedRange(0.0001f, 1.f, 0.2f), "width", "%"));
-	params.initParameter(2, new FloatParameter(15.f, NormalizedRange(0.5f, 50.f, 0.2f), "delay", "ms"));
+	//params.initParameter(1, new FloatParameter(0.0001f, NormalizedRange(0.0001f, 1.f, 0.2f), "width", "%"));
+	params.initParameter(2, new FloatParameter(15.f, NormalizedRange(0.5f, 24.f, 0.2f), "delay", "ms"));
 	params.initParameter(3, new FloatParameter(0.0f, NormalizedRange(0.0f, 1.f), "feedback", "%"));
 	params.initParameter(4, new FloatParameter(0.f, NormalizedRange(), "drywet", ""));
 	params.initParameter(5, new BoolParameter(false, "PANIC!"));
@@ -22,28 +22,28 @@ ChorusEffect::ChorusEffect()
 	params.initParameter(6, new OptionParameter(4u, names, "lfoWaveform", ""));
 	params.initParameter(7, new FloatParameter(0.f, NormalizedRange(0.f, 2.f * constants::pi), "lfoPhase", ""));
 	params.initParameter(8, new FloatParameter(0.f, NormalizedRange(-50.f, 50.f), "pan", ""));
-	params.initParameter(9, new FloatParameter(5.f, NormalizedRange(0.01f, 100.f, 0.3f), "lfoSpeed", "ms"));
-	params.initParameter(10, new BoolParameter(false, "pseudoStereo"));
+	params.initParameter(9, new FloatParameter(5.f, NormalizedRange(0.005f, 1.f, 0.3f), "lfoSpeed", "Hz"));
+	params.initParameter(1, new BoolParameter(false, "pseudoStereo"));
 }
 
 void ChorusEffect::process(Sample* buffer, size_t numberOfSamples, size_t currentTime)
 {
+	const float delay = interpolatedParameters.get(2);
 
-	float delay = interpolatedParameters.get(2);
-	float width = interpolatedParameters.get(1) * delay;
-	float feedback = interpolatedParameters.get(3);
-	float drywet = interpolatedParameters.get(4);
-	bool panicButton = interpolatedParameters.get(5) == 1.f;
-	bool stereoButton = interpolatedParameters.get(10) == 1.f;
-	float pan = interpolatedParameters.get(8);
-
-	float lfoAmount = interpolatedParameters.get(0);
-	float lfoWaveform = interpolatedParameters.get(6);
+	const float feedback = interpolatedParameters.get(3);
+	const float drywet = interpolatedParameters.get(4);
+	const bool panicButton = interpolatedParameters.get(5) == 1.f;
+	const bool stereoButton = interpolatedParameters.get(10) == 1.f;
+	const float pan = interpolatedParameters.get(8);
+	
+	const float lfoAmount = interpolatedParameters.get(0);
+	const float lfoWaveform = interpolatedParameters.get(6);
 	this->lfo.setMode(NaiveOscillator::NaiveOscillatorMode(static_cast<unsigned int>(lfoWaveform)));
-	float lfoPhase = interpolatedParameters.get(7);
-	float lfoSpeed = interpolatedParameters.get(9);
-	//delayLine.setSize(static_cast<size_t>(aux::millisecToSamples(delay)));
-	unsigned int delayLength = static_cast<unsigned int>(aux::millisecToSamples(delay));
+	const float lfoPhase = interpolatedParameters.get(7);
+	const float lfoSpeed = interpolatedParameters.get(9);
+	this->lfo.setFrequency(lfoSpeed);
+
+	const unsigned int delayLength = static_cast<unsigned int>(aux::millisecToSamples(delay));
 
 	// Panic
 	if (panicButton && !wasPaniced)
@@ -61,26 +61,20 @@ void ChorusEffect::process(Sample* buffer, size_t numberOfSamples, size_t curren
 	for (unsigned int i = 0; i < numberOfSamples; i++)
 	{
 		float lfoValue = (this->lfo.getNextSample(lfoPhase)) * lfoAmount;
-		//size_t const& position = delayLine.getCurrentIteratorInDelayline();
-		float currentSweepPosition = ( - (lfoValue + 1.f) / 2. * aux::millisecToSamples(width) + delay);
-		currentSweepPosition = currentSweepPosition < 0 ? 0 : currentSweepPosition;
-		
-		
-		
+
+		float currentSweepPosition = lfoValue * delayLength + delayLength;
+			
 		Sample inval = buffer[i];
-
-
-		// TODO: Activate Linear Interpolation
-		Sample outval = delayLine.get(static_cast<int>(currentSweepPosition));
-
+		Sample outval = delayLine.get((currentSweepPosition));
 		delayLine.push(Sample(feedback) * outval + inval);
-
 
 		// Pan
 		aux::performPanning(outval, pan * 0.02f);
+
 		if (stereoButton)
 			outval.replaceLeftChannel(-outval);
 		//Ghetto Stereo by PhaseShift, maybe TODO use seperate DelayLines for L & R
+
 		buffer[i] = aux::mixDryWet(inval, outval, drywet);
 	}
 	

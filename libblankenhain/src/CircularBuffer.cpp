@@ -46,8 +46,12 @@ void CircularBuffer<T>::push(const T& in) {
 template <typename T>
 T CircularBuffer<T>::get(unsigned int delayToCurrentPosition_InSamples) const {
 #ifdef _LIBBLANKENHAIN_ENABLE_WARNINGS
-	if (delaySamples < 0.f) {
-		throw "negative delay value";
+	if (delayToCurrentPosition_InSamples < 0.f) {
+		throw "negative delay value.";
+	}
+	if (delayToCurrentPosition_InSamples > length)
+	{
+		throw "requested delay bigger than buffer size.";
 	}
 #endif
 	// unsigned overflow will wrap around
@@ -58,8 +62,12 @@ T CircularBuffer<T>::get(unsigned int delayToCurrentPosition_InSamples) const {
 template <typename T>
 T CircularBuffer<T>::getInterpolated(float delayToCurrentPosition_InSamples) const {
 #ifdef _LIBBLANKENHAIN_ENABLE_WARNINGS
-	if (delaySamples < 0.f) {
+	if (delayToCurrentPosition_InSamples < 0.f) {
 		throw "negative delay value";
+	}
+	if (delayToCurrentPosition_InSamples > length)
+	{
+		throw "requested delay bigger than buffer size.";
 	}
 #endif
 	unsigned int delaySamplesInteger = static_cast<unsigned int>(delayToCurrentPosition_InSamples);
