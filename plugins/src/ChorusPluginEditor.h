@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ImguiEffectEditor.h"
+#include "ImguiCustomFunctions.h"
 
 class ChorusPluginEditor : public ImguiEffectEditor
 {

@@ -2,6 +2,7 @@
 
 #include "PluginBase.h"
 #include "ChorusEffect.h"
+#include "ChorusPluginEditor.h"
 
 class ChorusPlugin : public PluginBase
 {

@@ -6,6 +6,7 @@ ChorusPlugin::ChorusPlugin(audioMasterCallback audioMaster)
 	: PluginBase(audioMaster, new ChorusEffect)
 {
 	setUniqueID('bhCh');
+	setEditor(new ChorusPluginEditor(this));
 }
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster)
