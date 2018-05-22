@@ -12,7 +12,10 @@ public:
 	WidthEffect();
 	void process(Sample* buffer, size_t numberOfSamples, size_t currentTime) final;
 	void getModulation(float* modulationValues, size_t sampleOffset) final;
-
+	CommonLFO& getLFO()
+	{
+		return lfo;
+	}
 private:
-	PolyBLEPOscillator lfo;
+	CommonLFO lfo;
 };

@@ -13,8 +13,8 @@ ChorusEffect::ChorusEffect()
 	wasPaniced = false;
 	ParameterBundle& params = getParameterBundle();
 	params.initParameter(0, new FloatParameter(0.f, NormalizedRange(0.f, 1.f), "lfoAmount", ""));
-	//params.initParameter(1, new FloatParameter(0.0001f, NormalizedRange(0.0001f, 1.f, 0.2f), "width", "%"));
-	params.initParameter(2, new FloatParameter(15.f, NormalizedRange(0.5f, 24.f, 0.2f), "delay", "ms"));
+	params.initParameter(1, new BoolParameter(false, "pseudoStereo"));
+	params.initParameter(2, new FloatParameter(15.f, NormalizedRange(0.5f, 32.f, 0.2f), "Central Delay", "ms"));
 	params.initParameter(3, new FloatParameter(0.0f, NormalizedRange(0.0f, 1.f), "feedback", "%"));
 	params.initParameter(4, new FloatParameter(0.f, NormalizedRange(), "drywet", ""));
 	params.initParameter(5, new BoolParameter(false, "PANIC!"));
@@ -23,7 +23,6 @@ ChorusEffect::ChorusEffect()
 	params.initParameter(7, new FloatParameter(0.f, NormalizedRange(0.f, 2.f * constants::pi), "lfoPhase", ""));
 	params.initParameter(8, new FloatParameter(0.f, NormalizedRange(-50.f, 50.f), "pan", ""));
 	params.initParameter(9, new FloatParameter(5.f, NormalizedRange(0.005f, 1.f, 0.3f), "lfoSpeed", "Hz"));
-	params.initParameter(1, new BoolParameter(false, "pseudoStereo"));
 	params.initParameter(10, new BoolParameter(false, "tempoSyncOn"));
 	float multiplierValues[7] = { 0.0625, 0.125, 0.25, 0.5, 1., 2., 4. };
 	params.initParameter(11, new DiscreteParameter(7u, "multiplier", "", multiplierValues, 4u));
@@ -87,10 +86,10 @@ void ChorusEffect::process(Sample* buffer, size_t numberOfSamples, size_t curren
 	}
 
 
-	
+	lfo.setParams(0, OscillatorPhase(lfoPhase), lfoAmount);
 	for (unsigned int i = 0; i < numberOfSamples; i++)
 	{
-		float lfoValue = (this->lfo.getNextSample(lfoPhase)) * lfoAmount;
+		float lfoValue = this->lfo.getNextSample();
 
 		float currentSweepPosition = lfoValue * delayLength + delayLength;
 			

@@ -27,6 +27,16 @@ bool ImguiEffectEditor::open(void* ptr)
 	return true;
 }
 
+EffectBase* ImguiEffectEditor::getEffectBase()
+{
+	return this->getPlugin().getEffect();
+}
+
+PluginBase& ImguiEffectEditor::getPlugin()
+{
+	return plugin;
+}
+
 void ImguiEffectEditor::close()
 {
 	//-- on close we need to delete the frame object.

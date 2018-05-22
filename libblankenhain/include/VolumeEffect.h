@@ -10,6 +10,11 @@ public:
 	virtual void getModulation(float* modulationValues, size_t sampleOffset = 0) override;
 
 	void process(Sample* buffer, size_t numberOfSamples, size_t currentTime) override;
+
+	CommonLFO& getLFO()
+	{
+		return lfo;
+	}
 private:
-	PolyBLEPOscillator lfo;
+	CommonLFO lfo;
 };

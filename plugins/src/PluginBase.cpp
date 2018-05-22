@@ -274,7 +274,7 @@ const PluginParameterBundle& PluginBase::getParameters() const
 	return *pluginParameters;
 }
 
-EffectBase const* PluginBase::getEffect() const
+EffectBase* PluginBase::getEffect()
 {
 	return this->effect;
 }

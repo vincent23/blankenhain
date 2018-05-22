@@ -163,12 +163,13 @@ void glidePolyblepInstrument::getModulation(float* modulationValues, size_t samp
 			this->lfo.setFrequency(2.f / wholeBeatLength);
 		}
 		
+		this->lfo.setParams(lfoBaseline, OscillatorPhase(lfoPhase), lfoAmount);
 		for (unsigned int i = 0u; i < sampleOffset; i++)
 		{
 			if (this->effectUsesTempoData())
-				modulationValues[12] = this->lfo.getSample(sampleOffset + this->tempodata.position, lfoPhase) * lfoAmount + lfoBaseline;
+				modulationValues[12] = this->lfo.getSample(sampleOffset + this->tempodata.position);
 			else
-				modulationValues[12] = this->lfo.getNextSample(lfoPhase) * lfoAmount + lfoBaseline;
+				modulationValues[12] = this->lfo.getNextSample();
 		}
 	}
 

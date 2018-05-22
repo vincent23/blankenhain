@@ -3,7 +3,7 @@
 
 
 WidthPluginEditor::WidthPluginEditor(PluginBase* plugin)
-	: ImguiEffectEditor(plugin, 460, 260)
+	: ImguiEffectEditor(plugin, 460, 460)
 {
 }
 
@@ -20,11 +20,16 @@ void WidthPluginEditor::imguiFrame()
 	renderParam( plugin, 0);
 
 	renderParam( plugin, 1, 0.1f);
-
-
+	
+	//if (dynamic_cast<const WidthEffect*>(this->getEffect()))
+	//{
+	WidthEffect* effect =  dynamic_cast<WidthEffect *>(this->getEffectBase());
+	ImGui::Separator();
 	ImGui::Text("Pan LFO");
+	renderLFO(plugin, effect->getLFO(), effect->getTempoData(), ImVec2(ImGui::GetWindowContentRegionWidth(), 260) , 3, 2, 5, 6, 8, 4, 7);
+	//}
 
-	renderLFO(plugin, ImVec2(ImGui::GetWindowContentRegionWidth(), 160), 3,2,5,6,8,4,7);
+	
 
 	ImGui::End();
 }

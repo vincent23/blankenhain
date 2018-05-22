@@ -126,7 +126,7 @@ public:
 	//virtual void getProgramName(char* name) { *name = 0; }	///< Stuff \e name with the name of the current program. Limited to #kVstMaxProgNameLen.
 	//
 
-	EffectBase const* getEffect() const;
+	EffectBase* getEffect();
 
 protected:
 	/*

@@ -4,6 +4,7 @@
 class PluginBase;
 
 #include "ImguiFrameCallback.h"
+#include "EffectBase.h"
 
 class ImguiEffectEditor : public AEffGUIEditor, public ImguiFrameCallback {
 public:
@@ -11,6 +12,12 @@ public:
 
 	bool open(void* ptr) override;
 	void close() override;
+	
+
+	PluginBase& getPlugin();
+
+	EffectBase* getEffectBase();
+
 
 	void imguiFrame() override;
 

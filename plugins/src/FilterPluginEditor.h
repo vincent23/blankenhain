@@ -18,6 +18,7 @@
 #include <windows.h>
 
 #include "ImguiCustomFunctions.h"
+#include "FilterEffect.h"
 
 class FilterPluginEditor : public ImguiEffectEditor
 {

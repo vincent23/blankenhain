@@ -12,7 +12,12 @@ public:
 	void process(Sample* buffer, size_t numberOfSamples, size_t currentTime) override;
 	virtual void getModulation(float* modulationValues, size_t sampleOffset = 0) override;
 
+	CommonLFO& getLFO()
+	{
+		return lfo;
+	}
+
 protected:
 	Filter<Sample> filters[4];
-	PolyBLEPOscillator lfo;
+	CommonLFO lfo;
 };

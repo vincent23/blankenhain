@@ -23,24 +23,30 @@ void ChorusPluginEditor::imguiFrame()
 	ImGui::Begin("test", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize);
 
 
+	ImGui::Text(std::string("Chorus: Use Delay Times from 8ms to 32ms.").c_str());
+	ImGui::Text(std::string("Flanger: Use Delay Times from 1ms to 7ms with Feedback.").c_str());
+	ImGui::Separator();
+
 	const PluginParameterBundle& bundle = plugin.getParameters();
 	float tempoSyncOn = bundle.getParameterUnnormalized(10);
 
-	renderParam(plugin, 0);
 
-	renderParam(plugin, 1);
-
+	
+	renderParam(plugin, 8);
 	renderParam(plugin, 2);
 	renderParam(plugin, 3);
 	renderParam(plugin, 4);
 	renderParam(plugin, 5);
-	renderParam(plugin, 6);
-	renderParam(plugin, 7);
-	renderParam(plugin, 8);
-	renderParam(plugin, 9);
-	renderParam(plugin, 10);
-	if (tempoSyncOn == 1.f)
-		renderParam(plugin, 11);
+	renderParam(plugin, 1);
+
+	ChorusEffect* effect = dynamic_cast<ChorusEffect *>(this->getEffectBase());
+	ImGui::Separator();
+	//ImGui::Text("LFO");
+	renderLFO(plugin, effect->getLFO(), effect->getTempoData(), 
+		ImVec2(ImGui::GetWindowContentRegionWidth(), 260),
+		9, 0, 6, 10, 7, 11, -1);
+	//}
+
 
 	ImGui::End();
 }

@@ -16,7 +16,7 @@ FilterEffect::FilterEffect() : EffectBase(NUMBER_OF_PARAMETERS, true)
 	params.initParameter(2,new OptionParameter(4u, filterStyles, "FilterStyles", ""));
 	params.initParameter(3,new FloatParameter(1.01f, NormalizedRange(0.f, 2.9999f, 1.f), "rolloff", ""));
 
-	params.initParameter(4,new FloatParameter(0.f, NormalizedRange(-1.f, 1.f), "lfoAmount", ""));
+	params.initParameter(4,new FloatParameter(0.f, NormalizedRange(0.f, 0.25f), "lfoAmount", ""));
 	params.initParameter(5,new FloatParameter(0.0055f, NormalizedRange(0.005f, 20.f, 0.325f), "lfoSpeed", ""));
 	float multiplierValues[7] = { 0.0625, 0.125, 0.25, 0.5, 1., 2., 4. };
 	params.initParameter(6,new DiscreteParameter(7u, "lfoBeatMultiplier", "", multiplierValues));
@@ -106,12 +106,18 @@ void FilterEffect::getModulation(float* modulationValues, size_t sampleOffset)
 			this->lfo.setFrequency(2.f / wholeBeatLength);
 		}
 
+
+		this->lfo.setParams(lfoBaseline, OscillatorPhase(lfoPhase), lfoAmount);
 		for (unsigned int i = 0u; i < sampleOffset; i++)
 		{
 			if (this->effectUsesTempoData())
-				modulationValues[1] = this->lfo.getSample(i + this->tempodata.position, lfoPhase) * lfoAmount + lfoBaseline;
+			{
+				modulationValues[1] = this->lfo.getSample(i + this->tempodata.position);
+			}
 			else
-				modulationValues[1] = this->lfo.getNextSample(lfoPhase) * lfoAmount + lfoBaseline;
+			{
+				modulationValues[1] = this->lfo.getNextSample();
+			}
 		}
 	}
 }

@@ -33,6 +33,18 @@ public:
 		this->set(in);
 	}
 
+	OscillatorPhase operator+(OscillatorPhase const& rhs) const
+	{
+		OscillatorPhase out(*this);
+		out.incrementBy(rhs.getValue());
+		return out;
+	}
+
+	OscillatorPhase const& operator+=(OscillatorPhase const& rhs)
+	{
+		this->incrementBy(rhs.getValue());
+		return *this;
+	}
 
 	const float& getValue() const
 	{
@@ -176,6 +188,69 @@ public:
 protected:
     float naiveWaveformForMode(NaiveOscillatorMode mode, OscillatorPhase phase = OscillatorPhase());
 	NaiveOscillatorMode mOscillatorMode;
+};
+
+class CommonLFO : public NaiveOscillator
+{
+public:
+	CommonLFO() : NaiveOscillator()
+	{
+		baseline = 0.f;
+		amount = 0.f;
+	}
+
+	CommonLFO(NaiveOscillatorMode mode, float frequency) : NaiveOscillator(mode, frequency)
+	{
+		baseline = 0.f;
+		amount = 0.f;
+	}
+
+	// Input phase is ignored as it is stored in the oscillator
+	virtual float getSample(unsigned int time, OscillatorPhase phase_ = OscillatorPhase()) override
+	{
+		float sample = NaiveOscillator::getSample(time, /*phase_ +*/ phase) * amount;
+
+		// Perform LFO on volumeL
+		sample += baseline;
+		return sample;
+	}
+
+	// Input phase is ignored as it is stored in the oscillator
+	virtual float getNextSample(OscillatorPhase phase_ = OscillatorPhase()) override
+	{
+		float sample = NaiveOscillator::getNextSample(phase) * amount;
+
+		// Perform LFO on volumeL
+		sample += baseline;
+		return sample;
+	}
+
+	void setParams(float baseline_normalized, OscillatorPhase phase_, float amount_normalized)
+	{
+		this->baseline = baseline_normalized;
+		this->amount = amount_normalized;
+		phase.set(phase_.getValue());
+	};
+
+	OscillatorPhase getPhase() const
+	{
+		return phase;
+	}
+
+	float getAmount() const
+	{
+		return amount;
+	}
+
+	float getBaseline() const
+	{
+		return baseline;
+	}
+
+protected:
+	float baseline;
+	OscillatorPhase phase;
+	float amount;
 };
 
 // via https://www.music.mcgill.ca/~gary/307/week5/bandlimited.html

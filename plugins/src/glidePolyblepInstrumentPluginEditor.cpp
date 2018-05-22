@@ -31,10 +31,11 @@ void glidePolyblepInstrumentPluginEditor::imguiFrame()
 	renderParam( plugin, 12);
 
 
-
+	ImGui::Separator();
 	ImGui::Text("Detune LFO");
+	glidePolyblepInstrument* instr = dynamic_cast<glidePolyblepInstrument*>(this->getEffectBase());
 
-	renderLFO(plugin, ImVec2(ImGui::GetWindowContentRegionWidth(), 160), 11, 10, 14, 15, 16, 13, 17);
+	renderLFO(plugin, instr->getLFO(), instr->getTempoData(), ImVec2(ImGui::GetWindowContentRegionWidth(), 260), 11, 10, 14, 15, 16, 13, 17);
 
 	ImGui::End();
 }

@@ -13,8 +13,13 @@ public:
     {
       this->delayLine.reset();
     }
+
+	CommonLFO& getLFO()
+	{
+		return lfo;
+	}
 protected:
 	bool wasPaniced;
 	CircularBuffer<Sample> delayLine;
-	PolyBLEPOscillator lfo;
+	CommonLFO lfo;
 };

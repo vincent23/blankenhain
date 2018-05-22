@@ -16,10 +16,15 @@ public:
 
 	virtual void getModulation(float* modulationValues, size_t sampleOffset = 0) override;
 
+	CommonLFO& getLFO()
+	{
+		return lfo;
+	}
+
 private:
 	PolyBLEPOscillator osc;
 	NoiseOscillator noise;
-	PolyBLEPOscillator lfo;
+	CommonLFO lfo;
 	BaseOscillator* currentOsc;
 
 	float freqPrev;
