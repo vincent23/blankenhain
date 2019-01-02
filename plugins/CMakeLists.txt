@@ -54,9 +54,10 @@ prepend(IMGUI_SRC "${IMGUI_DIR}/"
 	"imgui_demo.cpp"
 	"imgui_draw.cpp"
 	"imgui_internal.h"
-	"stb_rect_pack.h"
-	"stb_textedit.h"
-	"stb_truetype.h"
+	"imgui_widgets.cpp"
+	"imstb_rectpack.h"
+	"imstb_textedit.h"
+	"imstb_truetype.h"
 	"imconfig.h"
 )
 include_directories(${IMGUI_DIR})
