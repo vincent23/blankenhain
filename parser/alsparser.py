@@ -1,3 +1,6 @@
+# This file converts an Ableton Live 8 File (.als)
+# into code which can be played by the BlankenhainPlayer.
+
 import dls
 import config
 
@@ -57,6 +60,7 @@ class Device:
 			device = GroupDevice()
 		elif deviceXml.tag == 'MidiPitcher':
 			# TODO implement conversion from ableton pitch shift
+			# device = MidiDevice()
 			return None
 		else:
 			# ignore unrecognized devices

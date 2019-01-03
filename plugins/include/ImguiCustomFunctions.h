@@ -96,7 +96,7 @@ static void renderParam(PluginBase& plugin, unsigned int paramIndex, float param
 }
 
 
-static void renderADHSR(PluginBase& plugin, ImVec2 size = ImGui::GetContentRegionAvail(), TempoData const *const tempoData = nullptr,
+static void renderADHSR(PluginBase& plugin, ImVec2 const& size = ImGui::GetContentRegionAvail(), TempoData const *const tempoData = nullptr,
 	unsigned int paramAttack = 0u, unsigned int paramHold = 1u, unsigned int paramHoldlevel = 2u,
 	unsigned int paramDecay = 3u, unsigned int paramSustainbool = 4u, unsigned int paramSustain = 5u,
 	unsigned int paramSustainlevel = 6u, unsigned int paramRelease = 7u)
@@ -134,7 +134,7 @@ static void renderADHSR(PluginBase& plugin, ImVec2 size = ImGui::GetContentRegio
 	ImGui::Text(lengthStr.c_str());
 
 
-	float incrementForVisualization = length / static_cast<float>(nPoints);
+	const float incrementForVisualization = length / static_cast<float>(nPoints);
 	VoiceState dummy;
 	dummy.on(0u, 69u, 100u);
 	for (unsigned int i = 0; i < nPoints; i++)
@@ -155,8 +155,7 @@ static void renderADHSR(PluginBase& plugin, ImVec2 size = ImGui::GetContentRegio
 	ImVec2 availRest = ImGui::GetContentRegionAvail();
 	availRest.x *= 2.f / 3.f;
 
-
-	// Is tempoData supplied?
+	// We paint dashes at beats if tempodata is supplied
 	if (tempoData != nullptr)
 	{
 		if (tempoData->usesTempoData)
@@ -207,6 +206,12 @@ static void renderLFO(PluginBase& plugin, CommonLFO lfo, TempoData const & tempo
 	renderParam(plugin, paramLFOTemposync);
 
 	BoolParameter const* temposync = dynamic_cast<BoolParameter const*>(bundle.getParameter(paramLFOTemposync));
+
+#ifdef _LIBBLANKENHAIN_ENABLE_WARNINGS
+#include "../../libblankenhain/include/warnings.h"
+	if (temposync == nullptr)
+		throw "Temposync is nullptr!";
+#endif
 	if (temposync->getValue() == 0)
 	{
 		renderParam(plugin, paramLFOSpeed);
@@ -247,7 +252,7 @@ static void renderLFO(PluginBase& plugin, CommonLFO lfo, TempoData const & tempo
 
 	for (unsigned int i = 0; i < nPoints; i++)
 	{
-		float lfoVal = lfo.getSample(aux::millisecToSamples(i * incrementForVisualization));
+		float lfoVal = lfo.getSample(aux::millisecToSamples(static_cast<float>(i) * incrementForVisualization));
 		lfoVal = (lfoVal + 1.f) / 2.f;
 		//bundle.getParameter(lfoAmount)
 		points[i] = lfoVal;
@@ -258,7 +263,6 @@ static void renderLFO(PluginBase& plugin, CommonLFO lfo, TempoData const & tempo
 	ImVec2 availRest = ImGui::GetContentRegionAvail();
 	availRest.x *= 2.f / 3.f;
 	
-	bool isLogScale = false;
 	// This paints the bars and ticks, if tempodate is supplied
 	// Is tempoData supplied?
 	if (tempoData.usesTempoData)

@@ -47,7 +47,7 @@ template <typename T>
 void Filter<T>::setBell(double frequency, double Q, double gainInDb)
 {
 	//double A = static_cast<double>(BhMath::pow(10, static_cast<float>(gainInDb / 40.)));
-	double A = aux::decibelToLinear(gainInDb * 0.5);
+	double A = static_cast<double>(aux::decibelToLinear(static_cast<float>(gainInDb * 0.5)));
 	recomputeCoefficients(frequency, Q * A, 1);
 	m0 = T(1);
 	m1 = T(k * T(A * A - 1));
