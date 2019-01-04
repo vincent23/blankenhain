@@ -9,7 +9,7 @@ VolumeEffect::VolumeEffect() : EffectBase(10u, true)
 	ParameterBundle& params = getParameterBundle();
 	params.initParameter(0, new FloatParameter(0.f, NormalizedRange(-120.f, 12.f, 5.f), "volumeL", "dB"));
 	params.initParameter(1, new FloatParameter(0.f, NormalizedRange(-120.f, 12.f, 5.f), "volumeR", "dB"));
-	params.initParameter(2, new FloatParameter(1.f, NormalizedRange(), "coupling", "bool"));
+	params.initParameter(2, new BoolParameter(true, "coupling"));
 	BhString names[4] = { "sine", "saw", "square", "triangle" };
 	params.initParameter(3, new FloatParameter(0.f, NormalizedRange(-1.f, 1.f), "lfoAmount", ""));
 	params.initParameter(4, new FloatParameter(0.0055f, NormalizedRange(0.005f, 20.f, 0.325f), "lfoSpeed", ""));
@@ -104,9 +104,13 @@ void VolumeEffect::getModulation(float* modulationValues, size_t sampleOffset)
 		for (unsigned int i = 0u; i < sampleOffset; i++)
 		{
 			if (this->effectUsesTempoData())
-				modulationValues[0] = this->lfo.getSample(i + this->tempodata.position);
+			{
+				modulationValues[0] = modulationValues[1] = this->lfo.getSample(i + this->tempodata.position);
+			}
 			else
-				modulationValues[0] = this->lfo.getNextSample();
+			{
+				modulationValues[0] = modulationValues[1] = this->lfo.getNextSample();
+			}
 		}
 	}
 }
