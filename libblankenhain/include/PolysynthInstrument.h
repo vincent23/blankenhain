@@ -6,11 +6,11 @@
 
 class VoiceState;
 
-class polyblepInstrument : public InstrumentBase
+class PolysynthInstrument : public InstrumentBase
 {
 public:
-	polyblepInstrument();
-	~polyblepInstrument();
+	PolysynthInstrument();
+	~PolysynthInstrument();
 
 	void processVoice(VoiceState& voice, unsigned int timeInSamples, Sample* buffer, unsigned int numberOfSamples);
 private:

@@ -145,9 +145,11 @@ add_plugin("bh_volume"
 	"VolumePluginEditor.cpp"
 )
 
-add_plugin("bh_polyblep_synth"
-	"polyblepInstrumentPlugin.cpp"
-	"polyblepInstrumentPlugin.h"
+add_plugin("bh_polysynth"
+	"PolysynthInstrumentPlugin.cpp"
+	"PolysynthInstrumentPlugin.h"
+	"PolysynthInstrumentPluginEditor.cpp"
+	"PolysynthInstrumentPluginEditor.h"
 )
 
 add_plugin("bh_monosynth"

@@ -1,10 +1,10 @@
-#include "polyblepInstrument.h"
+#include "PolysynthInstrument.h"
 #include "InterpolatedValue.h"
 #include "ParameterBundle.h"
 #include "FloatParameter.h"
 #include "VoiceState.h"
 
-polyblepInstrument::polyblepInstrument()
+PolysynthInstrument::PolysynthInstrument()
 	: InstrumentBase(9, 4)
 {
 	ParameterBundle& params = getParameterBundle();
@@ -13,35 +13,35 @@ polyblepInstrument::polyblepInstrument()
 	params.initParameter(1, new FloatParameter(100.f, NormalizedRange(1.f, 1700.f, 0.3f), "hold", "ms"));
 	params.initParameter(2, new FloatParameter(1.f, NormalizedRange(), "holdlevel", "ratio"));
 	params.initParameter(3, new FloatParameter(100.f, NormalizedRange(1.f, 1700.f, 0.3f), "decay", "ms"));
-	params.initParameter(4, new FloatParameter(0.f, NormalizedRange(), "sustainBool", "bool"));
+	params.initParameter(4, new BoolParameter(false, "sustainBool"));
 	params.initParameter(5, new FloatParameter(100.f, NormalizedRange(1.f, 1700.f, 0.3f), "sustain", "ms"));
 	params.initParameter(6, new FloatParameter(1.0f, NormalizedRange(), "sustainLevel", "ratio"));
 	params.initParameter(7, new FloatParameter(100.f, NormalizedRange(1.f, 1700.f, 0.3f), "release", "ms"));
-	params.initParameter(8, new FloatParameter(0.f, NormalizedRange(0.f, 3.9f), "osc", ""));
 
+	const BhString names[5] = { "sine", "saw", "square", "triangle" };
+	params.initParameter(8, new OptionParameter(4u, names, "lfoWaveform", ""));
 }
 
-polyblepInstrument::~polyblepInstrument()
+PolysynthInstrument::~PolysynthInstrument()
 {
 }
 
-void polyblepInstrument::processVoice(VoiceState& voice, unsigned int timeInSamples, Sample* buffer, unsigned int numberOfSamples)
+void PolysynthInstrument::processVoice(VoiceState& voice, unsigned int timeInSamples, Sample* buffer, unsigned int numberOfSamples)
 {
+	const float attack = interpolatedParameters.get(0);
+	const float hold = interpolatedParameters.get(1);
+	const float holdLevel = interpolatedParameters.get(2);
+	const float decay = interpolatedParameters.get(3);
+	const bool sustainOn = interpolatedParameters.get(4) > 0.5 ? true : false;
+	const float sustainLevel = interpolatedParameters.get(6);
+	const float sustain = interpolatedParameters.get(5);
+	const float release = interpolatedParameters.get(7);
+	const unsigned int oscMode = static_cast<unsigned int>(interpolatedParameters.get(8));
 
-	float attack = interpolatedParameters.get(0);
-	float hold = interpolatedParameters.get(1);
-	float holdLevel = interpolatedParameters.get(2);
-	float decay = interpolatedParameters.get(3);
-	bool sustainOn = interpolatedParameters.get(4) > 0.5 ? true : false;
-	float sustainLevel = interpolatedParameters.get(6);
-	float sustain = interpolatedParameters.get(5);
-	float release = interpolatedParameters.get(7);
-	unsigned int oscMode = static_cast<unsigned int>(interpolatedParameters.get(8));
-
-
+	// oscMode 0: Sine
 	// oscMode 1: polyBLEP Sawtooth
-	// oscMode 2: polyBLEP Square (broken)
-	// oscMode 3: polyBLEP Triangle (broken)
+	// oscMode 2: polyBLEP Square 
+	// oscMode 3: polyBLEP Triangle
 
 	this->osc.setFrequency(aux::noteToFrequency(static_cast<float>(voice.key)));
 

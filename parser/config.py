@@ -63,10 +63,10 @@ plugins = {
 		'type': effect,
 		'numberOfParameters': 6,
 	},
-	'bh_glide_polyblep_synth': {
-		'class': 'glidePolyblepInstrument',
+	'bh_polysynth': {
+		'class': 'PolysynthInstrument',
 		'type': instrument,
-		'numberOfParameters': 18,
+		'numberOfParameters': 9,
 	},
 	'bh_gm_synth': {
 		'class': 'gmsynthInstrument',

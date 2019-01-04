@@ -18,7 +18,7 @@
 #include "ReturnDevice.h"
 #include "SendDevice.h"
 
-#include "polyblepInstrument.h"
+#include "PolysynthInstrument.h"
 #include "PanEffect.h"
 #include "gmsynthInstrument.h"
 #include "DistortionEffect.h"
