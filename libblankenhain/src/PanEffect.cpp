@@ -1,7 +1,7 @@
-#include "WidthEffect.h"
+#include "PanEffect.h"
 
 // Change the name and define parameters in constructor
-WidthEffect::WidthEffect() : EffectBase(9u, true), lfo()
+PanEffect::PanEffect() : EffectBase(9u, true), lfo()
 {
 	ParameterBundle& params = getParameterBundle();
 	// Insert your stuff here
@@ -20,7 +20,7 @@ WidthEffect::WidthEffect() : EffectBase(9u, true), lfo()
 	params.initParameter(8, new FloatParameter(0.f, NormalizedRange(-1.f, 1.f), "lfoBaseline", ""));
 }
 
-void WidthEffect::process(Sample* buffer, size_t numberOfSamples, size_t currentTime)
+void PanEffect::process(Sample* buffer, size_t numberOfSamples, size_t currentTime)
 {
 	float width = interpolatedParameters.get(0);
 	float panningValue = interpolatedParameters.get(1);
@@ -38,7 +38,7 @@ void WidthEffect::process(Sample* buffer, size_t numberOfSamples, size_t current
 	}
 }
 
-void WidthEffect::getModulation(float* modulationValues, size_t sampleOffset)
+void PanEffect::getModulation(float* modulationValues, size_t sampleOffset)
 {
 	float lfoPhase = interpolatedParameters.get(7);
 	float lfoBaseline = interpolatedParameters.get(8);

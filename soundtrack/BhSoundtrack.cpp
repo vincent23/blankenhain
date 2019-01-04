@@ -19,7 +19,7 @@
 #include "SendDevice.h"
 
 #include "polyblepInstrument.h"
-#include "WidthEffect.h"
+#include "PanEffect.h"
 #include "gmsynthInstrument.h"
 #include "DistortionEffect.h"
 #include "DelayEffect.h"

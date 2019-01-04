@@ -6,10 +6,10 @@
 #include "InterpolatedValue.h"
 #include "Oscillators.h"
 
-class WidthEffect : public EffectBase
+class PanEffect : public EffectBase
 {
 public:
-	WidthEffect();
+	PanEffect();
 	void process(Sample* buffer, size_t numberOfSamples, size_t currentTime) final;
 	void getModulation(float* modulationValues, size_t sampleOffset) final;
 	CommonLFO& getLFO()

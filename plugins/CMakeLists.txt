@@ -203,11 +203,11 @@ add_plugin("bh_chorus"
 	"ChorusPluginEditor.h"
 )
 
-add_plugin("bh_width"
-	"WidthPlugin.cpp"
-	"WidthPlugin.h"
-	"WidthPluginEditor.h"
-	"WidthPluginEditor.cpp"
+add_plugin("bh_pan"
+	"PanPlugin.cpp"
+	"PanPlugin.h"
+	"PanPluginEditor.h"
+	"PanPluginEditor.cpp"
 )
 
 add_plugin("bh_noisegate"

@@ -9,7 +9,7 @@
 #include "ParameterBundle.h"
 #include "AuxFunc.h"
 
-#include "WidthPlugin.h"
+#include "PanPlugin.h"
 
 #include <imgui.h>
 #include <cmath>
@@ -19,10 +19,10 @@
 
 #include "ImguiCustomFunctions.h"
 
-class WidthPluginEditor : public ImguiEffectEditor
+class PanPluginEditor : public ImguiEffectEditor
 {
 public:
-	WidthPluginEditor(PluginBase* plugin);
+	PanPluginEditor(PluginBase* plugin);
 
 protected:
 	void imguiFrame() override;

@@ -103,8 +103,8 @@ plugins = {
 		'type': effect,
 		'numberOfParameters': 10,
 	},
-	'bh_width': {
-		'class': 'WidthEffect',
+	'bh_pan': {
+		'class': 'PanEffect',
 		'type': effect,
 		'numberOfParameters': 9,
 	},
