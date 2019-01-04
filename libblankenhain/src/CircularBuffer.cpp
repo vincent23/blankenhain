@@ -38,7 +38,7 @@ void CircularBuffer<T>::reset(void)
 
 template <typename T>
 void CircularBuffer<T>::push(const T& in) {
-	unsigned int newPosition = (currentPosition + 1) & (length - 1);
+	const unsigned int newPosition = (currentPosition + 1) & (length - 1);
 	buffer[newPosition] = in;
 	currentPosition = newPosition;
 }
@@ -55,7 +55,7 @@ T CircularBuffer<T>::get(unsigned int delayToCurrentPosition_InSamples) const {
 	}
 #endif
 	// unsigned overflow will wrap around
-	unsigned int tapPosition = (currentPosition - delayToCurrentPosition_InSamples) & (length - 1);
+	const unsigned int tapPosition = (currentPosition - delayToCurrentPosition_InSamples) & (length - 1);
 	return buffer[tapPosition];
 }
 
@@ -70,7 +70,7 @@ T CircularBuffer<T>::getInterpolated(float delayToCurrentPosition_InSamples) con
 		throw "requested delay bigger than buffer size.";
 	}
 #endif
-	unsigned int delaySamplesInteger = static_cast<unsigned int>(delayToCurrentPosition_InSamples);
-	float fractionalPart = delayToCurrentPosition_InSamples - static_cast<float>(delaySamplesInteger); // probably not the most accurate way of doing this
-	return T(1.f - fractionalPart) * get(delayToCurrentPosition_InSamples) + T(fractionalPart) * get(delaySamplesInteger + 1);
+	const unsigned int delaySamplesInteger = static_cast<unsigned int>(delayToCurrentPosition_InSamples);
+	const float fractionalPart = delayToCurrentPosition_InSamples - static_cast<float>(delaySamplesInteger); // probably not the most accurate way of doing this
+	return T(1.f - fractionalPart) * get(delaySamplesInteger) + T(fractionalPart) * get(delaySamplesInteger + 1);
 }

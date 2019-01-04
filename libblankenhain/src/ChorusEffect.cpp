@@ -94,7 +94,7 @@ void ChorusEffect::process(Sample* buffer, size_t numberOfSamples, size_t curren
 		float currentSweepPosition = lfoValue * delayLength + delayLength;
 			
 		Sample inval = buffer[i];
-		Sample outval = delayLine.get((currentSweepPosition));
+		Sample outval = delayLine.get(static_cast<unsigned int>(currentSweepPosition));
 		delayLine.push(Sample(feedback) * outval + inval);
 
 		// Pan

@@ -28,8 +28,6 @@ void ChorusPluginEditor::imguiFrame()
 	ImGui::Separator();
 
 	const PluginParameterBundle& bundle = plugin.getParameters();
-	float tempoSyncOn = bundle.getParameterUnnormalized(10);
-
 
 	
 	renderParam(plugin, 8);
