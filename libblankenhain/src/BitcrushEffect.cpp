@@ -5,73 +5,50 @@
 #include "AuxFunc.h"
 #include "BhMath.h"
 
-BitcrushEffect::BitcrushEffect() : EffectBase(4)
+BitcrushEffect::BitcrushEffect() : EffectBase(3)
 {
 	ParameterBundle& params = getParameterBundle();
 
-	params.initParameter(0, new FloatParameter(100.f, NormalizedRange(1.f, 100.f, 0.15f), "Bitcrush", ""));
-	params.initParameter(1, new FloatParameter(0.f, NormalizedRange(), "Downsample", ""));
-	params.initParameter(2, new FloatParameter(0.f, NormalizedRange(), "Dry/Wet", "%"));
-	params.initParameter(3, new BoolParameter(true, "averageDownsampling"));
+	params.initParameter(0, new FloatParameter(16.f, NormalizedRange(1.f, 16.f), "Bitcrush", "bits"));
+	params.initParameter(1, new FloatParameter(1.f, NormalizedRange(1.f, 30.f), "Downsample", "samples"));
+	params.initParameter(2, new FloatParameter(1.f, NormalizedRange(), "Dry/Wet", "%"));
 }
 
 void BitcrushEffect::process(Sample* buffer, size_t numberOfSamples, size_t currentTime)
 {
 	const unsigned int bitcrush = static_cast<unsigned int>(interpolatedParameters.get(0));
-	const float downsample = interpolatedParameters.get(1);
+	const int downsample = static_cast<int>(interpolatedParameters.get(1));
 	const float drywet = interpolatedParameters.get(2);
-	const bool avgDownsample = interpolatedParameters.get(3) == 1.f;
 
-	unsigned int groupedSamples = aux::min(static_cast<unsigned int>(aux::max(1.f, downsample * static_cast<float>(numberOfSamples - 1u))), numberOfSamples);
-	int steps = bitcrush;
+	int steps1 = 1 << (bitcrush - 1);
+	int steps2 = 1 << bitcrush;
+	const Sample steps1Sample = Sample(static_cast<double>(steps1));
+	const Sample steps1InverseSample = Sample(1.) / steps1Sample;
+	const Sample steps2Sample = Sample(static_cast<double>(steps2));
+	const Sample steps2InverseSample = Sample(1.) / steps2Sample;
 
-	// Processing in groups of samples to perform downsampling. 
-	// numberOfSamples can be arbitrary, so first we take care of all "full" groups 
-	// according to our groupsize "groupedSamples".
+	float stepsFract = (interpolatedParameters.get(0) - static_cast<float>(bitcrush));
+	float downsampleFract = (interpolatedParameters.get(1) - static_cast<float>(downsample));;
 
-	for (size_t sample = 0; sample < numberOfSamples - groupedSamples; sample += groupedSamples)
+	for (size_t sample = 0; sample < numberOfSamples; sample++)
 	{
-		Sample averagedSample(0., 0.);
-		if (avgDownsample)
+		Sample discretizedSample1 = discretize(buffer[sample] * steps1Sample) * steps1InverseSample;
+		Sample discretizedSample2 = discretize(buffer[sample] * steps2Sample) * steps2InverseSample;
+		Sample discretizedSample = discretizedSample1 * Sample(stepsFract) + discretizedSample2 * Sample(1.f - stepsFract);
+		buffer[sample] = aux::mixDryWet(buffer[sample], discretizedSample, drywet);
+		if (discardedSamples >= (downsample - 1))
 		{
-			for (size_t i = 0; i < groupedSamples; i++)
+			lastSample1 = buffer[sample];
+			discardedSamples = 0;
+		}
+		else {
+			if (discardedSamples >= (downsample - 2))
 			{
-				averagedSample += buffer[i + sample] / Sample((double)groupedSamples);
+				lastSample2 = buffer[sample];
 			}
+			buffer[sample] = lastSample2 * Sample(downsampleFract) + lastSample1 * Sample(1.f - downsampleFract);
+			discardedSamples++;
 		}
-		else
-			averagedSample = buffer[sample];
-
-		Sample discretizedSample = discretize(averagedSample * Sample(static_cast<double>(steps)));
-		discretizedSample /= Sample(static_cast<double>(steps));
-
-		for (size_t i = 0; i < groupedSamples; i++) 
-		{
-			Sample sampleValue = buffer[i + sample];
-			buffer[i + sample] = sampleValue * Sample(1. - drywet) + discretizedSample * Sample(drywet);
-		}
-	}
-
-	// Take care of the remaining samples
-
-	Sample averagedSample(0., 0.);
-	if (avgDownsample)
-	{
-		for (size_t i = static_cast<size_t>(numberOfSamples / groupedSamples) * groupedSamples; i < numberOfSamples; i++)
-		{
-			averagedSample += buffer[i] / Sample(static_cast<double>((numberOfSamples % groupedSamples)));
-		}
-	}
-	else
-		averagedSample = buffer[static_cast<size_t>(numberOfSamples / groupedSamples) * groupedSamples];
-
-	Sample discretizedSample = discretize(averagedSample * Sample(static_cast<double>(steps)));
-	discretizedSample /= Sample(static_cast<double>(steps));
-
-	for (size_t i = static_cast<size_t>(numberOfSamples / groupedSamples) * groupedSamples; i < numberOfSamples; i++)
-	{
-		Sample sampleValue = buffer[i];
-		buffer[i] = sampleValue * Sample(1. - drywet) + discretizedSample * Sample(drywet);
 	}
 }
 
