@@ -5,7 +5,7 @@
 #include "AuxFunc.h"
 #include "BhMath.h"
 
-RhythmgateEffect::RhythmgateEffect() : EffectBase(20, true)
+RhythmgateEffect::RhythmgateEffect() : EffectBase(21, true)
 {
 	// 16 levels,
 	// attack release
@@ -21,89 +21,63 @@ RhythmgateEffect::RhythmgateEffect() : EffectBase(20, true)
 #endif
 		params.initParameter(i, new FloatParameter(1.f, NormalizedRange(), name, ""));
 	}
-	params.initParameter(16u, new FloatParameter(0.1f, NormalizedRange(0.1f, 1700.f, 0.23f), "attack", "ms"));
-	params.initParameter(17u, new FloatParameter(0.1f, NormalizedRange(0.1f, 1700.f, 0.23f), "release", "ms"));
-	params.initParameter(18u, new FloatParameter(1.f, NormalizedRange(0.0625f, 2.f, 0.23f), "multiplier", ""));
+	params.initParameter(16u, new FloatParameter(0.001f, NormalizedRange(0.001f, .999f), "attack", ""));
+	params.initParameter(17u, new FloatParameter(0.001f, NormalizedRange(0.001f, .999f), "release", ""));
+	float multiplierValues[7] = { 0.0625, 0.125, 0.25, 0.5, 1., 2., 4. };
+	params.initParameter(18u, new DiscreteParameter(7u, "beatMultiplier", "", multiplierValues, 4u));
 	params.initParameter(19u, new FloatParameter(0.f, NormalizedRange(0.f, 6000.f, 0.37f), "offset", "ms"));
+	params.initParameter(20u, new FloatParameter(1.f, NormalizedRange(0.f, 1.f), "DryWet", ""));
 }
 
 void RhythmgateEffect::process(Sample* buffer, size_t numberOfSamples, size_t currentTime)
 {
-
 	float params[16];
 	for (unsigned int i = 0u; i < 16u; i++)
 	{
 		params[i] = interpolatedParameters.get(i);
 	}
 
-
 	float attack = interpolatedParameters.get(16u);
 	float release = interpolatedParameters.get(17u);
 
 	float multiplier = interpolatedParameters.get(18u);
 	float offset = interpolatedParameters.get(19u);
-
-	float mult = 0.0625;
-	if (multiplier < 0.125f)
-		mult = 0.0625;
-	else if (multiplier < 0.25)
-		mult = 0.125f;
-	else if (multiplier < 0.5)
-		mult = 0.25;
-	else if (multiplier < 1.f)
-		mult = 0.5;
-	else if (multiplier < 1.5f)
-		mult = 1.f;
-	else if (multiplier >= 1.5)
-		mult = 2.f;
-
+	float drywet = interpolatedParameters.get(20u);
 
 	for (size_t bufferIteration = 0; bufferIteration < numberOfSamples; bufferIteration++)
 	{
-		float quarterNoteLength = (60.f /*seconds in a minute*/ * mult) / tempodata.bpm;
+		float quarterNoteLength = (60.f /*seconds in a minute*/ * multiplier) / tempodata.bpm; // in seconds
 		float sixteenthNoteLength = quarterNoteLength / 4.f;
 		float wholeBeatLength = sixteenthNoteLength * 16.f;
 		float currentSecond = static_cast<float>(tempodata.position) / constants::sampleRate;
 
-		if (offset != 0.f)
-			if(offset > 0.f)
-				currentSecond += offset / 1000.f;
+		currentSecond += offset / 1000.f;
 
-		float currentPartialBeatInSecond = BhMath::fmod(currentSecond, wholeBeatLength);
+		float currentPartialBeatInSeconds = BhMath::fmod(currentSecond, wholeBeatLength);
 		float currentPartialSixteenthInSeconds = BhMath::fmod(currentSecond, sixteenthNoteLength);
-		float crelease = release;
-		float cattack = attack;
-		unsigned int whichSixteenthAreWeIn = static_cast<unsigned int>(currentPartialBeatInSecond / sixteenthNoteLength);
-		whichSixteenthAreWeIn = whichSixteenthAreWeIn == 0u ? 15u : whichSixteenthAreWeIn - 1u;
-
-
-
-		if (crelease > sixteenthNoteLength * 1000.f)
-			crelease = sixteenthNoteLength * 1000.f - 2.f;
-		if (cattack > sixteenthNoteLength * 1000.f - crelease)
-			cattack = sixteenthNoteLength * 1000.f - crelease;
-			
+		float currentPartialSixteenthPercent = currentPartialSixteenthInSeconds / sixteenthNoteLength;
+		unsigned int whichSixteenthAreWeIn = static_cast<unsigned int>(currentPartialBeatInSeconds / sixteenthNoteLength);
 		unsigned int lastSixteenth = whichSixteenthAreWeIn == 0 ? 15 : whichSixteenthAreWeIn - 1u;
-		unsigned int nextSixteenth = whichSixteenthAreWeIn == 15u ? 0u : whichSixteenthAreWeIn + 1u;
 
+		float last = params[lastSixteenth];
+		float current = params[whichSixteenthAreWeIn];
 
-		if (params[lastSixteenth] > params[whichSixteenthAreWeIn]
-			&& currentPartialSixteenthInSeconds * 1000.f < crelease)
+		float cmult;
+		if (current < last  && currentPartialSixteenthPercent < release)
 		{
-			float releaseFrac = (currentPartialSixteenthInSeconds * 1000.f / crelease);
-			float cmult = params[lastSixteenth] + releaseFrac * (params[whichSixteenthAreWeIn] - params[lastSixteenth]);
-			buffer[bufferIteration] *= Sample(cmult);
+			cmult = last + (currentPartialSixteenthPercent / release) * (current - last);
 		}
-		else if (params[nextSixteenth] > params[whichSixteenthAreWeIn]
-			&& (sixteenthNoteLength - currentPartialSixteenthInSeconds) * 1000.f < cattack)
+		else if (current > last && currentPartialSixteenthPercent < attack)
 		{
-			float attackFrac = 1.f - ((sixteenthNoteLength - currentPartialSixteenthInSeconds) * 1000.f) / cattack;
-			float cmult = params[whichSixteenthAreWeIn] + attackFrac * (params[nextSixteenth] - params[whichSixteenthAreWeIn]);
-			buffer[bufferIteration] *= Sample(cmult);
+			cmult = last + (currentPartialSixteenthPercent / attack) * (current - last);
 		}
 		else
 		{
-			buffer[bufferIteration] *= Sample(params[whichSixteenthAreWeIn]);
+			cmult = params[whichSixteenthAreWeIn];
 		}
+
+		Sample dry = buffer[bufferIteration];
+		Sample wet = dry * Sample(cmult);
+		buffer[bufferIteration] = aux::mixDryWet(dry, wet, drywet);
 	}
 }
