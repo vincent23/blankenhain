@@ -30,4 +30,5 @@ private:
 	float freqPrev;
 	unsigned int notePrev;
 	unsigned int timeNoteOff;
+	float lastUsedAHDSRMultiplier;
 };

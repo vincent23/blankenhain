@@ -34,18 +34,21 @@ private:
 };
 
 template <typename T>
-void performAHDSR(
+float performAHDSR(
 	T* buffer, VoiceState& voice, unsigned int timeInSamples, unsigned int sampleIndex,
 	float attackInMs, float releaseInMs, float holdInMs = 1.f, float decayInMs = 1.f, float sustainInMs = 1.f,
-	bool useSustainEvenIfNoteStillOn = false, float normalizedSustainLevel = 1.f, float normalizedHoldLevel = 1.f
+	bool useSustainEvenIfNoteStillOn = false, float normalizedSustainLevel = 1.f, float normalizedHoldLevel = 1.f,
+	float rampStartingFromThisMultiplier = 0.f
 )
 {
-	float attackInSamples = aux::millisecToSamples(attackInMs);
-	float holdInSamples = aux::millisecToSamples(holdInMs);
-	float decayInSamples = aux::millisecToSamples(decayInMs);
-	float sustainInSamples = aux::millisecToSamples(sustainInMs);
-	float releaseInSamples = aux::millisecToSamples(releaseInMs);
-	unsigned int deltaTinSamples = (timeInSamples + sampleIndex) - voice.onTime;
+	const float attackInSamples = aux::millisecToSamples(attackInMs);
+	const float holdInSamples = aux::millisecToSamples(holdInMs);
+	const float decayInSamples = aux::millisecToSamples(decayInMs);
+	const float sustainInSamples = aux::millisecToSamples(sustainInMs);
+	const float releaseInSamples = aux::millisecToSamples(releaseInMs);
+	const unsigned int deltaTinSamples = (timeInSamples + sampleIndex) - voice.onTime;
+
+	float multiplierCurrentlyUsed = 0.f;
 
 	if (voice.isOn)
 	{
@@ -53,22 +56,22 @@ void performAHDSR(
 		{
 			if (deltaTinSamples <= attackInSamples)
 			{
-				buffer[sampleIndex] *= T((deltaTinSamples / attackInSamples) * normalizedHoldLevel);
+				multiplierCurrentlyUsed = (deltaTinSamples / attackInSamples) * normalizedHoldLevel + rampStartingFromThisMultiplier * (1.f - (deltaTinSamples / attackInSamples));
 			}
 			else if (deltaTinSamples < attackInSamples + holdInSamples)
 			{
-				buffer[sampleIndex] *= T(normalizedHoldLevel);
+				multiplierCurrentlyUsed = normalizedHoldLevel;
 			}
 			else if (deltaTinSamples < attackInSamples + holdInSamples + decayInSamples)
 			{
 				if(decayInSamples != 0.f)
-					buffer[sampleIndex] *= T((normalizedSustainLevel - normalizedHoldLevel) / decayInSamples * (deltaTinSamples - attackInSamples - holdInSamples) + normalizedHoldLevel);
+					multiplierCurrentlyUsed = (normalizedSustainLevel - normalizedHoldLevel) / decayInSamples * (deltaTinSamples - attackInSamples - holdInSamples) + normalizedHoldLevel;
 				else
-					buffer[sampleIndex] *= T(normalizedHoldLevel);
+					multiplierCurrentlyUsed = normalizedHoldLevel;
 			}
 			else
 			{
-				buffer[sampleIndex] *= T(normalizedSustainLevel);
+				multiplierCurrentlyUsed = normalizedSustainLevel;
 				if (useSustainEvenIfNoteStillOn && deltaTinSamples > attackInSamples + holdInSamples + decayInSamples + sustainInSamples)
 					voice.off(timeInSamples + sampleIndex);
 			}
@@ -91,14 +94,16 @@ void performAHDSR(
 				lastAmplitudeRelative = (normalizedSustainLevel - normalizedHoldLevel) / decayInSamples * (deltaTinSamples - attackInSamples - holdInSamples) + normalizedHoldLevel;
 			else
 				lastAmplitudeRelative = normalizedSustainLevel;
-			float releaseFactor = (1 - (deltaToff / releaseInSamples)) * lastAmplitudeRelative;
-			buffer[sampleIndex] *= T(releaseFactor);
+			const float releaseFactor = (1 - (deltaToff / releaseInSamples)) * lastAmplitudeRelative;
+			multiplierCurrentlyUsed = releaseFactor;
 		}
 		else
 		{
 			// switch off note immediately
-			buffer[sampleIndex] = T(0.f);
+			multiplierCurrentlyUsed = 0.f;
 			voice.isSilent = true;
 		}
 	}
+	buffer[sampleIndex] *= T(multiplierCurrentlyUsed);
+	return multiplierCurrentlyUsed;
 }

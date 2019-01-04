@@ -48,21 +48,30 @@ float NaiveOscillator::naiveWaveformForMode(NaiveOscillatorMode mode, Oscillator
 	float value;
     switch (mode) {
         case OSCILLATOR_MODE_SINE:
-            value = BhMath::sin(mPhase.getValue() + phase.getValue());
-            break;
+		{
+			value = BhMath::sin(mPhase.getValue() + phase.getValue());
+			break;
+		}
         case OSCILLATOR_MODE_SAW:
-            value = (BhMath::fmod(mPhase.getValue() + phase.getValue(), 2.f * (constants::pi)) / constants::pi) - 1.f;
-            break;
+		{
+			value = (BhMath::fmod(mPhase.getValue() + phase.getValue(), 2.f * (constants::pi)) / constants::pi) - 1.f;
+			break;
+		}
         case OSCILLATOR_MODE_SQUARE:
-            if (BhMath::fmod(mPhase.getValue() + phase.getValue(), 2.f * (constants::pi)) < (constants::pi)) {
-                value = 1.f;
-            } else {
-                value = -1.f;
-            }
-            break;
+		{
+			if (BhMath::fmod(mPhase.getValue() + phase.getValue(), 2.f * (constants::pi)) < (constants::pi))
+			{
+				value = 1.f;
+			}
+			else
+			{
+				value = -1.f;
+			}
+			break;
+		}
         case OSCILLATOR_MODE_TRIANGLE:
 		{
-			float tempvalue = -1.f + (BhMath::fmod(mPhase.getValue() + phase.getValue(), 2.f * (constants::pi)) / (constants::pi));
+			const float tempvalue = -1.f + (BhMath::fmod(mPhase.getValue() + phase.getValue(), 2.f * (constants::pi)) / (constants::pi));
 			value = 2.f * (BhMath::abs(tempvalue) - 0.5f);
 			break;
 		}
@@ -154,10 +163,11 @@ float PolyBLEPOscillator::getNextSample(OscillatorPhase phase)
 		value = naiveWaveformForMode(OSCILLATOR_MODE_SAW, phase.getValue());
 		value -= poly_blep(t);
 	}
-	else {
+	else 
+	{
 		value = naiveWaveformForMode(OSCILLATOR_MODE_SQUARE, phase.getValue());
 		value += poly_blep(t);
-		float temp = BhMath::fmod(t + 0.5f, 1.f);
+		const float temp = BhMath::fmod(t + 0.5f, 1.f);
 		value -= poly_blep(temp);
 		if (mOscillatorMode == OSCILLATOR_MODE_TRIANGLE)
 		{

@@ -5,7 +5,7 @@
 #include "VoiceState.h"
 
 glidePolyblepInstrument::glidePolyblepInstrument()
-	: InstrumentBase(18, 1, true), noise(), currentOsc(&noise)
+	: InstrumentBase(18, 1, true), noise(), currentOsc(&noise), lastUsedAHDSRMultiplier(0.f)
 {
 	ParameterBundle& params = getParameterBundle();
 
@@ -116,7 +116,10 @@ void glidePolyblepInstrument::processVoice(VoiceState& voice, unsigned int timeI
 		// evalutate Frequency as usual
 		currentOsc->setFrequency(currentFreq);
 		buffer[sampleIndex] = Sample(currentOsc->getNextSample());
-		performAHDSR<Sample>(buffer, voice, timeInSamples, sampleIndex, attack, release, hold, decay, sustain, sustainOn, sustainLevel, holdLevel);
+		if (timeSinceNoteOff <= aux::millisecToSamples(attack))
+			performAHDSR<Sample>(buffer, voice, timeInSamples, sampleIndex, attack, release, hold, decay, sustain, sustainOn, sustainLevel, holdLevel,lastUsedAHDSRMultiplier);
+		else
+			lastUsedAHDSRMultiplier = performAHDSR<Sample>(buffer, voice, timeInSamples, sampleIndex, attack, release, hold, decay, sustain, sustainOn, sustainLevel, holdLevel);
 	}
 }
 

@@ -165,6 +165,7 @@ static void renderADHSR(PluginBase& plugin, ImVec2 const& size = ImGui::GetConte
 
 	ImVec2 availRest = ImGui::GetContentRegionAvail();
 	availRest.x *= 2.f / 3.f;
+	availRest.y *= 2.f / 3.f;
 
 	// We paint dashes at beats if tempodata is supplied
 	if (tempoData != nullptr)
