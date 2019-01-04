@@ -177,9 +177,9 @@ add_plugin("bh_gm_synth"
 	"gmsynthInstrumentPluginEditor.cpp"
 )
 
-add_plugin("bh_freeverb"
-	"freeverbPlugin.cpp"
-	"freeverbPlugin.h"
+add_plugin("bh_reverb"
+	"ReverbPlugin.cpp"
+	"ReverbPlugin.h"
 )
 
 add_plugin("bh_rhythmgate"

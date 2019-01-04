@@ -23,7 +23,7 @@
 #include "gmsynthInstrument.h"
 #include "DistortionEffect.h"
 #include "DelayEffect.h"
-#include "freeverbEffect.h"
+#include "ReverbEffect.h"
 #include "VolumeEffect.h"
 #include "EqualizerEffect.h"
 #include "CompressorEffect.h"
