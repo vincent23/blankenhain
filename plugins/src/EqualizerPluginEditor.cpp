@@ -6,6 +6,7 @@
 #include "ParameterBundle.h"
 #include "AuxFunc.h"
 #include "EqualizerEffect.h"
+#include "ImguiCustomFunctions.h"
 
 #include <imgui.h>
 #include <cmath>
@@ -19,61 +20,37 @@ EqualizerPluginEditor::EqualizerPluginEditor(PluginBase* plugin)
 
 void EqualizerPluginEditor::imguiFrame()
 {
-	// some hacky gui code
-	// don't use as an example
-
 	ImGuiIO& io = ImGui::GetIO();
 	ImGui::SetNextWindowPos(ImVec2(0, 0));
 	ImGui::SetNextWindowSize(io.DisplaySize);
 	ImGui::Begin("test", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize);
+
+	ImGui::RadioButton("1st", &item, 0); ImGui::SameLine();
+	ImGui::RadioButton("2nd", &item, 1); ImGui::SameLine();
+	ImGui::RadioButton("3rd", &item, 2); ImGui::SameLine();
+	ImGui::RadioButton("4th", &item, 3); ImGui::SameLine();
+	ImGui::RadioButton("5th", &item, 4); ImGui::SameLine();
+	ImGui::RadioButton("6th", &item, 5); ImGui::SameLine();
+	ImGui::RadioButton("7th", &item, 6); ImGui::SameLine();
+	ImGui::RadioButton("8th", &item, 7);
+
+
+	ImGui::Separator();
+	renderParam(plugin, item * 5 + 1); // on
+	renderParam(plugin, item * 5 + 2, 0.0007f); // freq
+	renderParam(plugin, item * 5 + 3); // gain
+	renderParam(plugin, item * 5 + 4); // q
+	renderParam(plugin, item * 5 + 5); // filter style
+
+	// plot equalizer response
 	const unsigned int nPoints = 250;
 	float points[nPoints];
 	double nyquist = constants::sampleRate * .5;
-	const PluginParameterBundle& bundle = plugin.getParameters();
-	ImGui::Combo("filter", &item, " 1st\0 2nd\0 3rd\0 4th\0 5th\0 6th\0 7th\0 8th\0\0");
-	bool isOnPrevious = bundle.getParameterUnnormalized(item * 5 + 1) >= .5;
-	bool isOn = isOnPrevious;
-	if (ImGui::Checkbox("on", &isOn)) {
-		OutputDebugStringA("test");
-	}
-	if (isOn != isOnPrevious) {
-		// TODO
-		plugin.setParameterAutomated(item * 5 + 1, isOn ? .75f : .25f);
-	}
-	const NormalizedRange& frequencyRange = bundle.getParameter(2)->getRange();
-	float unnormalizedFrequency = bundle.getParameterUnnormalized(item * 5 + 2);
-	float frequencyMin = frequencyRange.getStart();
-	float frequencyMax = frequencyRange.getEnd();
-	float frequencySkew = frequencyRange.getSkew();
-	if (ImGui::DragFloat("frequency", &unnormalizedFrequency, .01f, frequencyMin, frequencyMax, "%.3f", 1 / frequencySkew))
-	{
-		plugin.setParameterAutomated(item * 5 + 2, frequencyRange.toNormalized(unnormalizedFrequency));
-	}
-	const NormalizedRange& gainRange = bundle.getParameter(3)->getRange();
-	float unnormalizedGain = bundle.getParameterUnnormalized(item * 5 + 3);
-	float gainMin = gainRange.getStart();
-	float gainMax = gainRange.getEnd();
-	float gainSkew = gainRange.getSkew();
-	if (ImGui::DragFloat("Gain", &unnormalizedGain, .1f, gainMin, gainMax, "%.3f", 1 / gainSkew))
-	{
-		plugin.setParameterAutomated(item * 5 + 3, gainRange.toNormalized(unnormalizedGain));
-	}
-	const NormalizedRange& qRange = bundle.getParameter(4)->getRange();;
-	float unnormalizedQ = bundle.getParameterUnnormalized(item * 5 + 4);
-	float qMin = qRange.getStart();
-	float qMax = qRange.getEnd();
-	float qSkew = qRange.getSkew();
-	if (ImGui::DragFloat("Q", &unnormalizedQ, .01f, qMin, qMax, "%.3f", 1 / qSkew))
-	{
-		plugin.setParameterAutomated(item * 5 + 4, qRange.toNormalized(unnormalizedQ));
-	}
-	int type = (int)bundle.getParameterUnnormalized(item * 5 + 5);
-	if (ImGui::Combo("type", &type, "High pass\0Low shelf\0Bell\0Notch\0High shelf\0Low pass\0\0")) {
-		plugin.setParameterAutomated(item * 5 + 5, ((type + .1f) / 6.f));
-	}
 	for (unsigned int i = 0; i < nPoints; i++) {
 		points[i] = 0;
 	}
+	const PluginParameterBundle& bundle = plugin.getParameters();
+	const NormalizedRange& frequencyRange = bundle.getParameter(2)->getRange();
 	for (unsigned int filterIndex = 0; filterIndex < numberOfEqualizerFilters; filterIndex++) {
 		bool off = bundle.getParameterUnnormalized(filterIndex * 5 + 1) < .5;
 		if (off) {
@@ -137,6 +114,18 @@ void EqualizerPluginEditor::imguiFrame()
 			points[i] += aux::linearToDecibel((float)std::abs(H));
 		}
 	}
-	ImGui::PlotLines("##freqresponse", points, nPoints, 0, 0, -15.f, 15.f, ImGui::GetContentRegionAvail());
+	ImVec2 pos = ImGui::GetCursorScreenPos();
+	ImVec2 plotSize = ImGui::GetContentRegionAvail();
+	ImDrawList& drawList = *ImGui::GetWindowDrawList();
+	float const y0 = .5f;
+	float const y_p6 = .5f + (6.f / 15.f) * .5f;
+	float const y_m6 = .5f - (6.f / 15.f) * .5f;
+	ImU32 lightgrey = ImColor(150, 150, 150);
+	drawList.AddLine(ImVec2(pos.x, y0 * plotSize.y + pos.y), ImVec2(plotSize.x + pos.x, y0 * plotSize.y + pos.y), lightgrey);
+	drawList.AddLine(ImVec2(pos.x, y_p6 * plotSize.y + pos.y), ImVec2(plotSize.x + pos.x, y_p6 * plotSize.y + pos.y), lightgrey);
+	drawList.AddLine(ImVec2(pos.x, y_m6 * plotSize.y + pos.y), ImVec2(plotSize.x + pos.x, y_m6 * plotSize.y + pos.y), lightgrey);
+
+	ImGui::PlotLines("##freqresponse", points, nPoints, 0, 0, -15.f, 15.f, plotSize);
+
 	ImGui::End();
 }

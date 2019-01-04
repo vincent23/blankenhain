@@ -24,18 +24,12 @@ EqualizerEffect::EqualizerEffect() : EffectBase(1 + 5 * numberOfEqualizerFilters
 		qName = nullptr;
 		typeName = nullptr;
 #endif
-		params.initParameter(filterIndex * 5 + 1, new FloatParameter(0.f, NormalizedRange(0.f, 1.f), onName, ""));
+		params.initParameter(filterIndex * 5 + 1, new BoolParameter(false, onName));
 		params.initParameter(filterIndex * 5 + 2, new FloatParameter(850.f, NormalizedRange::fromMidpoint(20.f, 850.f, 22000.f), freqName, "Hz"));
 		params.initParameter(filterIndex * 5 + 3, new FloatParameter(0.f, NormalizedRange(-15.f, 15.f), gainName, "dB"));
 		params.initParameter(filterIndex * 5 + 4, new FloatParameter(0.71f, NormalizedRange::fromMidpoint(.1f, 1.34f, 18.f), qName, ""));
-		// types:
-		// 0: highpass
-		// 1: low shelf
-		// 2: bell
-		// 3: notch
-		// 4: high shelf
-		// 5: lowpass
-		params.initParameter(filterIndex * 5 + 5, new FloatParameter(0.f, NormalizedRange(0.f, 5.99f), typeName, ""));
+		BhString filterStyles[6] = { "High pass", "Low shelf", "Bell", "Notch", "High shelf", "Low pass" };
+		params.initParameter(filterIndex * 5 + 5, new OptionParameter(6u, filterStyles, typeName, ""));
 	}
 }
 
