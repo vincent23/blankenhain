@@ -2,7 +2,7 @@
 #include "freeverbEffect.h"
 
 // TODO improve initialization (maybe some template magic?)
-freeverbEffect::freeverbEffect() : EffectBase(6u)
+freeverbEffect::freeverbEffect() : EffectBase(4u)
 , combLP_{ getCombLP(),getCombLP(),getCombLP(),getCombLP(),getCombLP(),getCombLP(),getCombLP(),getCombLP() }
 , combDelay_l{ getCombDelay(),getCombDelay(),getCombDelay(),getCombDelay(),getCombDelay(),getCombDelay(),getCombDelay(),getCombDelay() }
 , combDelay_r{ getCombDelay(),getCombDelay(),getCombDelay(),getCombDelay(),getCombDelay(),getCombDelay(),getCombDelay(),getCombDelay() }
@@ -15,9 +15,7 @@ freeverbEffect::freeverbEffect() : EffectBase(6u)
 	params.initParameter(0, new FloatParameter(0.75f, NormalizedRange(), "roomSize", ""));
 	params.initParameter(1, new FloatParameter(0.25f, NormalizedRange(), "damping", ""));
 	params.initParameter(2, new FloatParameter(0.f, NormalizedRange(), "width", ""));
-	params.initParameter(3, new FloatParameter(0.f, NormalizedRange(true), "mode", "bool"));
-	params.initParameter(4, new FloatParameter(-6.f, NormalizedRange(-120.f, 0.f, 5.f), "dry", "dB"));
-	params.initParameter(5, new FloatParameter(-60.f, NormalizedRange(-120.f, 0.f, 5.f), "wet", "dB"));
+	params.initParameter(3, new FloatParameter(0., NormalizedRange(0.f,100.f, 0.5f), "DryWet", ""));
 }
 
 OnePoleFilter<Sample> freeverbEffect::getCombLP()
@@ -95,17 +93,13 @@ void freeverbEffect::resetEffect()
  */
 void freeverbEffect::process(Sample* buffer, size_t numberOfSamples, size_t currentTime)
 {
-	float roomSize = interpolatedParameters.get(0);
-	float width = interpolatedParameters.get(2);
+	const float roomSize = interpolatedParameters.get(0);
+	const float width = interpolatedParameters.get(2);
 
-	const bool mode = interpolatedParameters.get(3) > 0.5 ? true : false;
+	const float damping = interpolatedParameters.get(1) * scaleDamp;
 
-	float damping = interpolatedParameters.get(1);
-	damping = mode ? 0.f : damping * scaleDamp;
-	const Sample currentRoomSize = Sample(mode ? 1.f : (roomSize * scaleRoom) + offsetRoom);
-	InterpolatedValue<float> const& dry = interpolatedParameters.get(4);
-	InterpolatedValue<float> const& wet = interpolatedParameters.get(5);
-
+	const Sample currentRoomSize = Sample((roomSize * scaleRoom) + offsetRoom);
+	InterpolatedValue<float> const& drywet = interpolatedParameters.get(3);
 
 	// set low pass filter for delay output
 	for (unsigned int i = 0; i < nCombs; i++)
@@ -113,13 +107,10 @@ void freeverbEffect::process(Sample* buffer, size_t numberOfSamples, size_t curr
 		combLP_[i].setParams(Sample(1.0 - damping), Sample(-1.0 * damping));
 	}
 
-	float widthConst = width;
-	float wetBefore = aux::decibelToLinear(wet.get());
-	float dryBefore = aux::decibelToLinear(dry.get());
-	float wetAfter = aux::decibelToLinear(wet.get(numberOfSamples));
-	float dryAfter = aux::decibelToLinear(dry.get(numberOfSamples));
-	InterpolatedValue<float> wetDb(wetBefore, wetAfter, numberOfSamples);
-	InterpolatedValue<float> dryDb(dryBefore, dryAfter, numberOfSamples);
+	const float widthConst = width;
+	const float drywetBefore = drywet.get() / 100.f;
+	const float drywetAfter = drywet.get(numberOfSamples) / 100.f;
+	InterpolatedValue<float> drywetInterpol(drywetBefore, drywetAfter, numberOfSamples);
 
 	Sample input[constants::blockSize];
 	for (unsigned int i = 0; i < numberOfSamples; i++) {
@@ -134,9 +125,9 @@ void freeverbEffect::process(Sample* buffer, size_t numberOfSamples, size_t curr
 		for (size_t i = 0; i < numberOfSamples; i++)
 		{
 			// Left channel
-			float delayedLeft = combDelay_l[j].get(cDelayLengths[j]);
-			float delayedRight = combDelay_r[j].get(cDelayLengths[j] + 23);
-			Sample delayed(delayedLeft, delayedRight);
+			const float delayedLeft = combDelay_l[j].get(cDelayLengths[j]);
+			const float delayedRight = combDelay_r[j].get(cDelayLengths[j] + 23);
+			const Sample delayed(delayedLeft, delayedRight);
 			Sample yn = input[i] + (currentRoomSize * combLP_[j].tick(delayed));
 			yn.store_aligned(lr);
 			combDelay_l[j].push(static_cast<float>(lr[0]));
@@ -151,9 +142,9 @@ void freeverbEffect::process(Sample* buffer, size_t numberOfSamples, size_t curr
 		for (size_t i = 0; i < numberOfSamples; i++)
 		{
 			// Left channel
-			float vn_m_left = allPassDelay_l[j].get(aDelayLengths[j]);
-			float vn_m_right = allPassDelay_r[j].get(aDelayLengths[j] + 23);
-			Sample vn_m(vn_m_left, vn_m_right);
+			const float vn_m_left = allPassDelay_l[j].get(aDelayLengths[j]);
+			const float vn_m_right = allPassDelay_r[j].get(aDelayLengths[j] + 23);
+			const Sample vn_m(vn_m_left, vn_m_right);
 			Sample vn = buffer[i] + g_ * vn_m;
 			vn.store_aligned(lr);
 			allPassDelay_l[j].push(static_cast<float>(lr[0]));
@@ -164,12 +155,21 @@ void freeverbEffect::process(Sample* buffer, size_t numberOfSamples, size_t curr
 		}
 	}
 
+
+
 	for (size_t i = 0; i < numberOfSamples; i++)
 	{
+		const float drywetCur = drywetInterpol.get(i);
+		const float wetIn = drywetCur >= 0.5f ? 1.f : drywetCur * 2.f;
+		const Sample wet1(wetIn * (widthConst * .5f + .5f));
+		const Sample wet2(wetIn * (.5f - widthConst * .5f));
 		// Mix output
-		float wetIn = wetDb.get();
-		Sample wet1(wetIn * (widthConst * .5f + .5f));
-		Sample wet2(wetIn * (.5f - widthConst * .5f));
-		buffer[i] = wet1 * buffer[i] + wet2 * buffer[i].flippedChannels() + input[i] * Sample(dryDb.get());
+		// Correct way too loud wet volume
+		buffer[i] /= Sample((nCombs+nAllpasses) * 2.f);
+		// And some more headspace via magic number....
+		buffer[i] *= Sample(aux::decibelToLinear(-3.f));
+
+		buffer[i] = wet1 * buffer[i] + wet2 * buffer[i].flippedChannels();
+		buffer[i] += input[i] * Sample(drywetCur >= 0.5f ? (1.0f - drywetCur) * 2.f : 1.f);
 	}
 }
