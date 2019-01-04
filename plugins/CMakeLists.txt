@@ -80,8 +80,8 @@ target_compile_definitions(imgui PRIVATE _CRT_SECURE_NO_WARNINGS)
 
 include_directories("include")
 include_directories("../libblankenhain/include")
-add_library(bh_plugins_common STATIC ${HEADERS} ${SOURCES})
-target_link_libraries(bh_plugins_common vst2 imgui)
+add_library(libplugin STATIC ${HEADERS} ${SOURCES})
+target_link_libraries(libplugin vst2 imgui)
 
 set(PLUGIN_PATH "" CACHE PATH "Path to VST plugin install location")
 
@@ -92,7 +92,7 @@ function(add_plugin name)
 	# for now, add vstplugmain.cpp to each plugin separately so VSTPluginMain will be exported
 	set(PLUGIN_SOURCES ${PLUGIN_SOURCES} "deps/vst2/public.sdk/source/vst2.x/vstplugmain.cpp")
 	add_library(${name} SHARED ${PLUGIN_SOURCES})
-	target_link_libraries(${name} libblankenhain bh_plugins_common ${OPENGL_LIBRARIES})
+	target_link_libraries(${name} libblankenhain libplugin ${OPENGL_LIBRARIES})
 	if(PLUGIN_PATH)
 		install(TARGETS ${name} RUNTIME DESTINATION ${PLUGIN_PATH})
 	endif()
