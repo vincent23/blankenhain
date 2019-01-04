@@ -20,7 +20,7 @@ ChorusEffect::ChorusEffect()
 	params.initParameter(6, new OptionParameter(4u, names, "lfoWaveform", ""));
 	params.initParameter(7, new FloatParameter(0.f, NormalizedRange(0.f, 2.f * constants::pi), "lfoPhase", ""));
 	params.initParameter(8, new FloatParameter(0.f, NormalizedRange(-50.f, 50.f), "pan", ""));
-	params.initParameter(9, new FloatParameter(5.f, NormalizedRange(0.005f, 1.f, 0.3f), "lfoSpeed", "Hz"));
+	params.initParameter(9, new FloatParameter(5.f, NormalizedRange(0.005f, 10.f, 0.3f), "lfoSpeed", "Hz"));
 	params.initParameter(10, new BoolParameter(false, "tempoSyncOn"));
 	const float multiplierValues[7] = { 0.0625, 0.125, 0.25, 0.5, 1., 2., 4. };
 	params.initParameter(11, new DiscreteParameter(7u, "multiplier", "", multiplierValues, 4u));
