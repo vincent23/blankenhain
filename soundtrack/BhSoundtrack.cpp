@@ -34,7 +34,6 @@
 #include "MonosynthInstrument.h"
 #include "LimiterEffect.h"
 
-#include "ExampleInstrument.h"
 #include "AbletonTrackMixerVolumeEffect.h"
 
 void blankenhain::render(float* buffer)

@@ -131,13 +131,6 @@ add_plugin("bh_equalizer"
 	"EqualizerPluginEditor.h"
 )
 
-add_plugin("bh_example"
-	"ExamplePlugin.cpp"
-	"ExamplePlugin.h"
-	"ExamplePluginEditor.cpp"
-	"ExamplePluginEditor.h"
-)
-
 add_plugin("bh_filter"
 	"FilterPlugin.cpp"
 	"FilterPlugin.h"
@@ -150,11 +143,6 @@ add_plugin("bh_volume"
 	"VolumePlugin.h"
 	"VolumePluginEditor.h"
 	"VolumePluginEditor.cpp"
-)
-
-add_plugin("bh_example_synth"
-	"ExampleInstrumentPlugin.cpp"
-	"ExampleInstrumentPlugin.h"
 )
 
 add_plugin("bh_polyblep_synth"
