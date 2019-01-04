@@ -6,6 +6,7 @@ DistortionPlugin::DistortionPlugin(audioMasterCallback audioMaster)
 	: PluginBase(audioMaster, new DistortionEffect)
 {
 	setUniqueID('bhDi');
+	setEditor(new DistortionPluginEditor(this));
 }
 
 AudioEffect* createEffectInstance(audioMasterCallback audioMaster)

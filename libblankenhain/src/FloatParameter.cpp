@@ -100,7 +100,7 @@ void BoolParameter::setTargetValueNormalized(float normalizedValue)
 
 void BoolParameter::next(unsigned int numberOfSamples)
 {
-	// no interpolation for IntegerParam
+	// no interpolation for BoolParam
 }
 
 void BoolParameter::setTargetValueUnnormalized(float unnormalizedValue) 

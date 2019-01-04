@@ -9,21 +9,23 @@ DistortionEffect::DistortionEffect() : EffectBase(4)
 {
 	ParameterBundle& params = getParameterBundle();
 	params.initParameter(0, new FloatParameter(0.f, NormalizedRange(-12.f, 12.f, 1.f), "inGain", "dB"));
-	params.initParameter(1, new FloatParameter(0.f, NormalizedRange(0.f, 10.f, 1.f), "iterations", ""));
-	params.initParameter(2, new FloatParameter(1.f, NormalizedRange(), "algorithm", ""));
+	params.initParameter(1, new FloatParameter(0.f, NormalizedRange(0.f, 10.f, 1.f), "Intensity", "")); // Is number of iterations the nonlin. transform. is applied
+	const BhString distorStyles[3] = { "Araya & Suyama", "Doidic - Symmetric", "Doidic - Asymmetric" };
+	params.initParameter(2, new OptionParameter(3u, distorStyles, "Algorithm", ""));
 	params.initParameter(3, new FloatParameter(0.f, NormalizedRange(0.f, 1.f, 0.3f), "dry/wet", "skewed"));
 }
 
 void DistortionEffect::process(Sample* buffer, size_t numberOfSamples, size_t currentTime)
 {
-	float inGain = interpolatedParameters.get(0);
-	float drywet = interpolatedParameters.get(3);
-	size_t iterations = static_cast<size_t>(interpolatedParameters.get(1));
+	const float inGain = interpolatedParameters.get(0);
+	const float drywet = interpolatedParameters.get(3);
+	const float iterations = interpolatedParameters.get(1);
+	const size_t iterationsRoundedUp = static_cast<size_t>(iterations) + 1u;
 
 
 	distortionAlgorithms algo;
-	if (interpolatedParameters.get(2) < 0.3333) algo = distortionAlgorithms::ArayaAndSuyama;
-	else if (interpolatedParameters.get(2) < 0.66666) algo = distortionAlgorithms::DoidicSymmetric;
+	if (interpolatedParameters.get(2) < 1.f) algo = distortionAlgorithms::ArayaAndSuyama;
+	else if (interpolatedParameters.get(2) < 2.f) algo = distortionAlgorithms::DoidicSymmetric;
 	else algo = distortionAlgorithms::DoidicAsymmetric;
 
 	Sample input[constants::blockSize];
@@ -39,9 +41,14 @@ void DistortionEffect::process(Sample* buffer, size_t numberOfSamples, size_t cu
 		{
 			Sample& processed = buffer[bufferIteration];
 			processed *= inGainSample;
-			for (unsigned int j = 0; j < iterations; j++) {
+			Sample lastValue;
+			for (unsigned int j = 0; j < iterationsRoundedUp; j++) 
+			{
+				lastValue = processed;
 				processed = processed * (Sample(1.5) - (processed * processed) * Sample(.5));
 			}
+			processed *= Sample(1.f - (static_cast<float>(iterationsRoundedUp) - iterations));
+			processed += lastValue * Sample(static_cast<float>(iterationsRoundedUp) - iterations);
 		}
 	}
 	else if (algo == distortionAlgorithms::DoidicSymmetric)
@@ -50,9 +57,13 @@ void DistortionEffect::process(Sample* buffer, size_t numberOfSamples, size_t cu
 		{
 			Sample& processed = buffer[bufferIteration];
 			processed *= inGainSample;
-			for (unsigned int j = 0; j < iterations; j++) {
+			Sample lastValue;
+			for (unsigned int j = 0; j < iterationsRoundedUp; j++) {
+				lastValue = processed;
 				processed = (Sample(2.) * processed.abs() - processed * processed) * processed.sign();
 			}
+			processed *= Sample(static_cast<float>(iterationsRoundedUp) - iterations);
+			processed += lastValue * Sample(1.f - (static_cast<float>(iterationsRoundedUp) - iterations));
 		}
 	}
 	else
@@ -62,8 +73,11 @@ void DistortionEffect::process(Sample* buffer, size_t numberOfSamples, size_t cu
 		{
 			Sample& processed = buffer[bufferIteration];
 			processed *= inGainSample;
+			Sample lastValue;
 			processed.store_aligned(lr);
-			for (unsigned int j = 0; j < iterations; j++) {
+			for (unsigned int j = 0; j < iterationsRoundedUp; j++)
+			{
+				lastValue = Sample(lr[0], lr[1]);
 				// Treat both channels (l / r) seperately
 				for (size_t k = 0; k < 2u; k++)
 				{
@@ -72,7 +86,7 @@ void DistortionEffect::process(Sample* buffer, size_t numberOfSamples, size_t cu
 						//lr[k] = -0.75 * (1. - static_cast<double>(BhMath::pow(1.f - (BhMath::abs(static_cast<float>(lr[k])) - 0.032847f), 12.f))
 						//	+ (1. / 3.) * (static_cast<double>(BhMath::abs(static_cast<float>(lr[k]))) - 0.032847f)) + 0.01;
 						// optimized version of the above
-						float in = BhMath::abs(static_cast<float>(lr[k])) - 0.032847f;
+						const float in = BhMath::abs(static_cast<float>(lr[k])) - 0.032847f;
 						float base = 1.f - in;
 						base *= base; // ^2
 						base *= base; // ^4
@@ -90,6 +104,8 @@ void DistortionEffect::process(Sample* buffer, size_t numberOfSamples, size_t cu
 				}
 			}
 			processed = Sample(lr[0], lr[1]);
+			processed *= Sample(1.f - (static_cast<float>(iterationsRoundedUp) - iterations));
+			processed += lastValue * Sample((static_cast<float>(iterationsRoundedUp) - iterations));
 		}
 	}
 

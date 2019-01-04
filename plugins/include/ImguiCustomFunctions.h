@@ -252,7 +252,8 @@ static void renderLFO(PluginBase& plugin, CommonLFO lfo, TempoData const & tempo
 
 	for (unsigned int i = 0; i < nPoints; i++)
 	{
-		float lfoVal = lfo.getSample(aux::millisecToSamples(static_cast<float>(i) * incrementForVisualization));
+		const unsigned int samplePosition = static_cast<unsigned int>(aux::millisecToSamples(static_cast<float>(i) * incrementForVisualization));
+		float lfoVal = lfo.getSample(samplePosition);
 		lfoVal = (lfoVal + 1.f) / 2.f;
 		//bundle.getParameter(lfoAmount)
 		points[i] = lfoVal;

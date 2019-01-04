@@ -120,6 +120,8 @@ add_plugin("bh_delay"
 add_plugin("bh_distortion"
 	"DistortionPlugin.cpp"
 	"DistortionPlugin.h"
+	"DistortionPluginEditor.cpp"
+	"DistortionPluginEditor.h"
 )
 
 add_plugin("bh_equalizer"
