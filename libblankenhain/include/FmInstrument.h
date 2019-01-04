@@ -28,7 +28,7 @@ public:
 };
 
 #ifndef _LIBBLANKENHAIN_NUM_OSCS_FM_SYNTH
-#define _LIBBLANKENHAIN_NUM_OSCS_FM_SYNTH 9
+#define _LIBBLANKENHAIN_NUM_OSCS_FM_SYNTH 5
 #endif
 
 class FmInstrument : public InstrumentBase
@@ -48,6 +48,8 @@ private:
 	float freqPrev;
 	unsigned int notePrev;
 	unsigned int timeNoteOff;
+	
+	float lastUsedAHDSRMultiplier;
 public:
 	FmInstrument();
 

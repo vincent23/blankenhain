@@ -7,7 +7,7 @@
 //Todo selfmod!
 
 FmInstrument::FmInstrument()
-	: InstrumentBase(116, 1, true), currentSound(nullptr), lastCarrierValue(1.f)
+	: InstrumentBase(8+ _LIBBLANKENHAIN_NUM_OSCS_FM_SYNTH*13-13+4, 1, true), currentSound(nullptr), lastCarrierValue(1.f), lastUsedAHDSRMultiplier(0.f)
 {
 	ParameterBundle& params = getParameterBundle();
 
@@ -66,10 +66,10 @@ FmInstrument::FmInstrument()
 	BhString names[3] = { "FM", "PM", "AM" };
 	BhString waveform[4] = { "Sine", "Saw", "Square", "Triangle" };
 	//Carrier
-	params.initParameter(112, new FloatParameter(0.f, NormalizedRange(), "selfmodAmount", "amount"));
-	params.initParameter(113, new OptionParameter(3u, names, "SelfmodType", ""));
-	params.initParameter(114, new OptionParameter(4u, waveform, "waveform", ""));
-	params.initParameter(115, new FloatParameter(0.f, NormalizedRange(0.f, 0.3f), "glide", ""));
+	params.initParameter(60, new FloatParameter(0.f, NormalizedRange(), "selfmodAmount", "amount"));
+	params.initParameter(61, new OptionParameter(3u, names, "SelfmodType", ""));
+	params.initParameter(62, new OptionParameter(4u, waveform, "waveform", ""));
+	params.initParameter(63, new FloatParameter(0.f, NormalizedRange(0.f, 0.3f), "glide", ""));
 
 	for (unsigned int i = 0u; i < _LIBBLANKENHAIN_NUM_OSCS_FM_SYNTH; i++)
 	{
@@ -81,17 +81,17 @@ FmInstrument::FmInstrument()
 
 void FmInstrument::processVoice(VoiceState& voice, unsigned int timeInSamples, Sample* buffer, unsigned int numberOfSamples)
 {
-	float attack = interpolatedParameters.get(0);
-	float hold = interpolatedParameters.get(1);
-	float holdLevel = interpolatedParameters.get(2);
-	float decay = interpolatedParameters.get(3);
-	bool sustainOn = interpolatedParameters.get(4) > 0.5 ? true : false;
-	float sustainLevel = interpolatedParameters.get(6);
-	float sustain = interpolatedParameters.get(5);
-	float release = interpolatedParameters.get(7);
+	const float attack = interpolatedParameters.get(0);
+	const float hold = interpolatedParameters.get(1);
+	const float holdLevel = interpolatedParameters.get(2);
+	const float decay = interpolatedParameters.get(3);
+	const bool sustainOn = interpolatedParameters.get(4) > 0.5 ? true : false;
+	const float sustainLevel = interpolatedParameters.get(6);
+	const float sustain = interpolatedParameters.get(5);
+	const float release = interpolatedParameters.get(7);
 
 	// Portamento stuff
-	float portamento = interpolatedParameters.get(115);
+	const float portamento = interpolatedParameters.get(63);
 	// If a new note is played, take this as the start time for glide
 	// TODO we can improve this but as this synth only has one voice
 	// Sometimes we will not get NoteOff events, so this crude
@@ -102,7 +102,7 @@ void FmInstrument::processVoice(VoiceState& voice, unsigned int timeInSamples, S
 		timeNoteOff = voice.onTime;
 	}
 
-	float voiceFreq = aux::noteToFrequency(static_cast<float>(voice.key));
+	const float voiceFreq = aux::noteToFrequency(static_cast<float>(voice.key));
 
 	// reset modulation matrix
 	for (unsigned int i = 0u; i < _LIBBLANKENHAIN_NUM_OSCS_FM_SYNTH; i++)
@@ -112,7 +112,7 @@ void FmInstrument::processVoice(VoiceState& voice, unsigned int timeInSamples, S
 	for (unsigned int sampleIndex = 0; sampleIndex < numberOfSamples; sampleIndex++)
 	{
 		//unsigned int deltaT = (timeInSamples + sampleIndex) - voice.onTime;
-		unsigned int timeSinceNoteOff = (timeInSamples + sampleIndex) - timeNoteOff;
+		const unsigned int timeSinceNoteOff = (timeInSamples + sampleIndex) - timeNoteOff;
 		float currentFreq;
 
 		// If enough glide time has past, set previousFreq to currentFreq and thereby stop gliding
@@ -138,12 +138,12 @@ void FmInstrument::processVoice(VoiceState& voice, unsigned int timeInSamples, S
 
 
 
-		unsigned int deltaT = (timeInSamples + sampleIndex) - voice.onTime;
+		const unsigned int deltaT = (timeInSamples + sampleIndex) - voice.onTime;
 
 		for (unsigned int i = 0u; i < _LIBBLANKENHAIN_NUM_OSCS_FM_SYNTH - 1u; i++)
 		{
-			float amount = interpolatedParameters.get(8 + i * 13 + 2);
-			bool isOn = interpolatedParameters.get(8 + i * 13 + 7) == 1.f;
+			const float amount = interpolatedParameters.get(8 + i * 13 + 2);
+			const bool isOn = interpolatedParameters.get(8 + i * 13 + 7) == 1.f;
 			if (isOn)
 			{
 				float freq = interpolatedParameters.get(8 + i * 13 + 0);
@@ -185,9 +185,9 @@ void FmInstrument::processVoice(VoiceState& voice, unsigned int timeInSamples, S
 						else if (tempoSyncVal >= 1.5)
 							tempoSyncVal = 2.f;
 
-						float quarterNoteLength = (60.f /*seconds in a minute*/ * tempoSyncVal) / tempodata.bpm;
-						float sixteenthNoteLength = quarterNoteLength / 4.f;
-						float wholeBeatLength = sixteenthNoteLength * 16.f;
+						const float quarterNoteLength = (60.f /*seconds in a minute*/ * tempoSyncVal) / tempodata.bpm;
+						const float sixteenthNoteLength = quarterNoteLength / 4.f;
+						const float wholeBeatLength = sixteenthNoteLength * 16.f;
 						freq = 1.f / wholeBeatLength;
 					}
 					else if (tempoSync && !isLFO)
@@ -218,7 +218,7 @@ void FmInstrument::processVoice(VoiceState& voice, unsigned int timeInSamples, S
 						selfmod = lastOscValues[i];
 					}
 		
-					float& cFmVal = mod[i].fmVal;
+					const float& cFmVal = mod[i].fmVal;
 					float fmAmount = 0.f;
 					if (mod[i].fm)
 						fmAmount = mod[i].fmAmount;
@@ -289,11 +289,11 @@ void FmInstrument::processVoice(VoiceState& voice, unsigned int timeInSamples, S
 
 		// Carrier now
 
-		float freq = currentFreq;
-		float selfModAmount = interpolatedParameters.get(112);
-		bool selfModOn = selfModAmount > 1e-15;
-		float selfModtype = interpolatedParameters.get(113);
-		float waveFormType = interpolatedParameters.get(114);
+		const float freq = currentFreq;
+		const float selfModAmount = interpolatedParameters.get(60);
+		const bool selfModOn = selfModAmount > 1e-15;
+		const float selfModtype = interpolatedParameters.get(61);
+		const float waveFormType = interpolatedParameters.get(62);
 
 		float freqMultiplierFM = 1.f;
 		float freqAdditionPM = 0.f;
@@ -329,7 +329,6 @@ void FmInstrument::processVoice(VoiceState& voice, unsigned int timeInSamples, S
 				cPmVal = mod[(_LIBBLANKENHAIN_NUM_OSCS_FM_SYNTH - 1u)].pmVal;
 
 			freqAdditionPM = (cPmVal * mod[(_LIBBLANKENHAIN_NUM_OSCS_FM_SYNTH - 1u)].pmAmount) + (selfModAmount * selfmod);
-			//osc[(numOsc - 1u)].setFrequency(freq + (cPmVal * mod[(numOsc - 1u)].pmAmount) + (selfModAmount * 5.f * selfmod));
 		}
 
 		///////////////////////
@@ -363,6 +362,10 @@ void FmInstrument::processVoice(VoiceState& voice, unsigned int timeInSamples, S
 		lastCarrierValue = valueOfCarrier;
 
 		buffer[sampleIndex] = Sample(valueOfCarrier);
-		performAHDSR<Sample>(buffer, voice, timeInSamples, sampleIndex, attack, release, hold, decay, sustain, sustainOn, sustainLevel, holdLevel);
+
+		if (timeSinceNoteOff <= aux::millisecToSamples(attack))
+			performAHDSR<Sample>(buffer, voice, timeInSamples, sampleIndex, attack, release, hold, decay, sustain, sustainOn, sustainLevel, holdLevel, lastUsedAHDSRMultiplier);
+		else
+			lastUsedAHDSRMultiplier = performAHDSR<Sample>(buffer, voice, timeInSamples, sampleIndex, attack, release, hold, decay, sustain, sustainOn, sustainLevel, holdLevel);
 	}
 }

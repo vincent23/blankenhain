@@ -32,10 +32,10 @@ void FmInstrumentPluginEditor::imguiFrame()
 	ImGui::SameLine();
 
 	ImGui::BeginChild("Carrier", ImVec2(ImGui::GetWindowContentRegionWidth() * 0.48f, 300), true);
-	renderParam(plugin, 112);
-	renderParam(plugin, 113);
-	renderParam(plugin, 114);
-	renderParam(plugin, 115);
+	renderParam(plugin, 60);
+	renderParam(plugin, 61);
+	renderParam(plugin, 62);
+	renderParam(plugin, 63);
 
 	ImGui::EndChild();
 
@@ -45,7 +45,7 @@ void FmInstrumentPluginEditor::imguiFrame()
 
 	ImGui::BeginChild("Modulation1", ImVec2(ImGui::GetWindowContentRegionWidth() * 0.5f, 480), false);
 
-	for (unsigned int i = 0u; i < 4u; i++)
+	for (unsigned int i = 0u; i < 2u; i++)
 	{
 		unsigned int currentParamInt = 8 + i * 13;
 		// isOn
@@ -99,7 +99,7 @@ void FmInstrumentPluginEditor::imguiFrame()
 	ImGui::SameLine();
 
 	ImGui::BeginChild("Modulation2", ImVec2(0, 480), false);
-	for (unsigned int i = 4u; i < 8u; i++)
+	for (unsigned int i = 2u; i < 4u; i++)
 	{
 		unsigned int currentParamInt = 8 + i * 13;
 		renderParam(plugin, currentParamInt + 7);
