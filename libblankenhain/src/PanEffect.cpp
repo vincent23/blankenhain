@@ -1,12 +1,13 @@
 #include "PanEffect.h"
 
 // Change the name and define parameters in constructor
-PanEffect::PanEffect() : EffectBase(9u, true), lfo()
+PanEffect::PanEffect() : EffectBase(10u, true), lfo()
 {
 	ParameterBundle& params = getParameterBundle();
 	// Insert your stuff here
 	params.initParameter(0, new FloatParameter(1.f, NormalizedRange(0.f, 2.f), "width", ""));
 	params.initParameter(1, new FloatParameter(0.f, NormalizedRange(-50.f, 50.f), "pan", ""));
+	params.initParameter(9, new BoolParameter(false,"invert phase"));
 
 	// LFO for pan
 	BhString names[4] = { "sine", "saw", "square", "triangle" };
@@ -22,11 +23,18 @@ PanEffect::PanEffect() : EffectBase(9u, true), lfo()
 
 void PanEffect::process(Sample* buffer, size_t numberOfSamples, size_t currentTime)
 {
-	float width = interpolatedParameters.get(0);
-	float panningValue = interpolatedParameters.get(1);
+	const float width = interpolatedParameters.get(0);
+	const float panningValue = interpolatedParameters.get(1);
+	const bool invertPhases = interpolatedParameters.get(9) > 0.5;
 
 	for (size_t i = 0; i < numberOfSamples; i++)
 	{
+		if (invertPhases)
+		{
+			Sample& in = buffer[i];
+			in *= Sample(-1.);
+		}
+
 		Sample in = buffer[i];
 		Sample inFlipped = in.flippedChannels();
 		Sample widthAsSample = Sample(width);
@@ -36,6 +44,7 @@ void PanEffect::process(Sample* buffer, size_t numberOfSamples, size_t currentTi
 		float panValue = panningValue * .02f;
 		aux::performPanning(buffer[i], panValue);
 	}
+
 }
 
 void PanEffect::getModulation(float* modulationValues, size_t sampleOffset)

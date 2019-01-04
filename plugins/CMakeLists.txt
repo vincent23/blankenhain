@@ -210,7 +210,3 @@ add_plugin("bh_limiter"
 	"LimiterPlugin.h"
 )
 
-add_plugin("bh_inverse_phase"
-	"InversePhasePlugin.cpp"
-	"InversePhasePlugin.h"
-)

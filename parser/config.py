@@ -73,11 +73,6 @@ plugins = {
 		'type': instrument,
 		'numberOfParameters': 10,
 	},
-	'bh_inverse_phase': {
-		'class': 'InversePhaseEffect',
-		'type': effect,
-		'numberOfParameters': 0,
-	},
 	'bh_limiter': {
 		'class': 'LimiterEffect',
 		'type': effect,
@@ -106,6 +101,6 @@ plugins = {
 	'bh_pan': {
 		'class': 'PanEffect',
 		'type': effect,
-		'numberOfParameters': 9,
+		'numberOfParameters': 10,
 	},
 }

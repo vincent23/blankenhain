@@ -27,10 +27,6 @@ void ChorusPluginEditor::imguiFrame()
 	ImGui::Text(std::string("Flanger: Use Delay Times from 1ms to 7ms with Feedback.").c_str());
 	ImGui::Separator();
 	ImGui::Separator();
-
-
-	const PluginParameterBundle& bundle = plugin.getParameters();
-
 	
 	renderParam(plugin, 8);
 	renderParam(plugin, 2);
