@@ -6,7 +6,7 @@
 #include "InstrumentBase.h"
 #include "Oscillators.h"
 
-static void renderParam(PluginBase& plugin, unsigned int paramIndex, float paramDragSpeed = 1.f)
+static void renderParam(PluginBase& plugin, unsigned int paramIndex, float paramDragSpeed = 1.f, unsigned int paramStyle = 0u)
 {
 	const PluginParameterBundle& bundle = plugin.getParameters();
 	FloatParameter const* param = bundle.getParameter(paramIndex);
@@ -18,9 +18,20 @@ static void renderParam(PluginBase& plugin, unsigned int paramIndex, float param
 		const int before = cParam->getValue() ? 1 : 0;
 		int after = cParam->getValue() ? 1 : 0;
 
-		ImGui::Text(cParam->getName().c_str()); ImGui::SameLine();
-		ImGui::RadioButton("Off", &after, 0); ImGui::SameLine();
-		ImGui::RadioButton("On", &after, 1);
+		if (paramStyle == 0u)
+		{
+			ImGui::Text(cParam->getName().c_str()); ImGui::SameLine();
+			ImGui::RadioButton("Off", &after, 0); ImGui::SameLine();
+			ImGui::RadioButton("On", &after, 1);
+		}
+		else
+		{
+			if (ImGui::Button(cParam->getName().c_str()))
+			{
+				after = cParam->getValue() ? 0 : 1;
+			}
+		}
+
 		if (before != after)
 			plugin.setParameterAutomated(paramIndex, static_cast<float>(after));
 
@@ -263,6 +274,7 @@ static void renderLFO(PluginBase& plugin, CommonLFO lfo, TempoData const & tempo
 	
 	ImVec2 availRest = ImGui::GetContentRegionAvail();
 	availRest.x *= 2.f / 3.f;
+	availRest.y *= 2.f / 3.f;
 	
 	// This paints the bars and ticks, if tempodate is supplied
 	// Is tempoData supplied?

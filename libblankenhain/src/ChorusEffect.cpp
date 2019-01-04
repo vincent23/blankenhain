@@ -3,7 +3,6 @@
 #include "ParameterBundle.h"
 #include "InterpolatedValue.h"
 #include "AuxFunc.h"
-#include <algorithm>
 
 ChorusEffect::ChorusEffect()
 	: EffectBase(12,true)
@@ -14,17 +13,17 @@ ChorusEffect::ChorusEffect()
 	ParameterBundle& params = getParameterBundle();
 	params.initParameter(0, new FloatParameter(0.f, NormalizedRange(0.f, 1.f), "lfoAmount", ""));
 	params.initParameter(1, new BoolParameter(false, "pseudoStereo"));
-	params.initParameter(2, new FloatParameter(15.f, NormalizedRange(0.5f, 32.f, 0.2f), "Central Delay", "ms"));
-	params.initParameter(3, new FloatParameter(0.0f, NormalizedRange(0.0f, 1.f), "feedback", "%"));
-	params.initParameter(4, new FloatParameter(0.f, NormalizedRange(), "drywet", ""));
+	params.initParameter(2, new FloatParameter(1.44f, NormalizedRange(0.5f, 32.f, 0.2f), "Central Delay", "ms"));
+	params.initParameter(3, new FloatParameter(0.77f, NormalizedRange(0.0f, 1.f), "feedback", "%"));
+	params.initParameter(4, new FloatParameter(0.4f, NormalizedRange(), "drywet", ""));
 	params.initParameter(5, new BoolParameter(false, "PANIC!"));
-	BhString names[5] = { "sine", "saw", "square", "triangle", "noise" };
+	const BhString names[5] = { "sine", "saw", "square", "triangle", "noise" };
 	params.initParameter(6, new OptionParameter(4u, names, "lfoWaveform", ""));
 	params.initParameter(7, new FloatParameter(0.f, NormalizedRange(0.f, 2.f * constants::pi), "lfoPhase", ""));
 	params.initParameter(8, new FloatParameter(0.f, NormalizedRange(-50.f, 50.f), "pan", ""));
 	params.initParameter(9, new FloatParameter(5.f, NormalizedRange(0.005f, 1.f, 0.3f), "lfoSpeed", "Hz"));
 	params.initParameter(10, new BoolParameter(false, "tempoSyncOn"));
-	float multiplierValues[7] = { 0.0625, 0.125, 0.25, 0.5, 1., 2., 4. };
+	const float multiplierValues[7] = { 0.0625, 0.125, 0.25, 0.5, 1., 2., 4. };
 	params.initParameter(11, new DiscreteParameter(7u, "multiplier", "", multiplierValues, 4u));
 }
 
