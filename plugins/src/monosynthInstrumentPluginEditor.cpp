@@ -1,13 +1,13 @@
-#include "glidePolyblepInstrumentPluginEditor.h"
+#include "monosynthInstrumentPluginEditor.h"
 
 
-glidePolyblepInstrumentPluginEditor::glidePolyblepInstrumentPluginEditor(PluginBase* plugin)
+monosynthInstrumentPluginEditor::monosynthInstrumentPluginEditor(PluginBase* plugin)
 	: ImguiEffectEditor(plugin, 460, 680)
 {
 }
 
 
-void glidePolyblepInstrumentPluginEditor::imguiFrame()
+void monosynthInstrumentPluginEditor::imguiFrame()
 {
 
 	ImGuiIO& io = ImGui::GetIO();
@@ -15,7 +15,7 @@ void glidePolyblepInstrumentPluginEditor::imguiFrame()
 	ImGui::SetNextWindowSize(io.DisplaySize);
 	ImGui::Begin("test", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize);
 
-	const glidePolyblepInstrument* glide = dynamic_cast<const glidePolyblepInstrument*>(this->plugin.getEffect());
+	const monosynthInstrument* glide = dynamic_cast<const monosynthInstrument*>(this->plugin.getEffect());
 	if (glide)
 	{
 		renderADHSR(plugin, ImVec2(ImGui::GetWindowContentRegionWidth(), 300), &glide->getTempoData());
@@ -33,7 +33,7 @@ void glidePolyblepInstrumentPluginEditor::imguiFrame()
 
 	ImGui::Separator();
 	ImGui::Text("Detune LFO");
-	glidePolyblepInstrument* instr = dynamic_cast<glidePolyblepInstrument*>(this->getEffectBase());
+	monosynthInstrument* instr = dynamic_cast<monosynthInstrument*>(this->getEffectBase());
 
 	renderLFO(plugin, instr->getLFO(), instr->getTempoData(), ImVec2(ImGui::GetWindowContentRegionWidth(), 260), 11, 10, 14, 15, 16, 13, 17);
 

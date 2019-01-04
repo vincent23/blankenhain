@@ -162,11 +162,11 @@ add_plugin("bh_polyblep_synth"
 	"polyblepInstrumentPlugin.h"
 )
 
-add_plugin("bh_glide_polyblep_synth"
-	"glidePolyblepInstrumentPlugin.cpp"
-	"glidePolyblepInstrumentPlugin.h"
-	"glidePolyblepInstrumentPluginEditor.cpp"
-	"glidePolyblepInstrumentPluginEditor.h"
+add_plugin("bh_monosynth"
+	"MonosynthInstrumentPlugin.cpp"
+	"MonosynthInstrumentPlugin.h"
+	"MonosynthInstrumentPluginEditor.cpp"
+	"MonosynthInstrumentPluginEditor.h"
 )
 
 add_plugin("bh_gm_synth"

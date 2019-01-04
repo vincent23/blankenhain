@@ -6,11 +6,11 @@
 
 class VoiceState;
 
-class glidePolyblepInstrument : public InstrumentBase
+class monosynthInstrument : public InstrumentBase
 {
 public:
-	glidePolyblepInstrument();
-	~glidePolyblepInstrument();
+	monosynthInstrument();
+	~monosynthInstrument();
 
 	void processVoice(VoiceState& voice, unsigned int timeInSamples, Sample* buffer, unsigned int numberOfSamples);
 

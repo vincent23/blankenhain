@@ -1,10 +1,10 @@
-#include "glidePolyblepInstrument.h"
+#include "MonosynthInstrument.h"
 #include "InterpolatedValue.h"
 #include "ParameterBundle.h"
 #include "FloatParameter.h"
 #include "VoiceState.h"
 
-glidePolyblepInstrument::glidePolyblepInstrument()
+monosynthInstrument::monosynthInstrument()
 	: InstrumentBase(18, 1, true), noise(), currentOsc(&noise), lastUsedAHDSRMultiplier(0.f)
 {
 	ParameterBundle& params = getParameterBundle();
@@ -17,13 +17,13 @@ glidePolyblepInstrument::glidePolyblepInstrument()
 	params.initParameter(5, new FloatParameter(100.f, NormalizedRange(1.f, 1700.f, 0.3f), "sustain", "ms"));
 	params.initParameter(6, new FloatParameter(1.0f, NormalizedRange(), "sustainLevel", "ratio"));
 	params.initParameter(7, new FloatParameter(100.f, NormalizedRange(1.f, 1700.f, 0.3f), "release", "ms"));
-	BhString names[5] = { "sine", "saw", "square", "triangle", "noise" };
+	const BhString names[5] = { "sine", "saw", "square", "triangle", "noise" };
 	params.initParameter(8, new OptionParameter(5u, names, "osc", ""));
 	params.initParameter(9, new FloatParameter(0.f, NormalizedRange(0.f, 0.3f), "glide", ""));
 	params.initParameter(10, new FloatParameter(0.f, NormalizedRange(-1.f, 1.f), "lfoAmount", ""));
 	params.initParameter(11, new FloatParameter(0.0055f, NormalizedRange(0.005f, 20.f, 0.325f), "lfoSpeed", ""));
 	params.initParameter(12, new FloatParameter(0.f, NormalizedRange(-5.f, 5.0f), "detune", ""));
-	float multiplierValues[7] = { 0.0625, 0.125, 0.25, 0.5, 1., 2., 4. };
+	const float multiplierValues[7] = { 0.0625, 0.125, 0.25, 0.5, 1., 2., 4. };
 	params.initParameter(13, new DiscreteParameter(7u, "lfoBeatMultiplier", "", multiplierValues));
 	params.initParameter(14, new OptionParameter(4u, names, "lfoWaveform", ""));
 	params.initParameter(15, new BoolParameter(false, "lfoTemposync"));
@@ -39,11 +39,11 @@ glidePolyblepInstrument::glidePolyblepInstrument()
 	notePrev = 0u;
 }
 
-glidePolyblepInstrument::~glidePolyblepInstrument()
+monosynthInstrument::~monosynthInstrument()
 {
 }
 
-void glidePolyblepInstrument::processVoice(VoiceState& voice, unsigned int timeInSamples, Sample* buffer, unsigned int numberOfSamples)
+void monosynthInstrument::processVoice(VoiceState& voice, unsigned int timeInSamples, Sample* buffer, unsigned int numberOfSamples)
 {
 	float attack = interpolatedParameters.get(0);
 	float hold = interpolatedParameters.get(1);
@@ -123,7 +123,7 @@ void glidePolyblepInstrument::processVoice(VoiceState& voice, unsigned int timeI
 	}
 }
 
-void glidePolyblepInstrument::getModulation(float* modulationValues, size_t sampleOffset)
+void monosynthInstrument::getModulation(float* modulationValues, size_t sampleOffset)
 {
 	float lfoAmount = interpolatedParameters.get(10);
 

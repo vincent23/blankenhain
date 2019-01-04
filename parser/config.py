@@ -88,10 +88,10 @@ plugins = {
 		'type': effect,
 		'numberOfParameters': 5,
 	},
-	'bh_polyblep_synth': {
-		'class': 'polyblepInstrument',
+	'bh_monosynth': {
+		'class': 'monosynthInstrument',
 		'type': instrument,
-		'numberOfParameters': 9,
+		'numberOfParameters': 18,
 	},
 	'bh_rhythmgate': {
 		'class': 'RhythmgateEffect',

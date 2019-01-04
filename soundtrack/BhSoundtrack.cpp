@@ -31,7 +31,7 @@
 #include "ChorusEffect.h"
 #include "FmInstrument.h"
 #include "RhythmgateEffect.h"
-#include "glidePolyblepInstrument.h"
+#include "MonosynthInstrument.h"
 #include "LimiterEffect.h"
 
 #include "ExampleInstrument.h"
