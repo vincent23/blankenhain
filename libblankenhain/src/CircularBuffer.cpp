@@ -71,6 +71,6 @@ T CircularBuffer<T>::getInterpolated(float delayToCurrentPosition_InSamples) con
 	}
 #endif
 	const unsigned int delaySamplesInteger = static_cast<unsigned int>(delayToCurrentPosition_InSamples);
-	const float fractionalPart = delayToCurrentPosition_InSamples - static_cast<float>(delaySamplesInteger); // probably not the most accurate way of doing this
+	const float fractionalPart = delayToCurrentPosition_InSamples - static_cast<float>(delaySamplesInteger);
 	return T(1.f - fractionalPart) * get(delaySamplesInteger) + T(fractionalPart) * get(delaySamplesInteger + 1);
 }

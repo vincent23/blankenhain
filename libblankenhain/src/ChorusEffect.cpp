@@ -6,8 +6,7 @@
 
 ChorusEffect::ChorusEffect()
 	: EffectBase(12,true)
-	//, delayLine(size_t(aux::millisecToSamples(2502u)))
-	, delayLine(1 << 17)
+	, delayLine(1 << 12)
 {
 	wasPaniced = false;
 	ParameterBundle& params = getParameterBundle();

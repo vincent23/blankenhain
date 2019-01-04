@@ -6,7 +6,6 @@
 
 DelayEffect::DelayEffect()
 	: EffectBase(7, true)
-	//, delayLine(size_t(aux::millisecToSamples(2502u)))
 	, delayLine(1 << 17)
 {
 	wasPaniced = false;
