@@ -118,14 +118,14 @@ static void renderADHSR(PluginBase& plugin, ImVec2 const& size = ImGui::GetConte
 
 	PluginParameterBundle const& bundle = plugin.getParameters();
 
-	renderParam(plugin, paramAttack);
-	renderParam(plugin, paramHold);
+	renderParam(plugin, paramAttack, 0.01f);
+	renderParam(plugin, paramHold, 0.01f);
 	renderParam(plugin, paramHoldlevel);
-	renderParam(plugin, paramDecay);
+	renderParam(plugin, paramDecay, 0.01f);
 	renderParam(plugin, paramSustainbool);
-	renderParam(plugin, paramSustain);
+	renderParam(plugin, paramSustain,0.01f);
 	renderParam(plugin, paramSustainlevel);
-	renderParam(plugin, paramRelease);
+	renderParam(plugin, paramRelease, 0.01f);
 
 	// Plot adhsr
 	float length = bundle.getParameter(paramAttack)->getValueUnnormalized() 

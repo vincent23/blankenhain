@@ -74,7 +74,7 @@ void FmInstrumentPluginEditor::imguiFrame()
 					renderParam(plugin, currentParamInt + 10);
 				}
 				else
-					renderParam(plugin, currentParamInt);
+					renderParam(plugin, currentParamInt, 0.001f);
 			}
 			else
 			{
@@ -126,7 +126,7 @@ void FmInstrumentPluginEditor::imguiFrame()
 					renderParam(plugin, currentParamInt + 10);
 				}
 				else
-					renderParam(plugin, currentParamInt);
+					renderParam(plugin, currentParamInt, 0.001f);
 			}
 			else
 			{
