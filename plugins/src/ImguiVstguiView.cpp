@@ -55,6 +55,7 @@ void ImguiVstguiView::platformOpenGLViewCreated()
 void ImguiVstguiView::platformOpenGLViewWillDestroy()
 {
 	invalidateDeviceObjects();
+	ImGui::Shutdown();
 }
 
 void ImguiVstguiView::drawOpenGL(const CRect& updateRect)
