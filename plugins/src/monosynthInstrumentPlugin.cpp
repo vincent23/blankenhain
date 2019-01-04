@@ -5,7 +5,7 @@
 monosynthInstrumentPlugin::monosynthInstrumentPlugin(audioMasterCallback audioMaster)
 	: InstrumentPluginBase(audioMaster, new monosynthInstrument)
 {
-	setUniqueID('bhgP');
+	setUniqueID('bhMS');
 	setEditor(new monosynthInstrumentPluginEditor(this));
 }
 
