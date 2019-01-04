@@ -181,16 +181,6 @@ add_plugin("bh_freeverb"
 	"freeverbPlugin.h"
 )
 
-add_plugin("bh_wavetable_synth"
-	"wavetableInstrumentPlugin.cpp"
-	"wavetableInstrumentPlugin.h"
-)
-
-add_plugin("bh_basedrum1_synth"
-	"basedrum1InstrumentPlugin.cpp"
-	"basedrum1InstrumentPlugin.h"
-)
-
 add_plugin("bh_rhythmgate"
 	"rhythmgatePlugin.cpp"
 	"rhythmgatePlugin.h"
@@ -205,10 +195,6 @@ add_plugin("bh_fm_synth"
 	"fmInstrumentPluginEditor.h"
 )
 
-add_plugin("bh_arp"
-	"ArpPlugin.h"
-	"ArpPlugin.cpp"
-)
 add_plugin("bh_chorus"
 	"ChorusPlugin.cpp"
 	"ChorusPlugin.h"

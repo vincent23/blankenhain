@@ -8,16 +8,6 @@ plugins = {
 		'type': effect,
 		'numberOfParameters': 1,
 	},
-	'bh_arp': {
-		'class': 'ArpMidiEffect',
-		'type': midi,
-		'numberOfParameters': 1,
-	},
-	'bh_basedrum1_synth': {
-		'class': 'basedrum1Instrument',
-		'type': instrument,
-		'numberOfParameters': 14,
-	},
 	'bh_bitcrush': {
 		'class': 'BitcrushEffect',
 		'type': effect,
@@ -112,11 +102,6 @@ plugins = {
 		'class': 'VolumeEffect',
 		'type': effect,
 		'numberOfParameters': 10,
-	},
-	'bh_wavetable_synth': {
-		'class': 'wavetableInstrument',
-		'type': instrument,
-		'numberOfParameters': 9,
 	},
 	'bh_width': {
 		'class': 'WidthEffect',

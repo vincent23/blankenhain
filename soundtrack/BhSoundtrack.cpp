@@ -26,7 +26,6 @@
 #include "freeverbEffect.h"
 #include "VolumeEffect.h"
 #include "EqualizerEffect.h"
-#include "basedrum1Instrument.h"
 #include "CompressorEffect.h"
 #include "FilterEffect.h"
 #include "ChorusEffect.h"
