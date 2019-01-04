@@ -198,11 +198,6 @@ add_plugin("bh_rhythmgate"
 	"rhythmgatePluginEditor.h"
 )
 
-add_plugin("bh_pitchshift_midi"
-	"pitchshiftMidiPlugin.cpp"
-	"pitchshiftMidiPlugin.h"
-)
-
 add_plugin("bh_fm_synth"
 	"fmInstrumentPlugin.cpp"
 	"fmInstrumentPlugin.h"

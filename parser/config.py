@@ -98,11 +98,6 @@ plugins = {
 		'type': effect,
 		'numberOfParameters': 5,
 	},
-	'bh_pitchshift_midi': {
-		'class': 'pitchshiftMidiEffect',
-		'type': midi,
-		'numberOfParameters': 1,
-	},
 	'bh_polyblep_synth': {
 		'class': 'polyblepInstrument',
 		'type': instrument,
