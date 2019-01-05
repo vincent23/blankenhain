@@ -50,7 +50,7 @@ static void renderParam(PluginBase& plugin, unsigned int paramIndex, float param
 		}
 		if (before != current)
 		{
-			float normalized = static_cast<float>(current) / static_cast<float>(cParam->getNumberOfPossibleValues());
+			float normalized = (static_cast<float>(current) + .1f) / static_cast<float>(cParam->getNumberOfPossibleValues());
 			plugin.setParameterAutomated(paramIndex, normalized);
 		}
 	}
@@ -72,7 +72,7 @@ static void renderParam(PluginBase& plugin, unsigned int paramIndex, float param
 		ImGui::Combo(cParam->getName().c_str(), &current, items, cParam->getNumberOfPossibleValues());
 		if (before != current)
 		{
-			float normalized = static_cast<float>(current) / static_cast<float>(cParam->getNumberOfPossibleValues());
+			float normalized = (static_cast<float>(current) + .1f) / static_cast<float>(cParam->getNumberOfPossibleValues());
 			plugin.setParameterAutomated(paramIndex, normalized);
 		}
 		delete[] items;
@@ -89,10 +89,10 @@ static void renderParam(PluginBase& plugin, unsigned int paramIndex, float param
 		max = range.getEnd();
 		skew = range.getSkew();
 		float unnormalized = param->getValueUnnormalized();
-		
-		float normalizedParamDragSpeed = paramDragSpeed * 0.001f / 2.f * (max - min); 
+
+		float normalizedParamDragSpeed = paramDragSpeed * 0.001f / 2.f * (max - min);
 		// Relative to range, if paramDragSpeed == 1 && (max - min) == 2, then legacy bh2 "default" behaviour is yielded.
-		
+
 		if (ImGui::DragFloat(param->getName().c_str(), &unnormalized, normalizedParamDragSpeed, min * 1.002f, max * 0.998f, "%.3f", 1.f / skew))
 			plugin.setParameterAutomated(paramIndex, range.toNormalized(unnormalized));
 
@@ -101,7 +101,7 @@ static void renderParam(PluginBase& plugin, unsigned int paramIndex, float param
 		{
 			plugin.setParameterAutomated(paramIndex, param->getDefaultValueNormalized());
 		}
-	
+
 	}
 	ImGui::PopID();
 }
@@ -123,12 +123,12 @@ static void renderADHSR(PluginBase& plugin, ImVec2 const& size = ImGui::GetConte
 	renderParam(plugin, paramHoldlevel);
 	renderParam(plugin, paramDecay, 0.01f);
 	renderParam(plugin, paramSustainbool);
-	renderParam(plugin, paramSustain,0.01f);
+	renderParam(plugin, paramSustain, 0.01f);
 	renderParam(plugin, paramSustainlevel);
 	renderParam(plugin, paramRelease, 0.01f);
 
 	// Plot adhsr
-	float length = bundle.getParameter(paramAttack)->getValueUnnormalized() 
+	float length = bundle.getParameter(paramAttack)->getValueUnnormalized()
 		+ bundle.getParameter(paramHold)->getValueUnnormalized()
 		+ bundle.getParameter(paramDecay)->getValueUnnormalized()
 		+ bundle.getParameter(paramSustain)->getValueUnnormalized()
@@ -153,13 +153,13 @@ static void renderADHSR(PluginBase& plugin, ImVec2 const& size = ImGui::GetConte
 		points[i] = 1.f;
 		performAHDSR<float>(points, dummy, static_cast<unsigned int>(aux::millisecToSamples(i * incrementForVisualization)),
 			i,
-			bundle.getParameter(paramAttack)->getValueUnnormalized(), 
-			bundle.getParameter(paramRelease)->getValueUnnormalized(), 
-			bundle.getParameter(paramHold)->getValueUnnormalized(), 
-			bundle.getParameter(paramDecay)->getValueUnnormalized(), 
+			bundle.getParameter(paramAttack)->getValueUnnormalized(),
+			bundle.getParameter(paramRelease)->getValueUnnormalized(),
+			bundle.getParameter(paramHold)->getValueUnnormalized(),
+			bundle.getParameter(paramDecay)->getValueUnnormalized(),
 			bundle.getParameter(paramSustain)->getValueUnnormalized(),
-			true, 
-			bundle.getParameter(paramSustainlevel)->getValueNormalized(), 
+			true,
+			bundle.getParameter(paramSustainlevel)->getValueNormalized(),
 			bundle.getParameter(paramHoldlevel)->getValueNormalized());
 	}
 
@@ -184,13 +184,13 @@ static void renderADHSR(PluginBase& plugin, ImVec2 const& size = ImGui::GetConte
 				else if (std::fmod(currentMs, beatEverySoManyMs / 4.f) < incrementForVisualization)
 					beats[i] = 0.35f;
 			}
-			ImGui::PlotLines("##AHDSR", points, nPoints, 0, 0, 0.f, 1.f, ImVec2(availRest.x, availRest.y * 3.f / 4.f ));
+			ImGui::PlotLines("##AHDSR", points, nPoints, 0, 0, 0.f, 1.f, ImVec2(availRest.x, availRest.y * 3.f / 4.f));
 			ImGui::PlotHistogram("##Tempo", beats, nPoints, 0, NULL, 0.0f, 1.0f, ImVec2(availRest.x, availRest.y / 4.f));
 		}
-			else
-	{
-		ImGui::PlotLines("##AHDSR", points, nPoints, 0, 0, 0.f, 1.f, availRest);
-	}
+		else
+		{
+			ImGui::PlotLines("##AHDSR", points, nPoints, 0, 0, 0.f, 1.f, availRest);
+		}
 	}
 	else
 	{
@@ -205,7 +205,7 @@ static void renderADHSR(PluginBase& plugin, ImVec2 const& size = ImGui::GetConte
 
 static void renderLFO(PluginBase& plugin, CommonLFO lfo, TempoData const & tempoData, ImVec2 size = ImGui::GetContentRegionAvail(),
 	unsigned int paramLFOSpeed = 8u, unsigned int paramLFOAmount = 9u, unsigned int paramLFOWaveform = 10u,
-	unsigned int paramLFOTemposync = 11u, unsigned int paramLFOphase = 13, unsigned int paramLFObeatMultiplier = 14, 
+	unsigned int paramLFOTemposync = 11u, unsigned int paramLFOphase = 13, unsigned int paramLFObeatMultiplier = 14,
 	unsigned int paramLFObaseline = 15u, int paramLFOtarget = -1)
 {
 	ImGui::BeginChild("LFOsub", size, true);
@@ -254,8 +254,8 @@ static void renderLFO(PluginBase& plugin, CommonLFO lfo, TempoData const & tempo
 		length = 60.f * 1000.f / 120;
 	std::string lengthStr = "Length of visualized curve: " + std::to_string(static_cast<unsigned int>(length)) + " ms.";
 	ImGui::Text(lengthStr.c_str());
-	
-	
+
+
 	if (length < 1000.f)
 		length = 1000.f;
 	else if (length > 5000.f)
@@ -272,11 +272,11 @@ static void renderLFO(PluginBase& plugin, CommonLFO lfo, TempoData const & tempo
 
 		//draw
 	}
-	
+
 	ImVec2 availRest = ImGui::GetContentRegionAvail();
 	availRest.x *= 2.f / 3.f;
 	availRest.y *= 2.f / 3.f;
-	
+
 	// This paints the bars and ticks, if tempodate is supplied
 	// Is tempoData supplied?
 	if (tempoData.usesTempoData)
