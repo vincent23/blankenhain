@@ -5,7 +5,7 @@
 #include "VoiceState.h"
 
 PolysynthInstrument::PolysynthInstrument()
-	: InstrumentBase(9, 4)
+	: InstrumentBase(10, 4)
 {
 	ParameterBundle& params = getParameterBundle();
 
@@ -20,6 +20,7 @@ PolysynthInstrument::PolysynthInstrument()
 
 	const BhString names[5] = { "sine", "saw", "square", "triangle" };
 	params.initParameter(8, new OptionParameter(4u, names, "osc", ""));
+	params.initParameter(9, new FloatParameter(0.f, NormalizedRange(-5.f, 5.0f), "detune", ""));
 }
 
 PolysynthInstrument::~PolysynthInstrument()
@@ -37,13 +38,18 @@ void PolysynthInstrument::processVoice(VoiceState& voice, unsigned int timeInSam
 	const float sustain = interpolatedParameters.get(5);
 	const float release = interpolatedParameters.get(7);
 	const unsigned int oscMode = static_cast<unsigned int>(interpolatedParameters.get(8));
+	float detune = interpolatedParameters.get(9);
 
 	// oscMode 0: Sine
 	// oscMode 1: polyBLEP Sawtooth
 	// oscMode 2: polyBLEP Square 
 	// oscMode 3: polyBLEP Triangle
 
-	this->osc.setFrequency(aux::noteToFrequency(static_cast<float>(voice.key)));
+	float voiceFreq = aux::noteToFrequency(static_cast<float>(voice.key));
+	if (detune != 0.f)
+		voiceFreq = aux::calculateDetune(voiceFreq, detune, 5u);
+
+	this->osc.setFrequency(voiceFreq);
 
 	this->osc.setMode(NaiveOscillator::NaiveOscillatorMode(oscMode));
 
