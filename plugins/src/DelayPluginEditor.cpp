@@ -23,7 +23,7 @@ void DelayPluginEditor::imguiFrame()
 
 	renderParam(plugin, 2);
 	renderParam(plugin, 3);
-	renderParam(plugin, 4);
+	renderParam(plugin, 4,1.0f,1u);
 	renderParam(plugin, 5);
 	renderParam(plugin, 6);
 
