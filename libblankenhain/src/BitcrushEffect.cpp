@@ -10,7 +10,7 @@ BitcrushEffect::BitcrushEffect() : EffectBase(3)
 	ParameterBundle& params = getParameterBundle();
 
 	params.initParameter(0, new FloatParameter(16.f, NormalizedRange(1.f, 16.f), "Bitcrush", "bits"));
-	params.initParameter(1, new FloatParameter(1.f, NormalizedRange(1.f, 30.f), "Downsample", "samples"));
+	params.initParameter(1, new FloatParameter(1.f, NormalizedRange::fromMidpoint(1.f, 4.f, 30.f), "Downsample", "samples"));
 	params.initParameter(2, new FloatParameter(1.f, NormalizedRange(), "Dry/Wet", "%"));
 }
 
@@ -35,20 +35,20 @@ void BitcrushEffect::process(Sample* buffer, size_t numberOfSamples, size_t curr
 		Sample discretizedSample1 = discretize(buffer[sample] * steps1Sample) * steps1InverseSample;
 		Sample discretizedSample2 = discretize(buffer[sample] * steps2Sample) * steps2InverseSample;
 		Sample discretizedSample = discretizedSample1 * Sample(stepsFract) + discretizedSample2 * Sample(1.f - stepsFract);
-		buffer[sample] = aux::mixDryWet(buffer[sample], discretizedSample, drywet);
 		if (discardedSamples >= (downsample - 1))
 		{
-			lastSample1 = buffer[sample];
+			lastSample1 = discretizedSample;
 			discardedSamples = 0;
 		}
 		else {
 			if (discardedSamples >= (downsample - 2))
 			{
-				lastSample2 = buffer[sample];
+				lastSample2 = discretizedSample;
 			}
-			buffer[sample] = lastSample2 * Sample(downsampleFract) + lastSample1 * Sample(1.f - downsampleFract);
+			discretizedSample = lastSample2 * Sample(downsampleFract) + lastSample1 * Sample(1.f - downsampleFract);
 			discardedSamples++;
 		}
+		buffer[sample] = aux::mixDryWet(buffer[sample], discretizedSample, drywet);
 	}
 }
 
