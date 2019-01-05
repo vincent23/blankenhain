@@ -3,7 +3,7 @@
 
 
 FilterPluginEditor::FilterPluginEditor(PluginBase* plugin)
-	: ImguiEffectEditor(plugin, 460, 680)
+	: ImguiEffectEditor(plugin, 460, 400)
 {
 }
 
@@ -24,8 +24,10 @@ void FilterPluginEditor::imguiFrame()
 	renderParam( plugin, 2);
 
 	renderParam( plugin, 3);
+	ImGui::Separator();
+	ImGui::Spacing();
 
-	ImGui::Text("Detune LFO");
+	ImGui::Text("Frequency Modulation LFO");
 
 	FilterEffect* effect = dynamic_cast<FilterEffect*>(this->getEffectBase());
 	renderLFO(plugin, effect->getLFO(), effect->getTempoData(), ImVec2(ImGui::GetWindowContentRegionWidth(), 260), 5,4,7,8,9,6,10);
