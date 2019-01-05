@@ -37,7 +37,7 @@ void EqualizerPluginEditor::imguiFrame()
 
 	ImGui::Separator();
 	renderParam(plugin, item * 5 + 1); // on
-	renderParam(plugin, item * 5 + 2, 0.0007f); // freq
+	renderParam(plugin, item * 5 + 2); // freq
 	renderParam(plugin, item * 5 + 3); // gain
 	renderParam(plugin, item * 5 + 4); // q
 	renderParam(plugin, item * 5 + 5); // filter style

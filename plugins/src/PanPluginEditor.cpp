@@ -17,7 +17,7 @@ void PanPluginEditor::imguiFrame()
 
 	renderParam( plugin, 0);
 
-	renderParam( plugin, 1, 3.f);
+	renderParam( plugin, 1);
 	renderParam(plugin, 9);
 	
 	PanEffect* effect =  dynamic_cast<PanEffect *>(this->getEffectBase());

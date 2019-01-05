@@ -6,7 +6,11 @@
 #include "InstrumentBase.h"
 #include "Oscillators.h"
 
-static void renderParam(PluginBase& plugin, unsigned int paramIndex, float paramDragSpeed = 1.f, unsigned int paramStyle = 0u)
+#include <algorithm>
+#include <iomanip>
+#include <sstream>
+
+static void renderParam(PluginBase& plugin, unsigned int paramIndex, unsigned int paramStyle = 0u)
 {
 	const PluginParameterBundle& bundle = plugin.getParameters();
 	FloatParameter const* param = bundle.getParameter(paramIndex);
@@ -80,21 +84,21 @@ static void renderParam(PluginBase& plugin, unsigned int paramIndex, float param
 	}
 	else
 	{
-		float min = 0.f;
-		float max = 0.f;
-		float skew = 0.f;
 
-		const NormalizedRange& range = param->getRange();
-		min = range.getStart();
-		max = range.getEnd();
-		skew = range.getSkew();
+		// slight abuse of imgui's dragfloat format string.
+		// here, the slider works in the [0, 1] range and we pass the actual (unnormalized) value as a format string.
+		// in this way, ranges and skewing are the same as in the vst host.
 		float unnormalized = param->getValueUnnormalized();
+		std::stringstream stream;
+		stream << std::fixed << std::setprecision(3) << unnormalized;
+		std::string unnormalizedString = stream.str();
 
-		float normalizedParamDragSpeed = paramDragSpeed * 0.001f / 2.f * (max - min);
-		// Relative to range, if paramDragSpeed == 1 && (max - min) == 2, then legacy bh2 "default" behaviour is yielded.
-
-		if (ImGui::DragFloat(param->getName().c_str(), &unnormalized, normalizedParamDragSpeed, min * 1.002f, max * 0.998f, "%.3f", 1.f / skew))
-			plugin.setParameterAutomated(paramIndex, range.toNormalized(unnormalized));
+		const float speed = .002f;
+		float normalized = param->getValueNormalized();
+		if (ImGui::DragFloat(param->getName().c_str(), &normalized, speed, 0.f, 1.f, unnormalizedString.c_str()))
+		{
+			plugin.setParameterAutomated(paramIndex, std::max(0.f, std::min(1.f, normalized)));
+		}
 
 		ImGui::SameLine();
 		if (ImGui::Button("Reset"))
@@ -118,14 +122,14 @@ static void renderADHSR(PluginBase& plugin, ImVec2 const& size = ImGui::GetConte
 
 	PluginParameterBundle const& bundle = plugin.getParameters();
 
-	renderParam(plugin, paramAttack, 0.01f);
-	renderParam(plugin, paramHold, 0.01f);
+	renderParam(plugin, paramAttack);
+	renderParam(plugin, paramHold);
 	renderParam(plugin, paramHoldlevel);
-	renderParam(plugin, paramDecay, 0.01f);
+	renderParam(plugin, paramDecay);
 	renderParam(plugin, paramSustainbool);
-	renderParam(plugin, paramSustain, 0.01f);
+	renderParam(plugin, paramSustain);
 	renderParam(plugin, paramSustainlevel);
-	renderParam(plugin, paramRelease, 0.01f);
+	renderParam(plugin, paramRelease);
 
 	// Plot adhsr
 	float length = bundle.getParameter(paramAttack)->getValueUnnormalized()

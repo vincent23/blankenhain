@@ -18,11 +18,8 @@ void FilterPluginEditor::imguiFrame()
 
 
 	renderParam( plugin, 0);
-
-	renderParam( plugin, 1, 0.001f);
-
+	renderParam( plugin, 1);
 	renderParam( plugin, 2);
-
 	renderParam( plugin, 3);
 	ImGui::Separator();
 	ImGui::Spacing();

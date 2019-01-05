@@ -33,7 +33,7 @@ void ChorusPluginEditor::imguiFrame()
 	renderParam(plugin, 3);
 	renderParam(plugin, 4);
 	renderParam(plugin, 1);
-	renderParam(plugin, 5, 1.f, 1u);
+	renderParam(plugin, 5, 1u);
 
 	ChorusEffect* effect = dynamic_cast<ChorusEffect *>(this->getEffectBase());
 	ImGui::Separator();

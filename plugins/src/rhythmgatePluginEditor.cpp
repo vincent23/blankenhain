@@ -27,10 +27,10 @@ void RhythmgatePluginEditor::imguiFrame()
 
 	for (unsigned int i = 0u; i < 16u; i+=4)
 	{
-		renderParam(plugin, i, 5.f);
-		renderParam(plugin, i + 1, 5.f);
-		renderParam(plugin, i + 2, 5.f);
-		renderParam(plugin, i + 3, 5.f);
+		renderParam(plugin, i);
+		renderParam(plugin, i + 1);
+		renderParam(plugin, i + 2);
+		renderParam(plugin, i + 3);
 		ImGui::Spacing();
 	}
 	ImGui::Separator();
@@ -39,7 +39,7 @@ void RhythmgatePluginEditor::imguiFrame()
 	renderParam(plugin, 16);
 	renderParam(plugin, 17);
 	renderParam(plugin, 18);
-	renderParam(plugin, 19, 0.007f);
+	renderParam(plugin, 19);
 	renderParam(plugin, 20);
 
 	ImGui::End();
