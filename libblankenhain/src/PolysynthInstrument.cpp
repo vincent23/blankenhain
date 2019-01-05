@@ -19,7 +19,7 @@ PolysynthInstrument::PolysynthInstrument()
 	params.initParameter(7, new FloatParameter(100.f, NormalizedRange(1.f, 1700.f, 0.3f), "release", "ms"));
 
 	const BhString names[5] = { "sine", "saw", "square", "triangle" };
-	params.initParameter(8, new OptionParameter(4u, names, "lfoWaveform", ""));
+	params.initParameter(8, new OptionParameter(4u, names, "osc", ""));
 }
 
 PolysynthInstrument::~PolysynthInstrument()
