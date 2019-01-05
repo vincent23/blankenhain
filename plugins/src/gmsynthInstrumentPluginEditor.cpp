@@ -38,7 +38,7 @@ void gmsynthPluginEditor::imguiFrame()
 	DiscreteParameter const* instrumentParameter = static_cast<DiscreteParameter const*>(plugin.getParameters().getParameter(9));
 	int selectedInstrument = static_cast<int>(instrumentParameter->getValueUnnormalized());
 	if (ImGui::Combo("filter", &selectedInstrument, instrumentNames.data(), instrumentNames.size())) {
-		plugin.setParameterAutomated(9, instrumentParameter->getRange().toNormalized(static_cast<float>(selectedInstrument)));
+		plugin.setParameterAutomated(9, instrumentParameter->getRange().toNormalized(static_cast<float>(selectedInstrument) + .1f));
 	}
 	ImGui::End();
 }

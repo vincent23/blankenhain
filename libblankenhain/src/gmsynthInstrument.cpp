@@ -22,7 +22,6 @@ gmsynthInstrument::gmsynthInstrument()
 	params.initParameter(6, new FloatParameter(1.0f, NormalizedRange(), "sustainLevel", "ratio"));
 	params.initParameter(7, new FloatParameter(100.f, NormalizedRange(1.f, 1700.f, 0.3f), "release", "ms"));
 	params.initParameter(8, new BoolParameter(false, "loop"));
-	//params.initParameter(9, new FloatParameter(0.f, NormalizedRange(0, 235), "instrument", ""));
 	params.initParameter(9, new DiscreteParameter(235, "instrument"));
 
 	for (unsigned int i = 0; i < 128; i++) 
@@ -207,7 +206,7 @@ void gmsynthInstrument::loadMidiInstrument(const gmInstrument& instrument)
 		h = CreateFile(path, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
 	} while (h == INVALID_HANDLE_VALUE);
 
-	for (unsigned int i = 0u; i < 128; i++)
+	for (unsigned int i = 0u; i < 128u; i++)
 	{
 		if (interpolatedSounds[i] != nullptr) {
 			delete interpolatedSounds[i];
