@@ -19,7 +19,8 @@ void VolumePluginEditor::imguiFrame()
 	renderParam(plugin, 1);
 	renderParam(plugin, 2);
 
-	ImGui::Text("Detune LFO");
+	ImGui::Spacing();
+	ImGui::Text("LFO");
 	VolumeEffect* effect = dynamic_cast<VolumeEffect*>(this->getEffectBase());
 
 	renderLFO(plugin, effect->getLFO(), effect->getTempoData(), ImVec2(ImGui::GetWindowContentRegionWidth(), 260), 4, 3, 6, 7, 8, 5, 9);
