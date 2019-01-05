@@ -136,10 +136,6 @@ void FmInstrument::processVoice(VoiceState& voice, unsigned int timeInSamples, S
 			freqPrev * BhMath::exp(-1.f * timeSinceNoteOff / (constants::sampleRate * portamento));
 
 
-
-
-		const unsigned int deltaT = (timeInSamples + sampleIndex) - voice.onTime;
-
 		for (unsigned int i = 0u; i < _LIBBLANKENHAIN_NUM_OSCS_FM_SYNTH - 1u; i++)
 		{
 			const float amount = interpolatedParameters.get(8 + i * 13 + 2);
@@ -219,9 +215,7 @@ void FmInstrument::processVoice(VoiceState& voice, unsigned int timeInSamples, S
 					}
 		
 					const float& cFmVal = mod[i].fmVal;
-					float fmAmount = 0.f;
-					if (mod[i].fm)
-						fmAmount = mod[i].fmAmount;
+					const float fmAmount = mod[i].fm ? mod[i].fmAmount : 0.f;
 
 					freqMultiplierFM = cFmVal * fmAmount + selfmod * selfModAmount;
 				}
@@ -234,9 +228,7 @@ void FmInstrument::processVoice(VoiceState& voice, unsigned int timeInSamples, S
 						selfmod = lastOscValues[i];
 					}
 
-					float cPmVal = 0.f;
-					if (mod[i].pm)
-						cPmVal = mod[i].pmVal;
+					const float cPmVal = mod[i].pm ? mod[i].pmVal : 0.f;
 
 					freqAdditionPM = (mod[i].pmVal * mod[i].pmAmount) + selfmod  * selfModAmount;
 				}
@@ -245,7 +237,8 @@ void FmInstrument::processVoice(VoiceState& voice, unsigned int timeInSamples, S
 
 				OscillatorPhase currentPhase;
 				currentPhase.set(freqAdditionPM);
-				float val = osc[i].getSample(deltaT, currentPhase);
+
+				float val = osc[i].getNextSample(currentPhase);
 
 				if (mod[i].am || (selfModOn && selfModtype == 2.f))
 				{
@@ -338,7 +331,8 @@ void FmInstrument::processVoice(VoiceState& voice, unsigned int timeInSamples, S
 		///////////////////////
 		OscillatorPhase currentPhase;
 		currentPhase.set(freqAdditionPM);
-		float val = osc[(_LIBBLANKENHAIN_NUM_OSCS_FM_SYNTH - 1u)].getSample(deltaT, currentPhase);
+		//currentPhase += osc[(_LIBBLANKENHAIN_NUM_OSCS_FM_SYNTH - 1u)].getPhase();
+		float val = osc[(_LIBBLANKENHAIN_NUM_OSCS_FM_SYNTH - 1u)].getNextSample(currentPhase);
 		///////////////////////
 
 		if (mod[(_LIBBLANKENHAIN_NUM_OSCS_FM_SYNTH - 1u)].am || (selfModOn && selfModtype == 2.f))
