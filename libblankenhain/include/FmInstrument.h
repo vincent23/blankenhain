@@ -12,11 +12,8 @@ class FmModulation
 public:
 	FmModulation()
 	{
-		fm = pm = am = false;
+		pm = am = false;
 	}
-	bool fm;
-	float fmAmount;
-	float fmVal;
 
 	bool  pm;
 	float pmAmount;

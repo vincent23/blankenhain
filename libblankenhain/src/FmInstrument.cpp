@@ -27,8 +27,8 @@ FmInstrument::FmInstrument()
 	{
 		unsigned int currentIter = 8u + i * 13;
 		params.initParameter(currentIter + 0, new FloatParameter(440.f, NormalizedRange(33.f, 16000.f, 0.25), "freq", "hz"));
-		BhString names[3] = { "FM", "PM", "AM" };
-		params.initParameter(currentIter + 1, new OptionParameter(3u, names, "modType", ""));
+		BhString names[2] = { "PM", "AM" };
+		params.initParameter(currentIter + 1, new OptionParameter(2u, names, "modType", ""));
 		params.initParameter(currentIter + 2, new FloatParameter(0.f, NormalizedRange(), "modAmount", "amount"));
 
 		float* numbersOfOsc = new float[_LIBBLANKENHAIN_NUM_OSCS_FM_SYNTH - i];
@@ -43,7 +43,7 @@ FmInstrument::FmInstrument()
 
 		params.initParameter(currentIter + 4, new FloatParameter(0.f, NormalizedRange(), "selfmodAmount", "amount"));
 		BhString waveform[4] = { "Sine", "Saw", "Square", "Triangle" };
-		params.initParameter(currentIter + 5, new OptionParameter(3u, names, "SelfmodType", ""));
+		params.initParameter(currentIter + 5, new OptionParameter(2u, names, "SelfmodType", ""));
 		params.initParameter(currentIter + 6, new OptionParameter(4u, waveform, "waveform", ""));
 		params.initParameter(currentIter + 7, new BoolParameter(false, "isOn"));
 		params.initParameter(currentIter + 8, new BoolParameter(false, "isLFO"));
@@ -63,11 +63,11 @@ FmInstrument::FmInstrument()
 
 	}
 
-	BhString names[3] = { "FM", "PM", "AM" };
+	BhString names[2] = { "PM", "AM" };
 	BhString waveform[4] = { "Sine", "Saw", "Square", "Triangle" };
 	//Carrier
 	params.initParameter(60, new FloatParameter(0.f, NormalizedRange(), "selfmodAmount", "amount"));
-	params.initParameter(61, new OptionParameter(3u, names, "SelfmodType", ""));
+	params.initParameter(61, new OptionParameter(2u, names, "SelfmodType", ""));
 	params.initParameter(62, new OptionParameter(4u, waveform, "waveform", ""));
 	params.initParameter(63, new FloatParameter(0.f, NormalizedRange(0.f, 0.3f), "glide", ""));
 
@@ -132,7 +132,7 @@ void FmInstrument::processVoice(VoiceState& voice, unsigned int timeInSamples, S
 		else
 			// otherwise we glide
 			// formula via http://stanford.edu/~yanm2/files/mus420b.pdf
-			currentFreq = voiceFreq * (1.f - BhMath::exp(-1.f * timeSinceNoteOff / (constants::sampleRate * portamento))) +
+			currentFreq = voiceFreq * (1.f - BhMath::exp(-1.f * timeSinceNoteOff / (constants::sampleRate * portamento))) + \
 			freqPrev * BhMath::exp(-1.f * timeSinceNoteOff / (constants::sampleRate * portamento));
 
 
@@ -206,24 +206,11 @@ void FmInstrument::processVoice(VoiceState& voice, unsigned int timeInSamples, S
 				}
 
 				osc[i].setMode(NaiveOscillator::NaiveOscillatorMode(static_cast<int>(waveFormType)));
-				if (mod[i].fm || (selfModOn && selfModtype == 0.f))
+
+				if (mod[i].pm || (selfModOn && selfModtype == 0.f))
 				{
 					float selfmod = 0.f;
 					if (selfModOn && selfModtype == 0.f)
-					{
-						selfmod = lastOscValues[i];
-					}
-		
-					const float& cFmVal = mod[i].fmVal;
-					const float fmAmount = mod[i].fm ? mod[i].fmAmount : 0.f;
-
-					freqMultiplierFM = cFmVal * fmAmount + selfmod * selfModAmount;
-				}
-
-				if (mod[i].pm || (selfModOn && selfModtype == 1.f))
-				{
-					float selfmod = 0.f;
-					if (selfModOn && selfModtype == 1.f)
 					{
 						selfmod = lastOscValues[i];
 					}
@@ -240,10 +227,10 @@ void FmInstrument::processVoice(VoiceState& voice, unsigned int timeInSamples, S
 
 				float val = osc[i].getNextSample(currentPhase);
 
-				if (mod[i].am || (selfModOn && selfModtype == 2.f))
+				if (mod[i].am || (selfModOn && selfModtype == 1.f))
 				{
 					float selfmod = 0.f;
-					if (selfModOn && selfModtype == 2.f)
+					if (selfModOn && selfModtype == 1.f)
 					{
 						selfmod = lastOscValues[i];
 					}
@@ -260,12 +247,6 @@ void FmInstrument::processVoice(VoiceState& voice, unsigned int timeInSamples, S
 				lastOscValues[i] = val;
 
 				if (modType == 0.f)
-				{
-					mod[unsigned int(target)].fmVal = val;
-					mod[unsigned int(target)].fmAmount = amount;
-					mod[unsigned int(target)].fm = true;
-				}
-				else if (modType == 1.f)
 				{
 					mod[unsigned int(target)].pmVal = val;
 					mod[unsigned int(target)].pmAmount = amount;
@@ -293,26 +274,11 @@ void FmInstrument::processVoice(VoiceState& voice, unsigned int timeInSamples, S
 
 		osc[(_LIBBLANKENHAIN_NUM_OSCS_FM_SYNTH - 1u)].setMode(NaiveOscillator::NaiveOscillatorMode(static_cast<int>(waveFormType)));
 
-		if (mod[(_LIBBLANKENHAIN_NUM_OSCS_FM_SYNTH - 1u)].fm || (selfModOn && selfModtype == 0.f))
+
+		if (mod[(_LIBBLANKENHAIN_NUM_OSCS_FM_SYNTH - 1u)].pm || (selfModOn && selfModtype < 0.5f))
 		{
 			float selfmod = 0.f;
-			if (selfModOn && selfModtype == 0.f)
-			{
-				selfmod = lastCarrierValue;
-			}
-
-			float& cFmVal = mod[(_LIBBLANKENHAIN_NUM_OSCS_FM_SYNTH - 1u)].fmVal;
-			float fmAmount = 0.f;
-			if (mod[(_LIBBLANKENHAIN_NUM_OSCS_FM_SYNTH - 1u)].fm)
-				fmAmount = mod[(_LIBBLANKENHAIN_NUM_OSCS_FM_SYNTH - 1u)].fmAmount;
-
-			freqMultiplierFM = ((cFmVal * fmAmount) + (selfModAmount * selfmod));
-		}
-
-		if (mod[(_LIBBLANKENHAIN_NUM_OSCS_FM_SYNTH - 1u)].pm || (selfModOn && selfModtype == 1.f))
-		{
-			float selfmod = 0.f;
-			if (selfModOn && selfModtype == 1.f)
+			if (selfModOn && selfModtype < 0.5f)
 			{
 				selfmod = lastCarrierValue;
 			}
@@ -335,10 +301,10 @@ void FmInstrument::processVoice(VoiceState& voice, unsigned int timeInSamples, S
 		float val = osc[(_LIBBLANKENHAIN_NUM_OSCS_FM_SYNTH - 1u)].getNextSample(currentPhase);
 		///////////////////////
 
-		if (mod[(_LIBBLANKENHAIN_NUM_OSCS_FM_SYNTH - 1u)].am || (selfModOn && selfModtype == 2.f))
+		if (mod[(_LIBBLANKENHAIN_NUM_OSCS_FM_SYNTH - 1u)].am || (selfModOn && selfModtype == 1.f))
 		{
 			float selfmod = 0.f;
-			if (selfModOn && selfModtype == 2.f)
+			if (selfModOn && selfModtype == 1.f)
 			{
 				selfmod = lastCarrierValue;
 			}
