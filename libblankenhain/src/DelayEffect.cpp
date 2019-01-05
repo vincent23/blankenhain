@@ -17,7 +17,7 @@ DelayEffect::DelayEffect()
 	params.initParameter(4, new BoolParameter(false, "PANIC!"));
 	float multiplierValues[7] = { 0.0625, 0.125, 0.25, 0.5, 1., 2., 4. };
 	params.initParameter(5, new DiscreteParameter(7u, "beatMultiplier", "", multiplierValues, 4u));
-	params.initParameter(6, new BoolParameter(false, "lfoTemposync"));
+	params.initParameter(6, new BoolParameter(false, "temposync"));
 
 }
 
