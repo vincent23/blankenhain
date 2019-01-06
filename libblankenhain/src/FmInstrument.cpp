@@ -319,6 +319,16 @@ void FmInstrument::processVoice(VoiceState& voice, unsigned int timeInSamples, S
 			val *= cAmAmount * mod[(_LIBBLANKENHAIN_NUM_OSCS_FM_SYNTH - 1u)].amVal + selfmod * selfModAmount;
 		}
 		float valueOfCarrier = val;
+
+		// Sometimes NaNs occur, we are currently not sure why this happens
+		// Lowkey seems like it is connected to selfmodulation??
+		if (val != val)
+		{
+			valueOfCarrier = 0.f;
+#ifdef _LIBBLANKENHAIN_ENABLE_NANCHECK
+			throw "Detected a NaN within FM Synth.";
+#endif
+		}
 		lastCarrierValue = valueOfCarrier;
 
 		buffer[sampleIndex] = Sample(valueOfCarrier);
