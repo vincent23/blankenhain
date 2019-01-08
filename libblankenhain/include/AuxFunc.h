@@ -98,6 +98,7 @@ namespace aux
 		double timeInSeconds = samplePositionDouble / sampleRateDouble;
 		return static_cast<float>(timeInSeconds);
 	}
+	
 	template<typename T>
 	inline T max(T a, T b)
 	{
@@ -123,6 +124,12 @@ namespace aux
 	inline Sample __vectorcall mixDryWet(Sample dry, Sample wet, float drywet)
 	{
 		return dry + (wet - dry) * Sample(drywet);
+	}
+
+	template<typename T>
+	inline T clamp(T val, T min, T max)
+	{
+		return val < min ? min : (val > max ? max : val);
 	}
 }
 
