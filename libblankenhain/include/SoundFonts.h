@@ -18,7 +18,7 @@ public:
 	{
 		filter.setLowPass(lowPassFreq, lowPassQ);
 	}
-	virtual float getSample(unsigned int time, OscillatorPhase phase = OscillatorPhase()) final
+	virtual float getSample(unsigned int time, OscillatorPhase phase = OscillatorPhase(0.f)) final
 	{
 		float value = pulse.getSample(time);
 		return filter.tick(value);
@@ -34,7 +34,7 @@ public:
 	{
 		pulse.setPulseLength(static_cast<unsigned int>(aux::millisecToSamples(inMs)));
 	}
-	virtual float getNextSample(OscillatorPhase phase = OscillatorPhase()) final
+	virtual float getNextSample(OscillatorPhase phase = OscillatorPhase(0.f)) final
 	{
 		return 0;
 	}
@@ -52,7 +52,7 @@ private:
 	float baseFreq;
 	float envMult;
 public:
-	BassDrumSound2(float envRelease, float baseFrequency, float envMultFactor) : sine(NaiveOscillator::NaiveOscillatorMode::OSCILLATOR_MODE_SINE, baseFrequency),
+	BassDrumSound2(float envRelease, float baseFrequency, float envMultFactor) : sine(NaiveOscillatorMode::OSCILLATOR_MODE_SINE, baseFrequency),
 		env(0.f, envRelease)
 	{
 		baseFreq = baseFrequency;
@@ -63,7 +63,7 @@ public:
 	{
 		baseFreq = frequency;
 	};
-	virtual float getSample(unsigned int time, OscillatorPhase phase = OscillatorPhase()) final
+	virtual float getSample(unsigned int time, OscillatorPhase phase = OscillatorPhase(0.f)) final
 	{
 		float envValue = env.get(time);
 		float curFreq = baseFreq - baseFreq * (1.f - envValue) * envMult;
@@ -84,7 +84,7 @@ public:
 	{
 		this->env.releaseInMs = envReleaseTimeInMs_;
 	}
-	virtual float getNextSample(OscillatorPhase phase = OscillatorPhase()) final
+	virtual float getNextSample(OscillatorPhase phase = OscillatorPhase(0.f)) final
 	{
 		return 0;
 	}

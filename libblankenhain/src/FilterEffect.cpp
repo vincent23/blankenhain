@@ -74,7 +74,7 @@ void FilterEffect::getModulation(float* modulationValues, size_t sampleOffset)
 
 		float lfoWaveform = interpolatedParameters.get(7);
 		bool lfoTempoSync = interpolatedParameters.get(8) == 1.f;
-		this->lfo.setMode(NaiveOscillator::NaiveOscillatorMode(static_cast<unsigned int>(lfoWaveform)));
+		this->lfo.setMode(NaiveOscillatorMode(static_cast<unsigned int>(lfoWaveform)));
 		float lfoPhase = interpolatedParameters.get(9);
 		if (!lfoTempoSync)
 		{
@@ -107,16 +107,16 @@ void FilterEffect::getModulation(float* modulationValues, size_t sampleOffset)
 		}
 
 
-		this->lfo.setParams(lfoBaseline, OscillatorPhase(lfoPhase), lfoAmount);
+		this->lfo.setParams(lfoBaseline, lfoAmount);
 		for (unsigned int i = 0u; i < sampleOffset; i++)
 		{
 			if (this->effectUsesTempoData())
 			{
-				modulationValues[1] = this->lfo.getSample(i + this->tempodata.position);
+				modulationValues[1] = this->lfo.getSample(i + this->tempodata.position,lfoPhase);
 			}
 			else
 			{
-				modulationValues[1] = this->lfo.getNextSample();
+				modulationValues[1] = this->lfo.getNextSample(lfoPhase);
 			}
 		}
 	}

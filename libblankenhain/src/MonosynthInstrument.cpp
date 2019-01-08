@@ -69,7 +69,7 @@ void monosynthInstrument::processVoice(VoiceState& voice, unsigned int timeInSam
 	else
 	{
 		currentOsc = &osc;
-		this->osc.setMode(NaiveOscillator::NaiveOscillatorMode(static_cast<unsigned int>(oscMode)));
+		this->osc.setMode(NaiveOscillatorMode(static_cast<unsigned int>(oscMode)));
 	}
 
 	// If a new note is played, take this as the start time for glide
@@ -134,7 +134,7 @@ void monosynthInstrument::getModulation(float* modulationValues, size_t sampleOf
 
 		float lfoWaveform = interpolatedParameters.get(14);
 		bool lfoTempoSync = interpolatedParameters.get(15) == 1.f;
-		this->lfo.setMode(NaiveOscillator::NaiveOscillatorMode(static_cast<unsigned int>(lfoWaveform)));
+		this->lfo.setMode(NaiveOscillatorMode(static_cast<unsigned int>(lfoWaveform)));
 		float lfoPhase = interpolatedParameters.get(16);
 		if (!lfoTempoSync)
 		{
@@ -166,13 +166,13 @@ void monosynthInstrument::getModulation(float* modulationValues, size_t sampleOf
 			this->lfo.setFrequency(2.f / wholeBeatLength);
 		}
 		
-		this->lfo.setParams(lfoBaseline, OscillatorPhase(lfoPhase), lfoAmount);
+		this->lfo.setParams(lfoBaseline, lfoAmount);
 		for (unsigned int i = 0u; i < sampleOffset; i++)
 		{
 			if (this->effectUsesTempoData())
-				modulationValues[12] = this->lfo.getSample(sampleOffset + this->tempodata.position);
+				modulationValues[12] = this->lfo.getSample(sampleOffset + this->tempodata.position, lfoPhase);
 			else
-				modulationValues[12] = this->lfo.getNextSample();
+				modulationValues[12] = this->lfo.getNextSample(lfoPhase);
 		}
 	}
 

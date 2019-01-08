@@ -51,7 +51,7 @@ void PolysynthInstrument::processVoice(VoiceState& voice, unsigned int timeInSam
 
 	this->osc.setFrequency(voiceFreq);
 
-	this->osc.setMode(NaiveOscillator::NaiveOscillatorMode(oscMode));
+	this->osc.setMode(NaiveOscillatorMode(oscMode));
 
 	for (unsigned int sampleIndex = 0; sampleIndex < numberOfSamples; sampleIndex++) 
 	{

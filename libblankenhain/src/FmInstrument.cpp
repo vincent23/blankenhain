@@ -73,7 +73,7 @@ FmInstrument::FmInstrument()
 
 	for (unsigned int i = 0u; i < _LIBBLANKENHAIN_NUM_OSCS_FM_SYNTH; i++)
 	{
-		osc[i].setMode(NaiveOscillator::NaiveOscillatorMode::OSCILLATOR_MODE_SINE);
+		osc[i].setMode(NaiveOscillatorMode::OSCILLATOR_MODE_SINE);
 		lastOscValues[i] = 1.f;
 	}
 	currentSound = &osc[_LIBBLANKENHAIN_NUM_OSCS_FM_SYNTH -1];
@@ -205,7 +205,7 @@ void FmInstrument::processVoice(VoiceState& voice, unsigned int timeInSamples, S
 					}
 				}
 
-				osc[i].setMode(NaiveOscillator::NaiveOscillatorMode(static_cast<int>(waveFormType)));
+				osc[i].setMode(NaiveOscillatorMode(static_cast<int>(waveFormType)));
 
 				if (mod[i].pm || (selfModOn && selfModtype == 0.f))
 				{
@@ -222,8 +222,7 @@ void FmInstrument::processVoice(VoiceState& voice, unsigned int timeInSamples, S
 
 				osc[i].setFrequency(freq + freqMultiplierFM);
 
-				OscillatorPhase currentPhase;
-				currentPhase.set(freqAdditionPM);
+				OscillatorPhase currentPhase(freqAdditionPM);
 
 				float val = osc[i].getNextSample(currentPhase);
 
@@ -272,7 +271,7 @@ void FmInstrument::processVoice(VoiceState& voice, unsigned int timeInSamples, S
 		float freqMultiplierFM = 1.f;
 		float freqAdditionPM = 0.f;
 
-		osc[(_LIBBLANKENHAIN_NUM_OSCS_FM_SYNTH - 1u)].setMode(NaiveOscillator::NaiveOscillatorMode(static_cast<int>(waveFormType)));
+		osc[(_LIBBLANKENHAIN_NUM_OSCS_FM_SYNTH - 1u)].setMode(NaiveOscillatorMode(static_cast<int>(waveFormType)));
 
 
 		if (mod[(_LIBBLANKENHAIN_NUM_OSCS_FM_SYNTH - 1u)].pm || (selfModOn && selfModtype < 0.5f))
@@ -295,8 +294,7 @@ void FmInstrument::processVoice(VoiceState& voice, unsigned int timeInSamples, S
 		///////////////////////
 
 		///////////////////////
-		OscillatorPhase currentPhase;
-		currentPhase.set(freqAdditionPM);
+		OscillatorPhase currentPhase(freqAdditionPM);
 		//currentPhase += osc[(_LIBBLANKENHAIN_NUM_OSCS_FM_SYNTH - 1u)].getPhase();
 		float val = osc[(_LIBBLANKENHAIN_NUM_OSCS_FM_SYNTH - 1u)].getNextSample(currentPhase);
 		///////////////////////

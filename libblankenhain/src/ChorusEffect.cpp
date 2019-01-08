@@ -38,7 +38,7 @@ void ChorusEffect::process(Sample* buffer, size_t numberOfSamples, size_t curren
 	
 	const float lfoAmount = interpolatedParameters.get(0);
 	const float lfoWaveform = interpolatedParameters.get(6);
-	this->lfo.setMode(NaiveOscillator::NaiveOscillatorMode(static_cast<unsigned int>(lfoWaveform)));
+	this->lfo.setMode(NaiveOscillatorMode(static_cast<unsigned int>(lfoWaveform)));
 	const float lfoPhase = interpolatedParameters.get(7);
 	const float lfoSpeed = interpolatedParameters.get(9);
 
@@ -84,12 +84,12 @@ void ChorusEffect::process(Sample* buffer, size_t numberOfSamples, size_t curren
 	}
 
 
-	lfo.setParams(0, OscillatorPhase(lfoPhase), lfoAmount);
+	lfo.setParams(0, lfoAmount);
 	for (unsigned int i = 0; i < numberOfSamples; i++)
 	{
-		float lfoValue = this->lfo.getNextSample();
+		const float lfoValue = this->lfo.getNextSample(lfoPhase);
 
-		float currentSweepPosition = lfoValue * delayLength + delayLength;
+		const float currentSweepPosition = lfoValue * delayLength + delayLength;
 			
 		Sample inval = buffer[i];
 		Sample outval = delayLine.get(static_cast<unsigned int>(currentSweepPosition));
