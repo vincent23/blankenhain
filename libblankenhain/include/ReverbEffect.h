@@ -1,5 +1,7 @@
 /*
  * The algorithm is taken and modified from STK::freeverb.
+ * The STK Licence (https://ccrma.stanford.edu/software/stk/faq.html)
+ * requires us to display the following copyright statement in full.
  *
  * The Synthesis ToolKit in C++ (STK) is a set of open source audio
  * signal processing and algorithmic synthesis classes written in the
