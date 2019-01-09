@@ -191,63 +191,7 @@ protected:
 	NaiveOscillatorMode mOscillatorMode;
 };
 
-class CommonLFO : public NaiveOscillator
-{
-public:
-	CommonLFO() : NaiveOscillator()
-	{
-		baseline = 0.f;
-		amount = 0.f;
-	}
 
-	CommonLFO(NaiveOscillatorMode mode, float frequency) : NaiveOscillator(mode, frequency)
-	{
-		baseline = 0.f;
-		amount = 0.f;
-	}
-
-	// Input phase is ignored as it is stored in the oscillator
-	virtual float getSample(unsigned int time, OscillatorPhase phase_ = OscillatorPhase(0.f)) const override
-	{
-		float sample = NaiveOscillator::getSample(time, /*phase_ +*/ phase_) * amount;
-
-		// Perform LFO on volumeL
-		sample += baseline;
-		//return aux::clamp<float>(sample,0.0,1.0);
-		return sample;
-	}
-
-	// Input phase is ignored as it is stored in the oscillator
-	virtual float getNextSample(OscillatorPhase phase_ = OscillatorPhase(0.f)) override
-	{
-		float sample = NaiveOscillator::getNextSample(phase_) * amount;
-
-		// Perform LFO on volumeL
-		sample += baseline;
-		//return aux::clamp<float>(sample, 0.0, 1.0);
-		return sample;
-	}
-
-	void setParams(float baseline_normalized, float amount_normalized)
-	{
-		this->baseline = baseline_normalized;
-		this->amount = amount_normalized;
-	};
-
-	float getAmount() const
-	{
-		return amount;
-	}
-
-	float getBaseline() const
-	{
-		return baseline;
-	}
-
-protected:
-	float baseline;
-	float amount;
-};
 
 // via https://www.music.mcgill.ca/~gary/307/week5/bandlimited.html
 /**
@@ -514,8 +458,8 @@ public:
 	{
 	};
 
-	virtual float getSample(unsigned int time, OscillatorPhase phase = OscillatorPhase(0.f)) final;
-	virtual float getNextSample(OscillatorPhase phase = OscillatorPhase(0.f)) final;
+	virtual float getSample(unsigned int time, OscillatorPhase phase = OscillatorPhase(0.f)) const;
+	virtual float getNextSample(OscillatorPhase phase = OscillatorPhase(0.f));
 private:
 	float poly_blep(float t) const;
 	float lastOutput;
@@ -565,3 +509,54 @@ public:
 
 };
 
+class CommonLFO : public PolyBLEPOscillator
+{
+public:
+	CommonLFO() : PolyBLEPOscillator()
+	{
+		baseline = 0.f;
+		amount = 0.f;
+	}
+
+	// Input phase is ignored as it is stored in the oscillator
+	virtual float getSample(unsigned int time, OscillatorPhase phase_ = OscillatorPhase(0.f)) const override
+	{
+		float sample = PolyBLEPOscillator::getSample(time, /*phase_ +*/ phase_) * amount;
+
+		// Perform LFO on volumeL
+		sample += baseline;
+		//return aux::clamp<float>(sample,0.0,1.0);
+		return sample;
+	}
+
+	// Input phase is ignored as it is stored in the oscillator
+	virtual float getNextSample(OscillatorPhase phase_ = OscillatorPhase(0.f)) override
+	{
+		float sample = PolyBLEPOscillator::getNextSample(phase_) * amount;
+
+		// Perform LFO on volumeL
+		sample += baseline;
+		//return aux::clamp<float>(sample, 0.0, 1.0);
+		return sample;
+	}
+
+	void setParams(float baseline_normalized, float amount_normalized)
+	{
+		this->baseline = baseline_normalized;
+		this->amount = amount_normalized;
+	};
+
+	float getAmount() const
+	{
+		return amount;
+	}
+
+	float getBaseline() const
+	{
+		return baseline;
+	}
+
+protected:
+	float baseline;
+	float amount;
+};

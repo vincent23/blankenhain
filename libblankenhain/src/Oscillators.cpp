@@ -121,32 +121,34 @@ float PolyBLEPOscillator::poly_blep(float t) const
 	}
 }
 
-float PolyBLEPOscillator::getSample(unsigned int time, OscillatorPhase phase)
+float PolyBLEPOscillator::getSample(unsigned int time, OscillatorPhase phase) const
 {
 	float value = 0.0;
 
-	mPhase.set(static_cast<float>(time) * mPhaseIncrement);
+	OscillatorPhase currentPhase = mPhase;
+	currentPhase.set(static_cast<float>(time) * mPhaseIncrement);
 
-	float t = BhMath::fmod((mPhase.getValue() + phase.getValue()), (2.f * constants::pi)) / (2.f * constants::pi);
+	float t = (currentPhase + phase).getValue() / (2.f * constants::pi);
 
 	if (mOscillatorMode == OSCILLATOR_MODE_SINE) {
-		value = naiveWaveformForMode(OSCILLATOR_MODE_SINE, mPhase+phase);
+		value = naiveWaveformForMode(OSCILLATOR_MODE_SINE, currentPhase +phase);
 	}
 	else if (mOscillatorMode == OSCILLATOR_MODE_SAW) {
-		value = naiveWaveformForMode(OSCILLATOR_MODE_SAW, mPhase + phase);
+		value = naiveWaveformForMode(OSCILLATOR_MODE_SAW, currentPhase + phase);
 		value -= poly_blep(t);
 	}
-	else {
-		value = naiveWaveformForMode(OSCILLATOR_MODE_SQUARE, mPhase + phase);
+	else if (mOscillatorMode == OSCILLATOR_MODE_SQUARE)
+	{
+		value = naiveWaveformForMode(OSCILLATOR_MODE_SQUARE, currentPhase + phase);
 		value += poly_blep(t);
 		float temp = BhMath::fmod(t + 0.5f, 1.f);
 		value -= poly_blep(temp);
-
-		if (mOscillatorMode == OSCILLATOR_MODE_TRIANGLE) {
-			// Leaky integrator: y[n] = A * x[n] + (1 - A) * y[n-1]
-			value = mPhaseIncrement * value + (1.f - mPhaseIncrement) * lastOutput;
-			lastOutput = value;
-		}
+	}
+	else if (mOscillatorMode == OSCILLATOR_MODE_TRIANGLE) 
+	{
+		// We cant use a integrator here as this function is const and doesnt safe its history
+		// Thus, a non-polybleped triangle is returned
+		value = naiveWaveformForMode(OSCILLATOR_MODE_TRIANGLE, currentPhase + phase);
 	}
 
 #ifdef _LIBBLANKENHAIN_ENABLE_NANCHECK
