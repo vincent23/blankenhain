@@ -98,7 +98,7 @@ namespace aux
 		double timeInSeconds = samplePositionDouble / sampleRateDouble;
 		return static_cast<float>(timeInSeconds);
 	}
-	
+
 	template<typename T>
 	inline T max(T a, T b)
 	{
@@ -131,5 +131,16 @@ namespace aux
 	{
 		return val < min ? min : (val > max ? max : val);
 	}
-}
 
+	inline float pun_safe(uint32_t floatBits)
+	{
+		float value;
+		// access float through an unsigned char*, so that it's not subject to the strict aliasing rule
+		unsigned char* ptr = reinterpret_cast<unsigned char*>(&value);
+		ptr[0] = (floatBits) & 0xff;
+		ptr[1] = (floatBits >> 8) & 0xff;
+		ptr[2] = (floatBits >> 16) & 0xff;
+		ptr[3] = (floatBits >> 24) & 0xff;
+		return value;
+	}
+}

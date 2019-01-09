@@ -87,7 +87,7 @@ private:
 OscillatorPhase operator+(const OscillatorPhase &c1, const OscillatorPhase &c2);
 
 /**
- * Interface class for sound generators, processVoice Function will 
+ * Interface class for sound generators, processVoice Function will
  * access sound generating modules through these two calls only.
  * Everything that generates a sound, wether periodic or not,
  * should derive from this.
@@ -116,7 +116,7 @@ public:
  * A virtual basic class for periodic (i.e. oscillating) sounds.
  * A periodic sound has a frequency, so this takes care of setFrequency.
  * You still need to derive from this class and provide the getSample() function.
- * 
+ *
  * Notice the nice "render to wavetable" function
  */
 class BaseOscillator : public I_SoundGenerator
@@ -181,7 +181,7 @@ public:
 		this->setFrequency(frequency);
 	}
 
-    void setMode(NaiveOscillatorMode mode);
+	void setMode(NaiveOscillatorMode mode);
 
 	virtual float getSample(unsigned int time, OscillatorPhase phase = OscillatorPhase(0.f)) const override;
 
@@ -213,7 +213,7 @@ public:
 		{
 			currentHarmonic = static_cast<float>(k) * mFrequency;
 			osc.setFrequency(currentHarmonic);
-			
+
 			value += osc.getSample(time, phase) * (1.f / static_cast<float>(k));
 			k += 2;
 		}
@@ -279,7 +279,7 @@ public:
 			currentHarmonic = static_cast<float>(k) * mFrequency;
 			osc.setFrequency(currentHarmonic);
 
-			value += osc.getNextSample(phase) * (BhMath::pow(-1.f, static_cast<float>((k - 1u) / 2u)) 
+			value += osc.getNextSample(phase) * (BhMath::pow(-1.f, static_cast<float>((k - 1u) / 2u))
 				/ (static_cast<float>(k) * static_cast<float>(k)));
 			k += 2;
 		}
@@ -310,10 +310,10 @@ public:
 			currentHarmonic = static_cast<float>(k) * mFrequency;
 			osc.setFrequency(currentHarmonic);
 
-			value += osc.getSample(time, phase)  / (static_cast<float>(k));
+			value += osc.getSample(time, phase) / (static_cast<float>(k));
 			k += 1;
 		}
-		return 0.5f - value * ( 1.f / static_cast<float>(constants::pi));
+		return 0.5f - value * (1.f / static_cast<float>(constants::pi));
 	}
 
 	virtual float getNextSample(OscillatorPhase phase = OscillatorPhase(0.f)) final
@@ -378,7 +378,7 @@ public:
 	virtual float getNextSample(OscillatorPhase phase = OscillatorPhase(0.f)) final
 	{
 		mPhase.incrementBy(mPhaseIncrement);
-		const float positionInWavetable = ( mPhase.getValue() + phase.getValue()) * static_cast<float>(size) / static_cast<float>(2.f * constants::pi);
+		const float positionInWavetable = (mPhase.getValue() + phase.getValue()) * static_cast<float>(size) / static_cast<float>(2.f * constants::pi);
 		return wavetable[static_cast<unsigned int>(positionInWavetable)];
 	}
 };
@@ -396,15 +396,7 @@ class NoiseOscillator : public BaseOscillator
 {
 private:
 	uint32_t state;
-	uint32_t xorshift32(void)
-	{
-		uint32_t x = state;
-		x ^= x << 13;
-		x ^= x >> 17;
-		x ^= x << 5;
-		state = x;
-		return x;
-	}
+
 	uint32_t xorshift32(uint32_t const& stateIn_) const
 	{
 		uint32_t x = stateIn_;
@@ -413,29 +405,44 @@ private:
 		x ^= x << 5;
 		return x;
 	}
-public:
-	NoiseOscillator()
+
+	uint32_t xorshift32(void)
 	{
-		state = 12334u;
-		for (unsigned int i = 0u; i < 5078; i++)
-			this->xorshift32();
-		state = 634u;
-		for (unsigned int i = 0u; i < 578; i++)
-			this->xorshift32();
+		state = xorshift32(state);
+		return state;
 	}
+public:
+	// seed with object adress to avoid noise correlation
+	NoiseOscillator() : state(reinterpret_cast<uint32_t>(this))
+	{}
 
 	virtual float getSample(unsigned int time, OscillatorPhase phase = OscillatorPhase(0.f)) const final
 	{
-		uint32_t val = static_cast<uint32_t>(time + phase.getValue() * 4000000.f);
-		val = this->xorshift32(val);
-		while (val > 4000000001 || val == 0u)
-			val = this->xorshift32(val);
-		return (((static_cast<float>(val) - 1.f) / 4000000000.f) - 0.5f) * 2.f;
+		// seed rng with time and run a few times to get uniform random numbers
+		uint32_t val = time;
+		for (uint32_t i = 0; i < 16; i++)
+		{
+			val = xorshift32(val);
+		}
+
+		// convert to float in (0, 1)
+		// note that xorshift never returns zero
+		val = 0x3f800000 | (val >> 9);
+		float r = aux::pun_safe(val) - 1.f;
+
+		return r * 2.f - 1.f;
 	}
 
 	virtual float getNextSample(OscillatorPhase phase = OscillatorPhase(0.f)) final
 	{
-		return this->getSample(0u);
+		uint32_t val = xorshift32();
+
+		// convert to float in (0, 1)
+		// note that xorshift never returns zero
+		val = 0x3f800000 | (val >> 9);
+		float r = aux::pun_safe(val) - 1.f;
+
+		return r * 2.f - 1.f;
 	}
 };
 

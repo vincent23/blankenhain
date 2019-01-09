@@ -63,13 +63,13 @@ BaseOscillator::BaseOscillator() :
 };
 
 void NaiveOscillator::setMode(NaiveOscillatorMode mode) {
-    mOscillatorMode = mode;
+	mOscillatorMode = mode;
 }
 
-void BaseOscillator::setFrequency(float frequency) 
+void BaseOscillator::setFrequency(float frequency)
 {
 	mFrequency = frequency;
-    updateIncrement();
+	updateIncrement();
 }
 
 float NaiveOscillator::getSample(unsigned int time, OscillatorPhase phase) const
@@ -106,13 +106,13 @@ float PolyBLEPOscillator::poly_blep(float t) const
 	if (t < dt)
 	{
 		t /= dt;
-		return t + t - t*t - 1.f;
+		return t + t - t * t - 1.f;
 	}
 	// -1 < t < 0
 	else if (t > 1.f - dt)
 	{
 		t = (t - 1.f) / dt;
-		return t*t + t + t + 1.f;
+		return t * t + t + t + 1.f;
 	}
 	// 0 otherwise
 	else
@@ -131,7 +131,7 @@ float PolyBLEPOscillator::getSample(unsigned int time, OscillatorPhase phase) co
 	float t = (currentPhase + phase).getValue() / (2.f * constants::pi);
 
 	if (mOscillatorMode == OSCILLATOR_MODE_SINE) {
-		value = naiveWaveformForMode(OSCILLATOR_MODE_SINE, currentPhase +phase);
+		value = naiveWaveformForMode(OSCILLATOR_MODE_SINE, currentPhase + phase);
 	}
 	else if (mOscillatorMode == OSCILLATOR_MODE_SAW) {
 		value = naiveWaveformForMode(OSCILLATOR_MODE_SAW, currentPhase + phase);
@@ -144,7 +144,7 @@ float PolyBLEPOscillator::getSample(unsigned int time, OscillatorPhase phase) co
 		float temp = BhMath::fmod(t + 0.5f, 1.f);
 		value -= poly_blep(temp);
 	}
-	else if (mOscillatorMode == OSCILLATOR_MODE_TRIANGLE) 
+	else if (mOscillatorMode == OSCILLATOR_MODE_TRIANGLE)
 	{
 		// We cant use a integrator here as this function is const and doesnt safe its history
 		// Thus, a non-polybleped triangle is returned
@@ -176,7 +176,7 @@ float PolyBLEPOscillator::getNextSample(OscillatorPhase phase)
 		value = naiveWaveformForMode(OSCILLATOR_MODE_SAW, mPhase + phase);
 		value -= poly_blep(t);
 	}
-	else 
+	else
 	{
 		value = naiveWaveformForMode(OSCILLATOR_MODE_SQUARE, mPhase + phase);
 		value += poly_blep(t);
@@ -190,7 +190,7 @@ float PolyBLEPOscillator::getNextSample(OscillatorPhase phase)
 		}
 	}
 #ifndef _LIBBLANKENHAIN_ENABLE_NANCHECK
-//#define _LIBBLANKENHAIN_ENABLE_NANCHECK
+	//#define _LIBBLANKENHAIN_ENABLE_NANCHECK
 #endif
 #ifdef _LIBBLANKENHAIN_ENABLE_NANCHECK
 	if (value != value
