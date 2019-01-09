@@ -224,7 +224,17 @@ void FmInstrument::processVoice(VoiceState& voice, unsigned int timeInSamples, S
 
 				OscillatorPhase currentPhase(freqAdditionPM);
 
-				float val = osc[i].getNextSample(currentPhase);
+				float val;
+				if (isLFO)
+				{
+					// For LFOs we expect them to continue their waveform even if waveform playback is stopped.
+					// Thus, we don't call getNextSample (only "counts" when note is played"
+					val = osc[i].getSample((timeInSamples + sampleIndex),currentPhase);
+				}
+				else
+				{
+					val = osc[i].getNextSample(currentPhase);
+				} 
 
 				if (mod[i].am || (selfModOn && selfModtype == 1.f))
 				{
