@@ -136,7 +136,7 @@ protected:
 	* Returns true when tempo is valid. Only use the values you get
 	* in this function when it returns true!
 	*/
-	bool getBPMandPositionFromHost(float& bpm, unsigned int& position);
+	bool getBPMandPositionFromHost(float& bpm, unsigned int& position, bool& bpmOnly);
 
 	void updateTempoData(bool force = false);
 

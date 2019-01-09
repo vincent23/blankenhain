@@ -181,24 +181,24 @@ void PluginBase::processReplacing(float** inputs, float** outputs, VstInt32 samp
 
 	this->pluginParameters->updateParameters();
 	const unsigned int sampleFrames = static_cast<unsigned int>(sampleFrames_);
-	for (unsigned int blockOffset = 0; blockOffset < sampleFrames; blockOffset += constants::blockSize) 
+	for (unsigned int blockOffset = 0; blockOffset < sampleFrames; blockOffset += constants::blockSize)
 	{
 		unsigned int blockLength = sampleFrames - blockOffset;
 		// the last block of the buffer may be smaller than blockSize
 		// we process it anyway, which might be source of jittering
 
-		if (blockLength > constants::blockSize) 
+		if (blockLength > constants::blockSize)
 		{
 			blockLength = constants::blockSize;
 		}
-		for (unsigned sampleOffset = 0; sampleOffset < blockLength; sampleOffset++) 
+		for (unsigned sampleOffset = 0; sampleOffset < blockLength; sampleOffset++)
 		{
 			unsigned int samplePosition = blockOffset + sampleOffset;
 			processBuffer[sampleOffset] = Sample(inputs[0][samplePosition], inputs[1][samplePosition]);
 		}
 		onBeforeBlock(blockOffset);
 		effect->processBlock(processBuffer, blockLength);
-		for (unsigned sampleOffset = 0; sampleOffset < blockLength; sampleOffset++) 
+		for (unsigned sampleOffset = 0; sampleOffset < blockLength; sampleOffset++)
 		{
 			unsigned int samplePosition = blockOffset + sampleOffset;
 			alignas(16) floatType outputSample[2];
@@ -225,7 +225,7 @@ void PluginBase::setParameter(VstInt32 index, float value)
 	pluginParameters->setPluginParameter(index, value);
 }	///< Called when a parameter changed
 
-float PluginBase::getParameter(VstInt32 index) 
+float PluginBase::getParameter(VstInt32 index)
 {
 	return pluginParameters->getParameterNormalized(index);
 }
@@ -280,16 +280,17 @@ EffectBase* PluginBase::getEffect()
 }
 
 
-bool PluginBase::getBPMandPositionFromHost(float& bpm, unsigned int& position)
+bool PluginBase::getBPMandPositionFromHost(float& bpm, unsigned int& position, bool& bpmOnly)
 {
 	VstTimeInfo* ptr = this->getTimeInfo(kVstTempoValid);
 	if (!ptr) {
 		return false;
 	}
-	if (ptr->flags | kVstTempoValid)
+	if (ptr->flags & kVstTempoValid)
 	{
 		bpm = static_cast<float>(ptr->tempo);
 		position = static_cast<unsigned int>(ptr->samplePos);
+		bpmOnly = !(ptr->flags & kVstTransportPlaying);
 		return true;
 	}
 	else
@@ -305,8 +306,14 @@ void PluginBase::updateTempoData(bool force)
 	{
 		float bpm(0.f);
 		unsigned int position(0u);
-		if (this->getBPMandPositionFromHost(bpm, position))
+		bool bpmOnly = false;
+		if (this->getBPMandPositionFromHost(bpm, position, bpmOnly))
 		{
+			if (bpmOnly) {
+				// when there is no sync position (i.e. no clip played), just set the bpm and use the old position
+				const TempoData& tempo = effect->getTempoData();
+				position = tempo.position;
+			}
 			effect->setTempoData(bpm, position);
 		}
 		timeSinceLastBPMandPositionUpdate = 0u;
