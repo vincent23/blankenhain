@@ -41,6 +41,16 @@ float performAHDSR(
 	float rampStartingFromThisMultiplier = 0.f
 )
 {
+	// Some more general behavior: If holdLevel is 0, it is assumed to user wants a simple attack-sustain-release curve without hold.
+	// Thus, holdTime is assumed to be 0 samples so that attack is directly followed by sustain. Normalized hold level is for this code
+	// then equal to the normalized sustain level
+	if (normalizedHoldLevel < 0.0001f)
+	{
+		normalizedHoldLevel = normalizedSustainLevel;
+		holdInMs = 0.f;
+		decayInMs = 0.f;
+	}
+
 	const float attackInSamples = aux::millisecToSamples(attackInMs);
 	const float holdInSamples = aux::millisecToSamples(holdInMs);
 	const float decayInSamples = aux::millisecToSamples(decayInMs);
