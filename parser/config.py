@@ -11,12 +11,12 @@ plugins = {
 	'bh_bitcrush': {
 		'class': 'BitcrushEffect',
 		'type': effect,
-		'numberOfParameters': 4,
+		'numberOfParameters': 3,
 	},
 	'bh_chorus': {
 		'class': 'ChorusEffect',
 		'type': effect,
-		'numberOfParameters': 11,
+		'numberOfParameters': 12,
 	},
 	'bh_compressor': {
 		'class': 'CompressorEffect',
@@ -38,16 +38,6 @@ plugins = {
 		'type': effect,
 		'numberOfParameters': 41,
 	},
-	'bh_example': {
-		'class': 'ExampleEffect',
-		'type': effect,
-		'numberOfParameters': 5,
-	},
-	'bh_example_synth': {
-		'class': 'ExampleInstrument',
-		'type': instrument,
-		'numberOfParameters': 9,
-	},
 	'bh_filter': {
 		'class': 'FilterEffect',
 		'type': effect,
@@ -56,12 +46,12 @@ plugins = {
 	'bh_fm_synth': {
 		'class': 'FmInstrument',
 		'type': instrument,
-		'numberOfParameters': 116,
+		'numberOfParameters': 64,
 	},
-	'bh_freeverb': {
-		'class': 'freeverbEffect',
+	'bh_reverb': {
+		'class': 'reverbEffect',
 		'type': effect,
-		'numberOfParameters': 6,
+		'numberOfParameters': 4,
 	},
 	'bh_polysynth': {
 		'class': 'PolysynthInstrument',
@@ -81,7 +71,7 @@ plugins = {
 	'bh_noisegate': {
 		'class': 'NoiseGateEffect',
 		'type': effect,
-		'numberOfParameters': 5,
+		'numberOfParameters': 6,
 	},
 	'bh_monosynth': {
 		'class': 'monosynthInstrument',
@@ -91,7 +81,7 @@ plugins = {
 	'bh_rhythmgate': {
 		'class': 'RhythmgateEffect',
 		'type': effect,
-		'numberOfParameters': 20,
+		'numberOfParameters': 21,
 	},
 	'bh_volume': {
 		'class': 'VolumeEffect',

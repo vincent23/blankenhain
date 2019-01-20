@@ -63,7 +63,7 @@ class Device:
 			# device = MidiDevice()
 			return None
 		else:
-			# ignore unrecognized devices
+			# Do Nothing, Thus: ignoring unrecognized devices
 			return None
 		device.parse(deviceXml)
 		# Try / Except to check if the device is empty audiEffectRack. if yes, return None
@@ -182,6 +182,7 @@ class EffectDevice(Device):
 	def setInputTrackIndex(self, index):
 		self.inputTrackIndex = index
 
+# BLANKENHAIN MIDI EFFECTS ARE DEPRECATED AND UNSUPPORTED!!
 class MidiDevice(EffectDevice):
 	def emitSource(self, songInfo):
 		deviceName = songInfo.nextDeviceName()
@@ -352,7 +353,7 @@ class ChainDevice(CombinedDevice):
 		panXml = mixerXml.find('./Pan')
 		if panXml is None:
 			panXml = mixerXml.find('./Panorama')
-		pan = EffectDevice(config.plugins['bh_width']['class'], config.plugins['bh_width']['numberOfParameters'])
+		pan = EffectDevice(config.plugins['bh_pan']['class'], config.plugins['bh_pan']['numberOfParameters'])
 		pan.parameters = [
 			[ParameterEvent(0, 0.5)], # width
 			[], # pan
