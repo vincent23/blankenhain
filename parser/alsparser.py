@@ -95,13 +95,14 @@ class EffectDevice(Device):
 
 	def parse(self, deviceXml):
 		parametersXml = deviceXml.findall('./ParameterList/PluginFloatParameter')
-		# get the parameter id and make a list of (id, parameterXml) tuples
-		parametersXmlWithId = ((int(parameterXml.find('ParameterId').get('Value')), parameterXml)
-			for parameterXml in parametersXml)
-		for id, parameterXml in parametersXmlWithId:
+		parametersXmlWithId = []
+		for item in parametersXml:
+			parametersXmlWithId.append([int(item.find('ParameterId').get('Value')),item])
+		for item in parametersXmlWithId:
+			id = item[0]
 			if id == -1:
 				continue
-			eventsXml = parameterXml.findall('./ParameterValue/ArrangerAutomation/Events/FloatEvent')
+			eventsXml = item[1].findall('./ParameterValue/ArrangerAutomation/Events/FloatEvent')
 			parameterEvents = []
 			for eventXml in eventsXml:
 				eventTime = max(0, float(eventXml.get('Time')))

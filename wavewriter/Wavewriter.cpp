@@ -13,7 +13,7 @@
 // Put the desired filename here
 const char* nameOfOutputFile = "blankenhainWaveWriter.wav";
 
-// Set to true to write RAW floating point audio instead of a wav file
+// Set to true to write RAW floating point audio instead of a wav file, this should almost never be necessary
 const bool writeLegacyRAWAudio = false;
 
 ////////////////////////////
@@ -34,19 +34,12 @@ extern "C" int _cdecl _purecall(void) {
 	return 0;
 }
 
-int CALLBACK
-WinMain(HINSTANCE Instance,
-	HINSTANCE PrevInstance,
-	LPSTR CommandLine,
-	int ShowCode)
+int CALLBACK WinMain(HINSTANCE Instance, HINSTANCE PrevInstance, LPSTR CommandLine,	int ShowCode)
 {
-
-
 	const unsigned int numberOfSamples = blankenhain::lengthInSamples();
 	float* audioBuffer = new float[numberOfSamples * 2];
 
 	blankenhain::render(audioBuffer);
-
 
 	HANDLE outputFile;
 	do {
@@ -98,12 +91,12 @@ WinMain(HINSTANCE Instance,
 		for (unsigned int i = 0u; i < blankenhain::lengthInSamples() * 2; i++)
 		{
 			float& fval = (audioBuffer[i]);
-			__int16 value = static_cast<__int16>((fval + 1.f) / 2.f * 65535.f) - 32768;
+			const __int16 value = static_cast<__int16>((fval + 1.f) / 2.f * 65535.f) - 32768;
 			audioBufferAs16BitInt[i] = value;
 		}
 		if (WriteFile(outputFile, audioBufferAs16BitInt, sizeof(__int16) * blankenhain::lengthInSamples() * 2, NULL, NULL) == false)
 		{
-			DWORD dw = GetLastError();
+			const DWORD dw = GetLastError();
 		}
 
 		if (audioBufferAs16BitInt != nullptr)

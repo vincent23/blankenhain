@@ -33,6 +33,8 @@
 #include "RhythmgateEffect.h"
 #include "MonosynthInstrument.h"
 #include "LimiterEffect.h"
+#include "NoiseGateEffect.h"
+#include "BitcrushEffect.h"
 
 #include "AbletonTrackMixerVolumeEffect.h"
 

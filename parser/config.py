@@ -49,14 +49,14 @@ plugins = {
 		'numberOfParameters': 64,
 	},
 	'bh_reverb': {
-		'class': 'reverbEffect',
+		'class': 'ReverbEffect',
 		'type': effect,
 		'numberOfParameters': 4,
 	},
 	'bh_polysynth': {
 		'class': 'PolysynthInstrument',
 		'type': instrument,
-		'numberOfParameters': 9,
+		'numberOfParameters': 10,
 	},
 	'bh_gm_synth': {
 		'class': 'gmsynthInstrument',
